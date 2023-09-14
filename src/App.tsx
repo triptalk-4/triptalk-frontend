@@ -1,9 +1,15 @@
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import "./App.css";
+import MyPage from "./page/mypage/MyPage";
+
 function App() {
-    return (
-        <>
-            <h1> 안녕하세요</h1>
-        </>
-    );
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/mypage" element={<MyPage />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
 export default App;
