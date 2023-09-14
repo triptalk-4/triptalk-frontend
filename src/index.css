@@ -1,12 +1,11 @@
 :root {
-  font-family: GmarketSansMedium, Inter, system-ui, Avenir, Helvetica, Arial,
-    sans-serif;
+  font-family: GmarketSansMedium, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  color: #242424;
+  background-color: #fff;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -133,7 +132,7 @@ blockquote:before,
 blockquote:after,
 q:before,
 q:after {
-  content: "";
+  content: '';
   content: none;
 }
 table {
