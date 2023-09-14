@@ -1,6 +1,6 @@
-export const MAINCOLOR = "#F46222";
-export const CHOOSECOLOR = "#FFC121";
-export const BUTTONCOLOR = "#FB8D5D";
+export const MAIN_COLOR = '#F46222';
+export const CHOOSE_COLOR = '#FFC121';
+export const BUTTON_COLOR = '#FB8D5D';
 
-export const FOOTERCOLOR = "#2A2929";
-export const FOOTERFONTCOLOR = "#fff";
+export const FOOTER_COLOR = '#2A2929';
+export const FOOTER_FONT_COLOR = '#fff';
