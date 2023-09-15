@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css';
 
 import Main from './page/Main/Main';
-import MainLayout from './MainLayout';
+import MainLayout from './component/MainLayout';
 import Login from './page/LoginPage/Login';
 import EditMyInfo from './page/mypage/EditMyInfo';
 import MyInfo from './page/mypage/MyInfo';
