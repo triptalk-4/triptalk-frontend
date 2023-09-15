@@ -1,3 +1,3 @@
 export default function Dong() {
-  return <div>Dong</div>;
+  return <div>DongDong</div>;
 }
