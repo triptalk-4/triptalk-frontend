@@ -1,5 +1,3 @@
-import React from 'react';
-
 export default function seung() {
   return (
     <>
@@ -11,5 +9,5 @@ export default function seung() {
       <h1>충돌</h1>
       <h1>충돌</h1>
     </>
-  )
+  );
 }
