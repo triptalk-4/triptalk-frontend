@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import Search from './Search';
-import { MAIN_COLOR } from './color/color';
+import { MAIN_COLOR } from '../color/color';
 
 export default function Header() {
   return (
