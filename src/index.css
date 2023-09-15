@@ -5,7 +5,7 @@
 
   color-scheme: light dark;
   color: #242424;
-  background-color: #fff;
+  background-color: #d6d6d6;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -100,7 +100,6 @@ video {
   padding: 0;
   border: 0;
   font-size: 100%;
-  font: inherit;
   vertical-align: baseline;
 }
 /* HTML5 display-role reset for older browsers */
@@ -139,15 +138,9 @@ table {
 
 /* 설정 */
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #242424;
-    background-color: #d6d6d6;
-  }
-  /* a:hover {
+/* a:hover {
     color: #747bff;
   } */
-  button {
-    background-color: #f9f9f9;
-  }
+button {
+  background-color: #f9f9f9;
 }
