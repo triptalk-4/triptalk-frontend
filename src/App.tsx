@@ -3,14 +3,13 @@ import './App.css';
 
 import Main from './page/Main/Main';
 import MainLayout from './component/MainLayout';
-import Login from './page/LoginPage/Login';
+import LoginContainer from './page/LoginPage/LoginContainer';
 import EditMyInfo from './page/MyPage/EditMyInfo';
 import MyInfo from './page/MyPage/MyInfo';
 
 function App() {
   return (
     <BrowserRouter>
-      <Login />
       <Routes>
         {/* Header,Footer 보여주고 싶은 컴포넌트 */}
         <Route element={<MainLayout />}>
@@ -19,6 +18,7 @@ function App() {
         </Route>
         {/* Header,Footer을 안 보여주고 싶은 컴포넌트 */}
         <Route path="/editmyinfo" element={<EditMyInfo />} />
+        <Route path='/' element={<LoginContainer/> } />
       </Routes>
     </BrowserRouter>
   );
