@@ -1,4 +1,7 @@
 import styled from 'styled-components';
+import { GRAY_COLOR, LIGHT_GRAY_COLOR, LIGHT_ORANGE_COLOR } from '../../color/color';
+import EditForm from './EditForm';
+
 
 export default function EditMyInfo() {
   return (
@@ -9,12 +12,13 @@ export default function EditMyInfo() {
           <ImgEdit></ImgEdit>
           <ExitBtn>탈퇴하기</ExitBtn>
         </ImgEditContainer>
-        <MyInfoEditform>
-          <MyInfoEditInput type="email" placeholder="이메일" required />
-          <MyInfoEditInput type="password" placeholder="비밀번호" required />
-          <MyInfoEditInput type="password" placeholder="비밀번호확인" required />
-          <MyInfoEditInput type="text" placeholder="닉네임" required />
-        </MyInfoEditform>
+        <MyInfoEditForm>
+          <EditForm/>
+        </MyInfoEditForm>
+        <MyInfoBtnSetting>
+          <EditBtn type="submit">수정하기</EditBtn>
+          <CancellBtn>취소</CancellBtn>
+        </MyInfoBtnSetting>
       </InfoEditContainer>
     </InfoContainer>
   );
@@ -34,15 +38,21 @@ const InfoTitle = styled.p`
 
 const InfoEditContainer = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 495px;
+  grid-template-rows: 1fr 60px;
   padding: 50px 0;
+  column-gap: 100px;
+  row-gap: 50px;
+  grid-template-areas:
+    'ImgEditContainer MyInfoEditForm'
+    'ImgEditContainer MyInfoBtnSetting';
 `;
 
 const ImgEditContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-right: 100px;
+  grid-area: ImgEditContainer;
 `;
 
 const ImgEdit = styled.div`
@@ -58,13 +68,39 @@ const ExitBtn = styled.button`
   background-color: transparent;
   text-decoration: underline;
   padding-top: 40px;
-
   cursor: pointer;
 `;
 
-const MyInfoEditform = styled.form`
+const MyInfoEditForm = styled.form`
   display: flex;
   flex-direction: column;
+  grid-area: MyInfoEditForm;
 `;
 
-const MyInfoEditInput = styled.input``;
+const MyInfoBtnSetting = styled.div`
+  display: flex;
+  justify-content: center;
+  grid-area: MyInfoBtnSetting;
+`;
+
+const SettingBtnStyle = `
+  width: 140px;
+  height: 60px;
+  border: none;
+  cursor: pointer;
+  border-radius: 15px;
+  font-size: 15px;
+`;
+
+const EditBtn = styled.button`
+  ${SettingBtnStyle}
+  background-color: ${LIGHT_ORANGE_COLOR};
+  color: #fff;
+  margin-right: 25px;
+`;
+
+const CancellBtn = styled.button`
+  ${SettingBtnStyle}
+  background-color: ${LIGHT_GRAY_COLOR};
+  color: ${GRAY_COLOR};
+`;
