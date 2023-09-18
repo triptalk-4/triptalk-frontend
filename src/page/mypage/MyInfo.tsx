@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { AiOutlineSetting } from 'react-icons/ai';
-import { BLUR_COLOR, DEFAULT_FONT_COLOR } from '../../color/color';
+import { DEFAULT_FONT_COLOR, GRAY_COLOR } from '../../color/color';
 import { Link } from 'react-router-dom';
 
 export default function MyInfo() {
@@ -59,7 +59,7 @@ const Setting = styled(Link)`
   font-size: 25px;
   border: none;
   background-color: transparent;
-  color: ${BLUR_COLOR};
+  color: ${GRAY_COLOR};
   padding-left: 5px;
   cursor: pointer;
 `;
@@ -86,7 +86,7 @@ const ContentUl = styled.ul`
 
 const ContentItem = styled.li`
   padding: 20px 0;
-  color: ${BLUR_COLOR};
+  color: ${GRAY_COLOR};
   font-weight: 700;
   cursor: pointer;
 
