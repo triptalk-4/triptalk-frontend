@@ -14,7 +14,7 @@ export default function Header() {
       <Nav>
         <NavItem>홈</NavItem>
         <NavItem>여행지</NavItem>
-        <NavItem>일정</NavItem>
+        <NavItem>리뷰맵</NavItem>
         <NavItem>
           <Search />
         </NavItem>
