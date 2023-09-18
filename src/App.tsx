@@ -4,8 +4,8 @@ import './App.css';
 import Main from './page/Main/Main';
 import MainLayout from './component/MainLayout';
 import Login from './page/LoginPage/Login';
-import EditMyInfo from './page/mypage/EditMyInfo';
-import MyInfo from './page/mypage/MyInfo';
+import EditMyInfo from './page/MyPage/EditMyInfo';
+import MyInfo from './page/MyPage/MyInfo';
 
 function App() {
   return (
