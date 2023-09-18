@@ -4,8 +4,8 @@ import './App.css';
 import Main from './page/Main/Main';
 import MainLayout from './component/MainLayout';
 import LoginContainer from './page/LoginPage/LoginContainer';
-import EditMyInfo from './page/mypage/EditMyInfo';
-import MyInfo from './page/mypage/MyInfo';
+import EditMyInfo from './page/myPage/EditMyInfo';
+import MyInfo from './page/myPage/MyInfo';
 
 function App() {
   return (
@@ -18,7 +18,7 @@ function App() {
         </Route>
         {/* Header,Footer을 안 보여주고 싶은 컴포넌트 */}
         <Route path="/editmyinfo" element={<EditMyInfo />} />
-        <Route path='/' element={<LoginContainer/> } />
+        <Route path="/" element={<LoginContainer />} />
       </Routes>
     </BrowserRouter>
   );
