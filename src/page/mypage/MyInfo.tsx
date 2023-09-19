@@ -27,7 +27,7 @@ export default function MyInfo() {
 }
 
 const MyPageContainer = styled.div`
-  width: 800px;
+  width: 80%;
   margin: 0 auto;
 `;
 
