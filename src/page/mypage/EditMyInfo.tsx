@@ -1,14 +1,17 @@
 import styled from 'styled-components';
 import { GRAY_COLOR, LIGHT_GRAY_COLOR, LIGHT_ORANGE_COLOR } from '../../color/color';
 import EditForm from './EditForm';
+import EditProfile from './EditProfile';
 
 export default function EditMyInfo() {
   return (
     <InfoContainer>
-      <InfoTitle>개인정보수정</InfoTitle>
+      <InfoTitleDiv>
+        <InfoTitle>개인정보수정</InfoTitle>
+      </InfoTitleDiv>
       <InfoEditContainer>
         <ImgEditContainer>
-          <ImgEdit></ImgEdit>
+          <EditProfile />
           <ExitBtn>탈퇴하기</ExitBtn>
         </ImgEditContainer>
         <MyInfoEditForm>
@@ -25,7 +28,14 @@ export default function EditMyInfo() {
 
 const InfoContainer = styled.div`
   width: 80%;
-  margin: 0 auto;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+`;
+
+const InfoTitleDiv = styled.div`
+  margin-top: 20px;
 `;
 
 const InfoTitle = styled.p`
@@ -51,13 +61,6 @@ const ImgEditContainer = styled.div`
   flex-direction: column;
   align-items: center;
   grid-area: ImgEditContainer;
-`;
-
-const ImgEdit = styled.div`
-  width: 300px;
-  height: 300px;
-  border: 1px solid #000;
-  border-radius: 100%;
 `;
 
 const ExitBtn = styled.button`
