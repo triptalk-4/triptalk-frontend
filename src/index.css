@@ -30,7 +30,6 @@ h6,
 p,
 blockquote,
 pre,
-a,
 abbr,
 acronym,
 address,
@@ -103,6 +102,10 @@ video {
   font-size: 100%;
   vertical-align: baseline;
 }
+a{
+  text-decoration: none;
+}
+
 /* HTML5 display-role reset for older browsers */
 article,
 aside,
