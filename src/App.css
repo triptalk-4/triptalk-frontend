@@ -34,7 +34,7 @@
 
 #root {
   margin: 0 auto;
-  text-align: center;
+  /* text-align: center; */
   max-width: 1200px;
   min-height: 100vh;
   background-color: #fff;
