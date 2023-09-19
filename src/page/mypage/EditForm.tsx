@@ -58,6 +58,7 @@ const MyInfoInput = styled.input`
   border: none;
   border-bottom: 2px solid ${SUPER_LIGHT_ORANGE_COLOR};
   padding: 7px 15px;
+  cursor: pointer;
 
   &::placeholder {
     font-size: 10px;
@@ -85,4 +86,5 @@ const MyInfoSapnWrap = styled.span`
 const MyInfoSpan = styled.span`
   font-size: 10px;
   color: ${GRAY_COLOR};
+  opacity: 0;
 `;
