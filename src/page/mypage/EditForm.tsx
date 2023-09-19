@@ -86,5 +86,4 @@ const MyInfoSapnWrap = styled.span`
 const MyInfoSpan = styled.span`
   font-size: 10px;
   color: ${GRAY_COLOR};
-  opacity: 0;
 `;
