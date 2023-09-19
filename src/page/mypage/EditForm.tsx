@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { MAIN_COLOR, SUPER_LIGHT_ORANGE_COLOR } from '../../color/color';
+import { GRAY_COLOR, MAIN_COLOR, SUPER_LIGHT_ORANGE_COLOR } from '../../color/color';
 
 export default function EditForm() {
   return (
@@ -49,16 +49,18 @@ const MyInfoLabel = styled.label`
   position: absolute;
   left: 15px;
   top: 5px;
+  cursor: pointer;
 `;
 
 const MyInfoInput = styled.input`
   width: 100%;
   outline: none;
   border: none;
-  border-bottom: 1px solid ${SUPER_LIGHT_ORANGE_COLOR};
+  border-bottom: 2px solid ${SUPER_LIGHT_ORANGE_COLOR};
   padding: 7px 15px;
 
   &::placeholder {
+    font-size: 10px;
     opacity: 0;
     transition: opacity 0.2s ease-out;
   }
@@ -69,14 +71,9 @@ const MyInfoInput = styled.input`
   }
 
   &:focus {
-    border-bottom: 1px solid ${MAIN_COLOR};
+    border-bottom: 2px solid ${MAIN_COLOR};
+    transition: border-bottom 0.5s ease-out;
   }
-
-  /* &:focus + ${MyInfoLabel} {
-    top: 15px; 
-    font-size: 12px; 
-    transition: top 0.2s, font-size 0.2s; 
-  } */
 `;
 
 const MyInfoSapnWrap = styled.span`
@@ -87,5 +84,5 @@ const MyInfoSapnWrap = styled.span`
 
 const MyInfoSpan = styled.span`
   font-size: 10px;
-  font-weight: 700;
+  color: ${GRAY_COLOR};
 `;
