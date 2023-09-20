@@ -41,7 +41,9 @@ export default function EditProfile() {
   );
 }
 
-const ProfileImgContainer = styled.form``;
+const ProfileImgContainer = styled.form`
+  position: relative;
+`;
 
 const ProfileImgLabel = styled.label`
   font-size: 13px;
@@ -59,8 +61,8 @@ const EditProfileBtn = styled.button`
   position: absolute;
   width: 50px;
   height: 50px;
-  top: 60%;
-  left: 40%;
+  top: 80%;
+  left: 90%;
   transform: translate(-50%, -50%);
   border: 1px solid ${LIGHT_GRAY_COLOR};
   border-radius: 100%;
@@ -71,7 +73,6 @@ const EditProfileBtn = styled.button`
 `;
 
 const PreviewImage = styled.img`
-  position: relative;
   width: 300px;
   height: 300px;
   border: 1px solid ${LIGHT_GRAY_COLOR};
