@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { GRAY_COLOR, MAIN_COLOR, SUPER_LIGHT_ORANGE_COLOR } from '../../color/color';
+import { GRAY_COLOR, MAIN_COLOR, SUPER_LIGHT_ORANGE_COLOR } from '../../../color/color';
 import { BiEditAlt } from 'react-icons/bi';
 import { useState } from 'react';
 
