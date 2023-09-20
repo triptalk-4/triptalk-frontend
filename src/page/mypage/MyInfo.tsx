@@ -2,8 +2,22 @@ import styled from 'styled-components';
 import { AiOutlineSetting } from 'react-icons/ai';
 import { DEFAULT_FONT_COLOR, GRAY_COLOR } from '../../color/color';
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import MyInfoPost from './MyInfoPost';
+import MyInfoSaved from './MyInfoSaved';
 
 export default function MyInfo() {
+  const [currentTab, setTab] = useState(0);
+
+  const myInfoMenuTabs = [
+    { name: '게시물', content: <MyInfoPost /> },
+    { name: '저장함', content: <MyInfoSaved /> },
+  ];
+
+  const selectMenuHandler = (index: any) => {
+    setTab(index);
+  };
+
   return (
     <MyPageContainer>
       <AvatarImgContainer>
@@ -18,9 +32,16 @@ export default function MyInfo() {
       </AvatarImgContainer>
       <ContentContainer>
         <ContentUl>
-          <ContentItem>게시물</ContentItem>
-          <ContentItem>저장함</ContentItem>
+          {myInfoMenuTabs.map((menu, index) => (
+            <ContentItem
+              key={index}
+              className={currentTab === index ? 'active' : ''}
+              onClick={() => selectMenuHandler(index)}>
+              {menu.name}
+            </ContentItem>
+          ))}
         </ContentUl>
+        {myInfoMenuTabs[currentTab].content}
       </ContentContainer>
     </MyPageContainer>
   );
@@ -89,10 +110,11 @@ const ContentUl = styled.ul`
 const ContentItem = styled.li`
   padding: 20px 0;
   color: ${GRAY_COLOR};
-  font-weight: 700;
+
   cursor: pointer;
 
-  &:hover {
+  &.active {
     color: ${DEFAULT_FONT_COLOR};
+    font-weight: bold;
   }
 `;
