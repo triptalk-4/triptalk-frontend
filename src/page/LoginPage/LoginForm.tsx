@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { MAIN_COLOR } from "../../color/color"
+import { GRAY_COLOR, MAIN_COLOR } from '../../color/color';
 import { Link, useNavigate } from 'react-router-dom';
 import { SetStateAction, useState } from 'react';
 
@@ -10,37 +10,38 @@ interface UserData {
 }
 
 const userData: UserData[] = [
-  {id:1 , email: 'user1@naver.com', password: 'Password123'},
-  {id:2 , email: 'user2@naver.com', password: 'Password456'},
-  {id:3 , email: 'user3@naver.com', password: 'Password789'},
-]
+  { id: 1, email: 'user1@naver.com', password: 'Password123' },
+  { id: 2, email: 'user2@naver.com', password: 'Password456' },
+  { id: 3, email: 'user3@naver.com', password: 'Password789' },
+];
 
 const LoginForm = () => {
-  
-  const naviget = useNavigate()
+  const naviget = useNavigate();
   const [userEmail, setUserEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleEmail = (e: { target: { value: SetStateAction<string>; }; }) => { // 이메일 값 받아오기
-    setUserEmail(e.target.value)
-  }
+  const handleEmail = (e: { target: { value: SetStateAction<string> } }) => {
+    // 이메일 값 받아오기
+    setUserEmail(e.target.value);
+  };
 
-  const handlePw = (e: { target: { value: SetStateAction<string>; }; }) => { // 비밀번호 값 받아오기
-    setPassword(e.target.value)
-  }
+  const handlePw = (e: { target: { value: SetStateAction<string> } }) => {
+    // 비밀번호 값 받아오기
+    setPassword(e.target.value);
+  };
 
-
-  const handleLogin = () => { //로그인 시도
-    const user = userData.find((user) => user.email === userEmail && user.password === password)
-    if(user) {
-      alert('로그인 되었습니다.')
-      setUserEmail('')
-      setPassword('')
-      naviget('/main')
-    } else{
-      alert('유효하지 않은 사용자 정보입니다.')
+  const handleLogin = () => {
+    //로그인 시도
+    const user = userData.find(user => user.email === userEmail && user.password === password);
+    if (user) {
+      alert('로그인 되었습니다.');
+      setUserEmail('');
+      setPassword('');
+      naviget('/main');
+    } else {
+      alert('유효하지 않은 사용자 정보입니다.');
     }
-  }
+  };
 
   return (
     <Container>
@@ -48,13 +49,13 @@ const LoginForm = () => {
       <OrDivider>
         <span>또는</span>
       </OrDivider>
-      <InputEmail type="email" placeholder="이메일" value={userEmail} onChange={handleEmail}/>
+      <InputEmail type="email" placeholder="이메일" value={userEmail} onChange={handleEmail} />
       <br />
-      <InputPw type="password" placeholder="비밀번호" value={password} onChange={handlePw}/>
+      <InputPw type="password" placeholder="비밀번호" value={password} onChange={handlePw} />
       <LoginButton onClick={handleLogin}>로그인</LoginButton>
       <Div>
         <span>아이디 찾기</span>
-        <span>비밀번호 찾기</span>
+        <LineSpan>비밀번호 찾기</LineSpan>
         <Link to="/signup">회원가입</Link>
       </Div>
     </Container>
@@ -87,9 +88,10 @@ const OrDivider = styled.div`
   align-items: center;
   text-align: center;
   margin-bottom: 32px;
+
   &::before,
   &::after {
-    content: "";
+    content: '';
     flex: 1;
     border-top: 1px solid #000;
   }
@@ -110,7 +112,8 @@ const commonInputStyle = css`
   border-radius: 15px;
   padding-left: 21px;
   font-size: 1.2rem;
-  &:focus{
+
+  &:focus {
     outline: none;
     border: 1px solid ${MAIN_COLOR};
   }
@@ -134,15 +137,37 @@ const LoginButton = styled.button`
   border-radius: 15px;
   margin-top: 36px;
   font-size: 1.5rem;
-`
+`;
+
 const Div = styled.div`
   width: 100%;
   margin-top: 8px;
   font-size: 0.9rem;
-  span{
+
+  span {
     margin-right: 10px;
   }
-  a:visited{
-  color: inherit
+
+  a:visited {
+    color: inherit;
   }
-`
+`;
+
+const LineSpan = styled.span`
+  &::before,
+  &::after {
+    content: '';
+    display: inline-block;
+    width: 1px;
+    height: 12px;
+    background-color: ${GRAY_COLOR};
+  }
+
+  &::before {
+    margin-right: 10px;
+  }
+
+  &::after {
+    margin-left: 10px;
+  }
+`;
