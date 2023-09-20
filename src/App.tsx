@@ -4,7 +4,7 @@ import './App.css';
 import Main from './page/Main/Main';
 import MainLayout from './component/MainLayout';
 import LoginContainer from './page/LoginPage/LoginContainer';
-import EditMyInfo from './page/myPage/EditMyInfo';
+import EditMyInfo from './page/myPage/EditInfo/EditMyInfo';
 import MyInfo from './page/myPage/MyInfo';
 import SignupForm from './page/LoginPage/SignupForm';
 
