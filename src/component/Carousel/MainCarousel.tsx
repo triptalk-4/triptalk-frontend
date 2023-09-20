@@ -35,7 +35,7 @@ function MainCarousel() {
       imageUrl: 'public/img/Carousel.png'
     },
     {
-      title: '서울 2박 여행',
+      title: '광주 2박 여행',
       nickname: '리액트',
       schedule: '2023~08.21~2023.08.23',
       imageUrl: 'public/img/Carousel.png'

@@ -56,6 +56,7 @@ const Title = styled.div`
 const SubTitle = styled.p`
   font-size: 1.2rem;
   margin-bottom: 120px;
+  text-align: center;
 `;
 
 const LoginWrap = styled.div`
@@ -64,4 +65,5 @@ const LoginWrap = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  text-align: center;
 `;
