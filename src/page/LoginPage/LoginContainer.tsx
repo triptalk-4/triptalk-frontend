@@ -13,7 +13,7 @@ function Login () {
             <SubTitle>국내의 여행자들을 위한 <br />여행리뷰 커뮤니티</SubTitle>
           </TitleWrap>
           <LoginWrap>
-            <LoginForm />
+            <LoginForm /> {/* 로그인로직 컴포넌트 */}
           </LoginWrap>
         </Container>
     </CenteredContainer>
