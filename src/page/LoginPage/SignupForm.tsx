@@ -1,8 +1,9 @@
+import { useNavigate } from 'react-router';
+
 import styled from 'styled-components';
 import { GRAY_COLOR, MAIN_COLOR, YELLOW_COLOR } from '../../color/color';
 import { ChangeEvent, useState } from 'react';
-import { FaEyeSlash, FaEye } from 'react-icons/fa';
-
+import { FaEyeSlash, FaEye, FaArrowLeft } from 'react-icons/fa';
 
 interface InputState {
   value: string;
@@ -11,6 +12,7 @@ interface InputState {
 }
 
 const SignupForm = () => {
+  const navigator = useNavigate()
 
   // state 가 생성될게 많아서 객체형태로 
   const [email, setEmail] = useState<InputState>({ value: '', valid: false, message: '' })
@@ -88,6 +90,7 @@ const SignupForm = () => {
   return (
     <>
       <Container>
+        <LeftArrow onClick={() => navigator('/') }/>
         <Title>Trip Talk</Title>
         <SubTitle>다양하고 색다른 여행지가 궁금하시면 가입해보세요!</SubTitle>
         <FormWrap>
@@ -98,18 +101,19 @@ const SignupForm = () => {
             {email.valid ? null : <p>{email.message}</p>}
           </FormGroup>
 
+
           <FormGroup>
             <Label>비밀번호</Label>
-            <Input type="password" name='password' value={password.value} onChange={(e) => handleChange(e, validatePassword)} placeholder='비밀번호'/>
+            <ToggleShowButton onClick={() => setShowPassword(!showPassword)}>
+              {showPassword ? <FaEye/> : <FaEyeSlash/>}
+            </ToggleShowButton>
+            <Input  type={showPassword? 'text' : 'password'} name='password' value={password.value} onChange={(e) => handleChange(e, validatePassword)} placeholder='비밀번호'/>
             <p>{password.message}</p>
           </FormGroup>
 
           <FormGroup>
             <Label>비밀번호 확인</Label>
-            <ToggleShowButton onClick={() => setShowPassword(!showPassword)}>
-              {showPassword ? <FaEye/> : <FaEyeSlash/>}
-            </ToggleShowButton>
-            <Input type={showPassword? 'text' : 'password'} name='passwordConfirm' value={passwordConfirm.value} onChange={(e) => handleChange(e, validatePasswordConfirm)} placeholder='비밀번호 확인'/>
+            <Input type='password' name='passwordConfirm' value={passwordConfirm.value} onChange={(e) => handleChange(e, validatePasswordConfirm)} placeholder='비밀번호 확인'/>
             {passwordConfirm.valid ? null : <p>{passwordConfirm.message}</p>}
           </FormGroup>
 
@@ -118,6 +122,13 @@ const SignupForm = () => {
             <Input type="text" name='name' value={name.value} onChange={(e) => handleChange(e, validateName)} placeholder='닉네임'/>
             <p>{name.message}</p>
           </FormGroup>
+
+          <FormGroup>
+            <Label>이메일 인증</Label>
+            <Input type="email" name='email' value={email.value} onChange={(e) => handleChange(e, validateEmail)} placeholder='email 인증번호'/>
+            {email.valid ? null : <p>{email.message}</p>}
+          </FormGroup>
+
           <Button type='submit' className={isFormValid() ? 'active' : ''}>회원가입</Button>
         </FormWrap>
       </Container>
@@ -126,6 +137,15 @@ const SignupForm = () => {
 };
 
 export default SignupForm;
+
+const LeftArrow = styled(FaArrowLeft)`
+  position: absolute;
+  top: 11%;
+  left: 28%;
+  font-size: 30px;
+  color: ${MAIN_COLOR};
+  cursor: pointer;
+`
 
 const Container = styled.div`
   width: 100%;
@@ -153,14 +173,17 @@ const FormWrap = styled.div`
 const Input = styled.input`
   width: 100%;
   padding: 10px;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 2px solid #ccc;
   border-radius: 5px;
   &:focus{
     outline: none;
+    border-bottom: 2px solid ${MAIN_COLOR};
+    transition: border-bottom 0.5s ease-out;
   }
   &::placeholder{
     color: ${GRAY_COLOR};
-    font-size: 14px;
+    font-size: 12px;
+    font-weight: 300;
   }
 `;
 
@@ -182,7 +205,8 @@ const FormGroup = styled.div`
     ${Label}{
       color: #242424;
       top: -3px;
-      font-size: 12px;
+      font-size: 14px;
+      font-weight: 300;
     }
   }
 `;
