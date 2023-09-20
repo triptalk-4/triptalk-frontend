@@ -21,16 +21,16 @@ const LoginForm = () => {
   const [userEmail, setUserEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleEmail = (e: { target: { value: SetStateAction<string>; }; }) => {
+  const handleEmail = (e: { target: { value: SetStateAction<string>; }; }) => { // 이메일 값 받아오기
     setUserEmail(e.target.value)
   }
 
-  const handlePw = (e: { target: { value: SetStateAction<string>; }; }) => {
+  const handlePw = (e: { target: { value: SetStateAction<string>; }; }) => { // 비밀번호 값 받아오기
     setPassword(e.target.value)
   }
 
 
-  const handleLogin = () => {
+  const handleLogin = () => { //로그인 시도
     const user = userData.find((user) => user.email === userEmail && user.password === password)
     if(user) {
       alert('로그인 되었습니다.')
