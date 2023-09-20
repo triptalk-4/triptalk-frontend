@@ -1,27 +1,89 @@
-import { useState } from 'react';
 import styled from 'styled-components';
 import { GRAY_COLOR, MAIN_COLOR, SUPER_LIGHT_ORANGE_COLOR } from '../../color/color';
 import { BiEditAlt } from 'react-icons/bi';
+import { useState } from 'react';
+
+interface EditFormData {
+  email: string;
+  password: string;
+  nickname: string;
+}
+
+interface InputState {
+  value: string;
+  valid: boolean;
+  message: string;
+}
 
 export default function EditForm() {
-  // 초기값 설정
-  const [email, setEmail] = useState('leesh2985@naver.com');
-  const [password, setPassword] = useState('1234');
-  const [nickname, setNickname] = useState('이승현');
+  const defaultValues: EditFormData = {
+    email: 'user1@naver.com',
+    password: 'Password123',
+    nickname: '사조사조',
+  };
 
-  // 수정 상태를 관리하는 상태 변수 추가
-  const [isEditingEmail, setIsEditingEmail] = useState(false);
+  // const [passwordState, setPasswordState] = useState<InputState>({
+  //   value: defaultValues.password,
+  //   valid: true,
+  //   message: '',
+  // });
+
+  const [password, setPassword] = useState(defaultValues.password);
+  const [confirmPassword, setConfirmPassword] = useState(defaultValues.password);
+  const [nickname, setNickname] = useState(defaultValues.nickname);
+
   const [isEditingPassword, setIsEditingPassword] = useState(false);
+  const [isEditingConfirmPassword, setIsEditingConfirmPassword] = useState(false);
   const [isEditingNickname, setIsEditingNickname] = useState(false);
 
-  // 수정 버튼을 누르면 해당 필드를 수정 가능한 상태로 전환
-  const startEditing = (field: string) => {
-    if (field === 'email') {
-      setIsEditingEmail(true);
-    } else if (field === 'password') {
-      setIsEditingPassword(true);
-    } else if (field === 'nickname') {
-      setIsEditingNickname(true);
+  /* 비밀번호 수정 */
+  const handlePasswordEditClick = () => {
+    setIsEditingPassword(!isEditingPassword);
+  };
+
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
+  };
+
+  /* 비밀번호 확인 수정 */
+  const handleConfirmPasswordEditClick = () => {
+    setIsEditingConfirmPassword(!isEditingConfirmPassword);
+  };
+
+  const handleConfirmPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setConfirmPassword(e.target.value);
+  };
+
+  /* 닉네임 수정 */
+  const handleNicknameEditClick = () => {
+    setIsEditingNickname(!isEditingNickname);
+  };
+
+  const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newNickname = e.target.value;
+    const validation = validateName(newNickname);
+
+    setNickname(newNickname); // 입력된 닉네임을 상태에 저장
+    setNicknameState({
+      value: newNickname,
+      valid: validation.valid,
+      message: validation.message,
+    });
+  };
+
+  // 닉네임 유효성 검사 결과를 저장하는 상태
+  const [nicknameState, setNicknameState] = useState<InputState>({
+    value: defaultValues.nickname,
+    valid: true, // 필요에 따라 초기 유효성을 설정할 수 있습니다.
+    message: '',
+  });
+
+  const validateName = (value: string) => {
+    // 닉네임 유효성 검사
+    if (value.length < 2 || value.length > 5) {
+      return { valid: false, message: '닉네임은 2글자 이상 5글자 이하로 입력 부탁드립니다.' };
+    } else {
+      return { valid: true, message: '사용 가능한 닉네임 입니다.' };
     }
   };
 
@@ -29,52 +91,56 @@ export default function EditForm() {
     <MyInfoGrid>
       <MyInfoField>
         <MyInfoLabel htmlFor="email">이메일</MyInfoLabel>
-        <ReadOnlyValue>{email}</ReadOnlyValue>
-        <MyInfoSapnWrap aria-hidden="true">
-          <MyInfoSpan>이메일</MyInfoSpan>
-        </MyInfoSapnWrap>
+        <InputWithButton>
+          <MyInfoInput type="email" id="email" value={defaultValues.email} disabled />
+        </InputWithButton>
       </MyInfoField>
       <MyInfoField>
         <MyInfoLabel htmlFor="password">비밀번호</MyInfoLabel>
-        <EditButton type="button" onClick={() => startEditing('password')}>
-          <BiEditAlt />
-        </EditButton>
-        {isEditingPassword ? (
-          <MyInfoInput type="password" id="password" value={password} onChange={e => setPassword(e.target.value)} />
-        ) : (
-          <ReadOnlyValue>{password}</ReadOnlyValue>
-        )}
-        <MyInfoSapnWrap aria-hidden="true">
-          <MyInfoSpan>비밀번호</MyInfoSpan>
-        </MyInfoSapnWrap>
+        <InputWithButton>
+          <MyInfoInput
+            type="password"
+            id="password"
+            defaultValue={password}
+            onChange={handlePasswordChange}
+            disabled={!isEditingPassword}
+          />
+          <EditButton type="button" onClick={handlePasswordEditClick}>
+            <BiEditAlt />
+          </EditButton>
+        </InputWithButton>
       </MyInfoField>
       <MyInfoField>
         <MyInfoLabel htmlFor="confirm-password">비밀번호확인</MyInfoLabel>
-        <EditButton type="button" onClick={() => startEditing('password')}>
-          <BiEditAlt />
-        </EditButton>
-        {isEditingPassword ? (
-          <MyInfoInput type="password" id="password" value={password} onChange={e => setPassword(e.target.value)} />
-        ) : (
-          <ReadOnlyValue>{password}</ReadOnlyValue>
-        )}
-        <MyInfoSapnWrap aria-hidden="true">
-          <MyInfoSpan>비밀번호확인</MyInfoSpan>
-        </MyInfoSapnWrap>
+        <InputWithButton>
+          <MyInfoInput
+            type="password"
+            id="confirm-password"
+            defaultValue={confirmPassword}
+            onChange={handleConfirmPasswordChange}
+            disabled={!isEditingConfirmPassword}
+          />
+          <EditButton type="button" onClick={handleConfirmPasswordEditClick}>
+            <BiEditAlt />
+          </EditButton>
+        </InputWithButton>
       </MyInfoField>
       <MyInfoField>
         <MyInfoLabel htmlFor="nickname">닉네임</MyInfoLabel>
-        <EditButton type="button" onClick={() => startEditing('nickname')}>
-          <BiEditAlt />
-        </EditButton>
-        {isEditingNickname ? (
-          <MyInfoInput type="text" id="nickname" value={nickname} onChange={e => setNickname(e.target.value)} />
-        ) : (
-          <ReadOnlyValue>{nickname}</ReadOnlyValue>
-        )}
-        <MyInfoSapnWrap aria-hidden="true">
-          <MyInfoSpan>닉네임</MyInfoSpan>
-        </MyInfoSapnWrap>
+        <InputWithButton>
+          <MyInfoInput
+            type="text"
+            id="nickname"
+            defaultValue={nickname}
+            onChange={handleNicknameChange}
+            disabled={!isEditingNickname}
+          />
+          <EditButton type="button" onClick={handleNicknameEditClick}>
+            <BiEditAlt />
+          </EditButton>{' '}
+          {/* 닉네임 유효성 메시지를 표시합니다. */}
+          {!nicknameState.valid && <p style={{ color: 'red' }}>{nicknameState.message}</p>}
+        </InputWithButton>
       </MyInfoField>
     </MyInfoGrid>
   );
@@ -85,15 +151,16 @@ const MyInfoGrid = styled.div`
   row-gap: 50px;
 `;
 
-const MyInfoField = styled.div`
-  position: relative;
-`;
+const MyInfoField = styled.div``;
 
 const MyInfoLabel = styled.label`
-  position: absolute;
-  left: 15px;
-  top: 5px;
-  opacity: 0;
+  font-size: 10px;
+  color: ${GRAY_COLOR};
+  padding-left: 15px;
+`;
+
+const InputWithButton = styled.div`
+  position: relative;
 `;
 
 const MyInfoInput = styled.input`
@@ -102,7 +169,6 @@ const MyInfoInput = styled.input`
   border: none;
   border-bottom: 2px solid ${SUPER_LIGHT_ORANGE_COLOR};
   padding: 7px 15px;
-  cursor: pointer;
 
   &::placeholder {
     font-size: 10px;
@@ -119,29 +185,19 @@ const MyInfoInput = styled.input`
     border-bottom: 2px solid ${MAIN_COLOR};
     transition: border-bottom 0.5s ease-out;
   }
-`;
 
-const MyInfoSapnWrap = styled.span`
-  position: absolute;
-  top: -15px;
-  left: 15px;
-`;
-
-const MyInfoSpan = styled.span`
-  font-size: 10px;
-  color: ${GRAY_COLOR};
+  &:disabled {
+    background-color: #f2f2f2;
+  }
 `;
 
 const EditButton = styled.button`
-  position: absolute;
-  right: 15px;
-  top: 5px;
   cursor: pointer;
   border: none;
   background-color: transparent;
   font-size: 25px;
-`;
-const ReadOnlyValue = styled.div`
-  border-bottom: 2px solid ${SUPER_LIGHT_ORANGE_COLOR};
-  padding: 5px 15px;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
 `;

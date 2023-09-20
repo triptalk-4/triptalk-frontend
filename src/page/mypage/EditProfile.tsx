@@ -11,7 +11,7 @@ export default function EditProfile() {
 
   const imgRef = useRef<HTMLInputElement | null>(null); // 초기에는 아무것도 가르키고 있지 않음
 
-  const OnClickImgUpload = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = (e: ChangeEvent<HTMLInputElement>) => {
     // 선택한 이미지 보기
     const file = e.target.files?.[0]; // 선택한 파일
     if (file) {
@@ -23,7 +23,7 @@ export default function EditProfile() {
     }
   };
 
-  const OnClickInputImg = () => {
+  const handleInputImageClick = () => {
     // 사용자가 선택한 파일 업로드가 나타남
     imgRef.current?.click();
   };
@@ -31,8 +31,8 @@ export default function EditProfile() {
   return (
     <ProfileImgContainer>
       <ProfileImgLabel htmlFor="profileImg">
-        <ProfileImgInput type="file" accept="image/*" id="profileImg" onChange={OnClickImgUpload} ref={imgRef} />
-        <EditProfileBtn type="button" onClick={OnClickInputImg}>
+        <ProfileImgInput type="file" accept="image/*" id="profileImg" onChange={handleImageUpload} ref={imgRef} />
+        <EditProfileBtn type="button" onClick={handleInputImageClick}>
           <LuSettings />
         </EditProfileBtn>
       </ProfileImgLabel>
