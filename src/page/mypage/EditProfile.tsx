@@ -32,7 +32,7 @@ export default function EditProfile() {
     <ProfileImgContainer>
       <ProfileImgLabel htmlFor="profileImg">
         <ProfileImgInput type="file" accept="image/*" id="profileImg" onChange={OnClickImgUpload} ref={imgRef} />
-        <EditProfileBtn onClick={OnClickInputImg}>
+        <EditProfileBtn type="button" onClick={OnClickInputImg}>
           <LuSettings />
         </EditProfileBtn>
       </ProfileImgLabel>

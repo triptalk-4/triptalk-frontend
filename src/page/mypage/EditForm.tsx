@@ -36,7 +36,7 @@ export default function EditForm() {
       </MyInfoField>
       <MyInfoField>
         <MyInfoLabel htmlFor="password">비밀번호</MyInfoLabel>
-        <EditButton onClick={() => startEditing('password')}>
+        <EditButton type="button" onClick={() => startEditing('password')}>
           <BiEditAlt />
         </EditButton>
         {isEditingPassword ? (
@@ -50,7 +50,7 @@ export default function EditForm() {
       </MyInfoField>
       <MyInfoField>
         <MyInfoLabel htmlFor="confirm-password">비밀번호확인</MyInfoLabel>
-        <EditButton onClick={() => startEditing('password')}>
+        <EditButton type="button" onClick={() => startEditing('password')}>
           <BiEditAlt />
         </EditButton>
         {isEditingPassword ? (
@@ -64,7 +64,7 @@ export default function EditForm() {
       </MyInfoField>
       <MyInfoField>
         <MyInfoLabel htmlFor="nickname">닉네임</MyInfoLabel>
-        <EditButton onClick={() => startEditing('nickname')}>
+        <EditButton type="button" onClick={() => startEditing('nickname')}>
           <BiEditAlt />
         </EditButton>
         {isEditingNickname ? (
