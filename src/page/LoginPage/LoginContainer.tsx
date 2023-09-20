@@ -5,7 +5,6 @@ import LoginForm from './LoginForm';
 function Login() {
   return (
     <CenteredContainer>
-<<<<<<< HEAD
       <Container>
         <TitleWrap>
           <Title>Trip Talk</Title>
@@ -15,22 +14,9 @@ function Login() {
           </SubTitle>
         </TitleWrap>
         <LoginWrap>
-          <LoginForm />
+          <LoginForm /> {/* 로그인로직 컴포넌트 */}
         </LoginWrap>
       </Container>
-=======
-        <Container>
-          <TitleWrap>
-            <Title>
-              Trip Talk  
-            </Title>
-            <SubTitle>국내의 여행자들을 위한 <br />여행리뷰 커뮤니티</SubTitle>
-          </TitleWrap>
-          <LoginWrap>
-            <LoginForm /> {/* 로그인로직 컴포넌트 */}
-          </LoginWrap>
-        </Container>
->>>>>>> 8ab8a9dc7eb28adb646b336a02b40dc1f3bea907
     </CenteredContainer>
   );
 }
@@ -70,12 +56,7 @@ const Title = styled.div`
 const SubTitle = styled.p`
   font-size: 1.2rem;
   margin-bottom: 120px;
-<<<<<<< HEAD
 `;
-=======
-  text-align: center;
-`
->>>>>>> 8ab8a9dc7eb28adb646b336a02b40dc1f3bea907
 
 const LoginWrap = styled.div`
   width: 50%;
@@ -83,10 +64,4 @@ const LoginWrap = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-<<<<<<< HEAD
 `;
-=======
-  text-align: center;
-`
-
->>>>>>> 8ab8a9dc7eb28adb646b336a02b40dc1f3bea907
