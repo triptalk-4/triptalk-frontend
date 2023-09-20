@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 import { useNavigate } from 'react-router-dom';
-import { GRAY_COLOR, LIGHT_GRAY_COLOR, LIGHT_ORANGE_COLOR } from '../../color/color';
+import { GRAY_COLOR, LIGHT_GRAY_COLOR, LIGHT_ORANGE_COLOR } from '../../../color/color';
 import EditForm from './EditForm';
 import EditProfile from './EditProfile';
 
@@ -20,9 +20,11 @@ export default function EditMyInfo() {
           <EditProfile />
           <ExitBtn>탈퇴하기</ExitBtn>
         </ImgEditContainer>
+
         <MyInfoEditForm>
           <EditForm />
         </MyInfoEditForm>
+
         <MyInfoBtnSetting>
           <EditBtn type="submit">수정하기</EditBtn>
           <CancellBtn onClick={handleBackButtonClick}>취소</CancellBtn>
@@ -52,16 +54,17 @@ const InfoEditContainer = styled.div`
   grid-template-rows: 1fr 55px;
   padding-top: 50px;
   column-gap: 100px;
-  row-gap: 50px;
+  row-gap: 30px;
   grid-template-areas:
     'ImgEditContainer MyInfoEditForm'
-    'ImgEditContainer MyInfoBtnSetting';
+    'MyInfoBtnSetting MyInfoBtnSetting';
 `;
 
 const ImgEditContainer = styled.div`
   display: flex;
-  flex-direction: column;
   align-items: center;
+  justify-content: center;
+  flex-direction: column;
   grid-area: ImgEditContainer;
 `;
 
