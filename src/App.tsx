@@ -6,6 +6,7 @@ import MainLayout from './component/MainLayout';
 import LoginContainer from './page/LoginPage/LoginContainer';
 import EditMyInfo from './page/myPage/EditMyInfo';
 import MyInfo from './page/myPage/MyInfo';
+import SignupForm from './page/LoginPage/SignupForm';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         {/* Header,Footer을 안 보여주고 싶은 컴포넌트 */}
         <Route path="/editmyinfo" element={<EditMyInfo />} />
         <Route path="/" element={<LoginContainer />} />
+        <Route path="/signup" element={<SignupForm />} />
       </Routes>
     </BrowserRouter>
   );

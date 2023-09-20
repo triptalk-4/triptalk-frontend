@@ -1,22 +1,51 @@
 import styled from 'styled-components';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { GRAY_COLOR, LIGHT_GRAY_COLOR, LIGHT_ORANGE_COLOR } from '../../color/color';
 import EditForm from './EditForm';
+import EditProfile from './EditProfile';
 
 export default function EditMyInfo() {
+  // 초기값 설정
+  const [email, setEmail] = useState('leesh2985@naver.com');
+  const [password, setPassword] = useState('1234');
+  const [nickname, setNickname] = useState('이승현');
+
+  const navigate = useNavigate();
+
+  // 수정 상태를 관리하는 상태 변수 추가
+  const [isEditing, setIsEditing] = useState(false);
+
+  // 저장 버튼을 누르면 수정 상태를 해제하고 값을 업데이트
+  const saveChanges = () => {
+    setIsEditing(false);
+    // 각 필드에 대한 값을 업데이트
+    // 여기에서는 콘솔에 값을 출력하도록 했습니다.
+    console.log('이메일:', email);
+    console.log('비밀번호:', password);
+    console.log('닉네임:', nickname);
+  };
+
+  const OnClickBackPage = () => {
+    navigate('/myinfo'); // 이전 페이지로 이동
+  };
+
   return (
     <InfoContainer>
       <InfoTitle>개인정보수정</InfoTitle>
       <InfoEditContainer>
         <ImgEditContainer>
-          <ImgEdit></ImgEdit>
+          <EditProfile />
           <ExitBtn>탈퇴하기</ExitBtn>
         </ImgEditContainer>
         <MyInfoEditForm>
           <EditForm />
         </MyInfoEditForm>
         <MyInfoBtnSetting>
-          <EditBtn type="submit">수정하기</EditBtn>
-          <CancellBtn>취소</CancellBtn>
+          <EditBtn type="submit" onClick={saveChanges}>
+            수정하기
+          </EditBtn>
+          <CancellBtn onClick={OnClickBackPage}>취소</CancellBtn>
         </MyInfoBtnSetting>
       </InfoEditContainer>
     </InfoContainer>
@@ -26,12 +55,15 @@ export default function EditMyInfo() {
 const InfoContainer = styled.div`
   width: 80%;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100vh;
 `;
 
 const InfoTitle = styled.p`
   font-size: 50px;
   font-weight: 700;
-  text-align: left;
 `;
 
 const InfoEditContainer = styled.div`
@@ -51,13 +83,6 @@ const ImgEditContainer = styled.div`
   flex-direction: column;
   align-items: center;
   grid-area: ImgEditContainer;
-`;
-
-const ImgEdit = styled.div`
-  width: 300px;
-  height: 300px;
-  border: 1px solid #000;
-  border-radius: 100%;
 `;
 
 const ExitBtn = styled.button`

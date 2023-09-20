@@ -1,20 +1,21 @@
 import styled from 'styled-components';
 import Search from './Search';
 import { MAIN_COLOR } from '../color/color';
+import { Link } from 'react-router-dom';
 
 export default function Header() {
   return (
     <GnbContainer>
       <Gnb>
-        <Logo>
+        <Logo to="/main">
           <LogoImg src="/img/logo.png" alt="로고" />
         </Logo>
-        <Avatar></Avatar>
+        <Avatar to="/myinfo"></Avatar>
       </Gnb>
       <Nav>
         <NavItem>홈</NavItem>
         <NavItem>여행지</NavItem>
-        <NavItem>리뷰맵</NavItem>
+        <NavItem>일정</NavItem>
         <NavItem>
           <Search />
         </NavItem>
@@ -38,7 +39,7 @@ const Gnb = styled.div`
   border-bottom: 1px solid #c1c1c1;
 `;
 
-const Logo = styled.div`
+const Logo = styled(Link)`
   display: flex;
   align-items: center;
   padding-right: 400px;
@@ -50,11 +51,12 @@ const LogoImg = styled.img`
   height: auto;
 `;
 
-const Avatar = styled.div`
+const Avatar = styled(Link)`
   width: 50px;
   height: 50px;
   border: 1px solid #000;
   border-radius: 100%;
+  cursor: pointer;
 `;
 
 const Nav = styled.ul`

@@ -33,6 +33,9 @@ const MyPageContainer = styled.div`
 
 const AvatarImgContainer = styled.div`
   margin-top: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const AvatarImg = styled.div`
@@ -70,7 +73,6 @@ const AvatarLogoutBtn = styled.button`
   background-color: transparent;
   text-decoration: underline;
   padding-bottom: 40px;
-
   cursor: pointer;
 `;
 
