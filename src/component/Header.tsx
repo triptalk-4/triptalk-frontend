@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import Search from './Search';
-import { MAIN_COLOR } from '../color/color';
+import { DEFAULT_FONT_COLOR, MAIN_COLOR } from '../color/color';
 import { Link } from 'react-router-dom';
 
 export default function Header() {
@@ -13,10 +13,11 @@ export default function Header() {
         <Avatar to="/myinfo"></Avatar>
       </Gnb>
       <Nav>
-        <NavItem>홈</NavItem>
-        <NavItem>여행지</NavItem>
-        <NavItem>일정</NavItem>
-        <NavItem>
+        <NavItem to="/main">홈</NavItem>
+        <NavItem to="/main">여행지</NavItem>
+        <NavItem to="/main">일정</NavItem>
+        <NavItem to="/lookmap">리뷰맵</NavItem>
+        <NavItem to="/">
           <Search />
         </NavItem>
       </Nav>
@@ -67,8 +68,9 @@ const Nav = styled.ul`
   padding: 15px 55px;
 `;
 
-const NavItem = styled.li`
+const NavItem = styled(Link)`
   font-size: 23px;
+  color: ${DEFAULT_FONT_COLOR};
   cursor: pointer;
 
   &:hover {
