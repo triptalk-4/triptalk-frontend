@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { GRAY_COLOR, MAIN_COLOR, SUPER_LIGHT_ORANGE_COLOR } from '../../../color/color';
+import { MAIN_COLOR, SUPER_LIGHT_ORANGE_COLOR } from '../../../color/color';
 import { BiEditAlt } from 'react-icons/bi';
 import { useState } from 'react';
 
@@ -21,38 +21,109 @@ export default function EditForm() {
     password: 'Password123',
     nickname: '사조사조',
   };
+  ///////////////////////현재비밀번호////////////////////
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [currentPasswordState, setCurrentPasswordState] = useState<InputState>({
+    value: '',
+    valid: true,
+    message: '',
+  });
 
-  // const [passwordState, setPasswordState] = useState<InputState>({
-  //   value: defaultValues.password,
-  //   valid: true,
-  //   message: '',
-  // });
+  const validateCurrentPassword = (value: string) => {
+    // 기존 비밀번호와 비교하여 일치 여부 확인
+    if (value === defaultValues.password) {
+      setCurrentPasswordState({
+        value,
+        valid: true,
+        message: '현재 비밀번호가 일치합니다.',
+      });
+    } else {
+      setCurrentPasswordState({
+        value,
+        valid: false,
+        message: '현재 비밀번호가 일치하지 않습니다.',
+      });
+    }
+  };
 
-  const [password, setPassword] = useState(defaultValues.password);
-  const [confirmPassword, setConfirmPassword] = useState(defaultValues.password);
+  const handleCurrentPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const currentPasswordValue = e.target.value;
+    setCurrentPassword(currentPasswordValue);
+    validateCurrentPassword(currentPasswordValue);
+  };
+
+  ///////////////////////새비밀번호////////////////////
+  const [newPassword, setNewPassword] = useState('');
+  const [newPasswordState, setNewPasswordState] = useState<InputState>({
+    value: '',
+    valid: true,
+    message: '',
+  });
+
+  const validateNewPassword = (value: string) => {
+    // 비밀번호 유효성 검사
+    const regex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+    if (regex.test(value)) {
+      setNewPasswordState({
+        value,
+        valid: true,
+        message: '유효한 비밀번호입니다.',
+      });
+    } else {
+      setNewPasswordState({
+        value,
+        valid: false,
+        message: '비밀번호는 8자리 이상, 영문자, 숫자, 특수문자를 포함해야 합니다.',
+      });
+    }
+  };
+
+  const handleNewPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newPasswordValue = e.target.value;
+    setNewPassword(newPasswordValue);
+    validateNewPassword(newPasswordValue);
+  };
+
+  ///////////////////////새비밀번호확인////////////////////
+  const [confirmNewPassword, setConfirmNewPassword] = useState('');
+  const [confirmNewPasswordState, setConfirmNewPasswordState] = useState<InputState>({
+    value: '',
+    valid: true,
+    message: '',
+  });
+
+  const validateConfirmNewPassword = (value: string) => {
+    if (value === newPassword) {
+      setConfirmNewPasswordState({
+        value,
+        valid: true,
+        message: '새비밀번호와 일치합니다.',
+      });
+    } else {
+      setConfirmNewPasswordState({
+        value,
+        valid: false,
+        message: '새비밀번호와 일치하지 않습니다.',
+      });
+    }
+  };
+
+  const handleConfirmNewPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const confirmNewPasswordValue = e.target.value;
+    setConfirmNewPassword(confirmNewPasswordValue);
+    validateConfirmNewPassword(confirmNewPasswordValue);
+  };
+
+  ///////////////////////닉네임////////////////////
   const [nickname, setNickname] = useState(defaultValues.nickname);
-
-  const [isEditingPassword, setIsEditingPassword] = useState(false);
-  const [isEditingConfirmPassword, setIsEditingConfirmPassword] = useState(false);
   const [isEditingNickname, setIsEditingNickname] = useState(false);
 
-  /* 비밀번호 수정 */
-  const handlePasswordEditClick = () => {
-    setIsEditingPassword(!isEditingPassword);
-  };
-
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
-  };
-
-  /* 비밀번호 확인 수정 */
-  const handleConfirmPasswordEditClick = () => {
-    setIsEditingConfirmPassword(!isEditingConfirmPassword);
-  };
-
-  const handleConfirmPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setConfirmPassword(e.target.value);
-  };
+  const [nicknameState, setNicknameState] = useState<InputState>({
+    value: defaultValues.nickname,
+    valid: true,
+    message: '',
+  });
 
   /* 닉네임 수정 */
   const handleNicknameEditClick = () => {
@@ -61,27 +132,20 @@ export default function EditForm() {
 
   const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newNickname = e.target.value;
-    const validation = validateName(newNickname);
+    const validationNickname = validateName(newNickname);
 
     setNickname(newNickname); // 입력된 닉네임을 상태에 저장
     setNicknameState({
       value: newNickname,
-      valid: validation.valid,
-      message: validation.message,
+      valid: validationNickname.valid,
+      message: validationNickname.message,
     });
   };
-
-  // 닉네임 유효성 검사 결과를 저장하는 상태
-  const [nicknameState, setNicknameState] = useState<InputState>({
-    value: defaultValues.nickname,
-    valid: true, // 필요에 따라 초기 유효성을 설정할 수 있습니다.
-    message: '',
-  });
 
   const validateName = (value: string) => {
     // 닉네임 유효성 검사
     if (value.length < 2 || value.length > 5) {
-      return { valid: false, message: '닉네임은 2글자 이상 5글자 이하로 입력 부탁드립니다.' };
+      return { valid: false, message: '닉네임은 2글자이상 5글자이하로 입력해야 합니다.' };
     } else {
       return { valid: true, message: '사용 가능한 닉네임 입니다.' };
     }
@@ -95,36 +159,58 @@ export default function EditForm() {
           <MyInfoInput type="email" id="email" value={defaultValues.email} disabled />
         </InputWithButton>
       </MyInfoField>
+
       <MyInfoField>
-        <MyInfoLabel htmlFor="password">비밀번호</MyInfoLabel>
+        <MyInfoLabel htmlFor="current-password">현재비밀번호</MyInfoLabel>
         <InputWithButton>
           <MyInfoInput
             type="password"
-            id="password"
-            defaultValue={password}
-            onChange={handlePasswordChange}
-            disabled={!isEditingPassword}
+            id="current-password"
+            placeholder="현재비밀번호를 입력해주세요."
+            value={currentPassword}
+            onChange={handleCurrentPasswordChange}
           />
-          <EditButton type="button" onClick={handlePasswordEditClick}>
-            <BiEditAlt />
-          </EditButton>
+          {/* 현재 비밀번호 유효성 메시지를 표시합니다. */}
+          {!currentPasswordState.valid && (
+            <p style={{ color: 'red', paddingLeft: '15px', fontSize: '13px' }}>{currentPasswordState.message}</p>
+          )}
         </InputWithButton>
       </MyInfoField>
+
       <MyInfoField>
-        <MyInfoLabel htmlFor="confirm-password">비밀번호확인</MyInfoLabel>
+        <MyInfoLabel htmlFor="new-password">새비밀번호</MyInfoLabel>
         <InputWithButton>
           <MyInfoInput
             type="password"
-            id="confirm-password"
-            defaultValue={confirmPassword}
-            onChange={handleConfirmPasswordChange}
-            disabled={!isEditingConfirmPassword}
+            id="new-password"
+            placeholder="비밀번호 8자리이상(영문자+숫자+특수문자)"
+            value={newPassword}
+            onChange={handleNewPasswordChange}
           />
-          <EditButton type="button" onClick={handleConfirmPasswordEditClick}>
-            <BiEditAlt />
-          </EditButton>
+          {/* 새비밀번호 유효성 메시지를 표시합니다. */}
+          {!newPasswordState.valid && (
+            <p style={{ color: 'red', paddingLeft: '15px', fontSize: '13px' }}>{newPasswordState.message}</p>
+          )}
         </InputWithButton>
       </MyInfoField>
+
+      <MyInfoField>
+        <MyInfoLabel htmlFor="confirm-new-password">새비밀번호확인</MyInfoLabel>
+        <InputWithButton>
+          <MyInfoInput
+            type="password"
+            id="confirm-new-password"
+            placeholder="비밀번호 8자리이상(영문자+숫자+특수문자)"
+            value={confirmNewPassword}
+            onChange={handleConfirmNewPasswordChange}
+          />
+          {/* 새비밀번호 확인 유효성 메시지를 표시합니다. */}
+          {!confirmNewPasswordState.valid && (
+            <p style={{ color: 'red', paddingLeft: '15px', fontSize: '13px' }}>{confirmNewPasswordState.message}</p>
+          )}
+        </InputWithButton>
+      </MyInfoField>
+
       <MyInfoField>
         <MyInfoLabel htmlFor="nickname">닉네임</MyInfoLabel>
         <InputWithButton>
@@ -139,7 +225,9 @@ export default function EditForm() {
             <BiEditAlt />
           </EditButton>{' '}
           {/* 닉네임 유효성 메시지를 표시합니다. */}
-          {!nicknameState.valid && <p style={{ color: 'red' }}>{nicknameState.message}</p>}
+          {!nicknameState.valid && (
+            <p style={{ color: 'red', paddingLeft: '15px', fontSize: '13px' }}>{nicknameState.message}</p>
+          )}
         </InputWithButton>
       </MyInfoField>
     </MyInfoGrid>
@@ -148,15 +236,17 @@ export default function EditForm() {
 
 const MyInfoGrid = styled.div`
   display: grid;
-  row-gap: 50px;
+  row-gap: 10px;
 `;
 
-const MyInfoField = styled.div``;
+const MyInfoField = styled.div`
+  height: 82px;
+`;
 
 const MyInfoLabel = styled.label`
-  font-size: 10px;
-  color: ${GRAY_COLOR};
+  font-size: 16px;
   padding-left: 15px;
+  font-weight: bold;
 `;
 
 const InputWithButton = styled.div`
@@ -169,12 +259,6 @@ const MyInfoInput = styled.input`
   border: none;
   border-bottom: 2px solid ${SUPER_LIGHT_ORANGE_COLOR};
   padding: 7px 15px;
-
-  &::placeholder {
-    font-size: 10px;
-    opacity: 0;
-    transition: opacity 0.2s ease-out;
-  }
 
   &:focus::placeholder {
     opacity: 1;
