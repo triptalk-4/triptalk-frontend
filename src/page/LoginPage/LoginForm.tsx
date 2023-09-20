@@ -112,6 +112,7 @@ const commonInputStyle = css`
   font-size: 1.2rem;
   &:focus{
     outline: none;
+    border: 1px solid ${MAIN_COLOR};
   }
 `;
 
