@@ -1,12 +1,13 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css';
 
-import Main from './page/Main/Main';
+import Main from './page/MainPage/Main';
 import MainLayout from './component/MainLayout';
 import LoginContainer from './page/LoginPage/LoginContainer';
 import EditMyInfo from './page/myPage/EditMyInfo';
 import MyInfo from './page/myPage/MyInfo';
 import SignupForm from './page/LoginPage/SignupForm';
+import Schedule from './page/SchedulePage/Schedule';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/editmyinfo" element={<EditMyInfo />} />
         <Route path="/" element={<LoginContainer />} />
         <Route path="/signup" element={<SignupForm />} />
+        <Route path="/schedule" element={<Schedule />} />
       </Routes>
     </BrowserRouter>
   );
