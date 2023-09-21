@@ -1,7 +1,14 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-const postdata = [
+interface PostItem {
+  imgSrc: string;
+  title: string;
+  schedule: string;
+  date: string;
+}
+
+const postdata: PostItem[] = [
   {
     imgSrc: 'img/postimg1.jpg',
     title: '궁궐 달빛기행',
@@ -42,25 +49,91 @@ const postdata = [
     imgSrc: 'img/postimg3.jpg',
     title: '경복궁 달빛기행',
     schedule: '23.09.07~23.09.10',
-    date: '23.09.13',
+    date: '23.09.17',
   },
   {
     imgSrc: 'img/postimg2.jpg',
     title: '창덕궁 달빛기행',
     schedule: '23.09.07~23.09.10',
-    date: '23.09.12',
-  },
-  {
-    imgSrc: 'img/postimg5.jpg',
-    title: '경희궁 달빛기행',
-    schedule: '23.09.07~23.09.10',
-    date: '23.09.15',
+    date: '23.09.18',
   },
   {
     imgSrc: 'img/postimg1.jpg',
     title: '궁궐 달빛기행',
     schedule: '23.09.07~23.09.10',
-    date: '23.09.11',
+    date: '23.09.19',
+  },
+  {
+    imgSrc: 'img/postimg2.jpg',
+    title: '창덕궁 달빛기행',
+    schedule: '23.09.07~23.09.10',
+    date: '23.09.20',
+  },
+  {
+    imgSrc: 'img/postimg5.jpg',
+    title: '경희궁 달빛기행',
+    schedule: '23.09.07~23.09.10',
+    date: '23.09.21',
+  },
+  {
+    imgSrc: 'img/postimg1.jpg',
+    title: '궁궐 달빛기행',
+    schedule: '23.09.07~23.09.10',
+    date: '23.09.22',
+  },
+  {
+    imgSrc: 'img/postimg2.jpg',
+    title: '창덕궁 달빛기행',
+    schedule: '23.09.07~23.09.10',
+    date: '23.09.23',
+  },
+  {
+    imgSrc: 'img/postimg3.jpg',
+    title: '경복궁 달빛기행',
+    schedule: '23.09.07~23.09.10',
+    date: '23.09.24',
+  },
+  {
+    imgSrc: 'img/postimg4.jpg',
+    title: '창경궁 달빛기행',
+    schedule: '23.09.07~23.09.10',
+    date: '23.09.25',
+  },
+  {
+    imgSrc: 'img/postimg5.jpg',
+    title: '경희궁 달빛기행',
+    schedule: '23.09.07~23.09.10',
+    date: '23.09.26',
+  },
+  {
+    imgSrc: 'img/postimg6.jpg',
+    title: '덕수궁 달빛기행',
+    schedule: '23.09.07~23.09.10',
+    date: '23.09.27',
+  },
+  {
+    imgSrc: 'img/postimg1.jpg',
+    title: '궁궐 달빛기행',
+    schedule: '23.09.07~23.09.10',
+    date: '23.09.28',
+  },
+  {
+    imgSrc: 'img/postimg4.jpg',
+    title: '창경궁 달빛기행',
+    schedule: '23.09.07~23.09.10',
+    date: '23.09.29',
+  },
+  {
+    imgSrc: 'img/postimg5.jpg',
+    title: '경희궁 달빛기행',
+    schedule: '23.09.07~23.09.10',
+    date: '23.09.30',
+  },
+  {
+    imgSrc: 'img/postimg6.jpg',
+    title: '덕수궁 달빛기행',
+    schedule: '23.09.07~23.09.10',
+    date: '23.09.31',
   },
 ];
 
@@ -68,6 +141,7 @@ export default function MyInfoPost() {
   const [containerClassName, setContainerClassName] = useState('flex-start');
 
   useEffect(() => {
+    // 게시물 갯수에 따라 스타일 변경
     if (postdata.length <= 2) {
       setContainerClassName('flex-start');
     } else {
@@ -129,6 +203,7 @@ const Box = styled.div`
   position: relative;
   width: 100%;
   height: auto;
+  cursor: pointer;
 `;
 
 const ImgDiv = styled.div`
