@@ -9,6 +9,7 @@ import MyInfo from './page/myPage/MyInfo';
 import SignupForm from './page/LoginPage/SignupForm';
 import LookMap from './page/reviewMap/LookMap';
 import Schedule from './page/SchedulePage/Schedule';
+import SearchPage from './page/SearchPage';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route path="/" element={<LoginContainer />} />
         <Route path="/signup" element={<SignupForm />} />
         <Route path="/schedule" element={<Schedule />} />
+        <Route path="/search" element={<SearchPage />} /> 
       </Routes>
     </BrowserRouter>
   );
