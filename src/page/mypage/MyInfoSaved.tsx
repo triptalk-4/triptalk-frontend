@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 const postdata = [
@@ -13,17 +14,21 @@ const postdata = [
     schedule: '23.09.07~23.09.10',
     date: '23.09.11',
   },
-  {
-    imgSrc: 'img/postimg2.jpg',
-    title: '창덕궁 달빛기행',
-    schedule: '23.09.07~23.09.10',
-    date: '23.09.12',
-  },
 ];
 
 export default function MyInfoSaved() {
+  const [containerClassName, setContainerClassName] = useState('flex-start');
+
+  useEffect(() => {
+    if (postdata.length <= 2) {
+      setContainerClassName('flex-start');
+    } else {
+      setContainerClassName('space-between');
+    }
+  }, [postdata]);
+
   return (
-    <PostContainer>
+    <PostContainer className={containerClassName}>
       {postdata.map((item, index) => (
         <BoxWrap key={index}>
           <Box>
@@ -48,6 +53,14 @@ const PostContainer = styled.div`
   justify-content: space-between;
   height: auto;
   margin-bottom: 20px;
+
+  &.flex-start {
+    justify-content: flex-start;
+  }
+
+  &.space-between {
+    justify-content: space-between;
+  }
 `;
 
 const BoxWrap = styled.div`
