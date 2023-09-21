@@ -32,9 +32,10 @@ const CenteredContainer = styled.div`
 `;
 
 const Container = styled.div`
-  width: 100%;
+  width: 90%;
   height: 559px;
   display: flex;
+  user-select: none;
 `;
 
 const TitleWrap = styled.div`
@@ -45,7 +46,7 @@ const TitleWrap = styled.div`
 `;
 const Title = styled.div`
   color: ${MAIN_COLOR};
-  font-size: 10rem;
+  font-size: 9rem;
   font-weight: bold;
   word-spacing: -50px;
   margin-top: 100px;
