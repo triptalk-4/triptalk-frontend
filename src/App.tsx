@@ -8,6 +8,7 @@ import EditMyInfo from './page/myPage/EditInfo/EditMyInfo';
 import MyInfo from './page/myPage/MyInfo';
 import SignupForm from './page/LoginPage/SignupForm';
 import LookMap from './page/reviewMap/LookMap';
+import Schedule from './page/SchedulePage/Schedule';
 
 function App() {
   return (
