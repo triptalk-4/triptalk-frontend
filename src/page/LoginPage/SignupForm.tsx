@@ -12,37 +12,44 @@ interface InputState {
 }
 
 const SignupForm = () => {
-  const navigator = useNavigate()
+  const navigator = useNavigate();
 
-  // state 가 생성될게 많아서 객체형태로 
-  const [email, setEmail] = useState<InputState>({ value: '', valid: false, message: '' })
-  const [password, setPassword] = useState<InputState>({ value: '', valid: false, message: '' })
-  const [passwordConfirm, setPasswordConfirm] = useState<InputState>({ value: '', valid: false, message: '' })
-  const [name, setName] = useState<InputState>({ value: '', valid: false, message: '' })
+  // state 가 생성될게 많아서 객체형태로
+  const [email, setEmail] = useState<InputState>({ value: '', valid: false, message: '' });
+  const [password, setPassword] = useState<InputState>({ value: '', valid: false, message: '' });
+  const [passwordConfirm, setPasswordConfirm] = useState<InputState>({ value: '', valid: false, message: '' });
+  const [name, setName] = useState<InputState>({ value: '', valid: false, message: '' });
 
-  const [showPassword, setShowPassword] = useState(false); 
+  const [showPassword, setShowPassword] = useState(false);
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>, validator: (value: string) => {valid: boolean; message: string}) => {
-    const {name, value} = e.target
-    const {valid, message} = validator(value)
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement>,
+    validator: (value: string) => { valid: boolean; message: string }
+  ) => {
+    const { name, value } = e.target; // name 변수에 input name을 타겟, value 변수에 input value 타겟 
+    const { valid, message } = validator(value); // 위에서 타겟된 input value 인자로 넣음
 
-    switch(name) { //handleChange 콜백함수로 스위치 문으로 받아 state값에 담기
+    let updatedValue = {value, valid, message} // 입력 값을 포함한 객체 생성
+
+    switch (
+      name // 내가 선택한 인풋창의 타겟하여 name 가져옴 input name이 email일 경우 case 'email'에서 멈춰서 setEmail()을 함
+    ) {
       case 'email':
-        setEmail({ value, valid, message });
+        setEmail(updatedValue);
         break;
       case 'password':
-        setPassword({ value, valid, message });
+        setPassword(updatedValue);
         break;
       case 'passwordConfirm':
-        setPasswordConfirm({ value, valid, message });
+        setPasswordConfirm(updatedValue);
         break;
       case 'name':
-        setName({ value, valid, message });
+        setName(updatedValue);
         break;
       default:
         break;
     }
-  }
+  };
 
   const validateEmail = (value: string) => {
     // 이메일 유효성 검사
@@ -84,52 +91,82 @@ const SignupForm = () => {
 
   const isFormValid = () => {
     // 모든 유효성검사 ture 시 return 반환 하여 버튼 활성화
-    return email.valid && password.valid && passwordConfirm.valid && name.valid
-  }
+    return email.valid && password.valid && passwordConfirm.valid && name.valid;
+  };
 
   return (
     <>
       <Container>
-        <LeftArrow onClick={() => navigator('/') }/>
+        <LeftArrow onClick={() => navigator('/')} />
         <Title>Trip Talk</Title>
         <SubTitle>다양하고 색다른 여행지가 궁금하시면 가입해보세요!</SubTitle>
         <FormWrap>
-
           <FormGroup>
             <Label>이메일</Label>
-            <Input type="email" name='email' value={email.value} onChange={(e) => handleChange(e, validateEmail)} placeholder='email'/>
+            <Input
+              type="email"
+              name="email"
+              value={email.value}
+              onChange={e => handleChange(e, validateEmail)}
+              placeholder="email"
+            />
             {email.valid ? null : <p>{email.message}</p>}
           </FormGroup>
-
 
           <FormGroup>
             <Label>비밀번호</Label>
             <ToggleShowButton onClick={() => setShowPassword(!showPassword)}>
-              {showPassword ? <FaEye/> : <FaEyeSlash/>}
+              {showPassword ? <FaEye /> : <FaEyeSlash />}
             </ToggleShowButton>
-            <Input  type={showPassword? 'text' : 'password'} name='password' value={password.value} onChange={(e) => handleChange(e, validatePassword)} placeholder='비밀번호'/>
+            <Input
+              type={showPassword ? 'text' : 'password'}
+              name="password"
+              value={password.value}
+              onChange={e => handleChange(e, validatePassword)}
+              placeholder="비밀번호"
+            />
             <p>{password.message}</p>
           </FormGroup>
 
           <FormGroup>
             <Label>비밀번호 확인</Label>
-            <Input type='password' name='passwordConfirm' value={passwordConfirm.value} onChange={(e) => handleChange(e, validatePasswordConfirm)} placeholder='비밀번호 확인'/>
+            <Input
+              type="password"
+              name="passwordConfirm"
+              value={passwordConfirm.value}
+              onChange={e => handleChange(e, validatePasswordConfirm)}
+              placeholder="비밀번호 확인"
+            />
             {passwordConfirm.valid ? null : <p>{passwordConfirm.message}</p>}
           </FormGroup>
 
           <FormGroup>
             <Label>닉네임</Label>
-            <Input type="text" name='name' value={name.value} onChange={(e) => handleChange(e, validateName)} placeholder='닉네임'/>
+            <Input
+              type="text"
+              name="name"
+              value={name.value}
+              onChange={e => handleChange(e, validateName)}
+              placeholder="닉네임"
+            />
             <p>{name.message}</p>
           </FormGroup>
 
           <FormGroup>
             <Label>이메일 인증</Label>
-            <Input type="email" name='email' value={email.value} onChange={(e) => handleChange(e, validateEmail)} placeholder='email 인증번호'/>
+            <Input
+              type="email"
+              name="email"
+              // value={email.value}
+              // onChange={e => handleChange(e, validateEmail)}
+              placeholder="email 인증번호"
+            />
             {email.valid ? null : <p>{email.message}</p>}
           </FormGroup>
 
-          <Button type='submit' className={isFormValid() ? 'active' : ''}>회원가입</Button>
+          <Button type="submit" className={isFormValid() ? 'active' : ''}>
+            회원가입
+          </Button>
         </FormWrap>
       </Container>
     </>
@@ -145,7 +182,7 @@ const LeftArrow = styled(FaArrowLeft)`
   font-size: 30px;
   color: ${MAIN_COLOR};
   cursor: pointer;
-`
+`;
 
 const Container = styled.div`
   width: 100%;
@@ -169,18 +206,21 @@ const FormWrap = styled.div`
   flex-direction: column;
   margin: 0 auto;
   margin-top: 56px;
-`
+`;
+
 const Input = styled.input`
   width: 100%;
   padding: 10px;
   border-bottom: 2px solid #ccc;
   border-radius: 5px;
-  &:focus{
+
+  &:focus {
     outline: none;
     border-bottom: 2px solid ${MAIN_COLOR};
     transition: border-bottom 0.5s ease-out;
   }
-  &::placeholder{
+
+  &::placeholder {
     color: ${GRAY_COLOR};
     font-size: 12px;
     font-weight: 300;
@@ -201,8 +241,9 @@ const FormGroup = styled.div`
   position: relative;
   margin: 20px;
   padding: 10px;
-  &:focus-within{
-    ${Label}{
+
+  &:focus-within {
+    ${Label} {
       color: #242424;
       top: -3px;
       font-size: 14px;
@@ -210,7 +251,6 @@ const FormGroup = styled.div`
     }
   }
 `;
-
 
 const ToggleShowButton = styled.button`
   width: 100px;
@@ -224,7 +264,6 @@ const ToggleShowButton = styled.button`
   cursor: pointer;
 `;
 
-
 const Button = styled.button`
   display: block;
   width: 100%;
@@ -236,7 +275,7 @@ const Button = styled.button`
 
   transition: background-color 0.3s ease-in-out;
 
-  &.active{
+  &.active {
     background-image: linear-gradient(45deg, ${MAIN_COLOR}, ${YELLOW_COLOR});
     animation: gradientAnimation 5s linear infinite;
     cursor: pointer;
@@ -246,7 +285,7 @@ const Button = styled.button`
     0% {
       background-position: 0% 50%;
     }
-    100%{
+    100% {
       background-position: 100% 50%;
     }
   }

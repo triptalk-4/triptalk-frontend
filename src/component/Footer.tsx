@@ -11,7 +11,7 @@ function Footer() {
             <CompanyDescription>
               <DescriptionSpan>(주)사조사조</DescriptionSpan>
               <DescriptionSpan>FE:이승현 박진 정동영</DescriptionSpan>
-              <DescriptionSpan> BF:김도욱 안재훈 이수정</DescriptionSpan>
+              <DescriptionSpan> BF:김동욱 안재훈 이수정</DescriptionSpan>
               <DescriptionSpan>사업자번호 : 202-30-90603</DescriptionSpan>
             </CompanyDescription>
           </CompanyTitle>

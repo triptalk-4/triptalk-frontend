@@ -4,10 +4,10 @@ import './App.css';
 import Main from './page/MainPage/Main';
 import MainLayout from './component/MainLayout';
 import LoginContainer from './page/LoginPage/LoginContainer';
-import EditMyInfo from './page/myPage/EditMyInfo';
+import EditMyInfo from './page/myPage/EditInfo/EditMyInfo';
 import MyInfo from './page/myPage/MyInfo';
 import SignupForm from './page/LoginPage/SignupForm';
-import Schedule from './page/SchedulePage/Schedule';
+import LookMap from './page/reviewMap/LookMap';
 
 function App() {
   return (
@@ -17,6 +17,7 @@ function App() {
         <Route element={<MainLayout />}>
           <Route path="/main" element={<Main />} />
           <Route path="/myinfo" element={<MyInfo />} />
+          <Route path="/lookmap" element={<LookMap />} />
         </Route>
         {/* Header,Footer을 안 보여주고 싶은 컴포넌트 */}
         <Route path="/editmyinfo" element={<EditMyInfo />} />

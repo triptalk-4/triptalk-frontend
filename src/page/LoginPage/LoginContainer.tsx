@@ -32,9 +32,10 @@ const CenteredContainer = styled.div`
 `;
 
 const Container = styled.div`
-  width: 100%;
+  width: 90%;
   height: 559px;
   display: flex;
+  user-select: none;
 `;
 
 const TitleWrap = styled.div`
@@ -45,7 +46,7 @@ const TitleWrap = styled.div`
 `;
 const Title = styled.div`
   color: ${MAIN_COLOR};
-  font-size: 10rem;
+  font-size: 9rem;
   font-weight: bold;
   word-spacing: -50px;
   margin-top: 100px;
@@ -56,6 +57,7 @@ const Title = styled.div`
 const SubTitle = styled.p`
   font-size: 1.2rem;
   margin-bottom: 120px;
+  text-align: center;
 `;
 
 const LoginWrap = styled.div`
@@ -64,4 +66,5 @@ const LoginWrap = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  text-align: center;
 `;
