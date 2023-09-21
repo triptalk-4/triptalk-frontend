@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import { useNavigate } from 'react-router-dom';
 import { GRAY_COLOR, LIGHT_GRAY_COLOR, LIGHT_ORANGE_COLOR } from '../../../color/color';
@@ -89,7 +89,7 @@ const MyInfoBtnSetting = styled.div`
   grid-area: MyInfoBtnSetting;
 `;
 
-const SettingBtnStyle = `
+const SettingBtnStyle = css`
   width: 120px;
   height: 55px;
   border: none;
