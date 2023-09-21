@@ -6,7 +6,7 @@ import { GRAY_COLOR } from '../color/color';
 export default function Search() {
   return (
     <SearchBox>
-      <SearchDiv to="/">
+      <SearchDiv to="/search">
         <Searchtext>여행지를 입력해주세요.</Searchtext>
       </SearchDiv>
       <SearchBtn type="button">
