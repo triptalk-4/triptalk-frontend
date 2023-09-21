@@ -1,62 +1,153 @@
 import styled from 'styled-components';
 
+const postdata = [
+  {
+    imgSrc: 'img/postimg1.jpg',
+    title: '궁궐 달빛기행',
+    schedule: '23.09.07~23.09.10',
+    date: '23.09.11',
+  },
+  {
+    imgSrc: 'img/postimg2.jpg',
+    title: '창덕궁 달빛기행',
+    schedule: '23.09.07~23.09.10',
+    date: '23.09.12',
+  },
+  {
+    imgSrc: 'img/postimg3.jpg',
+    title: '경복궁 달빛기행',
+    schedule: '23.09.07~23.09.10',
+    date: '23.09.13',
+  },
+  {
+    imgSrc: 'img/postimg4.jpg',
+    title: '창경궁 달빛기행',
+    schedule: '23.09.07~23.09.10',
+    date: '23.09.14',
+  },
+  {
+    imgSrc: 'img/postimg5.jpg',
+    title: '경희궁 달빛기행',
+    schedule: '23.09.07~23.09.10',
+    date: '23.09.15',
+  },
+  {
+    imgSrc: 'img/postimg6.jpg',
+    title: '덕수궁 달빛기행',
+    schedule: '23.09.07~23.09.10',
+    date: '23.09.16',
+  },
+  {
+    imgSrc: 'img/postimg3.jpg',
+    title: '경복궁 달빛기행',
+    schedule: '23.09.07~23.09.10',
+    date: '23.09.13',
+  },
+  {
+    imgSrc: 'img/postimg2.jpg',
+    title: '창덕궁 달빛기행',
+    schedule: '23.09.07~23.09.10',
+    date: '23.09.12',
+  },
+  {
+    imgSrc: 'img/postimg5.jpg',
+    title: '경희궁 달빛기행',
+    schedule: '23.09.07~23.09.10',
+    date: '23.09.15',
+  },
+];
+
 export default function MyInfoPost() {
   return (
     <PostContainer>
-      <PostUl>
-        <PostItem>
-          {' '}
-          <PostImage src="/img/postimg6.jpg" alt="첫번째 이미지" />
-        </PostItem>
-        <PostItem>
-          {' '}
-          <PostImage src="/img/postimg5.jpg" alt="첫번째 이미지" />
-        </PostItem>
-        <PostItem>
-          {' '}
-          <PostImage src="/img/postimg4.jpg" alt="첫번째 이미지" />
-        </PostItem>
-        <PostItem>
-          {' '}
-          <PostImage src="/img/postimg3.jpg" alt="첫번째 이미지" />
-        </PostItem>
-        <PostItem>
-          {' '}
-          <PostImage src="/img/postimg2.jpg" alt="첫번째 이미지" />
-        </PostItem>
-        <PostItem>
-          {' '}
-          <PostImage src="/img/postimg1.jpg" alt="첫번째 이미지" />
-        </PostItem>
-      </PostUl>
+      {postdata.map((item, index) => (
+        <BoxWrap key={index}>
+          <Box>
+            <ImgDiv>
+              <TextImg src={item.imgSrc} alt="대표이미지" />
+            </ImgDiv>
+            <Info>
+              <TitleText>{item.title}</TitleText>
+              <ScheduleeText>{item.schedule}</ScheduleeText>
+              <DateText>{item.date}</DateText>
+            </Info>
+          </Box>
+        </BoxWrap>
+      ))}
     </PostContainer>
   );
 }
 
 const PostContainer = styled.div`
-  height: 100%;
-`;
-
-const PostUl = styled.ul`
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  height: auto;
+  margin-bottom: 20px;
 `;
 
-const PostItem = styled.li`
+const BoxWrap = styled.div`
+  margin-right: 20px;
+  margin-bottom: 20px;
+
+  &:nth-child(3n) {
+    margin-right: 0;
+  }
+
+  /* @media screen {
+    &:nth-child(2n) {
+      margin-right: 0;
+    }
+  } */
+`;
+
+const Box = styled.div`
+  position: relative;
+  width: 100%;
+  height: auto;
+`;
+
+const ImgDiv = styled.div`
   width: 300px;
   height: 350px;
-  margin-bottom: 30px;
 `;
-
-const PostImage = styled.img`
+const TextImg = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
+  margin-bottom: 30px;
   border-radius: 15px;
-  cursor: pointer;
+`;
 
-  &:hover {
-    background-color: #000;
+const Info = styled.div`
+  color: #fff;
+  position: absolute;
+  border-radius: 15px;
+  left: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  height: 100%;
+  padding: 15px;
+  box-sizing: border-box;
+  opacity: 0;
+  transition: opacity 0.35s ease-in-out;
+
+  ${Box}:hover & {
+    opacity: 1;
   }
+`;
+
+const TitleText = styled.h2`
+  font-size: 30px;
+`;
+
+const ScheduleeText = styled.h5`
+  font-size: 20px;
+  font-weight: 500;
+`;
+const DateText = styled.p`
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
 `;
