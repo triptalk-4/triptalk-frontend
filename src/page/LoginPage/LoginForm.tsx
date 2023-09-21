@@ -45,7 +45,9 @@ const LoginForm = () => {
 
   return (
     <Container>
-      <Kakao>카카오톡 로그인</Kakao>
+      <Kakao>
+        <p>카카오톡 로그인</p>
+      </Kakao>
       <OrDivider>
         <span>또는</span>
       </OrDivider>
@@ -73,12 +75,12 @@ const Container = styled.div`
 `;
 
 const Kakao = styled.div`
-  font-size: 24px;
-  font-weight: bold;
+  font-size: 22px;
+  font-weight: 500;
   background-color: #fee500;
   border-radius: 10px;
-  height: 56px;
-  line-height: 56px;
+  height: 60px;
+  line-height: 60px;
   margin-bottom: 32px;
   cursor: pointer;
 `;
@@ -111,7 +113,7 @@ const commonInputStyle = css`
   height: 70px;
   border-radius: 15px;
   padding-left: 21px;
-  font-size: 1.2rem;
+  font-size: 1rem;
 
   &:focus {
     outline: none;
@@ -129,7 +131,7 @@ const InputPw = styled.input`
 
 const LoginButton = styled.button`
   width: 100%;
-  height: 80px;
+  height: 60px;
   color: #fff;
   background-color: ${MAIN_COLOR};
   border: none;
