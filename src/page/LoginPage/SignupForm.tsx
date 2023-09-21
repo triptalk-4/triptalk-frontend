@@ -26,23 +26,25 @@ const SignupForm = () => {
     e: ChangeEvent<HTMLInputElement>,
     validator: (value: string) => { valid: boolean; message: string }
   ) => {
-    const { name, value } = e.target;
-    const { valid, message } = validator(value);
+    const { name, value } = e.target; // name 변수에 input name을 타겟, value 변수에 input value 타겟 
+    const { valid, message } = validator(value); // 위에서 타겟된 input value 인자로 넣음
+
+    let updatedValue = {value, valid, message} // 입력 값을 포함한 객체 생성
 
     switch (
-      name //handleChange 콜백함수로 스위치 문으로 받아 state값에 담기
+      name // 내가 선택한 인풋창의 타겟하여 name 가져옴 input name이 email일 경우 case 'email'에서 멈춰서 setEmail()을 함
     ) {
       case 'email':
-        setEmail({ value, valid, message });
+        setEmail(updatedValue);
         break;
       case 'password':
-        setPassword({ value, valid, message });
+        setPassword(updatedValue);
         break;
       case 'passwordConfirm':
-        setPasswordConfirm({ value, valid, message });
+        setPasswordConfirm(updatedValue);
         break;
       case 'name':
-        setName({ value, valid, message });
+        setName(updatedValue);
         break;
       default:
         break;
@@ -155,8 +157,8 @@ const SignupForm = () => {
             <Input
               type="email"
               name="email"
-              value={email.value}
-              onChange={e => handleChange(e, validateEmail)}
+              // value={email.value}
+              // onChange={e => handleChange(e, validateEmail)}
               placeholder="email 인증번호"
             />
             {email.valid ? null : <p>{email.message}</p>}
