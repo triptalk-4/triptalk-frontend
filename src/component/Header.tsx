@@ -69,7 +69,7 @@ const Nav = styled.ul`
 `;
 
 const NavItem = styled(Link)`
-  font-size: 23px;
+  font-size: 20px;
   color: ${DEFAULT_FONT_COLOR};
   cursor: pointer;
 
