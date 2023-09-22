@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import SearchHead from '../component/SearchHead';
-import SearchPopular from '../component/SearchPopular';
-import SearchRecent from '../component/SearchRecent';
+import SearchHead from '../component/Search/SearchHead';
+import SearchPopular from '../component/Search/SearchPopular';
+import SearchRecent from '../component/Search/SearchRecent';
 
 const SearchPage = () => {
   return (

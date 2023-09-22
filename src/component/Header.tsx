@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import Search from './Search';
+import Search from './Search/Search';
 import { DEFAULT_FONT_COLOR, MAIN_COLOR } from '../color/color';
 import { Link } from 'react-router-dom';
 
