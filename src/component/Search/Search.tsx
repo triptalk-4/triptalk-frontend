@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { BiSearch } from 'react-icons/bi';
 import { Link } from 'react-router-dom';
-import { GRAY_COLOR } from '../color/color';
+import { GRAY_COLOR } from '../../color/color';
 
 export default function Search() {
   return (
