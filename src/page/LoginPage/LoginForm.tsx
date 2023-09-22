@@ -15,10 +15,20 @@ const userData: UserData[] = [
   { id: 3, email: 'user3@naver.com', password: 'Password789' },
 ];
 
+
+
 const LoginForm = () => {
   const naviget = useNavigate();
   const [userEmail, setUserEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const REST_API_KEY = '백엔드한테 받아올거 1'
+  const REDIRECT_URI = '백엔드한테 받아올거 2'
+  const link = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`
+
+  const handleKakaoLogin = () => {
+    window.location.href = link;
+  }
 
   const handleEmail = (e: { target: { value: SetStateAction<string> } }) => {
     // 이메일 값 받아오기
@@ -45,8 +55,8 @@ const LoginForm = () => {
 
   return (
     <Container>
-      <Kakao>
-        <p>카카오톡 로그인</p>
+      <Kakao onClick={handleKakaoLogin}>
+        <p>카카오로 로그인</p>
       </Kakao>
       <OrDivider>
         <span>또는</span>
@@ -74,7 +84,7 @@ const Container = styled.div`
   justify-content: center;
 `;
 
-const Kakao = styled.div`
+const Kakao = styled.button`
   font-size: 22px;
   font-weight: 500;
   background-color: #fee500;
@@ -83,6 +93,10 @@ const Kakao = styled.div`
   line-height: 60px;
   margin-bottom: 32px;
   cursor: pointer;
+  border: none;
+  &:focus{
+    outline: none;
+  }
 `;
 
 const OrDivider = styled.div`
