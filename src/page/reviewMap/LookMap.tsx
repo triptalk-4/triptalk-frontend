@@ -32,6 +32,7 @@ const MapText = styled.p`
   text-align: center;
   font-size: 45px;
   line-height: 1.2;
+  user-select: none;
 `;
 
 const BoldSpan = styled.span`
