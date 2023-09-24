@@ -26,7 +26,7 @@ function App() {
         <Route path="/" element={<LoginContainer />} />
         <Route path="/signup" element={<SignupForm />} />
         <Route path="/schedule" element={<Schedule />} />
-        <Route path="/search" element={<SearchPage />} /> 
+        <Route path="/search" element={<SearchPage />} />
       </Routes>
     </BrowserRouter>
   );
