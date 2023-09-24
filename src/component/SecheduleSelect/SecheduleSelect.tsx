@@ -10,7 +10,7 @@ const options = [
 function SecheduleSelect() {
   const [selectedOption, setSelectedOption] = useState<{ value: string; label: string } | null>(null); // 초기 선택값
 
-  const [posts, setPosts] = useState([]); // 백엔드에서 받아올 게시물 목록 상태
+//  const [posts, setPosts] = useState([]); // 백엔드에서 받아올 게시물 목록 상태
 
   return (
     <Select
