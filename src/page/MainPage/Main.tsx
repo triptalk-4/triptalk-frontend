@@ -10,7 +10,7 @@ const Main = () => {
       </TopPosts>
       <MainImgContainer>
         <MainImageWrapper>
-          <MainImage src="public/img/Carousel.png" alt="" />
+          <MainImage src="img/Carousel.png" alt="" />
           <MainImageCaption>여행지를 자랑해주세요</MainImageCaption>
         </MainImageWrapper>
       </MainImgContainer>

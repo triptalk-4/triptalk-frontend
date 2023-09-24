@@ -19,38 +19,38 @@ function MainCarousel() {
       title: '양양 2박 여행',
       nickname: '제로베이스',
       schedule: '2023~09.15~2023.09.17',
-      imageUrl: 'public/img/Carousel.png'
+      imageUrl: 'img/Carousel.png',
     },
     {
       title: '속초 2박 여행',
       nickname: '프론트',
       schedule: '2023~09.22~2023.09.25',
-      imageUrl: 'public/img/Carousel.png'
+      imageUrl: 'img/Carousel.png',
     },
     {
       title: '제주 2박 여행',
       nickname: '백엔드',
       schedule: '2023~09.01~2023.09.03',
-      imageUrl: 'public/img/Carousel.png'
+      imageUrl: 'img/Carousel.png',
     },
     {
       title: '광주 2박 여행',
       nickname: '리액트',
       schedule: '2023~08.21~2023.08.23',
-      imageUrl: 'public/img/Carousel.png'
+      imageUrl: 'img/Carousel.png',
     },
     {
       title: '부산 2박 여행',
       nickname: '스프링',
       schedule: '2023~07.23~2023.08.25',
-      imageUrl: 'public/img/Carousel.png'
+      imageUrl: 'img/Carousel.png',
     },
     {
       title: '대구 2박 여행',
       nickname: '마리아DB',
       schedule: '2023~09.15~2023.09.17',
-      imageUrl: 'public/img/Carousel.png'
-    }
+      imageUrl: 'img/Carousel.png',
+    },
   ];
 
   const settings = {
@@ -66,16 +66,16 @@ function MainCarousel() {
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 2
-        }
+          slidesToShow: 2,
+        },
       },
       {
         breakpoint: 760,
         settings: {
-          slidesToShow: 1
-        }
-      }
-    ]
+          slidesToShow: 1,
+        },
+      },
+    ],
   };
 
   return (

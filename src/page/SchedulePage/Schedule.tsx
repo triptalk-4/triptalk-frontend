@@ -11,7 +11,7 @@ import { BsFileEarmarkCheckFill } from 'react-icons/bs';
 
 function Schedule() {
   const initialData = Array.from({ length: 9 }, (_, index) => ({
-    id: index
+    id: index,
   }));
 
   const [data, setData] = useState(initialData);
@@ -33,7 +33,7 @@ function Schedule() {
 
       setTimeout(() => {
         const newData = Array.from({ length: 3 }, (_, index) => ({
-          id: data.length + index
+          id: data.length + index,
         }));
 
         setData(prevData => [...prevData, ...newData]);
@@ -136,7 +136,7 @@ const GridContainer = styled.div`
 const Post = styled.div`
   width: 100%;
   height: 350px;
-  background-image: url('public/img/postimg4.jpg');
+  background-image: url('img/postimg4.jpg');
   background-size: cover;
   background-position: center;
   position: relative;
