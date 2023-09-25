@@ -10,6 +10,8 @@ import SignupForm from './page/LoginPage/SignupForm';
 import LookMap from './page/reviewMap/LookMap';
 import Schedule from './page/SchedulePage/Schedule';
 import SearchPage from './page/SearchPage';
+import SecheduleDetail from './page/DetailPage/SecheduleDetail';
+import EditSchedule from './page/EditPage/EditSchedule';
 
 function App() {
   return (
@@ -27,6 +29,11 @@ function App() {
         <Route path="/signup" element={<SignupForm />} />
         <Route path="/schedule" element={<Schedule />} />
         <Route path="/search" element={<SearchPage />} />
+<<<<<<< Updated upstream
+=======
+        <Route path="/editschedule" element={<EditSchedule />} />
+        <Route path="/schedule/:id" element={<SecheduleDetail />} />
+>>>>>>> Stashed changes
       </Routes>
     </BrowserRouter>
   );
