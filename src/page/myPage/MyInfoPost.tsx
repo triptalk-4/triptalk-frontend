@@ -19,7 +19,7 @@ const postdata: PostItem[] = [
   { id: 7, imgSrc: 'img/postimg3.jpg', title: '경복궁 달빛기행', schedule: '23.09.07~23.09.10', date: '23.09.17' },
   { id: 8, imgSrc: 'img/postimg2.jpg', title: '창덕궁 달빛기행', schedule: '23.09.07~23.09.10', date: '23.09.18' },
   { id: 9, imgSrc: 'img/postimg1.jpg', title: '궁궐 달빛기행', schedule: '23.09.07~23.09.10', date: '23.09.19' },
-  { id: 10, imgSrc: 'img/postimg2.jpg', title: '창덕궁 달빛기행', schedule: '23.09.07~23.09.10', date: '23.09.20' },
+  { id: 10, imgSrc: 'img/postimg2.jpg', title: '대한민국 달빛기행', schedule: '23.09.07~23.09.10', date: '23.09.20' },
   { id: 11, imgSrc: 'img/postimg5.jpg', title: '경희궁 달빛기행', schedule: '23.09.07~23.09.10', date: '23.09.21' },
   { id: 12, imgSrc: 'img/postimg1.jpg', title: '궁궐 달빛기행', schedule: '23.09.07~23.09.10', date: '23.09.22' },
   { id: 13, imgSrc: 'img/postimg2.jpg', title: '창덕궁 달빛기행', schedule: '23.09.07~23.09.10', date: '23.09.23' },
