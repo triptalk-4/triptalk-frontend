@@ -29,11 +29,8 @@ function App() {
         <Route path="/signup" element={<SignupForm />} />
         <Route path="/schedule" element={<Schedule />} />
         <Route path="/search" element={<SearchPage />} />
-<<<<<<< Updated upstream
-=======
         <Route path="/editschedule" element={<EditSchedule />} />
         <Route path="/schedule/:id" element={<SecheduleDetail />} />
->>>>>>> Stashed changes
       </Routes>
     </BrowserRouter>
   );
