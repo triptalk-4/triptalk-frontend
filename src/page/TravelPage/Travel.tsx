@@ -1,3 +1,52 @@
+import styled from 'styled-components';
+import TravelSelect from './TravelSelect';
+import { MAIN_COLOR } from '../../color/color';
+import TravelCarousel from './TravelCarousel';
+
 export default function Travel() {
-  return <div>Travel</div>;
+  return (
+    <TravelContainer>
+      <TravelTitleContainer>
+        <TravelTitle>국내 다양한 여행지를 둘러보세요.</TravelTitle>
+        <TravelSelectBox>
+          <TravelSelect />
+        </TravelSelectBox>
+      </TravelTitleContainer>
+      <TravelCarouselContainer>
+        <TravelCarousel />
+      </TravelCarouselContainer>
+    </TravelContainer>
+  );
 }
+
+const TravelContainer = styled.div`
+  width: 80%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100vh;
+`;
+
+const TravelTitleContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const TravelTitle = styled.div`
+  font-size: 24px;
+  font-weight: bold;
+`;
+
+const TravelSelectBox = styled.div`
+  width: 200px;
+
+  &:hover,
+  :focus {
+    border-color: ${MAIN_COLOR};
+  }
+`;
+
+const TravelCarouselContainer = styled.div`
+  margin-top: 20px;
+`;
