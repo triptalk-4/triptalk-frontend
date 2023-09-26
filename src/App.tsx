@@ -4,14 +4,15 @@ import './App.css';
 import Main from './page/MainPage/Main';
 import MainLayout from './component/MainLayout';
 import LoginContainer from './page/LoginPage/LoginContainer';
-import EditMyInfo from './page/myPage/EditInfo/EditMyInfo';
-import MyInfo from './page/myPage/MyInfo';
+import EditMyInfo from './page/MyPage/EditInfo/EditMyInfo';
+import MyInfo from './page/MyPage/MyInfo';
 import SignupForm from './page/LoginPage/SignupForm';
-import LookMap from './page/reviewMap/LookMap';
+import LookMap from './page/ReviewMap/LookMap';
 import Schedule from './page/SchedulePage/Schedule';
 import SearchPage from './page/SearchPage';
 import SecheduleDetail from './page/DetailPage/SecheduleDetail';
 import EditSchedule from './page/EditPage/EditSchedule';
+import Travel from './page/TravelPage/Travel';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         {/* Header,Footer 보여주고 싶은 컴포넌트 */}
         <Route element={<MainLayout />}>
           <Route path="/main" element={<Main />} />
+          <Route path="/travel" element={<Travel />} />
           <Route path="/myinfo" element={<MyInfo />} />
           <Route path="/lookmap" element={<LookMap />} />
         </Route>
