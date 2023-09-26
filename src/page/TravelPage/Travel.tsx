@@ -1,7 +1,6 @@
 import styled from 'styled-components';
-import TravelSelect from './TravelSelect';
-import { MAIN_COLOR } from '../../color/color';
-import TravelCarousel from './TravelCarousel';
+import TravelCarousel from './CarouselBox/TravelCarousel';
+import DetailPopUp from './PopUp/DetailPopUp';
 
 export default function Travel() {
   return (
@@ -9,7 +8,8 @@ export default function Travel() {
       <TravelTitleContainer>
         <TravelTitle>국내 다양한 여행지를 둘러보세요.</TravelTitle>
         <TravelSelectBox>
-          <TravelSelect />
+          {/* <TravelSelect /> */}
+          <DetailPopUp />
         </TravelSelectBox>
       </TravelTitleContainer>
       <TravelCarouselContainer>
@@ -39,12 +39,7 @@ const TravelTitle = styled.div`
 `;
 
 const TravelSelectBox = styled.div`
-  width: 200px;
-
-  &:hover,
-  :focus {
-    border-color: ${MAIN_COLOR};
-  }
+  width: 300px;
 `;
 
 const TravelCarouselContainer = styled.div`
