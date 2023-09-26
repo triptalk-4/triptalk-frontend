@@ -1,17 +1,16 @@
-// CustomNextArrow.tsx
-import { BsArrowRightCircleFill } from 'react-icons/bs';
+import { BsArrowLeftCircleFill } from 'react-icons/bs';
 import styled from 'styled-components';
-import { GRAY_COLOR, LIGHT_ORANGE_COLOR, MAIN_COLOR } from '../../color/color';
+import { GRAY_COLOR, LIGHT_ORANGE_COLOR, MAIN_COLOR } from '../../../color/color';
 
-interface CustomNextArrowProps {
+interface CustomPrevArrowProps {
   onClick?: () => void;
   disabled?: boolean; // 버튼 비활성화 상태
 }
 
-export default function CustomNextArrow({ onClick, disabled }: CustomNextArrowProps) {
+export default function CustomPrevArrow({ onClick, disabled }: CustomPrevArrowProps) {
   return (
     <CustomArrowButton onClick={onClick} disabled={disabled}>
-      <BsArrowRightCircleFill />
+      <BsArrowLeftCircleFill />
     </CustomArrowButton>
   );
 }
