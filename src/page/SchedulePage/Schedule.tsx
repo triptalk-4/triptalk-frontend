@@ -8,10 +8,11 @@ import { GrEdit } from 'react-icons/gr';
 import { BsFillSuitHeartFill } from 'react-icons/bs';
 import { GrOverview } from 'react-icons/gr';
 import { BsFileEarmarkCheckFill } from 'react-icons/bs';
+import { DEFAULT_FONT_COLOR } from '../../color/color';
 
 function Schedule() {
   const initialData = Array.from({ length: 9 }, (_, index) => ({
-    id: index,
+    id: index
   }));
 
   const [data, setData] = useState(initialData);
@@ -33,7 +34,7 @@ function Schedule() {
 
       setTimeout(() => {
         const newData = Array.from({ length: 3 }, (_, index) => ({
-          id: data.length + index,
+          id: data.length + index
         }));
 
         setData(prevData => [...prevData, ...newData]);
@@ -62,7 +63,7 @@ function Schedule() {
           <SelectBox>
             <SecheduleSelect />
           </SelectBox>
-          <EditButton>
+          <EditButton to="/editschedule">
             일정등록하기
             <EditIcon />
           </EditButton>
@@ -169,9 +170,10 @@ const LoadingMessage = styled.div`
   color: #333;
 `;
 
-const EditButton = styled.button`
+const EditButton = styled(Link)`
   width: 200px;
   height: 60px;
+  color: ${DEFAULT_FONT_COLOR};
   background-color: inherit;
   margin-left: 150px;
   border: 1px solid black;
