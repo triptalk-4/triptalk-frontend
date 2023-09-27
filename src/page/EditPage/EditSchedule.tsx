@@ -3,12 +3,13 @@ import Header from '../../component/Header';
 import 'react-datepicker/dist/react-datepicker.css';
 import FullSchedule from '../../component/DatePicker/ FullSchedule';
 import ExcludeTimes from '../../component/DatePicker/ExcludeTimes';
+import ScheduleMapLoader from '../../component/ScheduleMap';
 export default function EditSchedule() {
   return (
     <>
       <Header />
       <MainContainer>
-        <Map></Map>
+        <ScheduleMapLoader />
         <TitleContainer>
           <Title placeholder="제목 (최대 40자)"></Title>
           <FullSchedule />
@@ -27,12 +28,7 @@ const MainContainer = styled.div`
   margin: 0 auto;
 `;
 
-const Map = styled.div`
-  width: 80%;
-  height: 300px;
-  background-color: #f7c2c2;
-  margin: 5% auto;
-`;
+
 
 const TitleContainer = styled.div`
   width: 100%;
