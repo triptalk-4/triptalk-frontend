@@ -14,7 +14,7 @@ const ScheduleMapLoader = () => {
         const container = document.getElementById('map') as HTMLElement; // 맵을 표시할 DOM 엘리먼트
         const options = {
           center: new kakao.maps.LatLng(37.5665, 126.9780), // 초기 지도 중심 좌표
-          level: 3, // 지도 확대 레벨
+          level: 5, // 지도 확대 레벨
         };
         const map = new kakao.maps.Map(container, options);
       });

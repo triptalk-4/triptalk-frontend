@@ -4,6 +4,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import FullSchedule from '../../component/DatePicker/ FullSchedule';
 import ExcludeTimes from '../../component/DatePicker/ExcludeTimes';
 import ScheduleMapLoader from '../../component/ScheduleMap';
+import AddressSearch from '../../component/AddressSearch';
 export default function EditSchedule() {
   return (
     <>
@@ -16,6 +17,7 @@ export default function EditSchedule() {
         </TitleContainer>
         <CoreContainer>
           <ExcludeTimes />
+          <AddressSearch />
         </CoreContainer>
       </MainContainer>
     </>
