@@ -89,8 +89,10 @@ export default function TravelCarousel() {
       <Slider {...settings}>
         {postdata.map(item => (
           <ImgContainer key={item.id}>
-            <ImgDiv to="/schedule">
-              <TravelImg src={item.imgSrc} alt="여행이미지" />
+            <ImgDiv>
+              <ImgLink to="/schedule">
+                <TravelImg src={item.imgSrc} alt="여행이미지" />
+              </ImgLink>
             </ImgDiv>
             <TextDiv>
               <TitleText>{item.title}</TitleText>
@@ -108,29 +110,33 @@ export default function TravelCarousel() {
 const CarouselContainer = styled.div`
   width: 100%;
   height: 100%;
+  position: relative;
 `;
 
-const ImgContainer = styled.div``;
+const ImgContainer = styled.div`
+  padding: 30px;
+  position: relative;
+`;
 
-const ImgDiv = styled(Link)``;
+const ImgDiv = styled.div``;
+
+const ImgLink = styled(Link)``;
 
 const TravelImg = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
-  position: relative;
 `;
 
 const TextDiv = styled.div`
   position: absolute;
   display: grid;
-  top: 85%;
-  width: 320px;
-  /* left: 50%;
-  transform: translate(-50%, -50%); */
+  justify-items: stretch;
   text-align: center;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
+  bottom: 0;
+  width: 320px;
 `;
 
 const TextStyled = css`
@@ -144,6 +150,7 @@ const TitleText = styled.h2`
 `;
 const AddressText = styled.h2`
   ${TextStyled}
+  text-align: left;
 `;
 const InfoText = styled.p`
   ${TextStyled}
