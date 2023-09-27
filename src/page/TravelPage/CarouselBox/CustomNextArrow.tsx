@@ -22,6 +22,11 @@ const CustomArrowButton = styled.button`
   border: none;
   font-size: 25px;
   cursor: ${props => (props.disabled ? 'default' : 'pointer')}; // 커서 포인터 설정
+  position: absolute;
+  z-index: 100;
+
+  right: 0;
+  top: 50%;
 
   &:not(:disabled):hover {
     // 버튼이 활성화 상태이고 호버하는 경우에만 스타일 적용
