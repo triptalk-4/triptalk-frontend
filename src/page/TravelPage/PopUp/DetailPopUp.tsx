@@ -7,12 +7,41 @@ import OrderButton from './OrderButton';
 
 export default function DetailPopUp() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedRegion, setSelectedRegion] = useState('');
+  const [selectedOrder, setSelectedOrder] = useState('');
+
+  // 이전값 값 저장변수
+  const [previousRegion, setPreviousRegion] = useState('');
+  const [previousOrder, setPreviousOrder] = useState('');
 
   const openModal = () => {
     setIsModalOpen(true);
   };
 
   const closeModal = () => {
+    // setSelectedRegion('');
+    // setSelectedOrder(''); 초기화
+
+    setSelectedRegion(previousRegion);
+    setSelectedOrder(previousOrder);
+
+    setIsModalOpen(false);
+  };
+
+  const handleRegionChange = (region: string) => {
+    setPreviousRegion(selectedRegion);
+    setSelectedRegion(region);
+  };
+
+  const handleOrderChange = (order: string) => {
+    setPreviousOrder(selectedOrder);
+    setSelectedOrder(order);
+  };
+
+  const handleConfirm = () => {
+    console.log('선택한 지역:', selectedRegion);
+    console.log('선택한 보고싶은 순:', selectedOrder);
+
     setIsModalOpen(false);
   };
 
@@ -20,7 +49,7 @@ export default function DetailPopUp() {
     <PopUpBox>
       <PopUpDiv>
         <PopUptext onClick={openModal}>
-          여행지를 입력해주세요.
+          {selectedRegion ? `${selectedRegion} > ${selectedOrder}` : '여행지를 선택해주세요.'}
           <PopUpBtn type="button">
             <BiSolidDownArrow />
           </PopUpBtn>
@@ -31,12 +60,12 @@ export default function DetailPopUp() {
           <ModalContent>
             {/* 모달 내용 */}
             <TitleText>지역을 눌려주세요</TitleText>
-            <RegionButton />
+            <RegionButton selectedRegion={selectedRegion} onRegionChange={handleRegionChange} />
             <Line></Line>
             <TitleText>보고싶은 순을 눌려주세요</TitleText>
-            <OrderButton />
+            <OrderButton selectedOrder={selectedOrder} onOrderChange={handleOrderChange} />
             <BtnContainer>
-              <CheckBtn>확인</CheckBtn>
+              <CheckBtn onClick={() => handleConfirm()}>확인</CheckBtn>
               <CloseBtn onClick={closeModal}>취소</CloseBtn>
             </BtnContainer>
           </ModalContent>
@@ -53,13 +82,10 @@ const PopUpBox = styled.div`
 
 const PopUpDiv = styled.div`
   text-decoration: none;
-
   width: 530px;
   height: 50px;
-  padding: 3px;
   margin-left: auto;
   border: 2px solid ${LIGHT_GRAY_COLOR};
-
   border-radius: 15px;
 `;
 

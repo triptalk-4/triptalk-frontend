@@ -1,20 +1,28 @@
+import { useEffect } from 'react';
 import styled from 'styled-components';
 import { YELLOW_COLOR } from '../../../color/color';
 
-export default function OrderButton() {
+interface OrderButtonProps {
+  selectedOrder: string | null;
+  onOrderChange: (order: string) => void;
+}
+
+export default function OrderButton({ selectedOrder, onOrderChange }: OrderButtonProps) {
+  const orders = ['날짜순', '좋아요순', '조회순'];
+
+  useEffect(() => {
+    console.log('selectedOrder:', selectedOrder);
+  }, [selectedOrder]);
+
   return (
     <ButtonContainer>
-      <ButtonUl>
-        <Buttonitem>
-          <RegionBtn type="submit">날짜순</RegionBtn>
-        </Buttonitem>
-        <Buttonitem>
-          <RegionBtn type="submit">좋아요순</RegionBtn>
-        </Buttonitem>
-        <Buttonitem>
-          <RegionBtn type="submit">조회순</RegionBtn>
-        </Buttonitem>
-      </ButtonUl>
+      <OrderBtnDiv>
+        {orders.map(order => (
+          <OrderBtn key={order} value={order} isSelected={selectedOrder === order} onClick={() => onOrderChange(order)}>
+            {order}
+          </OrderBtn>
+        ))}
+      </OrderBtnDiv>
     </ButtonContainer>
   );
 }
@@ -23,25 +31,21 @@ const ButtonContainer = styled.div`
   margin: 15px 0;
 `;
 
-const ButtonUl = styled.ul`
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  justify-items: center;
+const OrderBtnDiv = styled.div`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 `;
-const Buttonitem = styled.li`
-  margin: 15px;
-`;
-const RegionBtn = styled.button`
+
+const OrderBtn = styled.button<{ isSelected: boolean }>`
   width: 100px;
   height: 55px;
   border: 1px solid #000;
-  background-color: #fff;
+  border: ${props => (props.isSelected ? 'none' : '1px solid #000')};
+  background-color: ${props => (props.isSelected ? YELLOW_COLOR : '#fff')};
+  color: ${props => (props.isSelected ? '#fff' : '#000')};
   border-radius: 15px;
   font-size: 15px;
-
-  &:hover {
-    background-color: ${YELLOW_COLOR};
-    color: #fff;
-    border: none;
-  }
+  cursor: pointer;
+  margin-right: 5px;
 `;
