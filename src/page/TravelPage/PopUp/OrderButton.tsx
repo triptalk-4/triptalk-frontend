@@ -8,7 +8,7 @@ interface OrderButtonProps {
 }
 
 export default function OrderButton({ selectedOrder, onOrderChange }: OrderButtonProps) {
-  const orders = ['날짜순', '좋아요순', '조회순'];
+  const orders = ['최신순', '좋아요순', '조회순'];
 
   useEffect(() => {
     console.log('selectedOrder:', selectedOrder);
