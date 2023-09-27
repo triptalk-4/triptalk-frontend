@@ -126,6 +126,7 @@ const TravelImg = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
+  background: linear-gradient(black, yellow); // 그라데이션 test
 `;
 
 const TextDiv = styled.div`
