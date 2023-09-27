@@ -24,11 +24,9 @@ export default function EditSchedule() {
 
 const MainContainer = styled.div`
   width: 80%;
-  height: 100vh;
+  height: 100%;
   margin: 0 auto;
 `;
-
-
 
 const TitleContainer = styled.div`
   width: 100%;
