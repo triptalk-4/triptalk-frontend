@@ -1,1 +1,6 @@
-{ "host": "http://localhost:5174/" }
+{
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "cSpell.words": ["kakao"],
