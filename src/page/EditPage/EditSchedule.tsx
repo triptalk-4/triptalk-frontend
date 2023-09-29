@@ -114,11 +114,13 @@ const CoreContainer = styled.div`
   height: 340px;
   margin-top: 5%;
   background-color: #f7eae4;
+
 `;
 
 const CoreTopContainer = styled.div`
   width: 100%;
   display: flex;
+  justify-content: space-between;
 `;
 
 const ImgContainer = styled.div`
