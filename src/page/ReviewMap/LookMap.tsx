@@ -25,7 +25,7 @@ const Container = styled.div`
 const Map = styled.img`
   max-width: 100%;
   height: auto;
-  padding: 0 150px 50px;
+  padding: 0 265px 50px;
 `;
 
 const MapText = styled.p`

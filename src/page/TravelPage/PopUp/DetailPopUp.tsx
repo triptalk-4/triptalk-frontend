@@ -99,8 +99,6 @@ const PopUptext = styled.span`
 `;
 
 const PopUpBtn = styled.button`
-  right: 10px;
-  top: 23%;
   font-size: 25px;
   border: none;
   background-color: transparent;
