@@ -34,7 +34,7 @@ const TravelTitleContainer = styled.div`
 `;
 
 const TravelTitle = styled.div`
-  font-size: 24px;
+  font-size: 25px;
   font-weight: bold;
 `;
 
@@ -42,6 +42,4 @@ const TravelSelectBox = styled.div`
   width: 300px;
 `;
 
-const TravelCarouselContainer = styled.div`
-  margin-top: 20px;
-`;
+const TravelCarouselContainer = styled.div``;

@@ -7,18 +7,19 @@ export default function Search() {
   return (
     <SearchBox>
       <SearchDiv to="/search">
-        <Searchtext>여행지를 입력해주세요.</Searchtext>
+        <Searchtext>
+          여행지를 입력해주세요.
+          <SearchBtn type="button">
+            <BiSearch />
+          </SearchBtn>
+        </Searchtext>
       </SearchDiv>
-      <SearchBtn type="button">
-        <BiSearch />
-      </SearchBtn>
     </SearchBox>
   );
 }
 
 const SearchBox = styled.div`
   display: flex;
-  position: relative;
 `;
 
 const SearchDiv = styled(Link)`
@@ -37,15 +38,16 @@ const SearchDiv = styled(Link)`
 
 const Searchtext = styled.span`
   display: flex;
+  justify-content: space-between;
+  align-items: center;
   font-size: 18px;
   padding: 10px 20px;
   color: ${GRAY_COLOR};
 `;
 
 const SearchBtn = styled.button`
-  position: absolute;
-  right: 10px;
-  top: 23%;
+  width: 25px;
+  height: 25px;
   font-size: 25px;
   border: none;
   background-color: transparent;
