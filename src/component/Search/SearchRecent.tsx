@@ -10,11 +10,11 @@ const SearchRecent = () => {
           <CgClose />
         </SearchList>
         <SearchList>
-          최근검색어 
+          최근검색어
           <CgClose />
         </SearchList>
         <SearchList>
-          최근검색어 
+          최근검색어
           <CgClose />
         </SearchList>
       </Ul>
@@ -42,7 +42,7 @@ const SearchList = styled.li`
   align-items: center;
   justify-content: space-between;
   margin-bottom: 16px;
-  &:last-child{
+  &:last-child {
     margin-bottom: 0;
   }
 `;

@@ -136,8 +136,8 @@ const ModalContent = styled.div`
 
 const TitleText = styled.h2`
   display: flex;
-  font-size: 25px;
   justify-content: center;
+  font-size: 25px;
 `;
 
 const Line = styled.div`

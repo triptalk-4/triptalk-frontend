@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import styled from 'styled-components';
 
 const KAKAO_API_KEY = '2cc45017695a59169a1f649bdc77f123';

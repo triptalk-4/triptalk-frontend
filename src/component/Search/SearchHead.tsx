@@ -5,25 +5,23 @@ import styled from 'styled-components';
 import { MAIN_COLOR } from '../../color/color';
 import { FaArrowLeft } from 'react-icons/fa';
 
-
-
 const SearchHead = () => {
   const navigator = useNavigate();
 
-  return(
+  return (
     <>
       <Container>
-        <BackBtn onClick={() => navigator(-1)}/>
+        <BackBtn onClick={() => navigator(-1)} />
         <HeadWrap>
-          <Input type="text" placeholder='여행지 검색'/>
+          <Input type="text" placeholder="여행지 검색" />
           <SearchBtn />
         </HeadWrap>
       </Container>
     </>
-  )
-}
+  );
+};
 
-export default SearchHead
+export default SearchHead;
 
 const Container = styled.div`
   width: 100%;
@@ -31,13 +29,13 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   padding-top: 20px;
-`
+`;
 
 const BackBtn = styled(FaArrowLeft)`
   margin-right: 30px;
   font-size: 1.5rem;
   cursor: pointer;
-`
+`;
 
 const HeadWrap = styled.div`
   width: 50%;
@@ -45,15 +43,15 @@ const HeadWrap = styled.div`
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid ${MAIN_COLOR};
-`
+`;
 
 const Input = styled.input`
   width: 70%;
   height: 40px;
-  &:focus{
+  &:focus {
     outline: none;
   }
-`
+`;
 const SearchBtn = styled(BiSearch)`
   font-size: 1.5rem;
-`
+`;
