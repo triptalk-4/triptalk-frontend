@@ -64,12 +64,10 @@ const RegionBtnDiv = styled.div`
 const RegionBtn = styled.button<{ isSelected: boolean }>`
   width: 100px;
   height: 55px;
-  border: 1px solid #000;
   border: ${props => (props.isSelected ? 'none' : '1px solid #000')};
   background-color: ${props => (props.isSelected ? YELLOW_COLOR : '#fff')};
   color: ${props => (props.isSelected ? '#fff' : '#000')};
   border-radius: 15px;
   font-size: 15px;
   cursor: pointer;
-  margin-right: 5px;
 `;

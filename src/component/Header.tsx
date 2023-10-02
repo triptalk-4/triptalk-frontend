@@ -10,6 +10,8 @@ interface NavItemProps {
 }
 
 export default function Header() {
+  // const defaultImg = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
+
   const [activeTab, setActiveTab] = useState<string>(localStorage.getItem('activeTab') || 'home');
   const tabsRef = useRef<HTMLUListElement>(null);
 
@@ -42,7 +44,9 @@ export default function Header() {
         <Logo to="/main">
           <LogoImg src="/img/logo.png" alt="로고" />
         </Logo>
-        <Avatar to="/myinfo"></Avatar>
+        <Avatar to="/myinfo">
+          <AvatarImg src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" />
+        </Avatar>
       </Gnb>
       <Nav ref={tabsRef}>
         <NavItem to="/main" onClick={() => handleTabClick('home')} $isActive={activeTab === 'home'}>
@@ -91,11 +95,13 @@ const LogoImg = styled.img`
 `;
 
 const Avatar = styled(Link)`
+  height: 50px;
+`;
+
+const AvatarImg = styled.img`
   width: 50px;
   height: 50px;
-  border: 1px solid #000;
   border-radius: 100%;
-  cursor: pointer;
 `;
 
 const Nav = styled.ul`

@@ -1,12 +1,14 @@
 import styled from 'styled-components';
 import { AiOutlineSetting } from 'react-icons/ai';
-import { DEFAULT_FONT_COLOR, GRAY_COLOR } from '../../color/color';
+import { DEFAULT_FONT_COLOR, GRAY_COLOR, LIGHT_GRAY_COLOR } from '../../color/color';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import MyInfoPost from './MyInfoPost';
 import MyInfoSaved from './MyInfoSaved';
 
 export default function MyInfo() {
+  // const defaultImg = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
+
   const [currentTab, setTab] = useState(0);
 
   const myInfoMenuTabs = [
@@ -21,7 +23,7 @@ export default function MyInfo() {
   return (
     <MyPageContainer>
       <AvatarImgContainer>
-        <AvatarImg></AvatarImg>
+        <AvatarImg src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" />
         <AvatarNickNameContainer>
           <NickName>닉네임</NickName>
           <Setting to="/editmyinfo">
@@ -59,10 +61,10 @@ const AvatarImgContainer = styled.div`
   align-items: center;
 `;
 
-const AvatarImg = styled.div`
+const AvatarImg = styled.img`
   width: 300px;
   height: 300px;
-  border: 1px solid #000;
+  border: 1px solid ${LIGHT_GRAY_COLOR};
   border-radius: 100%;
   margin: 0 auto;
 `;

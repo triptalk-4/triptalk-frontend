@@ -1,10 +1,9 @@
-import { useEffect, useState } from "react";
-import styled from "styled-components";
+import { useEffect, useState } from 'react';
+import styled from 'styled-components';
 
 const KAKAO_API_KEY = '2cc45017695a59169a1f649bdc77f123';
 
 const ScheduleMapLoader = () => {
-  
   useEffect(() => {
     const script = document.createElement('script');
     script.async = true;
@@ -13,7 +12,7 @@ const ScheduleMapLoader = () => {
       kakao.maps.load(() => {
         const container = document.getElementById('map') as HTMLElement; // 맵을 표시할 DOM 엘리먼트
         const options = {
-          center: new kakao.maps.LatLng(37.5665, 126.9780), // 초기 지도 중심 좌표
+          center: new kakao.maps.LatLng(37.5665, 126.978), // 초기 지도 중심 좌표
           level: 5, // 지도 확대 레벨
         };
         const map = new kakao.maps.Map(container, options);
@@ -25,16 +24,12 @@ const ScheduleMapLoader = () => {
     return () => {
       document.head.removeChild(script);
     };
-    }, []);
+  }, []);
 
+  return <Con id="map" style={{ width: '80%', height: '400px' }}></Con>;
+};
 
-  return(
-    <Con id="map" style={{width : '80%', height: '400px'}}>
-    </Con>
-  )
-}
-
-export default ScheduleMapLoader
+export default ScheduleMapLoader;
 
 const Con = styled.div`
   margin: 5% auto;

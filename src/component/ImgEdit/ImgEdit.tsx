@@ -29,8 +29,7 @@ export default function ImgEdit() {
           id="input-file"
           style={{ display: 'none' }}
           accept=".jpg,.jpeg,.png"
-          onChange={addImage}
-        ></input>
+          onChange={addImage}></input>
       </div>
     </>
   );

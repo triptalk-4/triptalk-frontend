@@ -39,10 +39,14 @@ export default function DetailPopUp() {
   };
 
   const handleConfirm = () => {
-    console.log('선택한 지역:', selectedRegion);
-    console.log('선택한 보고싶은 순:', selectedOrder);
+    // console.log('선택한 지역:', selectedRegion);
+    // console.log('선택한 보고싶은 순:', selectedOrder);
 
-    setIsModalOpen(false);
+    if (selectedRegion && selectedOrder) {
+      setIsModalOpen(false);
+    } else {
+      alert('지역과 보고싶은 순 모두 선택해주세요.');
+    }
   };
 
   return (
