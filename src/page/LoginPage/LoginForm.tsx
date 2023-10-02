@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 import styled, { css } from 'styled-components';
 import { GRAY_COLOR, MAIN_COLOR } from '../../color/color';
 import { Link, useNavigate } from 'react-router-dom';
