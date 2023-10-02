@@ -12,7 +12,7 @@ interface NavItemProps {
 export default function Header() {
   // const defaultImg = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
 
-  const [activeTab, setActiveTab] = useState<string>(localStorage.getItem('activeTab') || 'home');
+  const [activeTab, setActiveTab] = useState<string>(localStorage.getItem('activeTab') || '');
   const tabsRef = useRef<HTMLUListElement>(null);
 
   useEffect(() => {
@@ -35,6 +35,7 @@ export default function Header() {
 
   // 활성 탭이 변경될 때 localStorage에 저장
   useEffect(() => {
+    console.log('activeTab:', activeTab);
     localStorage.setItem('activeTab', activeTab);
   }, [activeTab]);
 
