@@ -5,13 +5,14 @@ import Header from '../../component/Header';
 import SecheduleSelect from '../../component/SecheduleSelect/SecheduleSelect';
 import TopButton from '../../component/TopButton/TopButton';
 import { GrEdit } from 'react-icons/gr';
-import { BsFillEyeFill, BsFillSuitHeartFill } from 'react-icons/bs';
+import { BsFillSuitHeartFill } from 'react-icons/bs';
+import { GrOverview } from 'react-icons/gr';
 import { BsFileEarmarkCheckFill } from 'react-icons/bs';
 import { DEFAULT_FONT_COLOR } from '../../color/color';
 
 function Schedule() {
   const initialData = Array.from({ length: 9 }, (_, index) => ({
-    id: index,
+    id: index
   }));
 
   const [data, setData] = useState(initialData);
@@ -33,7 +34,7 @@ function Schedule() {
 
       setTimeout(() => {
         const newData = Array.from({ length: 3 }, (_, index) => ({
-          id: data.length + index,
+          id: data.length + index
         }));
 
         setData(prevData => [...prevData, ...newData]);
@@ -113,7 +114,6 @@ const TitleContainer = styled.div`
   display: flex;
   margin-top: 40px;
   align-items: center;
-  justify-content: space-between;
 `;
 
 const Title = styled.div`
@@ -125,6 +125,7 @@ const Title = styled.div`
 
 const SelectBox = styled.div`
   width: 200px;
+  margin-right: 100px;
 `;
 
 const GridContainer = styled.div`
@@ -200,7 +201,7 @@ const Heart = styled(BsFillSuitHeartFill)`
   height: 30px;
 `;
 
-const LookUp = styled(BsFillEyeFill)`
+const LookUp = styled(GrOverview)`
   width: 30px;
   height: 30px;
 `;
