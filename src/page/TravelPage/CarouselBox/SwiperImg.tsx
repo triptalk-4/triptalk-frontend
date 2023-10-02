@@ -26,19 +26,19 @@ export default function SwiperImg() {
         modules={[Autoplay, Pagination]}
         className="mySwiper">
         <StyledSwiperSlide>
-          <StyledImage src="img/Travelimg1.jpg" alt="Image 1" />
+          <StyledImage src="img/Travelimg1.jpg" alt="사용자가 올린 이미지1" />
         </StyledSwiperSlide>
         <StyledSwiperSlide>
-          <StyledImage src="img/Travelimg5.jpg" alt="Image 1" />
+          <StyledImage src="img/Travelimg5.jpg" alt="사용자가 올린 이미지2" />
         </StyledSwiperSlide>
         <StyledSwiperSlide>
-          <StyledImage src="img/Travelimg2.jpg" alt="Image 1" />
+          <StyledImage src="img/Travelimg2.jpg" alt="사용자가 올린 이미지3" />
         </StyledSwiperSlide>
         <StyledSwiperSlide>
-          <StyledImage src="img/Travelimg1.jpg" alt="Image 1" />
+          <StyledImage src="img/Travelimg1.jpg" alt="사용자가 올린 이미지4" />
         </StyledSwiperSlide>
         <StyledSwiperSlide>
-          <StyledImage src="img/Travelimg5.jpg" alt="Image 1" />
+          <StyledImage src="img/Travelimg5.jpg" alt="사용자가 올린 이미지" />
         </StyledSwiperSlide>
       </StyledSwiper>
       <style>
