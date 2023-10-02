@@ -121,9 +121,5 @@ const NavItem = styled(Link)<NavItemProps>`
     color: ${MAIN_COLOR};
   }
 
-  ${props =>
-    props.$isActive &&
-    `
-    color: ${MAIN_COLOR};
-  `}
+  ${props => props.$isActive && `color: ${MAIN_COLOR};`}
 `;

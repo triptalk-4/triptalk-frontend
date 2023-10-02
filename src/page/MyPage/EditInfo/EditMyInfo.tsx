@@ -52,12 +52,12 @@ const InfoEditContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 495px;
   grid-template-rows: 1fr 55px;
-  padding-top: 50px;
   column-gap: 100px;
   row-gap: 30px;
   grid-template-areas:
     'ImgEditContainer MyInfoEditForm'
     'MyInfoBtnSetting MyInfoBtnSetting';
+  padding-top: 50px;
 `;
 
 const ImgEditContainer = styled.div`

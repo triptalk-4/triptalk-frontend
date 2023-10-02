@@ -17,20 +17,20 @@ const userData: UserData[] = [
   { id: 3, email: 'user3@naver.com', password: 'Password789' },
 ];
 
-  // git hub 테스트
+// git hub 테스트
 
 const LoginForm = () => {
   const naviget = useNavigate();
   const [userEmail, setUserEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const REST_API_KEY = '백엔드한테 받아올거 1'
-  const REDIRECT_URI = '백엔드한테 받아올거 2'
-  const link = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`
+  const REST_API_KEY = '백엔드한테 받아올거 1';
+  const REDIRECT_URI = '백엔드한테 받아올거 2';
+  const link = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
 
   const handleKakaoLogin = () => {
     window.location.href = link;
-  }
+  };
 
   const handleEmail = (e: { target: { value: SetStateAction<string> } }) => {
     // 이메일 값 받아오기
@@ -96,7 +96,7 @@ const Kakao = styled.button`
   margin-bottom: 32px;
   cursor: pointer;
   border: none;
-  &:focus{
+  &:focus {
     outline: none;
   }
 `;
