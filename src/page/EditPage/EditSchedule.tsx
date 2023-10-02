@@ -6,11 +6,13 @@ import FullSchedule from '../../component/DatePicker/ FullSchedule';
 import ExcludeTimes from '../../component/DatePicker/ExcludeTimes';
 import ScheduleMapLoader from '../../component/ScheduleMap';
 import AddressSearch from '../../component/AddressSearch';
+import { useNavigate } from 'react-router';
 
 export default function EditSchedule() {
   const [images, setImages] = useState<File[]>([]);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const [coreContainers, setCoreContainers] = useState(1);
+  const navigate = useNavigate();
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedImages = Array.from(e.target.files as FileList);
@@ -41,6 +43,10 @@ export default function EditSchedule() {
     if (coreContainers > 1) {
       setCoreContainers(prevContainers => prevContainers - 1);
     }
+  };
+
+  const handleBackButtonClick = () => {
+    navigate('/schedule'); // 이전 페이지로 이동
   };
 
   return (
@@ -82,7 +88,7 @@ export default function EditSchedule() {
         </ButtonContainer>
         <ButtonContainer>
           <EditButton>등록</EditButton>
-          <CancelButton>취소</CancelButton>
+          <CancelButton onClick={handleBackButtonClick}>취소</CancelButton>
         </ButtonContainer>
       </MainContainer>
     </>
@@ -114,7 +120,6 @@ const CoreContainer = styled.div`
   height: 340px;
   margin-top: 5%;
   background-color: #f7eae4;
-
 `;
 
 const CoreTopContainer = styled.div`
