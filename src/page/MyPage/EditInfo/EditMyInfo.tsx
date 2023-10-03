@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { GRAY_COLOR, LIGHT_GRAY_COLOR, LIGHT_ORANGE_COLOR } from '../../../color/color';
 import EditForm from './EditForm';
-import EditProfile from './EditProfile';
+import EditProfile from '../../../component/ImgUpload/EditProfile';
 
 export default function EditMyInfo() {
   const navigate = useNavigate();

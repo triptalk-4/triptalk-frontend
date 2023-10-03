@@ -103,7 +103,7 @@ export default function TravelCarousel() {
                 <SwiperTopText>
                   <SwiperTitle>{item.title}</SwiperTitle>
                   <SwiperNickname>
-                    <MyProfile></MyProfile>
+                    <UserProfile src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" />
                     {item.nickname}
                   </SwiperNickname>
                 </SwiperTopText>
@@ -187,7 +187,7 @@ const SwiperTitle = styled.div`
   font-size: 25px;
 `;
 
-const MyProfile = styled.div`
+const UserProfile = styled.img`
   width: 35px;
   height: 35px;
   border-radius: 100%;
