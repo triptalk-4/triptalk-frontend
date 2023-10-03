@@ -4,7 +4,7 @@ function Footer() {
   return (
     <footer>
       <FooterContainer>
-        <LogoImg src="img/footer_logo.png" />
+        <LogoImg src="/img/footer_logo.png" />
         <DescriptionContainer>
           <CompanyTitle>
             COMPANY
