@@ -24,6 +24,7 @@ function App() {
           <Route path="/travel" element={<Travel />} />
           <Route path="/myinfo" element={<MyInfo />} />
           <Route path="/lookmap" element={<LookMap />} />
+          <Route path="/schedule/:id" element={<SecheduleDetail />} />
         </Route>
         {/* Header,Footer을 안 보여주고 싶은 컴포넌트 */}
         <Route path="/editmyinfo" element={<EditMyInfo />} />
@@ -32,7 +33,6 @@ function App() {
         <Route path="/schedule" element={<Schedule />} />
         <Route path="/search" element={<SearchPage />} />
         <Route path="/editschedule" element={<EditSchedule />} />
-        <Route path="/schedule/:id" element={<SecheduleDetail />} />
       </Routes>
     </BrowserRouter>
   );

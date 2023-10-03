@@ -2,7 +2,7 @@ import { useState, useRef, ChangeEvent } from 'react';
 
 import { LuSettings } from 'react-icons/lu';
 import styled from 'styled-components';
-import { LIGHT_GRAY_COLOR } from '../../../color/color';
+import { LIGHT_GRAY_COLOR } from '../../color/color';
 
 export default function EditProfile() {
   const defaultImg = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
