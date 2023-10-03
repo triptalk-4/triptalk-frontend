@@ -13,7 +13,7 @@ const SearchHead = () => {
       <Container>
         <BackBtn onClick={() => navigator(-1)} />
         <HeadWrap>
-          <Input type="text" placeholder="여행지 검색" />
+          <Input type="text" placeholder="지역 또는 여행지를 검색해 보세요" />
           <SearchBtn />
         </HeadWrap>
       </Container>
@@ -38,7 +38,7 @@ const BackBtn = styled(FaArrowLeft)`
 `;
 
 const HeadWrap = styled.div`
-  width: 50%;
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
