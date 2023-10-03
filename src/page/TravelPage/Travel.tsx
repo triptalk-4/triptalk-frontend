@@ -25,12 +25,13 @@ const TravelContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  height: 100vh;
+  height: 95vh;
 `;
 
 const TravelTitleContainer = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
 `;
 
 const TravelTitle = styled.div`

@@ -1,16 +1,26 @@
 import Slider, { CustomArrowProps } from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+import { MdOutlineKeyboardArrowLeft, MdOutlineKeyboardArrowRight } from 'react-icons/md';
+import { GRAY_COLOR } from '../../color/color';
 
 function PrevArrow(props: CustomArrowProps) {
   const { onClick } = props;
-  return <PrevArrowButton onClick={onClick}>{'<'}</PrevArrowButton>;
+  return (
+    <PrevArrowButton onClick={onClick}>
+      <MdOutlineKeyboardArrowLeft />
+    </PrevArrowButton>
+  );
 }
 
 function NextArrow(props: CustomArrowProps) {
   const { onClick } = props;
-  return <NextArrowButton onClick={onClick}>{'>'}</NextArrowButton>;
+  return (
+    <NextArrowButton onClick={onClick}>
+      <MdOutlineKeyboardArrowRight />
+    </NextArrowButton>
+  );
 }
 
 function MainCarousel() {
@@ -19,63 +29,65 @@ function MainCarousel() {
       title: '양양 2박 여행',
       nickname: '제로베이스',
       schedule: '2023~09.15~2023.09.17',
-      imageUrl: 'img/Carousel.png',
+      imageUrl: 'img/Carousel.png'
     },
     {
       title: '속초 2박 여행',
       nickname: '프론트',
       schedule: '2023~09.22~2023.09.25',
-      imageUrl: 'img/Carousel.png',
+      imageUrl: 'img/Carousel.png'
     },
     {
       title: '제주 2박 여행',
       nickname: '백엔드',
       schedule: '2023~09.01~2023.09.03',
-      imageUrl: 'img/Carousel.png',
+      imageUrl: 'img/Carousel.png'
     },
     {
       title: '광주 2박 여행',
       nickname: '리액트',
       schedule: '2023~08.21~2023.08.23',
-      imageUrl: 'img/Carousel.png',
+      imageUrl: 'img/Carousel.png'
     },
     {
       title: '부산 2박 여행',
       nickname: '스프링',
       schedule: '2023~07.23~2023.08.25',
-      imageUrl: 'img/Carousel.png',
+      imageUrl: 'img/Carousel.png'
     },
     {
       title: '대구 2박 여행',
       nickname: '마리아DB',
       schedule: '2023~09.15~2023.09.17',
-      imageUrl: 'img/Carousel.png',
-    },
+      imageUrl: 'img/Carousel.png'
+    }
   ];
 
   const settings = {
-    dots: true,
-    infinite: false,
+    dots: false,
+    infinite: true,
     speed: 500,
     slidesToShow: 3,
     slidesToScroll: 1,
     initialSlide: 0,
+    autoplay: true,
+    autoplaySpeed: 2000,
     prevArrow: <PrevArrow />,
     nextArrow: <NextArrow />,
     responsive: [
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 2,
-        },
+          slidesToShow: 2
+        }
       },
       {
         breakpoint: 760,
         settings: {
-          slidesToShow: 1,
-        },
-      },
-    ],
+          slidesToShow: 1
+        }
+      }
+    ]
   };
 
   return (
@@ -107,43 +119,38 @@ const Card = styled.div`
   margin: 0 10px;
 `;
 
-const PrevArrowButton = styled.div`
+const BtnStyle = css`
   width: 50px;
   height: 50px;
-  color: black;
-  background-color: white;
-  border-radius: 50%;
   display: flex;
-  justify-content: center;
   align-items: center;
-  font-size: 24px;
+  justify-content: center;
+  border-radius: 100%;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background-color: rgba(255, 255, 255, 0.9);
+  color: rgba(0, 0, 0, 0.9);
+  font-size: 40px;
   cursor: pointer;
   position: absolute;
-  left: 2%;
-  top: 35%;
   z-index: 100;
+  box-shadow: 0px 0px 4px ${GRAY_COLOR};
+  top: 30%;
+`;
+
+const PrevArrowButton = styled.div`
+  ${BtnStyle}
+  left: -2%;
 `;
 
 const NextArrowButton = styled.div`
-  width: 50px;
-  height: 50px;
-  color: black;
-  background-color: white;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 24px;
-  cursor: pointer;
-  position: absolute;
-  right: 5%;
-  top: 35%;
-  z-index: 100;
+  ${BtnStyle}
+  right: 1%;
 `;
 
 const Image = styled.img`
   width: 270px;
   height: 300px;
+  cursor: pointer;
 `;
 
 const DescriptionTitle = styled.div`

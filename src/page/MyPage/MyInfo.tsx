@@ -22,16 +22,16 @@ export default function MyInfo() {
 
   return (
     <MyPageContainer>
-      <AvatarImgContainer>
-        <AvatarImg src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" />
-        <AvatarNickNameContainer>
+      <UserImgContainer>
+        <UserImg src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" />
+        <UserNickNameContainer>
           <NickName>닉네임</NickName>
           <Setting to="/editmyinfo">
             <AiOutlineSetting />
           </Setting>
-        </AvatarNickNameContainer>
-        <AvatarLogoutBtn>로그아웃</AvatarLogoutBtn>
-      </AvatarImgContainer>
+        </UserNickNameContainer>
+        <UserLogoutBtn>로그아웃</UserLogoutBtn>
+      </UserImgContainer>
       <ContentContainer>
         <ContentUl>
           {myInfoMenuTabs.map((menu, index) => (
@@ -54,14 +54,14 @@ const MyPageContainer = styled.div`
   margin: 0 auto;
 `;
 
-const AvatarImgContainer = styled.div`
+const UserImgContainer = styled.div`
   margin-top: 60px;
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
 
-const AvatarImg = styled.img`
+const UserImg = styled.img`
   width: 300px;
   height: 300px;
   border: 1px solid ${LIGHT_GRAY_COLOR};
@@ -69,7 +69,7 @@ const AvatarImg = styled.img`
   margin: 0 auto;
 `;
 
-const AvatarNickNameContainer = styled.div`
+const UserNickNameContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -90,7 +90,7 @@ const Setting = styled(Link)`
   cursor: pointer;
 `;
 
-const AvatarLogoutBtn = styled.button`
+const UserLogoutBtn = styled.button`
   font-size: 15px;
   border: none;
   background-color: transparent;

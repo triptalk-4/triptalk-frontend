@@ -3,7 +3,7 @@ import { CgClose } from 'react-icons/cg';
 const SearchRecent = () => {
   return (
     <Container>
-      <Title>최근검색</Title>
+      <Title>최근 검색</Title>
       <Ul>
         <SearchList>
           최근검색어
@@ -26,12 +26,12 @@ export default SearchRecent;
 
 const Container = styled.div`
   width: 100%;
-  margin-top: 130px;
+  margin-top: 60px;
 `;
 
 const Title = styled.h1`
   font-size: 1.5rem;
-  font-weight: 500;
+  font-weight: 700;
 `;
 const Ul = styled.ul`
   margin-top: 24px;

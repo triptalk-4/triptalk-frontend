@@ -20,11 +20,11 @@ export default SearchPopular;
 
 const Container = styled.div`
   width: 100%;
-  margin-top: 20px;
+  margin-top: 50px;
 `;
 const Title = styled.h1`
-  font-size: 1.3rem;
-  font-weight: 500;
+  font-size: 1.5rem;
+  font-weight: 700;
 `;
 
 const Ul = styled.ul`
@@ -41,4 +41,5 @@ const List = styled.li`
   background-color: ${MAIN_COLOR};
   padding: 10px;
   text-align: center;
+  cursor: pointer;
 `;
