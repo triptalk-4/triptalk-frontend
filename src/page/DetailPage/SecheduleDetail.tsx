@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import PostBox from '../../component/PostBox/PostBox';
+import { MAIN_COLOR } from '../../color/color';
 
 export default function SecheduleDetail() {
   // const defaultImg = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
@@ -11,14 +12,18 @@ export default function SecheduleDetail() {
         <PostBg>
           <PostText>
             <Title>
-              즐거웠던 서울, 대전 빵탐험
+              양양가서 서핑하다옴
               <DateSpan>23.09.05~23.09.07</DateSpan>
             </Title>
-            <UserName>
-              <UserProfile src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" />
-              User1
-            </UserName>
+            <UserWarp>
+              <EidtBtn>수정</EidtBtn>
+              <UserName>
+                <UserProfile src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" />
+                User1
+              </UserName>
+            </UserWarp>
           </PostText>
+          <PostBox />
           <PostBox />
         </PostBg>
       </PostContainer>
@@ -28,8 +33,7 @@ export default function SecheduleDetail() {
 
 const DetailContainer = styled.div`
   width: 80%;
-  margin: 0 auto;
-  height: 130vh;
+  margin: 50px auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -37,7 +41,6 @@ const DetailContainer = styled.div`
 
 const PostContainer = styled.div`
   width: 100%;
-  height: auto;
   padding-bottom: 50px;
   background-color: #f0f0f0;
   display: flex;
@@ -47,36 +50,51 @@ const PostContainer = styled.div`
 
 const MapContainer = styled.div`
   width: 100%;
-  height: 400px;
+  height: 350px;
   margin-bottom: 50px;
-  position: sticky;
+  /* position: sticky;
   top: 0;
-  z-index: 1;
+  z-index: 1; */
   background-color: darkblue;
 `;
 
 const PostBg = styled.div`
   width: 80%;
-  margin: 0 auto;
 `;
 
 const PostText = styled.div`
   display: flex;
-  justify-content: flex-end;
-  margin-bottom: 50px;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
 `;
 
 const Title = styled.h1`
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   font-size: 25px;
-  padding-right: 160px;
 `;
 
 const DateSpan = styled.span`
   font-size: 20px;
   font-weight: 500;
+`;
+
+const UserWarp = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const EidtBtn = styled.button`
+  background-color: ${MAIN_COLOR};
+  color: #fff;
+  width: 60px;
+  height: 40px;
+  border: none;
+  border-radius: 15px;
+  margin-right: 15px;
+  cursor: pointer;
 `;
 
 const UserName = styled.div`
