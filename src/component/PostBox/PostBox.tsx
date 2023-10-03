@@ -2,8 +2,8 @@ import styled, { css } from 'styled-components';
 import { BiTime } from 'react-icons/bi';
 import { GrLocation } from 'react-icons/gr';
 import { GRAY_COLOR } from '../../color/color';
-import CommentWindow from './CommentWindow';
 import ViewComments from './ViewComments';
+import EnterComment from './EnterComment';
 
 export default function PostBox() {
   return (
@@ -24,7 +24,7 @@ export default function PostBox() {
         <PostBorder></PostBorder>
         <ViewComments />
         <PostBorder></PostBorder>
-        <CommentWindow />
+        <EnterComment />
       </PostInfo>
     </PostBoxContainer>
   );

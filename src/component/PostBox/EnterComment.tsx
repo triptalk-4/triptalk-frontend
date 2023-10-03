@@ -2,7 +2,7 @@ import { PiArrowFatLineUpBold } from 'react-icons/pi';
 import styled from 'styled-components';
 import { GRAY_COLOR, MAIN_COLOR } from '../../color/color';
 
-export default function CommentWindow() {
+export default function EnterComment() {
   return (
     <CommentInputContainer>
       <InputWrap>
