@@ -134,8 +134,9 @@ export default function TravelCarousel() {
 
 const StyledSwiper = styled(Swiper)`
   width: 100%;
-  padding-top: 50px;
+  padding-top: 55px;
   padding-bottom: 200px;
+  margin-bottom: 40px;
 `;
 
 const StyledSwiperSlide = styled(SwiperSlide)`
@@ -160,7 +161,7 @@ const SwiperText = styled.div`
   bottom: -200px;
   width: 100%;
   height: 100%;
-  padding: 0 15px 10px;
+  padding: 0 15px 20px;
   background: linear-gradient(to top, rgba(0, 0, 0, 100) 0%, rgba(0, 0, 0, 0) 100%);
 `;
 
@@ -168,7 +169,7 @@ const SwiperTopText = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 `;
 
 const SwiperBottomText = styled.div`

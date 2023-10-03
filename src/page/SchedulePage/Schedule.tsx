@@ -118,7 +118,7 @@ const TitleContainer = styled.div`
 `;
 
 const Title = styled.div`
-  font-size: 24px;
+  font-size: 25px;
   font-weight: bold;
 `;
 
@@ -170,12 +170,12 @@ const LoadingMessage = styled.div`
 
 const EditButton = styled(Link)`
   width: 200px;
-  height: 60px;
+  height: 50px;
   color: ${DEFAULT_FONT_COLOR};
   background-color: inherit;
   margin-left: 150px;
   border: 1px solid black;
-  border-radius: 25px;
+  border-radius: 15px;
   font-size: 15px;
   display: flex;
   justify-content: center;
