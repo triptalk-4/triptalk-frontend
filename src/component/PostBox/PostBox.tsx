@@ -4,7 +4,7 @@ import { GrCursor } from 'react-icons/gr';
 export default function PostBox() {
   return (
     <PostBoxContainer>
-      <PostImg src="img/Carousel.png" alt=""></PostImg>
+      <PostImg src="/img/Carousel.png" alt=""></PostImg>
       <PostInfo>
         <PostInfoTime>시간 : 10월 3, 2023 11:30 오전</PostInfoTime>
         <PostInfoTitle>제목 : 양양가서 서핑하다옴</PostInfoTitle>
@@ -65,7 +65,7 @@ export default function PostBox() {
         </UserCommentContainer>
         <PostBorder></PostBorder>
         <CommentInputContainer>
-          <CommentInput placeholder="댓글 입력" />
+          <CommentInput placeholder="댓글 달기" />
           <ArrowIcons />
         </CommentInputContainer>
       </PostInfo>
@@ -74,7 +74,7 @@ export default function PostBox() {
 }
 
 const PostBoxContainer = styled.div`
-  width: 500px;
+  width: 100%;
   height: 400px;
   display: flex;
 `;
