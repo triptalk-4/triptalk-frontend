@@ -129,7 +129,6 @@ const CoreTopContainer = styled.div`
 `;
 
 const ImgContainer = styled.div`
-  margin-top: 5%;
   position: relative;
 `;
 
