@@ -20,9 +20,9 @@ export default function Header() {
         <Logo to="/main">
           <LogoImg src="/img/logo.png" alt="로고" />
         </Logo>
-        <Avatar to="/myinfo">
-          <AvatarImg src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" />
-        </Avatar>
+        <User to="/myinfo">
+          <UserImg src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" />
+        </User>
       </Gnb>
       <Nav ref={tabsRef}>
         <NavItem to="/main" $isActive={location.pathname === '/main'}>
@@ -70,11 +70,11 @@ const LogoImg = styled.img`
   height: auto;
 `;
 
-const Avatar = styled(Link)`
+const User = styled(Link)`
   height: 50px;
 `;
 
-const AvatarImg = styled.img`
+const UserImg = styled.img`
   width: 50px;
   height: 50px;
   border-radius: 100%;
