@@ -7,12 +7,11 @@ import TopButton from '../../component/TopButton/TopButton';
 import { GrEdit } from 'react-icons/gr';
 import { BsFillSuitHeartFill } from 'react-icons/bs';
 import { BsEyeFill } from 'react-icons/bs';
-import { BsFileEarmarkCheckFill } from 'react-icons/bs';
 import { DEFAULT_FONT_COLOR } from '../../color/color';
 
 function Schedule() {
   const initialData = Array.from({ length: 9 }, (_, index) => ({
-    id: index,
+    id: index
   }));
 
   const [data, setData] = useState(initialData);
@@ -34,7 +33,7 @@ function Schedule() {
 
       setTimeout(() => {
         const newData = Array.from({ length: 3 }, (_, index) => ({
-          id: data.length + index,
+          id: data.length + index
         }));
 
         setData(prevData => [...prevData, ...newData]);
@@ -85,7 +84,6 @@ function Schedule() {
                   </TopContainer>
                   <BottomContainer>
                     <Date>23.09.28</Date>
-                    <Save />
                   </BottomContainer>
                 </div>
               </Post>
@@ -224,9 +222,4 @@ const BottomContainer = styled.div`
 const Date = styled.div`
   font-size: 24px;
   margin-top: 95%;
-`;
-const Save = styled(BsFileEarmarkCheckFill)`
-  width: 30px;
-  height: 30px;
-  margin-top: 90%;
 `;
