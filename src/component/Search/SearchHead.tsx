@@ -13,7 +13,7 @@ const SearchHead = () => {
       <Container>
         <BackBtn onClick={() => navigator(-1)} />
         <HeadWrap>
-          <Input type="text" placeholder="지역 또는 여행지를 검색해 보세요" />
+          <Input type="text" placeholder="'지역' 또는 '여행지'를 검색해 보세요" />
           <SearchBtn />
         </HeadWrap>
       </Container>
