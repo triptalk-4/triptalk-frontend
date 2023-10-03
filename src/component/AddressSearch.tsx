@@ -1,4 +1,7 @@
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { setAddress } from '../store/mapStore';
+
 import styled from 'styled-components';
 
 declare global {
@@ -8,6 +11,8 @@ declare global {
 }
 
 const AddressSearch = () => {
+  const dispatch = useDispatch();
+
   const [postcode, setPostcode] = useState<string>('');
   const [roadAddress, setRoadAddress] = useState<string>('');
   const [jibunAddress, setJibunAddress] = useState<string>('');
@@ -16,6 +21,11 @@ const AddressSearch = () => {
     new window.daum.Postcode({
       oncomplete: function (data: any) {
         const roadAddr = data.roadAddress;
+        const address = data.address
+
+        // 주소 정보 redux 스토어 추가함
+        dispatch(setAddress(address));
+
 
         setPostcode(data.zonecode);
         setRoadAddress(roadAddr);
