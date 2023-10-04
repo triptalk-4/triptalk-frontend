@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { styled } from 'styled-components';
 import { Link } from 'react-router-dom';
 import Header from '../../component/Header';
@@ -70,7 +70,7 @@ function Schedule() {
         <GridContainer>
           {data.map(item => (
             <Link to={`/page/${item.id}`} key={item.id}>
-              <Post key={item.id}>
+              <StyledPost key={item.id}>
                 <div className="info-container">
                   <TopContainer>
                     <IconWithCount>
@@ -86,7 +86,8 @@ function Schedule() {
                     <Date>23.09.28</Date>
                   </BottomContainer>
                 </div>
-              </Post>
+                <Img src="img/postimg6.jpg" alt="Post Image" />
+              </StyledPost>
             </Link>
           ))}
         </GridContainer>
@@ -130,15 +131,13 @@ const GridContainer = styled.div`
   gap: 20px;
 `;
 
-const Post = styled.div`
+const StyledPost = styled.div`
   width: 100%;
   height: 350px;
-  background-image: url('img/postimg4.jpg');
-  background-size: cover;
-  background-position: center;
   position: relative;
   cursor: pointer;
   border-radius: 25px;
+  overflow: hidden;
 
   .info-container {
     position: absolute;
@@ -158,6 +157,13 @@ const Post = styled.div`
     display: block;
   }
 `;
+
+const Img = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+`;
+
 const LoadingMessage = styled.div`
   text-align: center;
   margin-top: 20px;
