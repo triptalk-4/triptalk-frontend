@@ -17,9 +17,11 @@ export default function Header() {
   return (
     <GnbContainer>
       <Gnb>
-        <Logo to="/main">
-          <LogoImg src="/img/logo.png" alt="로고" />
-        </Logo>
+        <LogoDiv>
+          <Logo to="/main">
+            <LogoImg src="/img/logo.png" alt="로고" />
+          </Logo>
+        </LogoDiv>
         <User to="/myinfo">
           <UserImg src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" />
         </User>
@@ -58,10 +60,15 @@ const Gnb = styled.div`
   border-bottom: 1px solid #c1c1c1;
 `;
 
+const LogoDiv = styled.div`
+  width: 200px;
+  height: auto;
+  padding-right: 590px;
+`;
+
 const Logo = styled(Link)`
   display: flex;
   align-items: center;
-  padding-right: 400px;
   cursor: pointer;
 `;
 
