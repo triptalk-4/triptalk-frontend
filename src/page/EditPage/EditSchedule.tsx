@@ -8,45 +8,47 @@ import ScheduleMapLoader from '../../component/ScheduleMap';
 import AddressSearch from '../../component/AddressSearch';
 import { useNavigate } from 'react-router';
 
+type CoreContainerData = {
+  images: File[];
+  imagePreviews: string[];
+};
+
 export default function EditSchedule() {
-  const [images, setImages] = useState<File[]>([]);
-  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
-  const [coreContainers, setCoreContainers] = useState(1);
   const navigate = useNavigate();
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const [coreContainers, setCoreContainers] = useState<CoreContainerData[]>([{ images: [], imagePreviews: [] }]);
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
     const selectedImages = Array.from(e.target.files as FileList);
 
-    // 이미지가 5장을 초과하는 경우 경고 메시지를 표시하고 업로드를 중단
-    if (images.length + selectedImages.length > 6) {
-      alert('이미지는 최대 6장까지 등록 가능합니다.');
+    if (coreContainers[index].images.length + selectedImages.length > 5) {
+      alert('이미지는 최대 5장까지 등록 가능합니다.');
       return;
     }
 
-    // 이미지 URL 배열 업데이트
     const imageUrls = selectedImages.map(image => URL.createObjectURL(image));
 
-    // 이미지 상태 업데이트
-    setImages(prevImages => [...prevImages, ...selectedImages]);
+    const updatedData = [...coreContainers];
+    updatedData[index].images = [...updatedData[index].images, ...selectedImages];
+    updatedData[index].imagePreviews = [...updatedData[index].imagePreviews, ...imageUrls];
 
-    // 이미지 미리보기 업데이트
-    setImagePreviews(prevPreviews => [...prevPreviews, ...imageUrls]);
+    setCoreContainers(updatedData);
   };
 
   const handleAddCoreContainer = () => {
-    if (coreContainers < 5) {
-      setCoreContainers(prevContainers => prevContainers + 1);
+    if (coreContainers.length < 5) {
+      setCoreContainers(prevContainers => [...prevContainers, { images: [], imagePreviews: [] }]);
     }
   };
 
   const handleRemoveCoreContainer = () => {
-    if (coreContainers > 1) {
-      setCoreContainers(prevContainers => prevContainers - 1);
+    if (coreContainers.length > 1) {
+      setCoreContainers(prevContainers => prevContainers.slice(0, prevContainers.length - 1));
     }
   };
 
   const handleBackButtonClick = () => {
-    navigate('/schedule'); // 이전 페이지로 이동
+    navigate('/schedule');
   };
 
   return (
@@ -58,7 +60,7 @@ export default function EditSchedule() {
           <Title placeholder="제목 (최대 40자)"></Title>
           <FullSchedule />
         </TitleContainer>
-        {Array.from({ length: coreContainers }).map((_, index) => (
+        {coreContainers.map((container, index) => (
           <CoreContainer key={index}>
             <CoreTopContainer>
               <ExcludeTimes />
@@ -69,13 +71,13 @@ export default function EditSchedule() {
                 type="file"
                 accept="image/*"
                 multiple
-                onChange={handleImageUpload}
+                onChange={e => handleImageUpload(e, index)}
                 id={`fileInput-${index}`}
               />
               <CustomFileInputLabel htmlFor={`fileInput-${index}`}>이미지 선택 (최대 5장)</CustomFileInputLabel>
               <ImagePreviews>
-                {imagePreviews.map((preview, index) => (
-                  <img key={index} src={preview} alt={`Image ${index}`} />
+                {container.imagePreviews.map((preview, imgIndex) => (
+                  <img key={imgIndex} src={preview} alt={`Image ${imgIndex}`} />
                 ))}
               </ImagePreviews>
               <CommentTextArea placeholder="장소리뷰" />
@@ -83,8 +85,8 @@ export default function EditSchedule() {
           </CoreContainer>
         ))}
         <ButtonContainer>
-          {coreContainers < 5 && <PlusButton onClick={handleAddCoreContainer}>+</PlusButton>}
-          {coreContainers > 1 && <MinusButton onClick={handleRemoveCoreContainer}>-</MinusButton>}
+          {coreContainers.length < 5 && <PlusButton onClick={handleAddCoreContainer}>+</PlusButton>}
+          {coreContainers.length > 1 && <MinusButton onClick={handleRemoveCoreContainer}>-</MinusButton>}
         </ButtonContainer>
         <ButtonContainer>
           <EditButton>등록</EditButton>
