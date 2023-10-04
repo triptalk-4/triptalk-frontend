@@ -2,14 +2,16 @@ import styled from 'styled-components';
 import { AiOutlineSetting } from 'react-icons/ai';
 import { DEFAULT_FONT_COLOR, GRAY_COLOR, LIGHT_GRAY_COLOR } from '../../color/color';
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import MyInfoPost from './MyInfoPost';
 import MyInfoSaved from './MyInfoSaved';
 
 export default function MyInfo() {
-  // const defaultImg = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
-
-  const [currentTab, setTab] = useState(0);
+  const [currentTab, setTab] = useState(0); // 탭기능
+  const [userData, setUserData] = useState({
+    imageUrl: '',
+    nickname: '',
+  }); // msw
 
   const myInfoMenuTabs = [
     { name: '게시물', content: <MyInfoPost /> },
@@ -20,12 +22,19 @@ export default function MyInfo() {
     setTab(index);
   };
 
+  useEffect(() => {
+    fetch('/api/myinfo')
+      .then(res => res.json())
+      .then(data => setUserData(data)) // userData 상태를 업데이트
+      .catch(error => console.error('가짜 API 요청 실패:', error));
+  }, []);
+
   return (
     <MyPageContainer>
       <UserImgContainer>
-        <UserImg src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" />
+        <UserImg src={userData.imageUrl} />
         <UserNickNameContainer>
-          <NickName>닉네임</NickName>
+          <NickName>{userData.nickname}</NickName>
           <Setting to="/editmyinfo">
             <AiOutlineSetting />
           </Setting>

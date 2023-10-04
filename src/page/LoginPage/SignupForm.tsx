@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router';
+import axios from 'axios';
 
 import styled from 'styled-components';
 import { GRAY_COLOR, MAIN_COLOR, YELLOW_COLOR } from '../../color/color';
@@ -94,6 +95,38 @@ const SignupForm = () => {
     return email.valid && password.valid && passwordConfirm.valid && name.valid;
   };
 
+  // 회원가입 요청 함수
+  const sendSignupData = async (formData: any) => {
+    try {
+      const res = await axios.post('http://52.79.200.55:8080/api/users/register', formData);
+      console.log(res);
+      return res.data;
+    } catch (error) {
+      console.log(formData);
+      console.error('API 요청 실패:', error);
+      throw error;
+    }
+  };
+  // 회원가입 버튼
+  const handleSignup = async () => {
+    if (isFormValid()) {
+      try {
+        const formData = {
+          email: email.value,
+          password: password.value,
+          name: name.value,
+        };
+        alert('회원가입이 완료되었습니다.');
+        navigator('/main');
+        const res = await sendSignupData(formData);
+
+        console.log('회원가입 성공', res);
+      } catch (error) {
+        console.error('회원가입 실패:', error);
+      }
+    }
+  };
+
   return (
     <>
       <Container>
@@ -112,6 +145,18 @@ const SignupForm = () => {
             />
             {email.valid ? null : <p>{email.message}</p>}
           </FormGroup>
+
+          {/* <FormGroup>
+            <Label>이메일 인증</Label>
+            <Input
+              type="email"
+              name="email"
+              // value={email.value}
+              // onChange={e => handleChange(e, validateEmail)}
+              placeholder="email 인증번호"
+            />
+            {email.valid ? null : <p>{email.message}</p>}
+          </FormGroup> */}
 
           <FormGroup>
             <Label>비밀번호</Label>
@@ -147,24 +192,12 @@ const SignupForm = () => {
               name="name"
               value={name.value}
               onChange={e => handleChange(e, validateName)}
-              placeholder="닉네임"
+              placeholder="사용할 닉네임"
             />
             <p>{name.message}</p>
           </FormGroup>
 
-          <FormGroup>
-            <Label>이메일 인증</Label>
-            <Input
-              type="email"
-              name="email"
-              // value={email.value}
-              // onChange={e => handleChange(e, validateEmail)}
-              placeholder="email 인증번호"
-            />
-            {email.valid ? null : <p>{email.message}</p>}
-          </FormGroup>
-
-          <Button type="submit" className={isFormValid() ? 'active' : ''}>
+          <Button type="submit" className={isFormValid() ? 'active' : ''} onClick={handleSignup}>
             회원가입
           </Button>
         </FormWrap>
