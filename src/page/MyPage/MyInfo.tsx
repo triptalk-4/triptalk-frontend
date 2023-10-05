@@ -9,7 +9,7 @@ import TopButton from '../../component/TopButton/TopButton';
 
 export default function MyInfo() {
   const [currentTab, setTab] = useState(0); // 탭기능
-  const [userData, setUserData] = useState({
+  const [userEditData, setUserEditData] = useState({
     imgUrl: '',
     nickname: '',
   }); // msw
@@ -24,18 +24,18 @@ export default function MyInfo() {
   };
 
   useEffect(() => {
-    fetch('/api/userinfo')
+    fetch('/api/userinfoeidt')
       .then(res => res.json())
-      .then(data => setUserData(data))
+      .then(data => setUserEditData(data))
       .catch(error => console.error('가짜 API 요청 실패:', error));
   }, []);
 
   return (
     <MyPageContainer>
       <UserImgContainer>
-        <UserImg src={userData.imgUrl} />
+        <UserImg src={userEditData.imgUrl} />
         <UserNickNameContainer>
-          <NickName>{userData.nickname}</NickName>
+          <NickName>{userEditData.nickname}</NickName>
           <Setting to="/editmyinfo">
             <AiOutlineSetting />
           </Setting>

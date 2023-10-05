@@ -1,13 +1,7 @@
 import styled from 'styled-components';
 import { MAIN_COLOR, SUPER_LIGHT_ORANGE_COLOR } from '../../../color/color';
 import { BiEditAlt } from 'react-icons/bi';
-import { useState } from 'react';
-
-interface EditFormData {
-  email: string;
-  password: string;
-  nickname: string;
-}
+import { useEffect, useState } from 'react';
 
 interface InputState {
   value: string;
@@ -16,11 +10,20 @@ interface InputState {
 }
 
 export default function EditForm() {
-  const defaultValues: EditFormData = {
-    email: 'user1@naver.com',
-    password: 'Password123',
-    nickname: '사조사조',
-  };
+  const [userEditData, setUserEditData] = useState({
+    imgUrl: '',
+    email: '',
+    password: '',
+    nickname: '',
+  }); // msw
+
+  useEffect(() => {
+    fetch('/api/userinfoeidt')
+      .then(res => res.json())
+      .then(data => setUserEditData(data))
+      .catch(error => console.error('가짜 API 요청 실패:', error));
+  }, []);
+
   ///////////////////////현재비밀번호////////////////////
   const [currentPassword, setCurrentPassword] = useState('');
   const [currentPasswordState, setCurrentPasswordState] = useState<InputState>({
@@ -31,7 +34,7 @@ export default function EditForm() {
 
   const validateCurrentPassword = (value: string) => {
     // 기존 비밀번호와 비교하여 일치 여부 확인
-    if (value === defaultValues.password) {
+    if (value === userEditData.password) {
       setCurrentPasswordState({
         value,
         valid: true,
@@ -116,11 +119,11 @@ export default function EditForm() {
   };
 
   ///////////////////////닉네임////////////////////
-  const [nickname, setNickname] = useState(defaultValues.nickname);
+  const [nickname, setNickname] = useState(userEditData.nickname);
   const [isEditingNickname, setIsEditingNickname] = useState(false);
 
   const [nicknameState, setNicknameState] = useState<InputState>({
-    value: defaultValues.nickname,
+    value: userEditData.nickname,
     valid: true,
     message: '',
   });
@@ -156,7 +159,7 @@ export default function EditForm() {
       <MyInfoField>
         <MyInfoLabel htmlFor="email">이메일</MyInfoLabel>
         <InputWithButton>
-          <MyInfoInput type="email" id="email" value={defaultValues.email} disabled />
+          <MyInfoInput type="email" id="email" value={userEditData.email} disabled />
         </InputWithButton>
       </MyInfoField>
 
@@ -187,7 +190,7 @@ export default function EditForm() {
             value={newPassword}
             onChange={handleNewPasswordChange}
           />
-          {/* 새비밀번호 유효성 메시지를 표시합니다. */}
+          {/* 새비밀번호 유효성 메시지를 표시 */}
           {!newPasswordState.valid && (
             <p style={{ color: 'red', paddingLeft: '15px', fontSize: '13px' }}>{newPasswordState.message}</p>
           )}
@@ -204,7 +207,7 @@ export default function EditForm() {
             value={confirmNewPassword}
             onChange={handleConfirmNewPasswordChange}
           />
-          {/* 새비밀번호 확인 유효성 메시지를 표시합니다. */}
+          {/* 새비밀번호 확인 유효성 메시지를 표시 */}
           {!confirmNewPasswordState.valid && (
             <p style={{ color: 'red', paddingLeft: '15px', fontSize: '13px' }}>{confirmNewPasswordState.message}</p>
           )}
@@ -217,14 +220,14 @@ export default function EditForm() {
           <MyInfoInput
             type="text"
             id="nickname"
-            defaultValue={nickname}
+            defaultValue={userEditData.nickname}
             onChange={handleNicknameChange}
             disabled={!isEditingNickname}
           />
           <EditButton type="button" onClick={handleNicknameEditClick}>
             <BiEditAlt />
-          </EditButton>{' '}
-          {/* 닉네임 유효성 메시지를 표시합니다. */}
+          </EditButton>
+          {/* 닉네임 유효성 메시지를 표시 */}
           {!nicknameState.valid && (
             <p style={{ color: 'red', paddingLeft: '15px', fontSize: '13px' }}>{nicknameState.message}</p>
           )}
