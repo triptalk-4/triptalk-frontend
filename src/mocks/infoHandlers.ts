@@ -11,7 +11,7 @@ const userInfoData = {
 };
 
 export const infoHandlers = [
-  rest.get<userInfoItem>('/api/myinfo', (req, res, ctx) => {
+  rest.get<userInfoItem>('/api/userinfo', (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(userInfoData));
   }),
 ];
