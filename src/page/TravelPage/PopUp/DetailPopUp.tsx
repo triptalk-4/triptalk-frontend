@@ -5,7 +5,22 @@ import { useState } from 'react';
 import RegionButton from './RegionButton';
 import OrderButton from './OrderButton';
 
-export default function DetailPopUp() {
+interface DetailPopUpProps {
+  travelsData: travelItem[];
+  setTravelsData: (data: travelItem[]) => void;
+}
+
+interface travelItem {
+  imgUrl: string;
+  title: string;
+  nickname: string;
+  address: string;
+  date: string;
+  heartCount: number;
+  lookUpCount: number;
+}
+
+export default function DetailPopUp(props: DetailPopUpProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRegion, setSelectedRegion] = useState('');
   const [selectedOrder, setSelectedOrder] = useState('');
@@ -29,11 +44,13 @@ export default function DetailPopUp() {
   };
 
   const handleRegionChange = (region: string) => {
+    // 지역클릭
     setPreviousRegion(selectedRegion);
     setSelectedRegion(region);
   };
 
   const handleOrderChange = (order: string) => {
+    // 보고싶은 순 클릭
     setPreviousOrder(selectedOrder);
     setSelectedOrder(order);
   };
@@ -43,6 +60,20 @@ export default function DetailPopUp() {
     // console.log('선택한 보고싶은 순:', selectedOrder);
 
     if (selectedRegion && selectedOrder) {
+      // 주소 지역선택
+      const filteredTravels = props.travelsData.filter(travel => travel.address.includes(selectedRegion));
+
+      if (selectedOrder === '좋아요순') {
+        filteredTravels.sort((a, b) => b.heartCount - a.heartCount);
+      } else if (selectedOrder === '최신순') {
+        filteredTravels.sort((a, b) => (new Date(b.date) as any) - (new Date(a.date) as any));
+      } else if (selectedOrder === '조회수순') {
+        filteredTravels.sort((a, b) => b.lookUpCount - a.lookUpCount);
+      }
+
+      // 정렬된 여행 정보
+      props.setTravelsData(filteredTravels);
+
       setIsModalOpen(false);
     } else {
       alert('지역과 보고싶은 순 모두 선택해주세요.');
@@ -69,7 +100,7 @@ export default function DetailPopUp() {
             <TitleText>보고싶은 순을 눌려주세요</TitleText>
             <OrderButton selectedOrder={selectedOrder} onOrderChange={handleOrderChange} />
             <BtnContainer>
-              <CheckBtn onClick={() => handleConfirm()}>확인</CheckBtn>
+              <CheckBtn onClick={handleConfirm}>확인</CheckBtn>
               <CloseBtn onClick={closeModal}>취소</CloseBtn>
             </BtnContainer>
           </ModalContent>

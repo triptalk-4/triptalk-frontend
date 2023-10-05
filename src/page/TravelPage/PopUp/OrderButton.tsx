@@ -18,7 +18,11 @@ export default function OrderButton({ selectedOrder, onOrderChange }: OrderButto
     <ButtonContainer>
       <OrderBtnDiv>
         {orders.map(order => (
-          <OrderBtn key={order} value={order} isSelected={selectedOrder === order} onClick={() => onOrderChange(order)}>
+          <OrderBtn
+            key={order}
+            value={order}
+            $isSelected={selectedOrder === order}
+            onClick={() => onOrderChange(order)}>
             {order}
           </OrderBtn>
         ))}
@@ -37,12 +41,12 @@ const OrderBtnDiv = styled.div`
   align-items: center;
 `;
 
-const OrderBtn = styled.button<{ isSelected: boolean }>`
+const OrderBtn = styled.button<{ $isSelected: boolean }>`
   width: 100px;
   height: 55px;
-  border: ${props => (props.isSelected ? 'none' : '1px solid #000')};
-  background-color: ${props => (props.isSelected ? YELLOW_COLOR : '#fff')};
-  color: ${props => (props.isSelected ? '#fff' : '#000')};
+  border: ${props => (props.$isSelected ? 'none' : '1px solid #000')};
+  background-color: ${props => (props.$isSelected ? YELLOW_COLOR : '#fff')};
+  color: ${props => (props.$isSelected ? '#fff' : '#000')};
   border-radius: 15px;
   font-size: 15px;
   cursor: pointer;

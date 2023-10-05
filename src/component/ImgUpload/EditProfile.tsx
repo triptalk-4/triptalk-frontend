@@ -1,13 +1,25 @@
-import { useState, useRef, ChangeEvent } from 'react';
-
+import { useState, useRef, ChangeEvent, useEffect } from 'react';
 import { LuSettings } from 'react-icons/lu';
 import styled from 'styled-components';
 import { LIGHT_GRAY_COLOR } from '../../color/color';
 
-export default function EditProfile() {
-  const defaultImg = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
+interface EditProfileProps {
+  updateImgFile: (file: File) => void;
+}
 
-  const [imgFile, setImgFile] = useState<string>(defaultImg);
+export default function EditProfile({ updateImgFile }: EditProfileProps) {
+  const [userEditData, setUserEditData] = useState({
+    imgUrl: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
+  }); // msw
+
+  useEffect(() => {
+    fetch('/api/userinfoeidt')
+      .then(res => res.json())
+      .then(data => setUserEditData(data))
+      .catch(error => console.error('가짜 API 요청 실패:', error));
+  }, []);
+
+  const [imgFile, setImgFile] = useState<string>(userEditData.imgUrl);
 
   const imgRef = useRef<HTMLInputElement | null>(null); // 초기에는 아무것도 가르키고 있지 않음
 
@@ -15,11 +27,10 @@ export default function EditProfile() {
     // 선택한 이미지 보기
     const file = e.target.files?.[0]; // 선택한 파일
     if (file) {
-      const reader = new FileReader();
-      reader.onload = e => {
-        setImgFile(e.target?.result as string); // 이미지 파일을 상태 변수에 저장
-      };
-      reader.readAsDataURL(file); // 파일을 데이터 URL로 읽어옴
+      // 이미지 파일을 상태 변수에 저장
+      setImgFile(URL.createObjectURL(file));
+      // 이미지 파일을 부모 컴포넌트로 전달
+      updateImgFile(file);
     }
   };
 

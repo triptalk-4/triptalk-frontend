@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import PostBox from '../../component/PostBox/PostBox';
 import { MAIN_COLOR } from '../../color/color';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
@@ -75,9 +75,9 @@ const MapContainer = styled.div`
   width: 100%;
   height: 350px;
   margin-bottom: 50px;
-  /* position: sticky;
+  position: sticky;
   top: 0;
-  z-index: 1; */
+  z-index: 1;
   background-color: darkblue;
 `;
 
@@ -135,14 +135,14 @@ const UserProfile = styled.img`
   background-color: #fff;
 `;
 
-const HeartBtn = styled.button`
+const BtnStyle = css`
   width: 50px;
   height: 50px;
   border-radius: 50%;
   cursor: pointer;
   background-color: white;
   position: fixed;
-  top: 600px;
+
   right: 505px;
   display: flex;
   align-items: center;
@@ -151,19 +151,17 @@ const HeartBtn = styled.button`
   border: none;
 `;
 
+const HeartBtn = styled.button`
+  ${BtnStyle}
+  top: 600px;
+`;
+
 const LikeCount = styled.span`
   font-size: 12px;
   margin-top: 2px;
 `;
 
 const SaveBtn = styled.button`
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  cursor: pointer;
-  background-color: white;
-  position: fixed;
+  ${BtnStyle}
   top: 700px;
-  right: 505px;
-  border: none;
 `;

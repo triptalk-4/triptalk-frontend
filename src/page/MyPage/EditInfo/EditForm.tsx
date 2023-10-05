@@ -1,7 +1,10 @@
 import styled from 'styled-components';
 import { MAIN_COLOR, SUPER_LIGHT_ORANGE_COLOR } from '../../../color/color';
-import { BiEditAlt } from 'react-icons/bi';
 import { useEffect, useState } from 'react';
+
+interface EditDataProps {
+  updateUserEditData: (userData: any) => void;
+}
 
 interface InputState {
   value: string;
@@ -9,9 +12,8 @@ interface InputState {
   message: string;
 }
 
-export default function EditForm() {
+export default function EditForm({ updateUserEditData }: EditDataProps) {
   const [userEditData, setUserEditData] = useState({
-    imgUrl: '',
     email: '',
     password: '',
     nickname: '',
@@ -53,6 +55,12 @@ export default function EditForm() {
     const currentPasswordValue = e.target.value;
     setCurrentPassword(currentPasswordValue);
     validateCurrentPassword(currentPasswordValue);
+
+    // 사용자 정보를 업데이트
+    updateUserEditData({
+      ...userEditData,
+      password: currentPasswordValue,
+    });
   };
 
   ///////////////////////새비밀번호////////////////////
@@ -120,18 +128,13 @@ export default function EditForm() {
 
   ///////////////////////닉네임////////////////////
   const [nickname, setNickname] = useState(userEditData.nickname);
-  const [isEditingNickname, setIsEditingNickname] = useState(false);
-
   const [nicknameState, setNicknameState] = useState<InputState>({
-    value: userEditData.nickname,
+    value: nickname,
     valid: true,
     message: '',
   });
 
   /* 닉네임 수정 */
-  const handleNicknameEditClick = () => {
-    setIsEditingNickname(!isEditingNickname);
-  };
 
   const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newNickname = e.target.value;
@@ -142,6 +145,12 @@ export default function EditForm() {
       value: newNickname,
       valid: validationNickname.valid,
       message: validationNickname.message,
+    });
+
+    // 사용자 정보를 업데이트
+    updateUserEditData({
+      ...userEditData,
+      nickname: newNickname,
     });
   };
 
@@ -217,16 +226,7 @@ export default function EditForm() {
       <MyInfoField>
         <MyInfoLabel htmlFor="nickname">닉네임</MyInfoLabel>
         <InputWithButton>
-          <MyInfoInput
-            type="text"
-            id="nickname"
-            defaultValue={userEditData.nickname}
-            onChange={handleNicknameChange}
-            disabled={!isEditingNickname}
-          />
-          <EditButton type="button" onClick={handleNicknameEditClick}>
-            <BiEditAlt />
-          </EditButton>
+          <MyInfoInput type="text" id="nickname" defaultValue={userEditData.nickname} onChange={handleNicknameChange} />
           {/* 닉네임 유효성 메시지를 표시 */}
           {!nicknameState.valid && (
             <p style={{ color: 'red', paddingLeft: '15px', fontSize: '13px' }}>{nicknameState.message}</p>
@@ -276,15 +276,4 @@ const MyInfoInput = styled.input`
   &:disabled {
     background-color: #f2f2f2;
   }
-`;
-
-const EditButton = styled.button`
-  cursor: pointer;
-  border: none;
-  background-color: transparent;
-  font-size: 25px;
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
 `;
