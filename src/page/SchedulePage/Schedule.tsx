@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import { useState, useEffect } from 'react';
 import { styled } from 'styled-components';
+=======
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
+>>>>>>> 1ea5ddbb8aa9081860f903f87b9bafe9325eb8ee
 import { Link } from 'react-router-dom';
 import Header from '../../component/Header';
 import SecheduleSelect from '../../component/SecheduleSelect/SecheduleSelect';
@@ -19,7 +24,7 @@ interface Item {
 
 function Schedule() {
   const [data, setData] = useState<Item[]>([]);
-  const [visibleItems, setVisibleItems] = useState<Item[]>([]);
+  const [visibleItems, setVisibleItems] = useState<Item[]>([]); //첫 로드시 페이지에 나타낼 아이템 갯수
   const [isLoading, setIsLoading] = useState(false);
   const [showTopButton, setShowTopButton] = useState(false);
 
@@ -27,8 +32,9 @@ function Schedule() {
     fetch('/api/schedule')
       .then(res => res.json())
       .then(data => {
-        setData(data);
-        setVisibleItems(data.slice(0, 9));
+        const sortedData = [...data].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+        setData(sortedData);
+        setVisibleItems(sortedData.slice(0, 9));
       })
       .catch(error => console.error('API Request Failure:', error));
   }, []);
@@ -53,6 +59,7 @@ function Schedule() {
   };
 
   const loadMoreItems = () => {
+    // 로드될 아이템이 없다면 반환
     if (visibleItems.length >= data.length) {
       return;
     }
@@ -66,6 +73,24 @@ function Schedule() {
     }, 500);
   };
 
+  const handleSortChange = (sortKey: string) => {
+    let sortedData;
+    switch (sortKey) {
+      case '최신순':
+        sortedData = [...data].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+        break;
+      case '좋아요':
+        sortedData = [...data].sort((a, b) => b.heartCount - a.heartCount);
+        break;
+      case '조회순':
+        sortedData = [...data].sort((a, b) => b.lookUpCount - a.lookUpCount);
+        break;
+      default:
+        sortedData = data;
+    }
+    setVisibleItems(sortedData);
+  };
+
   return (
     <>
       <Header />
@@ -73,7 +98,7 @@ function Schedule() {
         <TitleContainer>
           <Title>여러분의 일정을 보여주세요!</Title>
           <SelectBox>
-            <SecheduleSelect />
+            <SecheduleSelect onSortChange={handleSortChange} />
           </SelectBox>
           <EditButton to="/editschedule">
             일정등록하기
@@ -96,7 +121,7 @@ function Schedule() {
                     </IconWithCount>
                   </TopContainer>
                   <BottomContainer>
-                    <Date>{item.date}</Date>
+                    <DateLabel>{item.date}</DateLabel>
                   </BottomContainer>
                 </div>
                 <Img src={item.img} alt="Post Image" />
@@ -239,7 +264,7 @@ const BottomContainer = styled.div`
   justify-content: space-between;
 `;
 
-const Date = styled.div`
+const DateLabel = styled.div`
   font-size: 24px;
   margin-top: 95%;
 `;
