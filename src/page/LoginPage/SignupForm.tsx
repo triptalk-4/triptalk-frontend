@@ -395,6 +395,3 @@ const Button = styled.button`
     }
   }
 `;
-function async(value: string) {
-  throw new Error('Function not implemented.');
-}
