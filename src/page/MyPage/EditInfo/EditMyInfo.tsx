@@ -1,12 +1,56 @@
 import styled, { css } from 'styled-components';
-
 import { useNavigate } from 'react-router-dom';
 import { GRAY_COLOR, LIGHT_GRAY_COLOR, LIGHT_ORANGE_COLOR } from '../../../color/color';
 import EditForm from './EditForm';
 import EditProfile from '../../../component/ImgUpload/EditProfile';
+import { useState } from 'react';
+
+interface UserEditData {
+  imgUrl: string;
+  email: string;
+  password: string;
+  nickname: string;
+}
 
 export default function EditMyInfo() {
+  const [userEditData, setUserEditData] = useState<UserEditData>({
+    imgUrl: '',
+    email: '',
+    password: '',
+    nickname: '',
+  }); // msw
+
   const navigate = useNavigate();
+
+  const [imgFile, setImgFile] = useState<File | string>('');
+
+  const updateUserEditData = (data: UserEditData) => {
+    setUserEditData(data);
+  };
+
+  const updateImgFile = (file: File) => {
+    setImgFile(file);
+  };
+  const handleEditButtonClick = () => {
+    const editedUserData = {
+      ...userEditData,
+      imgUrl: imgFile,
+    };
+
+    fetch('/api/updateUserData', {
+      method: 'PUT',
+      body: JSON.stringify(editedUserData), // 수정된 데이터를 서버로 보냅니다.
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log('데이터가 수정되었습니다.', data);
+        setUserEditData(data);
+      })
+      .catch(error => console.error('데이터 수정 실패:', error));
+  };
 
   const handleBackButtonClick = () => {
     navigate('/myinfo'); // 이전 페이지로 이동
@@ -17,16 +61,18 @@ export default function EditMyInfo() {
       <InfoTitle>개인정보수정</InfoTitle>
       <InfoEditContainer>
         <ImgEditContainer>
-          <EditProfile />
+          <EditProfile updateImgFile={updateImgFile} />
           <ExitBtn>탈퇴하기</ExitBtn>
         </ImgEditContainer>
 
         <MyInfoEditForm>
-          <EditForm />
+          <EditForm updateUserEditData={updateUserEditData} />
         </MyInfoEditForm>
 
         <MyInfoBtnSetting>
-          <EditBtn type="submit">수정하기</EditBtn>
+          <EditBtn type="submit" onClick={handleEditButtonClick}>
+            수정하기
+          </EditBtn>
           <CancelBtn onClick={handleBackButtonClick}>취소</CancelBtn>
         </MyInfoBtnSetting>
       </InfoEditContainer>
