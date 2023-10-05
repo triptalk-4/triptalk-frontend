@@ -65,7 +65,7 @@ export default function MyInfoPost() {
 
   useEffect(() => {
     // 게시물 갯수에 따라 스타일 변경
-    if (postdata.length >= 3) {
+    if (postdata.length >= 2) {
       setContainerClassName('flex-start');
     } else {
       setContainerClassName('space-between');
