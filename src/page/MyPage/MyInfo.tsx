@@ -5,11 +5,12 @@ import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import MyInfoPost from './MyInfoPost';
 import MyInfoSaved from './MyInfoSaved';
+import TopButton from '../../component/TopButton/TopButton';
 
 export default function MyInfo() {
   const [currentTab, setTab] = useState(0); // 탭기능
   const [userData, setUserData] = useState({
-    imageUrl: '',
+    imgUrl: '',
     nickname: '',
   }); // msw
 
@@ -23,16 +24,16 @@ export default function MyInfo() {
   };
 
   useEffect(() => {
-    fetch('/api/myinfo')
+    fetch('/api/userinfo')
       .then(res => res.json())
-      .then(data => setUserData(data)) // userData 상태를 업데이트
+      .then(data => setUserData(data))
       .catch(error => console.error('가짜 API 요청 실패:', error));
   }, []);
 
   return (
     <MyPageContainer>
       <UserImgContainer>
-        <UserImg src={userData.imageUrl} />
+        <UserImg src={userData.imgUrl} />
         <UserNickNameContainer>
           <NickName>{userData.nickname}</NickName>
           <Setting to="/editmyinfo">
@@ -54,6 +55,7 @@ export default function MyInfo() {
         </ContentUl>
         {myInfoMenuTabs[currentTab].content}
       </ContentContainer>
+      <TopButton />
     </MyPageContainer>
   );
 }

@@ -1,5 +1,10 @@
+<<<<<<< HEAD
+import { useState, useEffect } from 'react';
+import { styled } from 'styled-components';
+=======
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+>>>>>>> 1ea5ddbb8aa9081860f903f87b9bafe9325eb8ee
 import { Link } from 'react-router-dom';
 import Header from '../../component/Header';
 import SecheduleSelect from '../../component/SecheduleSelect/SecheduleSelect';
@@ -62,7 +67,7 @@ function Schedule() {
     setTimeout(() => {
       setVisibleItems(prevItems => [
         ...prevItems,
-        ...data.slice(prevItems.length, Math.min(prevItems.length + 6, data.length))
+        ...data.slice(prevItems.length, Math.min(prevItems.length + 6, data.length)),
       ]);
       setIsLoading(false);
     }, 500);
