@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { styled } from 'styled-components';
 import { Link } from 'react-router-dom';
 import Header from '../../component/Header';
@@ -60,7 +60,7 @@ function Schedule() {
     setTimeout(() => {
       setVisibleItems(prevItems => [
         ...prevItems,
-        ...data.slice(prevItems.length, Math.min(prevItems.length + 6, data.length))
+        ...data.slice(prevItems.length, Math.min(prevItems.length + 6, data.length)),
       ]);
       setIsLoading(false);
     }, 500);
