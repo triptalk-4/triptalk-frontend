@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
-interface PostItem {
+interface Post {
   id: number;
   imgSrc: string;
   title: string;
@@ -9,105 +9,106 @@ interface PostItem {
   date: string;
 }
 
-const postdata: PostItem[] = [
-  { id: 1, imgSrc: 'img/postimg1.jpg', title: '궁궐 달빛기행', schedule: '23.09.07~23.09.10', date: '23.09.11' },
-  { id: 2, imgSrc: 'img/postimg2.jpg', title: '창덕궁 달빛기행', schedule: '23.09.07~23.09.10', date: '23.09.12' },
-  { id: 3, imgSrc: 'img/postimg3.jpg', title: '경복궁 달빛기행', schedule: '23.09.07~23.09.10', date: '23.09.13' },
-  { id: 4, imgSrc: 'img/postimg4.jpg', title: '창경궁 달빛기행', schedule: '23.09.07~23.09.10', date: '23.09.14' },
-  { id: 5, imgSrc: 'img/postimg5.jpg', title: '경희궁 달빛기행', schedule: '23.09.07~23.09.10', date: '23.09.15' },
-  { id: 6, imgSrc: 'img/postimg6.jpg', title: '덕수궁 달빛기행', schedule: '23.09.07~23.09.10', date: '23.09.16' },
-  { id: 7, imgSrc: 'img/postimg3.jpg', title: '경복궁 달빛기행', schedule: '23.09.07~23.09.10', date: '23.09.17' },
-  { id: 8, imgSrc: 'img/postimg2.jpg', title: '창덕궁 달빛기행', schedule: '23.09.07~23.09.10', date: '23.09.18' },
-  { id: 9, imgSrc: 'img/postimg1.jpg', title: '궁궐 달빛기행', schedule: '23.09.07~23.09.10', date: '23.09.19' },
-  { id: 10, imgSrc: 'img/postimg2.jpg', title: '대한민국 달빛기행', schedule: '23.09.07~23.09.10', date: '23.09.20' },
-  { id: 11, imgSrc: 'img/postimg5.jpg', title: '경희궁 달빛기행', schedule: '23.09.07~23.09.10', date: '23.09.21' },
-  { id: 12, imgSrc: 'img/postimg1.jpg', title: '궁궐 달빛기행', schedule: '23.09.07~23.09.10', date: '23.09.22' },
-  { id: 13, imgSrc: 'img/postimg2.jpg', title: '창덕궁 달빛기행', schedule: '23.09.07~23.09.10', date: '23.09.23' },
-  { id: 14, imgSrc: 'img/postimg3.jpg', title: '경복궁 달빛기행', schedule: '23.09.07~23.09.10', date: '23.09.24' },
-  { id: 15, imgSrc: 'img/postimg4.jpg', title: '창경궁 달빛기행', schedule: '23.09.07~23.09.10', date: '23.09.25' },
-  { id: 16, imgSrc: 'img/postimg5.jpg', title: '경희궁 달빛기행', schedule: '23.09.07~23.09.10', date: '23.09.26' },
-  { id: 17, imgSrc: 'img/postimg6.jpg', title: '덕수궁 달빛기행', schedule: '23.09.07~23.09.10', date: '23.09.27' },
-  { id: 18, imgSrc: 'img/postimg1.jpg', title: '궁궐 달빛기행', schedule: '23.09.07~23.09.10', date: '23.09.28' },
-  { id: 19, imgSrc: 'img/postimg4.jpg', title: '창경궁 달빛기행', schedule: '23.09.07~23.09.10', date: '23.09.29' },
-  { id: 20, imgSrc: 'img/postimg5.jpg', title: '경희궁 달빛기행', schedule: '23.09.07~23.09.10', date: '23.09.30' },
-  { id: 21, imgSrc: 'img/postimg6.jpg', title: '덕수궁 달빛기행', schedule: '23.09.07~23.09.10', date: '23.09.31' },
-];
-
-// 게시물 컴포넌트
-function Post({ item }: { item: PostItem }) {
-  return (
-    <BoxWrap>
-      <Box>
-        <ImgDiv>
-          <TextImg src={item.imgSrc} alt="대표이미지" />
-        </ImgDiv>
-        <Info>
-          <TitleText>{item.title}</TitleText>
-          <ScheduleeText>{item.schedule}</ScheduleeText>
-          <DateText>{item.date}</DateText>
-        </Info>
-      </Box>
-    </BoxWrap>
-  );
-}
-
-function MyInfoPost() {
+export default function MyInfoPost() {
+  const [postsData, setPostsData] = useState<Post[]>([]); // msw
   const [containerClassName, setContainerClassName] = useState('flex-start');
-  const [data, setData] = useState(postdata.slice(0, 6)); // 초기에 게시물 6개 보이게하기
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // 로딩 상태
+  const [defaultPost, setDefaultPost] = useState<Post[]>([]);
+  const targetRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    fetch('/api/posts')
+      .then(res => res.json())
+      .then(data => {
+        const initialData = data.slice(0, 6); // 초기에 6개만 가지고 오기
+        setPostsData(initialData); // 초기 데이터를 postsData로 저장
+        setDefaultPost(initialData); // 초기 데이터를 defaultPost로 복사
+      })
+      .catch(error => console.error('가짜 API 요청 실패:', error));
+  }, []);
 
   useEffect(() => {
     // 게시물 갯수에 따라 스타일 변경
-    if (postdata.length <= 2) {
+    if (defaultPost.length >= 2) {
       setContainerClassName('flex-start');
     } else {
       setContainerClassName('space-between');
     }
-  }, [postdata]);
+  }, [defaultPost]);
 
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
+    // IntersectionObserver 생성및 초기화
+    const observer = new IntersectionObserver(handleIntersection, {
+      root: null,
+      rootMargin: '0px',
+      threshold: 1,
+    });
 
-  const handleScroll = () => {
-    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100 && !isLoading) {
-      // 스크롤이 아래로 내려가고 데이터가 현재 로딩 중이 아닌 경우
-      setIsLoading(true);
-
-      // 새로운 더미 데이터를 생성하고 리스트에 추가
-      const newData = Array.from({ length: 3 }, (_, index) => ({
-        id: data.length + index,
-        imgSrc: `img/postimg5.jpg`,
-        title: `게시물 ${data.length + index} 제목`,
-        schedule: `일정: 23.09.${data.length + index}~23.09.${data.length + index + 1}`, // 일정 설정
-        date: `날짜: 23.09.${data.length + index}`,
-      }));
-
-      setData(prevData => [...prevData, ...newData]);
-      setIsLoading(false);
+    // 대상 엘리먼트를 관찰
+    if (targetRef.current) {
+      observer.observe(targetRef.current);
     }
-  };
+
+    function handleIntersection(entries: IntersectionObserverEntry[]) {
+      entries.forEach(entry => {
+        if (entry && entry.isIntersecting) {
+          // 현재 게시물 길이
+          const startIndex = defaultPost.length;
+
+          // 스크롤하면 3개씩 생성
+          const endIndex = startIndex + 3;
+          const moreData = defaultPost.slice(startIndex, endIndex);
+
+          setIsLoading(true);
+
+          // 새로운 데이터를 기존 데이터와 병합
+          setPostsData(prevData => [...prevData, ...moreData]);
+          setIsLoading(false);
+        }
+      });
+    }
+
+    return () => {
+      if (targetRef.current) {
+        observer.unobserve(targetRef.current);
+      }
+    };
+  }, [postsData]);
 
   return (
     <PostContainer className={containerClassName}>
-      {data.map(item => (
-        <Post key={item.id} item={item} />
+      {postsData.map(item => (
+        <MyPost key={item.id} postsData={item} />
       ))}
-      {isLoading && <LoadingMessage>Loading...</LoadingMessage>}
+      <ObserverTarget ref={targetRef} />
+      {isLoading && <LoadingMessage>로딩 중...</LoadingMessage>}
     </PostContainer>
   );
 }
 
-export default MyInfoPost;
+const MyPost = ({ postsData }: { postsData: Post }) => {
+  return (
+    <BoxWrap>
+      <Box>
+        <ImgDiv>
+          <TextImg src={postsData.imgSrc} alt="첫번째 이미지" />
+        </ImgDiv>
+        <Info>
+          <TitleText>{postsData.title}</TitleText>
+          <ScheduleeText>{postsData.schedule}</ScheduleeText>
+          <DateText>{postsData.date}</DateText>
+        </Info>
+      </Box>
+    </BoxWrap>
+  );
+};
 
 const PostContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   height: auto;
   margin-bottom: 20px;
+  align-items: center;
 
   &.flex-start {
     justify-content: flex-start;
@@ -118,8 +119,18 @@ const PostContainer = styled.div`
   }
 `;
 
+const ObserverTarget = styled.div`
+  width: 100%;
+  height: 1px; /* 교차 영역을 감지할 빈 요소 */
+`;
+
+const LoadingMessage = styled.p`
+  font-size: 36px;
+  font-weight: bold;
+`;
+
 const BoxWrap = styled.div`
-  margin-right: 20px;
+  margin-right: 30px;
   margin-bottom: 20px;
 
   &:nth-child(3n) {
@@ -184,8 +195,4 @@ const DateText = styled.p`
   position: absolute;
   bottom: 15px;
   right: 15px;
-`;
-
-const LoadingMessage = styled.p`
-  font-size: 20px;
 `;
