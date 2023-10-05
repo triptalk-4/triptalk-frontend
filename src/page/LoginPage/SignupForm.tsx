@@ -15,11 +15,13 @@ interface InputState {
 const SignupForm = () => {
   const navigator = useNavigate();
 
+  const [error, setError] = useState<string | null>(null);
   // state 가 생성될게 많아서 객체형태로
   const [email, setEmail] = useState<InputState>({ value: '', valid: false, message: '' });
   const [password, setPassword] = useState<InputState>({ value: '', valid: false, message: '' });
   const [passwordConfirm, setPasswordConfirm] = useState<InputState>({ value: '', valid: false, message: '' });
   const [name, setName] = useState<InputState>({ value: '', valid: false, message: '' });
+  const [nickName, setNicName] = useState<InputState>({ value: '', valid: false, message: '' });
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -35,6 +37,9 @@ const SignupForm = () => {
     switch (
       name // 내가 선택한 인풋창의 타겟하여 name 가져옴 input name이 email일 경우 case 'email'에서 멈춰서 setEmail()을 함
     ) {
+      case 'name':
+        setName(updatedValue);
+        break;
       case 'email':
         setEmail(updatedValue);
         break;
@@ -44,11 +49,20 @@ const SignupForm = () => {
       case 'passwordConfirm':
         setPasswordConfirm(updatedValue);
         break;
-      case 'name':
-        setName(updatedValue);
+      case 'nickname':
+        setNicName(updatedValue);
         break;
       default:
         break;
+    }
+  };
+
+  const validateName = (value: string) => {
+    // 이름 유효성 검사
+    if (value.length < 2 || value.length > 5) {
+      return { valid: false, message: '이름은 2글자 이상 5글자 이하로 입력 부탁드립니다.' };
+    } else {
+      return { valid: true, message: '이름' };
     }
   };
 
@@ -81,7 +95,7 @@ const SignupForm = () => {
     }
   };
 
-  const validateName = (value: string) => {
+  const validateNicName = (value: string) => {
     // 닉네임 유효성 검사
     if (value.length < 2 || value.length > 5) {
       return { valid: false, message: '닉네임은 2글자 이상 5글자 이하로 입력 부탁드립니다.' };
@@ -99,14 +113,17 @@ const SignupForm = () => {
   const sendSignupData = async (formData: any) => {
     try {
       const res = await axios.post('http://52.79.200.55:8080/api/users/register', formData);
-      console.log(res);
       return res.data;
-    } catch (error) {
-      console.log(formData);
+    } catch (error: any) {
+      if (error.response) {
+        console.log('gqw: ', error.response);
+        return error.response.data;
+      }
       console.error('API 요청 실패:', error);
       throw error;
     }
   };
+
   // 회원가입 버튼
   const handleSignup = async () => {
     if (isFormValid()) {
@@ -115,14 +132,54 @@ const SignupForm = () => {
           email: email.value,
           password: password.value,
           name: name.value,
+          nickname: nickName.value,
         };
-        alert('회원가입이 완료되었습니다.');
-        navigator('/main');
-        const res = await sendSignupData(formData);
 
-        console.log('회원가입 성공', res);
+        const res = await sendSignupData(formData);
+        console.log('dqnwio', res);
+        if (res.registerOk) {
+          alert(res.registerOk);
+          navigator('/main');
+        } else if (res) {
+          console.log(res);
+          setError(res);
+        } else {
+          setError('회원가입에 실패했습니다.');
+        }
+      } catch (error: any) {
+        console.error('error:', error);
+        setError('서버와 연결이 되지 않습니다.');
+      }
+    }
+  };
+
+  // 이메일 인증 호출
+  const sendEmailCertified = async (emailAddress: any) => {
+    try {
+      const res = await axios.post('http://52.79.200.55:8080/api/users/register/email/send', {
+        email: emailAddress,
+      });
+      return res.data;
+    } catch (error: any) {
+      console.error('이메일 인증 요청 실패:', error);
+      throw error;
+    }
+  };
+
+  // 이메일 인증 요청 버튼
+  const handleEmailCertified = async () => {
+    if (email.valid) {
+      try {
+        const response = await sendEmailCertified(email.value);
+        if (response.postMailOk) {
+          alert('이메일에 인증 문자를 전송했습니다.');
+        } else {
+          console.log(response);
+          console.error('error', error);
+          alert('이메일 인증 요청에 실패했습니다.');
+        }
       } catch (error) {
-        console.error('회원가입 실패:', error);
+        alert('인증 요청 실패');
       }
     }
   };
@@ -135,6 +192,18 @@ const SignupForm = () => {
         <SubTitle>다양하고 색다른 여행지가 궁금하시면 가입해보세요!</SubTitle>
         <FormWrap>
           <FormGroup>
+            <Label>이름</Label>
+            <Input
+              type="text"
+              name="name"
+              value={name.value}
+              onChange={e => handleChange(e, validateName)}
+              placeholder="이름"
+            />
+            <p>{name.message}</p>
+          </FormGroup>
+
+          <FormGroup>
             <Label>이메일</Label>
             <Input
               type="email"
@@ -144,6 +213,9 @@ const SignupForm = () => {
               placeholder="email"
             />
             {email.valid ? null : <p>{email.message}</p>}
+            <button type="button" onClick={handleEmailCertified}>
+              버튼
+            </button>
           </FormGroup>
 
           {/* <FormGroup>
@@ -189,17 +261,18 @@ const SignupForm = () => {
             <Label>닉네임</Label>
             <Input
               type="text"
-              name="name"
-              value={name.value}
-              onChange={e => handleChange(e, validateName)}
+              name="nickname"
+              value={nickName.value}
+              onChange={e => handleChange(e, validateNicName)}
               placeholder="사용할 닉네임"
             />
-            <p>{name.message}</p>
+            <p>{nickName.message}</p>
           </FormGroup>
 
           <Button type="submit" className={isFormValid() ? 'active' : ''} onClick={handleSignup}>
             회원가입
           </Button>
+          {error && <p style={{ color: 'red' }}>{error}</p>}
         </FormWrap>
       </Container>
     </>
@@ -322,3 +395,6 @@ const Button = styled.button`
     }
   }
 `;
+function async(value: string) {
+  throw new Error('Function not implemented.');
+}
