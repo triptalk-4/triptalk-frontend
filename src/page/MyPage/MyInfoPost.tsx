@@ -20,21 +20,20 @@ export default function MyInfoPost() {
     fetch('/api/posts')
       .then(res => res.json())
       .then(data => {
-        const initialData = data.slice(0, 6); // 초기에 6개만 가지고 오기
-        setPostsData(initialData); // 초기 데이터를 postsData로 저장
-        setDefaultPost(initialData); // 초기 데이터를 defaultPost로 복사
+        setPostsData(data.slice(0, 6));
+        setDefaultPost(postsData); // 처음에 6개게시물만 나오게 설정
       })
       .catch(error => console.error('가짜 API 요청 실패:', error));
   }, []);
 
   useEffect(() => {
     // 게시물 갯수에 따라 스타일 변경
-    if (defaultPost.length >= 2) {
+    if (postsData.length >= 2) {
       setContainerClassName('flex-start');
     } else {
       setContainerClassName('space-between');
     }
-  }, [defaultPost]);
+  }, [postsData]);
 
   useEffect(() => {
     // IntersectionObserver 생성및 초기화
@@ -57,7 +56,7 @@ export default function MyInfoPost() {
 
           // 스크롤하면 3개씩 생성
           const endIndex = startIndex + 3;
-          const moreData = defaultPost.slice(startIndex, endIndex);
+          const moreData = postsData.slice(startIndex, endIndex);
 
           setIsLoading(true);
 
