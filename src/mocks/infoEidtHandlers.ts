@@ -15,7 +15,13 @@ const userInfoData = {
 };
 
 export const infoEditHandlers = [
+  // 저장한 정보 보내는 것
   rest.get<userInfoEditItem>('/api/userinfoeidt', (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(userInfoData));
+  }),
+
+  rest.put<userInfoEditItem>('/api/userinfoeidt', (req, res, ctx) => {
+    const updatedData = req.body;
+    return res(ctx.status(200), ctx.json(updatedData));
   }),
 ];
