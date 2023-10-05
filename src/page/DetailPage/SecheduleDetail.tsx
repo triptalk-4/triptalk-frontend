@@ -1,9 +1,25 @@
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import PostBox from '../../component/PostBox/PostBox';
 import { MAIN_COLOR } from '../../color/color';
+import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
+import { BsClipboard2Check } from 'react-icons/bs';
+import { FaSave } from 'react-icons/fa';
 
 export default function SecheduleDetail() {
   // const defaultImg = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
+  const [likeCount, setLikeCount] = useState(0); // 좋아요 카운트 상태
+  const [isLiked, setIsLiked] = useState(false); // 좋아요 상태 (눌렸는지 안눌렸는지)
+  const [isSaved, setIsSaved] = useState(false);
+
+  const handleLikeClick = () => {
+    setLikeCount(prevCount => (isLiked ? prevCount - 1 : prevCount + 1)); // 좋아요 상태에 따라 숫자 증가 혹은 감소
+    setIsLiked(!isLiked);
+  };
+
+  const handleSaveClick = () => {
+    setIsSaved(!isSaved);
+  };
 
   return (
     <DetailContainer>
@@ -26,6 +42,13 @@ export default function SecheduleDetail() {
           <PostBox />
           <PostBox />
         </PostBg>
+        <HeartBtn onClick={handleLikeClick}>
+          {isLiked ? <AiFillHeart color="red" size="1.5em" /> : <AiOutlineHeart size="1.5em" />}
+          <LikeCount>{likeCount}</LikeCount>
+        </HeartBtn>
+        <SaveBtn onClick={handleSaveClick}>
+          <FaSave color={isSaved ? 'green' : 'grey'} size="1.5em" />
+        </SaveBtn>
       </PostContainer>
     </DetailContainer>
   );
@@ -110,4 +133,37 @@ const UserProfile = styled.img`
   height: 45px;
   border-radius: 100%;
   background-color: #fff;
+`;
+
+const HeartBtn = styled.button`
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+  background-color: white;
+  position: fixed;
+  top: 600px;
+  right: 505px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  border: none;
+`;
+
+const LikeCount = styled.span`
+  font-size: 12px;
+  margin-top: 2px;
+`;
+
+const SaveBtn = styled.button`
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+  background-color: white;
+  position: fixed;
+  top: 700px;
+  right: 505px;
+  border: none;
 `;
