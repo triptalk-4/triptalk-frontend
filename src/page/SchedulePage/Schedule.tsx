@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { styled } from 'styled-components';
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import Header from '../../component/Header';
 import SecheduleSelect from '../../component/SecheduleSelect/SecheduleSelect';
@@ -9,36 +9,41 @@ import { BsFillSuitHeartFill } from 'react-icons/bs';
 import { BsEyeFill } from 'react-icons/bs';
 import { DEFAULT_FONT_COLOR } from '../../color/color';
 
-function Schedule() {
-  const initialData = Array.from({ length: 9 }, (_, index) => ({
-    id: index
-  }));
+interface Item {
+  id: number;
+  img: string;
+  heartCount: number;
+  lookUpCount: number;
+  date: string;
+}
 
-  const [data, setData] = useState(initialData);
+function Schedule() {
+  const [data, setData] = useState<Item[]>([]);
+  const [visibleItems, setVisibleItems] = useState<Item[]>([]); //첫 로드시 페이지에 나타낼 아이템 갯수
   const [isLoading, setIsLoading] = useState(false);
   const [showTopButton, setShowTopButton] = useState(false);
 
   useEffect(() => {
+    fetch('/api/schedule')
+      .then(res => res.json())
+      .then(data => {
+        const sortedData = [...data].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+        setData(sortedData);
+        setVisibleItems(sortedData.slice(0, 9));
+      })
+      .catch(error => console.error('API Request Failure:', error));
+  }, []);
+
+  useEffect(() => {
     window.addEventListener('scroll', handleScroll);
-    window.addEventListener('beforeunload', handleBeforeUnload);
     return () => {
       window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('beforeunload', handleBeforeUnload);
     };
-  }, []);
+  }, [visibleItems, isLoading]);
 
   const handleScroll = () => {
     if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100 && !isLoading) {
-      setIsLoading(true);
-
-      setTimeout(() => {
-        const newData = Array.from({ length: 3 }, (_, index) => ({
-          id: data.length + index
-        }));
-
-        setData(prevData => [...prevData, ...newData]);
-        setIsLoading(false);
-      }, 1000);
+      loadMoreItems();
     }
 
     if (window.scrollY > 100 && !isLoading) {
@@ -48,9 +53,37 @@ function Schedule() {
     }
   };
 
-  const handleBeforeUnload = (e: { preventDefault: () => void }) => {
-    e.preventDefault();
-    window.scrollTo(0, 0);
+  const loadMoreItems = () => {
+    // 로드될 아이템이 없다면 반환
+    if (visibleItems.length >= data.length) {
+      return;
+    }
+    setIsLoading(true);
+    setTimeout(() => {
+      setVisibleItems(prevItems => [
+        ...prevItems,
+        ...data.slice(prevItems.length, Math.min(prevItems.length + 6, data.length))
+      ]);
+      setIsLoading(false);
+    }, 500);
+  };
+
+  const handleSortChange = (sortKey: string) => {
+    let sortedData;
+    switch (sortKey) {
+      case '최신순':
+        sortedData = [...data].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+        break;
+      case '좋아요':
+        sortedData = [...data].sort((a, b) => b.heartCount - a.heartCount);
+        break;
+      case '조회순':
+        sortedData = [...data].sort((a, b) => b.lookUpCount - a.lookUpCount);
+        break;
+      default:
+        sortedData = data;
+    }
+    setVisibleItems(sortedData);
   };
 
   return (
@@ -60,7 +93,7 @@ function Schedule() {
         <TitleContainer>
           <Title>여러분의 일정을 보여주세요!</Title>
           <SelectBox>
-            <SecheduleSelect />
+            <SecheduleSelect onSortChange={handleSortChange} />
           </SelectBox>
           <EditButton to="/editschedule">
             일정등록하기
@@ -68,25 +101,26 @@ function Schedule() {
           </EditButton>
         </TitleContainer>
         <GridContainer>
-          {data.map(item => (
+          {visibleItems.map((item: Item) => (
             <Link to={`/page/${item.id}`} key={item.id}>
-              <Post key={item.id}>
+              <StyledPost>
                 <div className="info-container">
                   <TopContainer>
                     <IconWithCount>
                       <Heart />
-                      <Count>30</Count>
+                      <Count>{item.heartCount}</Count>
                     </IconWithCount>
                     <IconWithCount>
                       <LookUp />
-                      <Count>30</Count>
+                      <Count>{item.lookUpCount}</Count>
                     </IconWithCount>
                   </TopContainer>
                   <BottomContainer>
-                    <Date>23.09.28</Date>
+                    <DateLabel>{item.date}</DateLabel>
                   </BottomContainer>
                 </div>
-              </Post>
+                <Img src={item.img} alt="Post Image" />
+              </StyledPost>
             </Link>
           ))}
         </GridContainer>
@@ -104,6 +138,7 @@ const MainContainer = styled.div`
   padding: 0 10%;
   height: 100%;
   margin: 0 auto;
+  padding-bottom: 40px;
 `;
 
 const TitleContainer = styled.div`
@@ -130,15 +165,13 @@ const GridContainer = styled.div`
   gap: 20px;
 `;
 
-const Post = styled.div`
+const StyledPost = styled.div`
   width: 100%;
   height: 350px;
-  background-image: url('img/postimg4.jpg');
-  background-size: cover;
-  background-position: center;
   position: relative;
   cursor: pointer;
   border-radius: 25px;
+  overflow: hidden;
 
   .info-container {
     position: absolute;
@@ -158,6 +191,13 @@ const Post = styled.div`
     display: block;
   }
 `;
+
+const Img = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+`;
+
 const LoadingMessage = styled.div`
   text-align: center;
   margin-top: 20px;
@@ -219,7 +259,7 @@ const BottomContainer = styled.div`
   justify-content: space-between;
 `;
 
-const Date = styled.div`
+const DateLabel = styled.div`
   font-size: 24px;
   margin-top: 95%;
 `;
