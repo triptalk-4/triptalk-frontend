@@ -1,24 +1,28 @@
 import Select from 'react-select';
 import { useState } from 'react';
 
-const options = [
+interface Option {
+  value: string;
+  label: string;
+}
+
+const options: Option[] = [
   { value: '최신순', label: '최신순' },
   { value: '좋아요', label: '좋아요' },
   { value: '조회순', label: '조회순' }
 ];
 
-function SecheduleSelect() {
-  const [selectedOption, setSelectedOption] = useState<{ value: string; label: string } | null>(options[0]);
-  //  const [posts, setPosts] = useState([]); // 백엔드에서 받아올 게시물 목록 상태
+function SecheduleSelect({ onSortChange }: { onSortChange: (sortKey: string) => void }) {
+  const [selectedOption, setSelectedOption] = useState<Option | null>(options[0]);
 
-  return (
-    <Select
-      value={selectedOption}
-      onChange={newValue => setSelectedOption(newValue)} // newValue = 라이브러리에서 자동으로 생성해주는 매개변수
-      options={options}
-      isSearchable={false} // 검색 기능 비활성화
-    />
-  );
+  const handleChange = (option: Option | null) => {
+    setSelectedOption(option);
+    if (option) {
+      onSortChange(option.value);
+    }
+  };
+
+  return <Select value={selectedOption} onChange={handleChange} options={options} isSearchable={false} />;
 }
 
 export default SecheduleSelect;
