@@ -24,9 +24,9 @@ export default function MyInfo() {
   };
 
   useEffect(() => {
-    fetch('/api/myinfo')
+    fetch('/api/userinfo')
       .then(res => res.json())
-      .then(data => setUserData(data)) // userData 상태를 업데이트
+      .then(data => setUserData(data))
       .catch(error => console.error('가짜 API 요청 실패:', error));
   }, []);
 
