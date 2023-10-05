@@ -9,7 +9,7 @@ import MyInfoSaved from './MyInfoSaved';
 export default function MyInfo() {
   const [currentTab, setTab] = useState(0); // 탭기능
   const [userData, setUserData] = useState({
-    imageUrl: '',
+    imgUrl: '',
     nickname: '',
   }); // msw
 
@@ -32,7 +32,7 @@ export default function MyInfo() {
   return (
     <MyPageContainer>
       <UserImgContainer>
-        <UserImg src={userData.imageUrl} />
+        <UserImg src={userData.imgUrl} />
         <UserNickNameContainer>
           <NickName>{userData.nickname}</NickName>
           <Setting to="/editmyinfo">
