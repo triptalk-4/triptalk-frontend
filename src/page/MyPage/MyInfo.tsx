@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import MyInfoPost from './MyInfoPost';
 import MyInfoSaved from './MyInfoSaved';
+import TopButton from '../../component/TopButton/TopButton';
 
 export default function MyInfo() {
   const [currentTab, setTab] = useState(0); // 탭기능
@@ -54,6 +55,7 @@ export default function MyInfo() {
         </ContentUl>
         {myInfoMenuTabs[currentTab].content}
       </ContentContainer>
+      <TopButton />
     </MyPageContainer>
   );
 }
