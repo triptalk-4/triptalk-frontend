@@ -1,15 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
+import MyPost from './MyPost';
 
-interface PostItem {
-  id: number;
-  imgSrc: string;
-  title: string;
-  schedule: string;
-  date: string;
-}
-
-const postdata: PostItem[] = [
+const postdata = [
   { id: 1, imgSrc: 'img/postimg1.jpg', title: '궁궐 달빛기행 1', schedule: '23.09.07~23.09.10', date: '23.09.11' },
   { id: 2, imgSrc: 'img/postimg2.jpg', title: '창덕궁 달빛기행 2', schedule: '23.09.13~23.09.15', date: '23.09.12' },
   { id: 3, imgSrc: 'img/postimg3.jpg', title: '경복궁 달빛기행 3', schedule: '23.09.16~23.09.18', date: '23.09.13' },
@@ -50,33 +43,29 @@ const postdata: PostItem[] = [
   { id: 20, imgSrc: 'img/postimg5.jpg', title: '한강 물놀이', schedule: '23.09.30~23.10.02', date: '23.09.30' },
 ];
 
-// 게시물 컴포넌트
-function Post({ item }: { item: PostItem }) {
-  return (
-    <BoxWrap>
-      <Box>
-        <ImgDiv>
-          <TextImg src={item.imgSrc} alt="대표이미지" />
-        </ImgDiv>
-        <Info>
-          <TitleText>{item.title}</TitleText>
-          <ScheduleeText>{item.schedule}</ScheduleeText>
-          <DateText>{item.date}</DateText>
-        </Info>
-      </Box>
-    </BoxWrap>
-  );
-}
-
-function MyInfoPost() {
+export default function MyInfoPost() {
+  // const [postsData, setPostsData] = useState({
+  //   id: '',
+  //   imgSrc: '',
+  //   title: '',
+  //   schedule: '',
+  //   date: '',
+  // }); // msw
   const [containerClassName, setContainerClassName] = useState('flex-start');
   const [data, setData] = useState(postdata.slice(0, 6)); // 초기에 게시물 6개 보이게하기
-  const [isLoading, setIsLoading] = useState(false);
-  const [allDataLoaded, setAllDataLoaded] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // 로딩 상태
+  const targetRef = useRef(null);
+
+  // useEffect(() => {
+  //   fetch('/api/myinfo')
+  //     .then(res => res.json())
+  //     .then(data => setPostsData(data)) // userData 상태를 업데이트
+  //     .catch(error => console.error('가짜 API 요청 실패:', error));
+  // }, []);
 
   useEffect(() => {
     // 게시물 갯수에 따라 스타일 변경
-    if (postdata.length <= 2) {
+    if (postdata.length >= 3) {
       setContainerClassName('flex-start');
     } else {
       setContainerClassName('space-between');
@@ -84,51 +73,61 @@ function MyInfoPost() {
   }, [postdata]);
 
   useEffect(() => {
-    // 스크롤 감지
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
+    // IntersectionObserver 생성및 초기화
+    const observer = new IntersectionObserver(handleIntersection, {
+      root: null,
+      rootMargin: '0px',
+      threshold: 1,
+    });
 
-  const handleScroll = () => {
-    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100 && !isLoading) {
-      // 스크롤이 아래로 내려가고 데이터가 현재 로딩 중이 아닌 경우
-      setIsLoading(true);
-
-      // 보이는 데이터의 끝 인덱스 계산
-      const endIndex = data.length + 3;
-
-      // 끝 인덱스가 전체 데이터의 길이를 넘어가지 않도록 확인
-      if (endIndex <= postdata.length) {
-        const moreData = postdata.slice(data.length, endIndex);
-        setData(prevData => [...prevData, ...moreData]);
-      } else {
-        // 모든 데이터를 로드한 경우
-        setAllDataLoaded(true);
-      }
-
-      setIsLoading(false);
+    // 대상 엘리먼트를 관찰
+    if (targetRef.current) {
+      observer.observe(targetRef.current);
     }
-  };
+
+    function handleIntersection(entries: IntersectionObserverEntry[]) {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          // 현재 게시물 길이
+          const startIndex = data.length;
+
+          // 스크롤하면 3개씩 생성
+          const endIndex = startIndex + 3;
+          const moreData = postdata.slice(startIndex, endIndex);
+
+          setIsLoading(true);
+
+          // 새로운 데이터를 기존 데이터와 병합
+          setData(prevData => [...prevData, ...moreData]);
+          setIsLoading(false);
+        }
+      });
+    }
+
+    return () => {
+      if (targetRef.current) {
+        observer.unobserve(targetRef.current);
+      }
+    };
+  }, [data]);
 
   return (
     <PostContainer className={containerClassName}>
       {data.map(item => (
-        <Post key={item.id} item={item} />
+        <MyPost key={item.id} item={item} />
       ))}
-      {isLoading && !allDataLoaded && <LoadingMessage>Loading...</LoadingMessage>}
+      <ObserverTarget ref={targetRef} />
+      {isLoading && <LoadingMessage>로딩 중...</LoadingMessage>}
     </PostContainer>
   );
 }
-
-export default MyInfoPost;
 
 const PostContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   height: auto;
   margin-bottom: 20px;
+  align-items: center;
 
   &.flex-start {
     justify-content: flex-start;
@@ -139,74 +138,12 @@ const PostContainer = styled.div`
   }
 `;
 
-const BoxWrap = styled.div`
-  margin-right: 20px;
-  margin-bottom: 20px;
-
-  &:nth-child(3n) {
-    margin-right: 0;
-  }
-
-  /* @media screen {
-    &:nth-child(2n) {
-      margin-right: 0;
-    }
-  } */
-`;
-
-const Box = styled.div`
-  position: relative;
+const ObserverTarget = styled.div`
   width: 100%;
-  height: auto;
-  cursor: pointer;
-`;
-
-const ImgDiv = styled.div`
-  width: 300px;
-  height: 350px;
-`;
-const TextImg = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  margin-bottom: 30px;
-  border-radius: 15px;
-`;
-
-const Info = styled.div`
-  color: #fff;
-  position: absolute;
-  border-radius: 15px;
-  left: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  width: 100%;
-  height: 100%;
-  padding: 15px;
-  box-sizing: border-box;
-  opacity: 0;
-  transition: opacity 0.35s ease-in-out;
-
-  ${Box}:hover & {
-    opacity: 1;
-  }
-`;
-
-const TitleText = styled.h2`
-  font-size: 30px;
-`;
-
-const ScheduleeText = styled.h5`
-  font-size: 20px;
-  font-weight: 500;
-`;
-
-const DateText = styled.p`
-  position: absolute;
-  bottom: 15px;
-  right: 15px;
+  height: 1px; /* 교차 영역을 감지할 빈 요소 */
 `;
 
 const LoadingMessage = styled.p`
-  font-size: 50px;
+  font-size: 36px;
+  font-weight: bold;
 `;
