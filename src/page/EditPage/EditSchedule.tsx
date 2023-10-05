@@ -18,6 +18,8 @@ export default function EditSchedule() {
 
   const [coreContainers, setCoreContainers] = useState<CoreContainerData[]>([{ images: [], imagePreviews: [] }]);
 
+  const coreContainers_LIMIT = 5;
+
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
     const selectedImages = Array.from(e.target.files as FileList);
 
@@ -36,7 +38,7 @@ export default function EditSchedule() {
   };
 
   const handleAddCoreContainer = () => {
-    if (coreContainers.length < 5) {
+    if (coreContainers_LIMIT) {
       setCoreContainers(prevContainers => [...prevContainers, { images: [], imagePreviews: [] }]);
     }
   };
