@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import Search from './Search/Search';
 import { DEFAULT_FONT_COLOR, MAIN_COLOR } from '../color/color';
@@ -10,9 +10,18 @@ interface NavItemProps {
 
 export default function Header() {
   // const defaultImg = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
-
+  const [userEditData, setUserEditData] = useState({
+    imgUrl: '',
+  }); // msw
   const tabsRef = useRef<HTMLUListElement>(null);
   const location = useLocation();
+
+  useEffect(() => {
+    fetch('/api/userinfoeidt')
+      .then(res => res.json())
+      .then(data => setUserEditData(data))
+      .catch(error => console.error('가짜 API 요청 실패:', error));
+  }, []);
 
   return (
     <GnbContainer>
@@ -23,7 +32,7 @@ export default function Header() {
           </Logo>
         </LogoDiv>
         <User to="/myinfo">
-          <UserImg src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" />
+          <UserImg src={userEditData.imgUrl} />
         </User>
       </Gnb>
       <Nav ref={tabsRef}>
