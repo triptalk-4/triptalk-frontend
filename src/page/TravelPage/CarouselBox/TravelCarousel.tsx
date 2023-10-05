@@ -1,82 +1,28 @@
 import { Swiper, SwiperSlide } from 'swiper/react';
-
 import 'swiper/css';
 import 'swiper/css/effect-coverflow';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
-
 import { EffectCoverflow, Pagination, Navigation } from 'swiper/modules';
 import styled, { css } from 'styled-components';
 import { MAIN_COLOR } from '../../../color/color';
 import { Link } from 'react-router-dom';
 
-const travelData = [
-  {
-    imageUrl: 'img/Travelimg2.jpg',
-    title: '성심당 빵 털기',
-    nickname: '도토리1',
-    address: '대전광역시 중구 대종로480번길 15',
-    date: '23.09.25',
-  },
-  {
-    imageUrl: 'img/Travelimg1.jpg',
-    title: '서울 궁궐',
-    nickname: '도토리2',
-    address: '대전광역시 중구 대종로480번길 15',
-    date: '23.09.26',
-  },
-  {
-    imageUrl: 'img/Travelimg5.jpg',
-    title: '뚜벅이',
-    nickname: '도토리3',
-    address: '대전광역시 중구 대종로480번길 15',
-    date: '23.09.27',
-  },
-  {
-    imageUrl: 'img/Travelimg1.jpg',
-    title: '꿈돌이',
-    nickname: '도토리4',
-    address: '대전광역시 중구 대종로480번길 15',
-    date: '23.09.28',
-  },
-  {
-    imageUrl: 'img/Travelimg2.jpg',
-    title: '서울 궁궐',
-    nickname: '도토리5',
-    address: '대전광역시 중구 대종로480번길 15',
-    date: '23.09.29',
-  },
-  {
-    imageUrl: 'img/Travelimg5.jpg',
-    title: '힐링',
-    nickname: '도토리6',
-    address: '대전광역시 유성구 봉명동 574',
-    date: '23.09.30',
-  },
-  {
-    imageUrl: 'img/Travelimg1.jpg',
-    title: '비건 맛집',
-    nickname: '도토리7',
-    address: '대전 유성구 농대로 15 신협3층',
-    date: '23.10.01',
-  },
-  {
-    imageUrl: 'img/Travelimg2.jpg',
-    title: '글루텐프리빵집들~',
-    nickname: '도토리8',
-    address: '대전광역시 유성구 지족동 917-5',
-    date: '23.10.02',
-  },
-  {
-    imageUrl: 'img/Travelimg5.jpg',
-    title: '서울 대전 빵털기',
-    nickname: '도토리9',
-    address: '대전 유성구 온천북로33번길 22-3 101호',
-    date: '23.10.03',
-  },
-];
+interface TravelCarouselProps {
+  data: travelItem[];
+}
 
-export default function TravelCarousel() {
+interface travelItem {
+  imgUrl: string;
+  title: string;
+  nickname: string;
+  address: string;
+  date: string;
+  heartCount: number;
+  lookUpCount: number;
+}
+
+export default function TravelCarousel({ data }: TravelCarouselProps) {
   return (
     <>
       <StyledSwiper
@@ -94,10 +40,10 @@ export default function TravelCarousel() {
         pagination={false}
         navigation={true}
         modules={[EffectCoverflow, Pagination, Navigation]}>
-        {travelData.map((item, index) => (
+        {data.map((item, index) => (
           <StyledSwiperSlide key={index}>
             <Link to="/schedule">
-              <SwiperImage src={item.imageUrl} />
+              <SwiperImage src={item.imgUrl} />
               {/* 나중에 SwiperImg컨포넌트 추가 예정 */}
               <SwiperText>
                 <SwiperTopText>
