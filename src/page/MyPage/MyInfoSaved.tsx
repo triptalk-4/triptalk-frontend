@@ -1,53 +1,78 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
+import MySaved from './MySaved';
 
-const postdata = [
-  {
-    imgSrc: 'img/postimg3.jpg',
-    title: '경복궁 달빛기행',
-    schedule: '23.09.07~23.09.10',
-    date: '23.09.13',
-  },
-  {
-    imgSrc: 'img/postimg1.jpg',
-    title: '궁궐 달빛기행',
-    schedule: '23.09.07~23.09.10',
-    date: '23.09.11',
-  },
+const savedata = [
+  { id: 1, imgSrc: 'img/postimg1.jpg', title: '궁궐 달빛기행 1', schedule: '23.09.07~23.09.10', date: '23.09.11' },
+  { id: 2, imgSrc: 'img/postimg2.jpg', title: '창덕궁 달빛기행 2', schedule: '23.09.13~23.09.15', date: '23.09.12' },
 ];
 
 export default function MyInfoSaved() {
   const [containerClassName, setContainerClassName] = useState('flex-start');
+  const [data, setData] = useState(savedata.slice(0, 6)); // 초기에 게시물 6개 보이게하기
+  const [isLoading, setIsLoading] = useState(true); // 로딩 상태
+  const targetRef = useRef(null);
 
   useEffect(() => {
-    if (postdata.length <= 2) {
+    // 게시물 갯수에 따라 스타일 변경
+    if (savedata.length >= 2) {
       setContainerClassName('flex-start');
     } else {
       setContainerClassName('space-between');
     }
-  }, [postdata]);
+  }, [savedata]);
+
+  useEffect(() => {
+    // IntersectionObserver 생성및 초기화
+    const observer = new IntersectionObserver(handleIntersection, {
+      root: null,
+      rootMargin: '0px',
+      threshold: 1,
+    });
+
+    // 대상 엘리먼트를 관찰
+    if (targetRef.current) {
+      observer.observe(targetRef.current);
+    }
+
+    function handleIntersection(entries: IntersectionObserverEntry[]) {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          // 현재 게시물 길이
+          const startIndex = data.length;
+
+          // 스크롤하면 3개씩 생성
+          const endIndex = startIndex + 3;
+          const moreData = savedata.slice(startIndex, endIndex);
+
+          setIsLoading(true);
+
+          // 새로운 데이터를 기존 데이터와 병합
+          setData(prevData => [...prevData, ...moreData]);
+          setIsLoading(false);
+        }
+      });
+    }
+
+    return () => {
+      if (targetRef.current) {
+        observer.unobserve(targetRef.current);
+      }
+    };
+  }, [data]);
 
   return (
-    <PostContainer className={containerClassName}>
-      {postdata.map((item, index) => (
-        <BoxWrap key={index}>
-          <Box>
-            <ImgDiv>
-              <TextImg src={item.imgSrc} alt="대표이미지" />
-            </ImgDiv>
-            <Info>
-              <TitleText>{item.title}</TitleText>
-              <ScheduleeText>{item.schedule}</ScheduleeText>
-              <DateText>{item.date}</DateText>
-            </Info>
-          </Box>
-        </BoxWrap>
+    <SavedContainer className={containerClassName}>
+      {data.map(item => (
+        <MySaved key={item.id} item={item} />
       ))}
-    </PostContainer>
+      <ObserverTarget ref={targetRef} />
+      {isLoading && <LoadingMessage>로딩 중...</LoadingMessage>}
+    </SavedContainer>
   );
 }
 
-const PostContainer = styled.div`
+const SavedContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -63,62 +88,12 @@ const PostContainer = styled.div`
   }
 `;
 
-const BoxWrap = styled.div`
-  margin-right: 20px;
-  margin-bottom: 20px;
-
-  &:nth-child(3n) {
-    margin-right: 0;
-  }
-`;
-
-const Box = styled.div`
-  position: relative;
+const ObserverTarget = styled.div`
   width: 100%;
-  height: auto;
+  height: 1px; /* 교차 영역을 감지할 빈 요소 */
 `;
 
-const ImgDiv = styled.div`
-  width: 300px;
-  height: 350px;
-`;
-const TextImg = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  margin-bottom: 30px;
-  border-radius: 15px;
-`;
-
-const Info = styled.div`
-  color: #fff;
-  position: absolute;
-  border-radius: 15px;
-  left: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  width: 100%;
-  height: 100%;
-  padding: 15px;
-  box-sizing: border-box;
-  opacity: 0;
-  transition: opacity 0.35s ease-in-out;
-
-  ${Box}:hover & {
-    opacity: 1;
-  }
-`;
-
-const TitleText = styled.h2`
-  font-size: 30px;
-`;
-
-const ScheduleeText = styled.h5`
-  font-size: 20px;
-  font-weight: 500;
-`;
-const DateText = styled.p`
-  position: absolute;
-  bottom: 15px;
-  right: 15px;
+const LoadingMessage = styled.p`
+  font-size: 36px;
+  font-weight: bold;
 `;
