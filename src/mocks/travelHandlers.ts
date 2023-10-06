@@ -22,7 +22,7 @@ const travelData = [
   },
   {
     imgUrl: 'img/Travelimg2.jpg',
-    title: '부산 바닷가 휴가',
+    title: '부산 바닷가~~ 힐링휴가',
     nickname: '해변객',
     address: '부산 해운대구 해운대해변로 123',
     date: '10/05/2023',
@@ -49,7 +49,7 @@ const travelData = [
   },
   {
     imgUrl: 'img/Travelimg5.jpg',
-    title: '서울 자전거 여행',
+    title: '자린이 서울 자전거 여행',
     nickname: '자전거탐험가',
     address: '서울시 마포구 서교동 123-45',
     date: '10/20/2023',
@@ -67,7 +67,7 @@ const travelData = [
   },
   {
     imgUrl: 'img/Travelimg3.jpg',
-    title: '제주도 힐링 여행',
+    title: '제주도 힐링 여행 떠나보자고~',
     nickname: '제주힐러',
     address: '제주도 서귀포시 남원읍 321-1',
     date: '10/30/2023',
