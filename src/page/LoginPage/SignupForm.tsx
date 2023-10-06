@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router';
 import axios from 'axios';
+import { nameRegExp, emailRegExp, passwordRegExp, nickNameRegExp } from '../../regex/Regex';
 
 import styled from 'styled-components';
 import { GRAY_COLOR, MAIN_COLOR, YELLOW_COLOR } from '../../color/color';
@@ -59,16 +60,15 @@ const SignupForm = () => {
 
   const validateName = (value: string) => {
     // 이름 유효성 검사
-    if (value.length < 2 || value.length > 5) {
-      return { valid: false, message: '이름은 2글자 이상 5글자 이하로 입력 부탁드립니다.' };
+    if (!nameRegExp.test(value)) {
+      return { valid: false, message: '이름은 한글로만 입력해주세요' };
     } else {
-      return { valid: true, message: '이름' };
+      return { valid: true, message: '' };
     }
   };
 
   const validateEmail = (value: string) => {
     // 이메일 유효성 검사
-    const emailRegExp = /^[A-Za-z0-9_]+[A-Za-z0-9]*[@]{1}[A-Za-z0-9]+[A-Za-z0-9]*[.]{1}[A-Za-z]{1,3}$/;
     if (!emailRegExp.test(value)) {
       return { valid: false, message: '이메일의 형식이 올바르지 않습니다.' };
     } else {
@@ -78,7 +78,6 @@ const SignupForm = () => {
 
   const validatePassword = (value: string) => {
     // 비밀번호 유효성 검사
-    const passwordRegExp = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
     if (!passwordRegExp.test(value)) {
       return { valid: false, message: '숫자+영문자+특수문자 조합으로 8자리 이상 입력해주세요!' };
     } else {
@@ -97,7 +96,7 @@ const SignupForm = () => {
 
   const validateNicName = (value: string) => {
     // 닉네임 유효성 검사
-    if (value.length < 2 || value.length > 5) {
+    if (!nickNameRegExp.test(value)) {
       return { valid: false, message: '닉네임은 2글자 이상 5글자 이하로 입력 부탁드립니다.' };
     } else {
       return { valid: true, message: '사용 가능한 닉네임 입니다.' };
