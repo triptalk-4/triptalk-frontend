@@ -96,6 +96,7 @@ const SwiperImage = styled.img`
   display: block;
   width: 100%;
   cursor: pointer;
+  object-fit: contain;
   position: relative;
 `;
 
