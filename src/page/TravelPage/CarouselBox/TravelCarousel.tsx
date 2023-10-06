@@ -47,7 +47,7 @@ export default function TravelCarousel({ data }: TravelCarouselProps) {
               {/* 나중에 SwiperImg컨포넌트 추가 예정 */}
               <SwiperText>
                 <SwiperTopText>
-                  <SwiperTitle>{item.title}</SwiperTitle>
+                  <SwiperTitle> {item.title.length > 10 ? item.title.slice(0, 10) + '...' : item.title}</SwiperTitle>
                   <SwiperNickname>
                     <UserProfile src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" />
                     {item.nickname}
@@ -131,6 +131,9 @@ const TextColor = css`
 const SwiperTitle = styled.div`
   ${TextColor}
   font-size: 25px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 `;
 
 const UserProfile = styled.img`
