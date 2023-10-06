@@ -3,7 +3,6 @@ import styled, { css } from 'styled-components';
 import PostBox from '../../component/PostBox/PostBox';
 import { MAIN_COLOR } from '../../color/color';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
-import { BsClipboard2Check } from 'react-icons/bs';
 import { FaSave } from 'react-icons/fa';
 
 export default function SecheduleDetail() {
