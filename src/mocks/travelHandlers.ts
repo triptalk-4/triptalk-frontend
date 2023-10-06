@@ -30,7 +30,7 @@ const travelData = [
     lookUpCount: 7,
   },
   {
-    imgUrl: 'img/Travelimg3.jpg',
+    imgUrl: 'img/Travelimg5.jpg',
     title: '제주도 자연 탐방',
     nickname: '제주탐험가',
     address: '제주도 제주시 중문관광로 56-3',
@@ -39,7 +39,7 @@ const travelData = [
     lookUpCount: 12,
   },
   {
-    imgUrl: 'img/Travelimg4.jpg',
+    imgUrl: 'img/Travelimg1.jpg',
     title: '대전 먹방 투어',
     nickname: '음식탐험가',
     address: '대전 유성구 온천북로33번길 22-3 101호',
@@ -57,7 +57,7 @@ const travelData = [
     lookUpCount: 12,
   },
   {
-    imgUrl: 'img/Travelimg6.jpg',
+    imgUrl: 'img/Travelimg2.jpg',
     title: '부산 해변 휴식',
     nickname: '해변휴식가',
     address: '부산 사하구 사하로 678번길 67',
@@ -66,7 +66,7 @@ const travelData = [
     lookUpCount: 10,
   },
   {
-    imgUrl: 'img/Travelimg3.jpg',
+    imgUrl: 'img/Travelimg1.jpg',
     title: '제주도 힐링 여행 떠나보자고~',
     nickname: '제주힐러',
     address: '제주도 서귀포시 남원읍 321-1',
@@ -84,7 +84,7 @@ const travelData = [
     lookUpCount: 15,
   },
   {
-    imgUrl: 'img/Travelimg6.jpg',
+    imgUrl: 'img/Travelimg5.jpg',
     title: '대전 문화 탐방 2',
     nickname: '대전문화인2',
     address: '대전 중구 계백로 567번길 89',
@@ -113,7 +113,7 @@ const travelData = [
   },
 
   {
-    imgUrl: 'img/Travelimg4.jpg',
+    imgUrl: 'img/Travelimg1.jpg',
     title: '부산 휴식 여행 2',
     nickname: '부산휴식가2',
     address: '부산 해운대구 해운로 789',
@@ -122,7 +122,7 @@ const travelData = [
     lookUpCount: 15,
   },
   {
-    imgUrl: 'img/Travelimg3.jpg',
+    imgUrl: 'img/Travelimg2.jpg',
     title: '부산 바닷가 휴가 2',
     nickname: '해변객2',
     address: '부산 해운대구 해운대해변로 456',
