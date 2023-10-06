@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { MAIN_COLOR, SUPER_LIGHT_ORANGE_COLOR } from '../../../color/color';
 import { useEffect, useState } from 'react';
+import { passwordRegExp } from '../../../regex/Regex';
 
 interface EditDataProps {
   updateUserEditData: (userData: any) => void;
@@ -73,9 +74,8 @@ export default function EditForm({ updateUserEditData }: EditDataProps) {
 
   const validateNewPassword = (value: string) => {
     // 비밀번호 유효성 검사
-    const regex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
-    if (regex.test(value)) {
+    if (passwordRegExp.test(value)) {
       setNewPasswordState({
         value,
         valid: true,
