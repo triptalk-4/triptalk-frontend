@@ -224,13 +224,6 @@ export const ScheduleData = [
     heartCount: 25,
     lookUpCount: 40,
     date: '09/30/2023'
-  },
-  {
-    id: 33,
-    img: 'img/postimg3.jpg',
-    heartCount: 15,
-    lookUpCount: 20,
-    date: '09/29/2023'
   }
 ];
 export const scheduleHandler = [
