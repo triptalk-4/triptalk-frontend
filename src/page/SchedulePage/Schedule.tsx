@@ -22,6 +22,7 @@ function Schedule() {
   const [visibleItems, setVisibleItems] = useState<Item[]>([]); //첫 로드시 페이지에 나타낼 아이템 갯수
   const [isLoading, setIsLoading] = useState(false);
   const [showTopButton, setShowTopButton] = useState(false);
+  const [allItemsLoaded, setAllItemsLoaded] = useState(false);
 
   useEffect(() => {
     fetch('/api/schedule')
@@ -54,17 +55,20 @@ function Schedule() {
   };
 
   const loadMoreItems = () => {
-    // 로드될 아이템이 없다면 반환
     if (visibleItems.length >= data.length) {
+      setAllItemsLoaded(true);
       return;
     }
     setIsLoading(true);
     setTimeout(() => {
       setVisibleItems(prevItems => [
         ...prevItems,
-        ...data.slice(prevItems.length, Math.min(prevItems.length + 6, data.length)),
+        ...data.slice(prevItems.length, Math.min(prevItems.length + 6, data.length))
       ]);
       setIsLoading(false);
+      if (visibleItems.length + 6 >= data.length) {
+        setAllItemsLoaded(true);
+      }
     }, 500);
   };
 
@@ -125,6 +129,7 @@ function Schedule() {
           ))}
         </GridContainer>
         {isLoading && <LoadingMessage>Loading...</LoadingMessage>}
+        {!isLoading && allItemsLoaded && <EndOfDataMessage>게시물이 더상 존재하지 않습니다.</EndOfDataMessage>}
         {showTopButton && <TopButton />}
       </MainContainer>
     </>
@@ -138,7 +143,6 @@ const MainContainer = styled.div`
   padding: 0 10%;
   height: 100%;
   margin: 0 auto;
-  padding-bottom: 40px;
 `;
 
 const TitleContainer = styled.div`
@@ -262,4 +266,12 @@ const BottomContainer = styled.div`
 const DateLabel = styled.div`
   font-size: 24px;
   margin-top: 95%;
+`;
+
+const EndOfDataMessage = styled.div`
+  text-align: center;
+  margin-top: 20px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
 `;
