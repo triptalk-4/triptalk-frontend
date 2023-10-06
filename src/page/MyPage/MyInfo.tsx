@@ -1,18 +1,23 @@
 import styled from 'styled-components';
 import { AiOutlineSetting } from 'react-icons/ai';
 import { DEFAULT_FONT_COLOR, GRAY_COLOR, LIGHT_GRAY_COLOR } from '../../color/color';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import MyInfoPost from './MyInfoPost';
 import MyInfoSaved from './MyInfoSaved';
 import TopButton from '../../component/TopButton/TopButton';
 
 export default function MyInfo() {
+  const navigate = useNavigate();
+
   const [currentTab, setTab] = useState(0); // 탭기능
   const [userEditData, setUserEditData] = useState({
     imgUrl: '',
     nickname: '',
   }); // msw
+
+  const [nickName, setNickName] = useState('');
+  const [img, setImg] = useState('');
 
   const myInfoMenuTabs = [
     { name: '게시물', content: <MyInfoPost /> },
@@ -24,23 +29,38 @@ export default function MyInfo() {
   };
 
   useEffect(() => {
-    fetch('/api/userinfoeidt')
-      .then(res => res.json())
-      .then(data => setUserEditData(data))
-      .catch(error => console.error('가짜 API 요청 실패:', error));
+    // fetch('/api/userinfoeidt')
+    //   .then(res => res.json())
+    //   .then(data => setUserEditData(data))
+    //   .catch(error => console.error('가짜 API 요청 실패:', error));
+
+    const storedUserData = localStorage.getItem('userInfo');
+    if (storedUserData) {
+      const userData = JSON.parse(storedUserData);
+      console.log(userData.imgUrl);
+      setUserEditData(userData);
+      setNickName(userData.nickName);
+      setImg(userData.imgUrl);
+    }
   }, []);
+
+  const handleLogOut = () => {
+    localStorage.removeItem('userInfo');
+    alert('로그아웃 되었습니다.');
+    navigate('/');
+  };
 
   return (
     <MyPageContainer>
       <UserImgContainer>
-        <UserImg src={userEditData.imgUrl} />
+        <UserImg src={img} />
         <UserNickNameContainer>
-          <NickName>{userEditData.nickname}</NickName>
+          <NickName>{nickName}</NickName>
           <Setting to="/editmyinfo">
             <AiOutlineSetting />
           </Setting>
         </UserNickNameContainer>
-        <UserLogoutBtn>로그아웃</UserLogoutBtn>
+        <UserLogoutBtn onClick={handleLogOut}>로그아웃</UserLogoutBtn>
       </UserImgContainer>
       <ContentContainer>
         <ContentUl>

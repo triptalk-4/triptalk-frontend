@@ -11,14 +11,6 @@ import { SetStateAction, useState } from 'react';
 //   password: string;
 // }
 
-// const userData: UserData[] = [
-//   { id: 1, email: 'user1@naver.com', password: 'Password123' },
-//   { id: 2, email: 'user2@naver.com', password: 'Password456' },
-//   { id: 3, email: 'user3@naver.com', password: 'Password789' },
-// ];
-
-// git hub 테스트
-
 const LoginForm = () => {
   const naviget = useNavigate();
   const [userEmail, setUserEmail] = useState('');
@@ -44,15 +36,6 @@ const LoginForm = () => {
 
   const handleLogin = async () => {
     //로그인 시도
-    // const user = userData.find(user => user.email === userEmail && user.password === password);
-    // if (user) {
-    //   alert('로그인 되었습니다.');
-    //   setUserEmail('');
-    //   setPassword('');
-    //   naviget('/main');
-    // } else {
-    //   alert('유효하지 않은 사용자 정보입니다.');
-    // }
     try {
       const response = await fetch('/api/login', {
         method: 'POST',
