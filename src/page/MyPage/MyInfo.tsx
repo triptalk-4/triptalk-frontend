@@ -9,13 +9,9 @@ import TopButton from '../../component/TopButton/TopButton';
 
 export default function MyInfo() {
   const navigate = useNavigate();
-
   const [currentTab, setTab] = useState(0); // 탭기능
-  const [userEditData, setUserEditData] = useState({
-    imgUrl: '',
-    nickname: '',
-  }); // msw
 
+  // msw
   const [nickName, setNickName] = useState('');
   const [img, setImg] = useState('');
 
@@ -29,17 +25,11 @@ export default function MyInfo() {
   };
 
   useEffect(() => {
-    // fetch('/api/userinfoeidt')
-    //   .then(res => res.json())
-    //   .then(data => setUserEditData(data))
-    //   .catch(error => console.error('가짜 API 요청 실패:', error));
-
     const storedUserData = localStorage.getItem('userInfo');
     if (storedUserData) {
       const userData = JSON.parse(storedUserData);
       console.log(userData.imgUrl);
-      setUserEditData(userData);
-      setNickName(userData.nickName);
+      setNickName(userData.nickname);
       setImg(userData.imgUrl);
     }
   }, []);

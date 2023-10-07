@@ -9,18 +9,17 @@ interface NavItemProps {
 }
 
 export default function Header() {
-  // const defaultImg = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
-  const [userEditData, setUserEditData] = useState({
-    imgUrl: '',
-  }); // msw
+  const [img, setImg] = useState(''); // msw
   const tabsRef = useRef<HTMLUListElement>(null);
   const location = useLocation();
 
   useEffect(() => {
-    fetch('/api/userinfoeidt')
-      .then(res => res.json())
-      .then(data => setUserEditData(data))
-      .catch(error => console.error('가짜 API 요청 실패:', error));
+    const storedUserData = localStorage.getItem('userInfo');
+    if (storedUserData) {
+      const userData = JSON.parse(storedUserData);
+      console.log(userData.imgUrl);
+      setImg(userData.imgUrl);
+    }
   }, []);
 
   return (
@@ -32,7 +31,7 @@ export default function Header() {
           </Logo>
         </LogoDiv>
         <User to="/myinfo">
-          <UserImg src={userEditData.imgUrl} />
+          <UserImg src={img} />
         </User>
       </Gnb>
       <Nav ref={tabsRef}>

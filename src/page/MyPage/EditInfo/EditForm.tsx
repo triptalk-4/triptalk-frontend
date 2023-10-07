@@ -3,33 +3,29 @@ import { MAIN_COLOR, SUPER_LIGHT_ORANGE_COLOR } from '../../../color/color';
 import { useEffect, useState } from 'react';
 import { passwordRegExp } from '../../../regex/Regex';
 
-interface EditDataProps {
-  updateUserEditData: (userData: any) => void;
+interface EditFormProps {
+  onDataChange: (data: { newPassword: string; nickname: string }) => void;
 }
 
-interface InputState {
-  value: string;
-  valid: boolean;
-  message: string;
-}
-
-export default function EditForm({ updateUserEditData }: EditDataProps) {
-  const [userEditData, setUserEditData] = useState({
-    email: '',
-    password: '',
-    nickname: '',
-  }); // msw
+export default function EditForm({ onDataChange }: EditFormProps) {
+  // msw
+  const [nickName, setNickName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setpassword] = useState('');
 
   useEffect(() => {
-    fetch('/api/userinfoeidt')
-      .then(res => res.json())
-      .then(data => setUserEditData(data))
-      .catch(error => console.error('가짜 API 요청 실패:', error));
+    const storedUserData = localStorage.getItem('userInfo');
+    if (storedUserData) {
+      const userData = JSON.parse(storedUserData);
+      setNickName(userData.nickname);
+      setEmail(userData.email);
+      setpassword(userData.password);
+    }
   }, []);
 
   ///////////////////////현재비밀번호////////////////////
   const [currentPassword, setCurrentPassword] = useState('');
-  const [currentPasswordState, setCurrentPasswordState] = useState<InputState>({
+  const [currentPasswordState, setCurrentPasswordState] = useState({
     value: '',
     valid: true,
     message: '',
@@ -37,7 +33,7 @@ export default function EditForm({ updateUserEditData }: EditDataProps) {
 
   const validateCurrentPassword = (value: string) => {
     // 기존 비밀번호와 비교하여 일치 여부 확인
-    if (value === userEditData.password) {
+    if (value === password) {
       setCurrentPasswordState({
         value,
         valid: true,
@@ -56,17 +52,11 @@ export default function EditForm({ updateUserEditData }: EditDataProps) {
     const currentPasswordValue = e.target.value;
     setCurrentPassword(currentPasswordValue);
     validateCurrentPassword(currentPasswordValue);
-
-    // 사용자 정보를 업데이트
-    updateUserEditData({
-      ...userEditData,
-      password: currentPasswordValue,
-    });
   };
 
   ///////////////////////새비밀번호////////////////////
   const [newPassword, setNewPassword] = useState('');
-  const [newPasswordState, setNewPasswordState] = useState<InputState>({
+  const [newPasswordState, setNewPasswordState] = useState({
     value: '',
     valid: true,
     message: '',
@@ -98,7 +88,7 @@ export default function EditForm({ updateUserEditData }: EditDataProps) {
 
   ///////////////////////새비밀번호확인////////////////////
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
-  const [confirmNewPasswordState, setConfirmNewPasswordState] = useState<InputState>({
+  const [confirmNewPasswordState, setConfirmNewPasswordState] = useState({
     value: '',
     valid: true,
     message: '',
@@ -127,40 +117,37 @@ export default function EditForm({ updateUserEditData }: EditDataProps) {
   };
 
   ///////////////////////닉네임////////////////////
-  const [nickname, setNickname] = useState(userEditData.nickname);
-  const [nicknameState, setNicknameState] = useState<InputState>({
-    value: nickname,
+  // 유효성 검사 결과를 저장하는 상태 변수
+  const [nicknameState, setNicknameState] = useState({
     valid: true,
     message: '',
   });
 
-  /* 닉네임 수정 */
-
+  // 닉네임 입력이 변경될 때 호출되는 함수
   const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newNickname = e.target.value;
-    const validationNickname = validateName(newNickname);
+    setNickName(newNickname);
 
-    setNickname(newNickname); // 입력된 닉네임을 상태에 저장
+    const validateNickname = (value: string) => {
+      if (value.length < 2 || value.length > 5) {
+        return { valid: false, message: '닉네임은 2글자 이상 5글자 이하로 입력해야 합니다.' };
+      } else {
+        return { valid: true, message: '사용 가능한 닉네임입니다.' };
+      }
+    };
+
+    // 닉네임의 유효성 검사를 수행하고 결과를 nicknameState에 저장
+    const validation = validateNickname(newNickname);
     setNicknameState({
-      value: newNickname,
-      valid: validationNickname.valid,
-      message: validationNickname.message,
+      valid: validation.valid,
+      message: validation.message,
     });
 
-    // 사용자 정보를 업데이트
-    updateUserEditData({
-      ...userEditData,
+    // onDataChange 함수를 호출하여 상위 컴포넌트로 데이터 전달
+    onDataChange({
+      newPassword,
       nickname: newNickname,
     });
-  };
-
-  const validateName = (value: string) => {
-    // 닉네임 유효성 검사
-    if (value.length < 2 || value.length > 5) {
-      return { valid: false, message: '닉네임은 2글자이상 5글자이하로 입력해야 합니다.' };
-    } else {
-      return { valid: true, message: '사용 가능한 닉네임 입니다.' };
-    }
   };
 
   return (
@@ -168,7 +155,7 @@ export default function EditForm({ updateUserEditData }: EditDataProps) {
       <MyInfoField>
         <MyInfoLabel htmlFor="email">이메일</MyInfoLabel>
         <InputWithButton>
-          <MyInfoInput type="email" id="email" value={userEditData.email} disabled />
+          <MyInfoInput type="email" id="email" value={email} disabled />
         </InputWithButton>
       </MyInfoField>
 
@@ -226,7 +213,7 @@ export default function EditForm({ updateUserEditData }: EditDataProps) {
       <MyInfoField>
         <MyInfoLabel htmlFor="nickname">닉네임</MyInfoLabel>
         <InputWithButton>
-          <MyInfoInput type="text" id="nickname" defaultValue={userEditData.nickname} onChange={handleNicknameChange} />
+          <MyInfoInput type="text" id="nickname" value={nickName} onChange={handleNicknameChange} />
           {/* 닉네임 유효성 메시지를 표시 */}
           {!nicknameState.valid && (
             <p style={{ color: 'red', paddingLeft: '15px', fontSize: '13px' }}>{nicknameState.message}</p>
