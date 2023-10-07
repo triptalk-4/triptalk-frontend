@@ -28,9 +28,8 @@ export default function MyInfo() {
     const storedUserData = localStorage.getItem('userInfo');
     if (storedUserData) {
       const userData = JSON.parse(storedUserData);
-      console.log(userData.imgUrl);
       setNickName(userData.nickname);
-      setImg(userData.imgUrl);
+      setImg(userData.imageUrl);
     }
   }, []);
 

@@ -15,7 +15,7 @@ export default function EditProfile({ onImageChange }: EditProfileProps) {
     if (storedUserData) {
       const userData = JSON.parse(storedUserData);
       console.log(userData.imgUrl);
-      setImg(userData.imgUrl);
+      setImg(userData.imageUrl);
     }
   }, []);
 
