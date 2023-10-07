@@ -38,7 +38,7 @@ export default function EditSchedule() {
   };
 
   const handleAddCoreContainer = () => {
-    if (coreContainers_LIMIT) {
+    if (coreContainers.length < coreContainers_LIMIT) {
       setCoreContainers(prevContainers => [...prevContainers, { images: [], imagePreviews: [] }]);
     }
   };
