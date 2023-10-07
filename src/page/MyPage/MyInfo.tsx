@@ -37,17 +37,23 @@ export default function MyInfo() {
     const storedUserData = localStorage.getItem('userInfo');
     if (storedUserData) {
       const userData = JSON.parse(storedUserData);
-      console.log(userData.imgUrl);
-      setUserEditData(userData);
+      console.log(userData.imageUrl);
+      // setUserEditData(userData);
       setNickName(userData.nickName);
-      setImg(userData.imgUrl);
+      setImg(userData.imageUrl);
     }
   }, []);
 
   const handleLogOut = () => {
-    localStorage.removeItem('userInfo');
-    alert('로그아웃 되었습니다.');
-    navigate('/');
+    const storeUserData = localStorage.getItem('userInfo');
+    if (storeUserData) {
+      localStorage.removeItem('userInfo');
+      alert('로그아웃 되었습니다.');
+      navigate('/');
+    } else {
+      alert('로그인 해주세요.');
+      navigate('/');
+    }
   };
 
   return (
