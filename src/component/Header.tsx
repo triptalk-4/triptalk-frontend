@@ -18,7 +18,7 @@ export default function Header() {
     if (storedUserData) {
       const userData = JSON.parse(storedUserData);
       console.log(userData.imgUrl);
-      setImg(userData.imgUrl);
+      setImg(userData.imageUrl);
     }
   }, []);
 
