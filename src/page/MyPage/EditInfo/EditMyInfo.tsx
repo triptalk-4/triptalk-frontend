@@ -5,51 +5,33 @@ import EditForm from './EditForm';
 import EditProfile from '../../../component/ImgUpload/EditProfile';
 import { useState } from 'react';
 
-interface UserEditData {
-  imgUrl: string;
-  email: string;
-  password: string;
-  nickname: string;
-}
-
 export default function EditMyInfo() {
-  const [userEditData, setUserEditData] = useState<UserEditData>({
-    imgUrl: '',
-    email: '',
-    password: '',
-    nickname: '',
-  }); // msw
+  const [profileImage, setProfileImage] = useState('');
+  const [profilenickName, setProfilenickName] = useState('');
+  const [profilePassword, setProfilePassword] = useState('');
+
+  const handleImageChange = (imageUrl: string) => {
+    setProfileImage(imageUrl);
+  };
+
+  const handleEditDataChange = (data: { newPassword: string; nickname: string }) => {
+    console.log('Data changed:', data);
+    setProfilenickName(data.nickname);
+    setProfilePassword(data.newPassword);
+  };
 
   const navigate = useNavigate();
 
-  const [imgFile, setImgFile] = useState<File | string>('');
-
-  const updateUserEditData = (data: UserEditData) => {
-    setUserEditData(data);
-  };
-
-  const updateImgFile = (file: File) => {
-    setImgFile(file);
-  };
   const handleEditButtonClick = () => {
-    const editedUserData = {
-      ...userEditData,
-      imgUrl: imgFile,
+    localStorage.removeItem('userInfo');
+
+    const updatedUserData = {
+      imgUrl: profileImage,
+      newPassword: profilenickName,
+      nickname: profilePassword,
     };
 
-    fetch('/api/updateUserData', {
-      method: 'PUT',
-      body: JSON.stringify(editedUserData), // 수정된 데이터를 서버로 보냅니다.
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then(res => res.json())
-      .then(data => {
-        console.log('데이터가 수정되었습니다.', data);
-        setUserEditData(data);
-      })
-      .catch(error => console.error('데이터 수정 실패:', error));
+    localStorage.setItem('userInfo', JSON.stringify(updatedUserData));
   };
 
   const handleBackButtonClick = () => {
@@ -61,12 +43,12 @@ export default function EditMyInfo() {
       <InfoTitle>개인정보수정</InfoTitle>
       <InfoEditContainer>
         <ImgEditContainer>
-          <EditProfile updateImgFile={updateImgFile} />
+          <EditProfile onImageChange={handleImageChange} />
           <ExitBtn>탈퇴하기</ExitBtn>
         </ImgEditContainer>
 
         <MyInfoEditForm>
-          <EditForm updateUserEditData={updateUserEditData} />
+          <EditForm onDataChange={handleEditDataChange} />
         </MyInfoEditForm>
 
         <MyInfoBtnSetting>
