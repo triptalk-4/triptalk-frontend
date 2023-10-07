@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import { GRAY_COLOR, LIGHT_GRAY_COLOR, LIGHT_ORANGE_COLOR } from '../../../color/color';
+import { GRAY_COLOR, LIGHT_GRAY_COLOR, LIGHT_ORANGE_COLOR, MAIN_COLOR } from '../../../color/color';
 import EditForm from './EditForm';
 import EditProfile from '../../../component/ImgUpload/EditProfile';
 import { useState } from 'react';
@@ -10,14 +10,18 @@ export default function EditMyInfo() {
   const [profilenickName, setProfilenickName] = useState('');
   const [profilePassword, setProfilePassword] = useState('');
 
+  const [isButtonEnabled, setIsButtonEnabled] = useState(false); // 버튼 활성화 상태 추가
+
   const handleImageChange = (imageUrl: string) => {
     setProfileImage(imageUrl);
+    setIsButtonEnabled(true);
   };
 
   const handleEditDataChange = (data: { newPassword: string; nickname: string }) => {
     console.log('Data changed:', data);
     setProfilenickName(data.nickname);
     setProfilePassword(data.newPassword);
+    setIsButtonEnabled(true);
   };
 
   const navigate = useNavigate();
@@ -32,6 +36,8 @@ export default function EditMyInfo() {
     };
 
     localStorage.setItem('userInfo', JSON.stringify(updatedUserData));
+
+    navigate('/myinfo');
   };
 
   const handleBackButtonClick = () => {
@@ -52,7 +58,7 @@ export default function EditMyInfo() {
         </MyInfoEditForm>
 
         <MyInfoBtnSetting>
-          <EditBtn type="submit" onClick={handleEditButtonClick}>
+          <EditBtn type="submit" onClick={handleEditButtonClick} disabled={!isButtonEnabled}>
             수정하기
           </EditBtn>
           <CancelBtn onClick={handleBackButtonClick}>취소</CancelBtn>
@@ -121,20 +127,24 @@ const SettingBtnStyle = css`
   width: 120px;
   height: 55px;
   border: none;
-  cursor: pointer;
   border-radius: 15px;
   font-size: 15px;
 `;
 
 const EditBtn = styled.button`
   ${SettingBtnStyle}
-  background-color: ${LIGHT_ORANGE_COLOR};
+  background-color: ${MAIN_COLOR};
   color: #fff;
   margin-right: 25px;
+
+  &:disabled {
+    background-color: ${LIGHT_ORANGE_COLOR};
+  }
 `;
 
 const CancelBtn = styled.button`
   ${SettingBtnStyle}
   background-color: ${LIGHT_GRAY_COLOR};
   color: ${GRAY_COLOR};
+  cursor: pointer;
 `;
