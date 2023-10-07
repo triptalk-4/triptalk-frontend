@@ -4,22 +4,20 @@ import styled from 'styled-components';
 import { LIGHT_GRAY_COLOR } from '../../color/color';
 
 interface EditProfileProps {
-  updateImgFile: (file: File) => void;
+  onImageChange: (imageUrl: string) => void;
 }
 
-export default function EditProfile({ updateImgFile }: EditProfileProps) {
-  const [userEditData, setUserEditData] = useState({
-    imgUrl: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
-  }); // msw
+export default function EditProfile({ onImageChange }: EditProfileProps) {
+  const [img, setImg] = useState(''); // msw
 
   useEffect(() => {
-    fetch('/api/userinfoeidt')
-      .then(res => res.json())
-      .then(data => setUserEditData(data))
-      .catch(error => console.error('가짜 API 요청 실패:', error));
+    const storedUserData = localStorage.getItem('userInfo');
+    if (storedUserData) {
+      const userData = JSON.parse(storedUserData);
+      console.log(userData.imgUrl);
+      setImg(userData.imageUrl);
+    }
   }, []);
-
-  const [imgFile, setImgFile] = useState<string>(userEditData.imgUrl);
 
   const imgRef = useRef<HTMLInputElement | null>(null); // 초기에는 아무것도 가르키고 있지 않음
 
@@ -27,10 +25,7 @@ export default function EditProfile({ updateImgFile }: EditProfileProps) {
     // 선택한 이미지 보기
     const file = e.target.files?.[0]; // 선택한 파일
     if (file) {
-      // 이미지 파일을 상태 변수에 저장
-      setImgFile(URL.createObjectURL(file));
-      // 이미지 파일을 부모 컴포넌트로 전달
-      updateImgFile(file);
+      onImageChange(URL.createObjectURL(file)); // 선택된 이미지를 EditMyInfo로 전달
     }
   };
 
@@ -47,7 +42,7 @@ export default function EditProfile({ updateImgFile }: EditProfileProps) {
           <LuSettings />
         </EditProfileBtn>
       </ProfileImgLabel>
-      <PreviewImage src={imgFile} alt="프로필 이미지" />
+      <PreviewImage src={img} alt="프로필 이미지" />
     </ProfileImgContainer>
   );
 }
