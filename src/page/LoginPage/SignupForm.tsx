@@ -19,6 +19,7 @@ const SignupForm = () => {
   const [error, setError] = useState<string | null>(null);
   // state 가 생성될게 많아서 객체형태로
   const [email, setEmail] = useState<InputState>({ value: '', valid: false, message: '' });
+  const [emailInspectionCode, setEmailInspectionCode] = useState('');
   const [password, setPassword] = useState<InputState>({ value: '', valid: false, message: '' });
   const [passwordConfirm, setPasswordConfirm] = useState<InputState>({ value: '', valid: false, message: '' });
   const [name, setName] = useState<InputState>({ value: '', valid: false, message: '' });
@@ -135,7 +136,6 @@ const SignupForm = () => {
         };
 
         const res = await sendSignupData(formData);
-        console.log('dqnwio', res);
         if (res.registerOk) {
           alert(res.registerOk);
           navigator('/main');
@@ -171,15 +171,46 @@ const SignupForm = () => {
       try {
         const response = await sendEmailCertified(email.value);
         if (response.postMailOk) {
-          alert('이메일에 인증 문자를 전송했습니다.');
-        } else {
+          const success = response.postMailOk;
           console.log(response);
+          alert(success);
+        } else {
           console.error('error', error);
           alert('이메일 인증 요청에 실패했습니다.');
         }
       } catch (error) {
         alert('인증 요청 실패');
       }
+    }
+  };
+
+  // 이메일 인증 체크 요청
+  const checkEmailInspectionCode = async (inspectionCode: string) => {
+    try {
+      const res = await axios.post('http://52.79.200.55:8080/api/users/register/email/check', {
+        token: inspectionCode,
+      });
+      console.log(res);
+      return res.data;
+    } catch (error) {
+      console.error('이메일 인증 문자 확인 요청 실패', error);
+      throw error;
+    }
+  };
+
+  const handleInspectionCodeCheck = async () => {
+    try {
+      const response = await checkEmailInspectionCode(emailInspectionCode);
+      if (response.emailVerificationCompleted) {
+        alert('이메일 인증이 완료되었습니다.');
+      } else {
+        alert('인증 실패');
+        console.log(response.emailVerificationFailed);
+        console.error('뭔데 에러');
+      }
+    } catch (error) {
+      console.log(error);
+      console.error('response.error', error);
     }
   };
 
@@ -217,17 +248,19 @@ const SignupForm = () => {
             </button>
           </FormGroup>
 
-          {/* <FormGroup>
+          <FormGroup>
             <Label>이메일 인증</Label>
             <Input
-              type="email"
-              name="email"
-              // value={email.value}
-              // onChange={e => handleChange(e, validateEmail)}
-              placeholder="email 인증번호"
+              type="text"
+              name="emailInspectionCode"
+              value={emailInspectionCode}
+              onChange={e => setEmailInspectionCode(e.target.value)}
+              placeholder="이메일 인증번호"
             />
-            {email.valid ? null : <p>{email.message}</p>}
-          </FormGroup> */}
+            <button type="button" onClick={handleInspectionCodeCheck}>
+              인증확인
+            </button>
+          </FormGroup>
 
           <FormGroup>
             <Label>비밀번호</Label>
