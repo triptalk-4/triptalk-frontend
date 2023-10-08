@@ -38,11 +38,11 @@ export default function Header() {
         <NavItem to="/main" $isActive={location.pathname === '/main'}>
           홈
         </NavItem>
-        <NavItem to="/travel" $isActive={location.pathname === '/travel'}>
-          여행지
-        </NavItem>
         <NavItem to="/schedule" $isActive={location.pathname === '/schedule'}>
-          일정
+          전체일정
+        </NavItem>
+        <NavItem to="/travel" $isActive={location.pathname === '/travel'}>
+          지역일정
         </NavItem>
         <NavItem to="/lookmap" $isActive={location.pathname === '/lookmap'}>
           리뷰맵
