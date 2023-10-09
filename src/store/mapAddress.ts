@@ -1,4 +1,4 @@
-import { configureStore, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import {createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface AddressState {
   address: string[]
@@ -19,11 +19,4 @@ const addressSlice = createSlice({
 });
 
 export const { setAddress } = addressSlice.actions
-
-export const store = configureStore({
-  reducer: {
-    address: addressSlice.reducer,
-  },
-});
-
-export type RootState = ReturnType<typeof store.getState>;
+export default addressSlice.reducer
