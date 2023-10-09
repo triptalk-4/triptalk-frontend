@@ -71,7 +71,6 @@ function Schedule() {
       }
     }, 500);
   };
-
   const handleSortChange = (sortKey: string) => {
     let sortedData;
     switch (sortKey) {
@@ -87,7 +86,9 @@ function Schedule() {
       default:
         sortedData = data;
     }
-    setVisibleItems(sortedData);
+    setData(sortedData);
+    setVisibleItems(sortedData.slice(0, 9));
+    setAllItemsLoaded(false);
   };
 
   return (
