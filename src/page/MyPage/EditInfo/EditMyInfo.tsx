@@ -4,17 +4,23 @@ import { GRAY_COLOR, LIGHT_GRAY_COLOR, LIGHT_ORANGE_COLOR, MAIN_COLOR } from '..
 import EditForm from './EditForm';
 import EditProfile from '../../../component/ImgUpload/EditProfile';
 import { useState } from 'react';
+import EditIntroduct from './EditIntroduct';
 
 export default function EditMyInfo() {
   const [profileImage, setProfileImage] = useState('');
   const [profilenickName, setProfilenickName] = useState('');
   const [profilePassword, setProfilePassword] = useState('');
+  const [profileIntro, setProfileIntro] = useState('');
 
   const [isButtonEnabled, setIsButtonEnabled] = useState(false); // 버튼 활성화 상태 추가
 
   const handleImageChange = (imageUrl: string) => {
     setProfileImage(imageUrl);
     setIsButtonEnabled(true);
+  };
+
+  const handleIntroUpdate = (text: string) => {
+    setProfileIntro(text);
   };
 
   const handleEditDataChange = (data: { newPassword: string; nickname: string }) => {
@@ -33,6 +39,7 @@ export default function EditMyInfo() {
       imgUrl: profileImage,
       newPassword: profilePassword,
       nickname: profilenickName,
+      text: profileIntro,
     };
 
     localStorage.setItem('userInfo', JSON.stringify(updatedUserData));
@@ -52,6 +59,10 @@ export default function EditMyInfo() {
           <EditProfile onImageChange={handleImageChange} />
           <ExitBtn>탈퇴하기</ExitBtn>
         </ImgEditContainer>
+
+        <IntroductionContainer>
+          <EditIntroduct onUpdateIntro={handleIntroUpdate} />
+        </IntroductionContainer>
 
         <MyInfoEditForm>
           <EditForm onDataChange={handleEditDataChange} />
@@ -85,11 +96,12 @@ const InfoTitle = styled.p`
 const InfoEditContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 495px;
-  grid-template-rows: 1fr 55px;
+  grid-template-rows: 1fr 1fr 55px;
   column-gap: 100px;
   row-gap: 30px;
   grid-template-areas:
     'ImgEditContainer MyInfoEditForm'
+    'IntroductionContainer MyInfoEditForm'
     'MyInfoBtnSetting MyInfoBtnSetting';
   padding-top: 50px;
 `;
@@ -100,6 +112,10 @@ const ImgEditContainer = styled.div`
   justify-content: center;
   flex-direction: column;
   grid-area: ImgEditContainer;
+`;
+
+const IntroductionContainer = styled.div`
+  grid-area: IntroductionContainer;
 `;
 
 const ExitBtn = styled.button`
