@@ -44,9 +44,9 @@ export default function Header() {
         <NavItem to="/travel" $isActive={location.pathname === '/travel'}>
           지역일정
         </NavItem>
-        <NavItem to="/lookmap" $isActive={location.pathname === '/lookmap'}>
+        {/* <NavItem to="/lookmap" $isActive={location.pathname === '/lookmap'}>
           리뷰맵
-        </NavItem>
+        </NavItem> */}
         <Search />
       </Nav>
     </GnbContainer>

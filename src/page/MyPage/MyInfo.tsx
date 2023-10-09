@@ -55,6 +55,9 @@ export default function MyInfo() {
             <AiOutlineSetting />
           </Setting>
         </UserNickNameContainer>
+        <IntroTextContainer>
+          <IntroText>사용자의 소개 내용을 입력하세요</IntroText>
+        </IntroTextContainer>
         <UserLogoutBtn onClick={handleLogOut}>로그아웃</UserLogoutBtn>
       </UserImgContainer>
       <ContentContainer>
@@ -100,6 +103,17 @@ const UserNickNameContainer = styled.div`
   justify-content: center;
   align-items: center;
   padding: 30px 0 20px;
+`;
+
+const IntroTextContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const IntroText = styled.p`
+  font-size: 25px;
+  padding-bottom: 20px;
 `;
 
 const NickName = styled.p`
