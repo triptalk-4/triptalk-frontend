@@ -31,8 +31,8 @@ export default function EditMyInfo() {
 
     const updatedUserData = {
       imgUrl: profileImage,
-      newPassword: profilenickName,
-      nickname: profilePassword,
+      newPassword: profilePassword,
+      nickname: profilenickName,
     };
 
     localStorage.setItem('userInfo', JSON.stringify(updatedUserData));
