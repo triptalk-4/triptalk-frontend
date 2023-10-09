@@ -43,11 +43,10 @@ export default function Travel() {
 
 const TravelContainer = styled.div`
   width: 80%;
-  margin: 0 auto;
+  margin: 65px auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  height: 95vh;
 `;
 
 const TravelTitleContainer = styled.div`
