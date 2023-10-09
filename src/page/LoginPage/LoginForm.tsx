@@ -1,4 +1,8 @@
 import axios from 'axios';
+import KakaoLogin from '../../component/SocialLogin/KakaoLogin';
+import GoogleLogin from '../../component/SocialLogin/GoogleLogin';
+import { useDispatch } from 'react-redux';
+import { setToken } from '../../store/tokenSlice';
 
 import styled, { css } from 'styled-components';
 import { GRAY_COLOR, MAIN_COLOR } from '../../color/color';
@@ -12,17 +16,11 @@ import { SetStateAction, useState } from 'react';
 // }
 
 const LoginForm = () => {
+  const dispatch = useDispatch();
+
   const naviget = useNavigate();
   const [userEmail, setUserEmail] = useState('');
   const [password, setPassword] = useState('');
-
-  const REST_API_KEY = '백엔드한테 받아올거 1';
-  const REDIRECT_URI = '백엔드한테 받아올거 2';
-  const link = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
-
-  const handleKakaoLogin = () => {
-    window.location.href = link;
-  };
 
   const handleEmail = (e: { target: { value: SetStateAction<string> } }) => {
     // 이메일 값 받아오기
@@ -36,35 +34,56 @@ const LoginForm = () => {
 
   const handleLogin = async () => {
     //로그인 시도
-    try {
-      const response = await fetch('/api/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email: userEmail, password: password }),
-      });
+    // try {
+    //   const response = await fetch('/api/login', {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify({ email: userEmail, password: password }),
+    //   });
 
-      if (response.status === 200) {
-        const data = await response.json();
-        alert('로그인 되었습니다.');
+    //   if (response.status === 200) {
+    //     const data = await response.json();
+    //     alert('로그인 되었습니다.');
+    //     setUserEmail('');
+    //     setPassword('');
+    //     naviget('/main');
+    //     console.log(data);
+    //   } else {
+    //     alert('유효하지 않은 사용자 정보입니다.');
+    //   }
+    // } catch (error) {
+    //   console.error('로그인 오류 : ', error);
+    // }
+    try {
+      const response = await axios.post('http://52.79.200.55:8080/api/users/login', {
+        email: userEmail,
+        password: password,
+      });
+      if (response.data.token) {
+        dispatch(setToken(response.data.token));
+        console.log(response.data.token);
+        const message = '로그인 되었습니다.';
+        alert(`${message}`);
         setUserEmail('');
         setPassword('');
         naviget('/main');
-        console.log(data);
       } else {
-        alert('유효하지 않은 사용자 정보입니다.');
+        console.log(response);
+        alert('유효하지 않은 사용자 입니다.');
       }
     } catch (error) {
-      console.error('로그인 오류 : ', error);
+      console.error('error 다', error);
     }
   };
 
   return (
     <Container>
-      <Kakao onClick={handleKakaoLogin}>
-        <p>카카오로 로그인</p>
-      </Kakao>
+      <SocialLogin>
+        <KakaoLogin />
+        <GoogleLogin />
+      </SocialLogin>
       <OrDivider>
         <span>또는</span>
       </OrDivider>
@@ -91,19 +110,10 @@ const Container = styled.div`
   justify-content: center;
 `;
 
-const Kakao = styled.button`
-  font-size: 22px;
-  font-weight: 500;
-  background-color: #fee500;
-  border-radius: 10px;
-  height: 60px;
-  line-height: 60px;
-  margin-bottom: 32px;
-  cursor: pointer;
-  border: none;
-  &:focus {
-    outline: none;
-  }
+const SocialLogin = styled.div`
+  width: 100%;
+  display: flex;
+  gap: 20px;
 `;
 
 const OrDivider = styled.div`

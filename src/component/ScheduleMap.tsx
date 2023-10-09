@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux/es/exports';
-import { RootState } from '../store/mapStore';
+import { RootState } from '../store/store';
 
 import styled from 'styled-components';
 
@@ -9,8 +9,6 @@ const KAKAO_API_KEY = '2cc45017695a59169a1f649bdc77f123';
 const ScheduleMapLoader = () => {
   // redux에서 정보가져오기
   const { address } = useSelector((state: RootState) => state.address);
-
-
 
   useEffect(() => {
     const script = document.createElement('script');
@@ -29,7 +27,7 @@ const ScheduleMapLoader = () => {
         if (address && address.length > 0) {
           const geocoder = new kakao.maps.services.Geocoder();
 
-          address.forEach((address) => {
+          address.forEach(address => {
             geocoder.addressSearch(address, function (result, status) {
               if (status === kakao.maps.services.Status.OK) {
                 const y = parseFloat(result[0].y);
@@ -38,15 +36,15 @@ const ScheduleMapLoader = () => {
                 const coords = new kakao.maps.LatLng(y, x);
                 const marker = new kakao.maps.Marker({
                   map: map,
-                  position: coords
+                  position: coords,
                 });
 
-                marker.setPosition(coords)
+                marker.setPosition(coords);
                 // 검색된 주소로 이동
-                map.setCenter(coords)
+                map.setCenter(coords);
               }
-            })
-          })
+            });
+          });
         }
       });
     };
