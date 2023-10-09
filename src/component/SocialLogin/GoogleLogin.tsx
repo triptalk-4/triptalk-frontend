@@ -7,8 +7,8 @@ const GoogleLogin = () => {
     try {
       const response = await axios.post('http://52.79.200.55:8080/api/auth/google');
 
+      console.log(response);
       if (response.status === 200) {
-        console.log(response);
         const { token } = response.data; // 토큰값 추출
         console.log(token);
         window.location.href =
