@@ -11,7 +11,6 @@ interface Post {
 
 export default function MyInfoPost() {
   const [postsData, setPostsData] = useState<Post[]>([]); // msw
-  //  const [hasMoreData, setHasMoreData] = useState(true); // 초기에는 더 많은 데이터가 있다고 가정
   const [containerClassName, setContainerClassName] = useState('flex-start');
   const [isLoading, setIsLoading] = useState(true); // 로딩 상태
   // const [defaultPost, setDefaultPost] = useState<Post[]>([]);
