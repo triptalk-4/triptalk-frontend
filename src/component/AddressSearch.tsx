@@ -15,7 +15,6 @@ const AddressSearch = () => {
 
   const [postcode, setPostcode] = useState<string>('');
   const [roadAddress, setRoadAddress] = useState<string>('');
-  const [jibunAddress, setJibunAddress] = useState<string>('');
 
   const handleDaumPostcode = () => {
     new window.daum.Postcode({
@@ -24,11 +23,11 @@ const AddressSearch = () => {
         const address = data.address;
 
         // 주소 정보 redux 스토어 추가함
+        // 시,군,구 보내달라함
         dispatch(setAddress(address));
 
         setPostcode(data.zonecode);
         setRoadAddress(roadAddr);
-        setJibunAddress(data.jibunAddress);
       },
     }).open();
   };
@@ -39,7 +38,6 @@ const AddressSearch = () => {
       <Button onClick={handleDaumPostcode}>주소 검색</Button>
       <br />
       <Input type="text" id="sample4_roadAddress" placeholder="도로명주소" value={roadAddress} readOnly />
-      <Input type="text" id="sample4_jibunAddress" placeholder="지번주소" value={jibunAddress} readOnly />
     </div>
   );
 };
