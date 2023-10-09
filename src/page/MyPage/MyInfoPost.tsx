@@ -13,7 +13,6 @@ export default function MyInfoPost() {
   const [postsData, setPostsData] = useState<Post[]>([]); // msw
   const [containerClassName, setContainerClassName] = useState('flex-start');
   const [isLoading, setIsLoading] = useState(true); // 로딩 상태
-  // const [defaultPost, setDefaultPost] = useState<Post[]>([]);
   const targetRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
