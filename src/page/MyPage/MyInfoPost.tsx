@@ -11,6 +11,7 @@ interface Post {
 
 export default function MyInfoPost() {
   const [postsData, setPostsData] = useState<Post[]>([]); // msw
+  //  const [hasMoreData, setHasMoreData] = useState(true); // 초기에는 더 많은 데이터가 있다고 가정
   const [containerClassName, setContainerClassName] = useState('flex-start');
   const [isLoading, setIsLoading] = useState(true); // 로딩 상태
   // const [defaultPost, setDefaultPost] = useState<Post[]>([]);
@@ -54,17 +55,16 @@ export default function MyInfoPost() {
           const startIndex = postsData.length;
 
           // 스크롤하면 3개씩 생성
-          const endIndex = startIndex + 3; // setPostsData3개씩 가지고오게함
+          const endIndex = startIndex + 3;
 
-          // const moreData = postsData.slice(startIndex, endIndex);
-          // msw를 통해 새로운 데이터를 가져옴
+          // msw를 통해 postsData에 데이터 추가
           fetch(`/api/posts?page=${endIndex / 3 + 1}`)
             .then(res => res.json())
             .then(data => {
               setIsLoading(true);
 
               // 새로운 데이터를 기존 데이터와 병합
-              setPostsData(prevData => [...prevData, ...data]);
+              setPostsData(prevData => [...prevData, ...data.slice(startIndex, endIndex)]);
               setIsLoading(false);
             })
             .catch(error => console.error('데이터 요청 실패:', error));
