@@ -36,8 +36,8 @@ function Schedule() {
       try {
         const config = {
           headers: {
-            Authorization: token
-          }
+            Authorization: token,
+          },
         };
         const response = await axios.get('/api/plans?lastId=10&limit=2&sortType=RECENT', config);
         const data = response.data;
@@ -50,7 +50,7 @@ function Schedule() {
           thumbnail: item.thumbnail,
           title: item.title,
           views: item.views,
-          date: item.startDate
+          date: item.startDate,
         }));
         setData(transformedData);
         setVisibleItems(transformedData.slice(0, 9));
@@ -92,7 +92,7 @@ function Schedule() {
     setTimeout(() => {
       setVisibleItems(prevItems => [
         ...prevItems,
-        ...data.slice(prevItems.length, Math.min(prevItems.length + 6, data.length))
+        ...data.slice(prevItems.length, Math.min(prevItems.length + 6, data.length)),
       ]);
       setIsLoading(false);
       if (visibleItems.length + 6 >= data.length) {
