@@ -30,6 +30,21 @@ export default function EditForm({ onDataChange }: EditFormProps) {
     valid: true,
     message: '',
   });
+  const handleCurrentPasswordCheck = () => {
+    if (currentPassword === password) {
+      setCurrentPasswordState({
+        value: currentPassword,
+        valid: true,
+        message: '현재 비밀번호가 일치합니다.',
+      });
+    } else {
+      setCurrentPasswordState({
+        value: currentPassword,
+        valid: false,
+        message: '현재 비밀번호가 일치하지 않습니다.',
+      });
+    }
+  };
 
   const validateCurrentPassword = (value: string) => {
     // 기존 비밀번호와 비교하여 일치 여부 확인
@@ -117,6 +132,21 @@ export default function EditForm({ onDataChange }: EditFormProps) {
   };
 
   ///////////////////////닉네임////////////////////
+  const handleNicknameCheck = () => {
+    // 입력한 닉네임과 기존 닉네임을 비교하여 겹치는지 확인
+    if (nickName === nickName) {
+      setNicknameState({
+        valid: false,
+        message: '현재 닉네임과 동일합니다. 다른 닉네임을 입력해주세요.',
+      });
+    } else {
+      setNicknameState({
+        valid: true,
+        message: '사용 가능한 닉네임입니다.',
+      });
+    }
+  };
+
   // 유효성 검사 결과를 저장하는 상태 변수
   const [nicknameState, setNicknameState] = useState({
     valid: true,
@@ -143,10 +173,12 @@ export default function EditForm({ onDataChange }: EditFormProps) {
       message: validation.message,
     });
 
-    // onDataChange 함수를 호출하여 상위 컴포넌트로 데이터 전달
+    // 새로 입력된 닉네임을 저장하는 변수
+    const newNicknameValue = newNickname;
+
     onDataChange({
-      newPassword,
-      nickname: newNickname,
+      newPassword: newPassword,
+      nickname: newNicknameValue,
     });
   };
 
@@ -160,6 +192,20 @@ export default function EditForm({ onDataChange }: EditFormProps) {
       </MyInfoField>
 
       <MyInfoField>
+        <MyInfoLabel htmlFor="nickname">닉네임</MyInfoLabel>
+        <InputWithButton>
+          <MyInfoInput type="text" id="nickname" value={nickName} onChange={handleNicknameChange} />
+          <CheckBtn type="button" onClick={handleNicknameCheck}>
+            확인
+          </CheckBtn>
+          {/* 닉네임 유효성 메시지를 표시 */}
+          {!nicknameState.valid && (
+            <p style={{ color: 'red', paddingLeft: '15px', fontSize: '13px' }}>{nicknameState.message}</p>
+          )}
+        </InputWithButton>
+      </MyInfoField>
+
+      <MyInfoField>
         <MyInfoLabel htmlFor="current-password">현재비밀번호</MyInfoLabel>
         <InputWithButton>
           <MyInfoInput
@@ -169,6 +215,9 @@ export default function EditForm({ onDataChange }: EditFormProps) {
             value={currentPassword}
             onChange={handleCurrentPasswordChange}
           />
+          <CheckBtn type="button" onClick={handleCurrentPasswordCheck}>
+            확인
+          </CheckBtn>
           {/* 현재 비밀번호 유효성 메시지를 표시합니다. */}
           {!currentPasswordState.valid && (
             <p style={{ color: 'red', paddingLeft: '15px', fontSize: '13px' }}>{currentPasswordState.message}</p>
@@ -209,17 +258,6 @@ export default function EditForm({ onDataChange }: EditFormProps) {
           )}
         </InputWithButton>
       </MyInfoField>
-
-      <MyInfoField>
-        <MyInfoLabel htmlFor="nickname">닉네임</MyInfoLabel>
-        <InputWithButton>
-          <MyInfoInput type="text" id="nickname" value={nickName} onChange={handleNicknameChange} />
-          {/* 닉네임 유효성 메시지를 표시 */}
-          {!nicknameState.valid && (
-            <p style={{ color: 'red', paddingLeft: '15px', fontSize: '13px' }}>{nicknameState.message}</p>
-          )}
-        </InputWithButton>
-      </MyInfoField>
     </MyInfoGrid>
   );
 }
@@ -249,6 +287,7 @@ const MyInfoInput = styled.input`
   border: none;
   border-bottom: 2px solid ${SUPER_LIGHT_ORANGE_COLOR};
   padding: 7px 15px;
+  position: relative;
 
   &:focus::placeholder {
     opacity: 1;
@@ -263,4 +302,11 @@ const MyInfoInput = styled.input`
   &:disabled {
     background-color: #f2f2f2;
   }
+`;
+
+const CheckBtn = styled.button`
+  width: 45px;
+  padding: 5px;
+  margin-left: 15px;
+  position: absolute;
 `;
