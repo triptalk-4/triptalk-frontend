@@ -1,28 +1,29 @@
 import styled from 'styled-components';
 import { FcGoogle } from 'react-icons/fc';
 import axios from 'axios';
+import { useGoogleLogin } from '@react-oauth/google';
+import { useNavigate } from 'react-router';
 
 const GoogleLogin = () => {
-  const handleGoogleLogin = async () => {
-    try {
-      const response = await axios.post('http://52.79.200.55:8080/api/auth/google');
+  const navigate = useNavigate();
 
-      console.log(response);
-      if (response.status === 200) {
-        const { token } = response.data; // 토큰값 추출
-        console.log(token);
-        window.location.href =
-          'https://accounts.google.com/o/oauth2/v2/auth?client_id=57409677042-8qrpnbbfcq8d6jeq9kmvh8357vi4p4up.apps.googleusercontent.com&redirect_uri=http://ec2-52-79-200-55.a';
-      } else {
-        console.log(response);
-        throw new Error('구글 로그인에 실패했습니다.');
-      }
-    } catch (error) {
-      console.error('구글 에러', error);
-    }
-  };
+  const googleSocialLogin = useGoogleLogin({
+    scope: 'email profile',
+    onSuccess: async ({ code }: any) => {
+      axios.post('http://52.79.200.55:8080/api/auth/google', { code }).then(({ data }) => {
+        console.log(data);
+
+        navigate('/main');
+      });
+    },
+    onError: error => {
+      console.error(error);
+    },
+    flow: 'auth-code',
+  });
+
   return (
-    <Google onClick={handleGoogleLogin}>
+    <Google onClick={googleSocialLogin}>
       <FcGoogle />
     </Google>
   );
