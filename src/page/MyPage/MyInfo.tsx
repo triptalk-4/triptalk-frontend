@@ -82,9 +82,9 @@ export default function MyInfo() {
   }, [token, userNickname, userImg, userIntro]);
 
   const handleLogOut = () => {
-    const storeUserData = localStorage.getItem('userInfo');
+    const storeUserData = localStorage.getItem('token');
     if (storeUserData) {
-      localStorage.removeItem('userInfo');
+      localStorage.removeItem('token');
       alert('로그아웃 되었습니다.');
       navigate('/');
     } else {
