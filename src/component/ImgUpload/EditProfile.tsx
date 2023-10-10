@@ -2,22 +2,51 @@ import { useState, useRef, ChangeEvent, useEffect } from 'react';
 import { LuSettings } from 'react-icons/lu';
 import styled from 'styled-components';
 import { LIGHT_GRAY_COLOR } from '../../color/color';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
 
 interface EditProfileProps {
   onImageChange: (imageUrl: string) => void;
 }
 
 export default function EditProfile({ onImageChange }: EditProfileProps) {
-  const [img, setImg] = useState(''); // msw
+  const [userImg, setUserImg] = useState(''); // msw
+  const token = useSelector((state: RootState) => state.token.token); // Redux에서 토큰 가져오기
+
+  // useEffect(() => {
+  //   const storedUserData = localStorage.getItem('userInfo');
+  //   if (storedUserData) {
+  //     const userData = JSON.parse(storedUserData);
+  //     console.log(userData.imgUrl);
+  //     setImg(userData.imageUrl);
+  //   }
+  // }, []);
 
   useEffect(() => {
-    const storedUserData = localStorage.getItem('userInfo');
-    if (storedUserData) {
-      const userData = JSON.parse(storedUserData);
-      console.log(userData.imgUrl);
-      setImg(userData.imageUrl);
-    }
-  }, []);
+    const token = localStorage.getItem('token');
+    const fetchUserInfo = async () => {
+      try {
+        const response = await axios.get('http://52.79.200.55:8080/api/users/profile', {
+          headers: {
+            Authorization: `Bearer ${token}`, //필수
+          },
+        });
+
+        if (response.data) {
+          const { profile } = response.data;
+          setUserImg(profile);
+        } else {
+          console.log(response);
+          alert('사용자 정보가 없습니다 로그인확인해주세요');
+        }
+      } catch (error) {
+        console.error('사용자 정보 가져오기 오류 확인바람:', error);
+      }
+    };
+
+    fetchUserInfo(); // 비동기 함수 호출
+  }, [token, userImg]);
 
   const imgRef = useRef<HTMLInputElement | null>(null); // 초기에는 아무것도 가르키고 있지 않음
 
@@ -25,7 +54,8 @@ export default function EditProfile({ onImageChange }: EditProfileProps) {
     // 선택한 이미지 보기
     const file = e.target.files?.[0]; // 선택한 파일
     if (file) {
-      onImageChange(URL.createObjectURL(file)); // 선택된 이미지를 EditMyInfo로 전달
+      const imageUrl = URL.createObjectURL(file); // 이미지 파일을 URL로 변환
+      onImageChange(imageUrl);
     }
   };
 
@@ -42,7 +72,7 @@ export default function EditProfile({ onImageChange }: EditProfileProps) {
           <LuSettings />
         </EditProfileBtn>
       </ProfileImgLabel>
-      <PreviewImage src={img} alt="프로필 이미지" />
+      <PreviewImage src={userImg} alt="프로필 이미지" />
     </ProfileImgContainer>
   );
 }

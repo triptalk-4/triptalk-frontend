@@ -96,7 +96,7 @@ const InfoTitle = styled.p`
 const InfoEditContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 495px;
-  grid-template-rows: 1fr 1fr 55px;
+  grid-template-rows: 1fr 70px 55px;
   column-gap: 100px;
   row-gap: 30px;
   grid-template-areas:
@@ -123,7 +123,7 @@ const ExitBtn = styled.button`
   border: none;
   background-color: transparent;
   text-decoration: underline;
-  margin-top: 40px;
+  margin-top: 30px;
   cursor: pointer;
 `;
 
@@ -131,6 +131,7 @@ const MyInfoEditForm = styled.form`
   display: flex;
   flex-direction: column;
   grid-area: MyInfoEditForm;
+  justify-content: center;
 `;
 
 const MyInfoBtnSetting = styled.div`

@@ -2,6 +2,9 @@ import styled from 'styled-components';
 import { MAIN_COLOR, SUPER_LIGHT_ORANGE_COLOR } from '../../../color/color';
 import { useEffect, useState } from 'react';
 import { passwordRegExp } from '../../../regex/Regex';
+import axios from 'axios';
+import { RootState } from '../../../store/store';
+import { useSelector } from 'react-redux';
 
 interface EditFormProps {
   onDataChange: (data: { newPassword: string; nickname: string }) => void;
@@ -9,19 +12,49 @@ interface EditFormProps {
 
 export default function EditForm({ onDataChange }: EditFormProps) {
   // msw
-  const [nickName, setNickName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setpassword] = useState('');
+  const [userEmail, setUserEmail] = useState('');
+  const [userNickname, setUserNickname] = useState('');
+  const [userPassword, setUserPassword] = useState('');
+  const [userNewPassword, setUserNewPassword] = useState('');
+
+  const token = useSelector((state: RootState) => state.token.token); // Redux에서 토큰 가져오기
+
+  // useEffect(() => {
+  //   const storedUserData = localStorage.getItem('userInfo');
+  //   if (storedUserData) {
+  //     const userData = JSON.parse(storedUserData);
+  //     setNickName(userData.nickname);
+  //     setEmail(userData.email);
+  //     setpassword(userData.password);
+  //   }
+  // }, []);
 
   useEffect(() => {
-    const storedUserData = localStorage.getItem('userInfo');
-    if (storedUserData) {
-      const userData = JSON.parse(storedUserData);
-      setNickName(userData.nickname);
-      setEmail(userData.email);
-      setpassword(userData.password);
-    }
-  }, []);
+    const token = localStorage.getItem('token');
+    const fetchUserInfo = async () => {
+      try {
+        const response = await axios.get('http://52.79.200.55:8080/api/users/profile', {
+          headers: {
+            Authorization: `Bearer ${token}`, //필수
+          },
+        });
+
+        if (response.data) {
+          const { email, nickname, password } = response.data;
+          setUserEmail(email);
+          setUserPassword(password);
+          setUserNickname(nickname);
+        } else {
+          console.log(response);
+          alert('사용자 정보가 없습니다 로그인확인해주세요');
+        }
+      } catch (error) {
+        console.error('사용자 정보 가져오기 오류 확인바람:', error);
+      }
+    };
+
+    fetchUserInfo(); // 비동기 함수 호출
+  }, [token, userEmail, userNickname, userPassword]);
 
   ///////////////////////현재비밀번호////////////////////
   const [currentPassword, setCurrentPassword] = useState('');
@@ -187,14 +220,14 @@ export default function EditForm({ onDataChange }: EditFormProps) {
       <MyInfoField>
         <MyInfoLabel htmlFor="email">이메일</MyInfoLabel>
         <InputWithButton>
-          <MyInfoInput type="email" id="email" value={email} disabled />
+          <MyInfoInput type="email" id="email" value={userEmail} disabled />
         </InputWithButton>
       </MyInfoField>
 
       <MyInfoField>
         <MyInfoLabel htmlFor="nickname">닉네임</MyInfoLabel>
         <InputWithButton>
-          <MyInfoInput type="text" id="nickname" value={nickName} onChange={handleNicknameChange} />
+          <MyInfoInput type="text" id="nickname" value={userNickname} onChange={handleNicknameChange} />
           <CheckBtn type="button" onClick={handleNicknameCheck}>
             확인
           </CheckBtn>
