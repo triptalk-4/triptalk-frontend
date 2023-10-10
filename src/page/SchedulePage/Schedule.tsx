@@ -11,18 +11,20 @@ import { DEFAULT_FONT_COLOR } from '../../color/color';
 import axios from 'axios';
 import { useSelector } from 'react-redux/es/exports';
 import { RootState } from '../../store/store';
+import { useDispatch } from 'react-redux';
+import { setToken } from '../../store/tokenSlice';
 
 interface Item {
-  endDate: string;
+  createAt: number;
   likeCount: number;
   plannerId: number;
-  startDate: string;
   thumbnail: string;
   title: string;
   views: number;
 }
 
 function Schedule() {
+  const dispatch = useDispatch();
   const [data, setData] = useState<Item[]>([]);
   const [visibleItems, setVisibleItems] = useState<Item[]>([]); //첫 로드시 페이지에 나타낼 아이템 갯수
   const [isLoading, setIsLoading] = useState(false);
@@ -58,10 +60,19 @@ function Schedule() {
   // console.log(token);
   // const token = useSelector((state: RootState) => state.token.token);
 
+  // useEffect(() => {
+  //   if (token) {
+  //     localStorage.setItem('token', token);
+  //   }
+  // }, [token]);
+
   useEffect(() => {
+    const storedToken = localStorage.getItem('token');
+    if (storedToken) {
+      dispatch(setToken(storedToken));
+    }
     const fetchData = async () => {
       try {
-<<<<<<< HEAD
         console.log(token);
         if (token) {
           const config = {
@@ -85,28 +96,6 @@ function Schedule() {
           setData(transformedData);
           setVisibleItems(transformedData.slice(0, 9));
         }
-=======
-        const config = {
-          headers: {
-            Authorization: token,
-          },
-        };
-        const response = await axios.get('/api/plans?lastId=10&limit=2&sortType=RECENT', config);
-        const data = response.data;
-        setHasNext(data.hasNext);
-        const transformedData = data.plannerListResponses.map((item: any) => ({
-          endDate: item.endDate,
-          likeCount: item.likeCount,
-          plannerId: item.plannerId,
-          startDate: item.startDate,
-          thumbnail: item.thumbnail,
-          title: item.title,
-          views: item.views,
-          date: item.startDate,
-        }));
-        setData(transformedData);
-        setVisibleItems(transformedData.slice(0, 9));
->>>>>>> 930174a4cc623dbe8c7451c883cc76a1f47acd28
       } catch (error) {
         console.error('API Request Failure:', error);
       }
@@ -144,7 +133,7 @@ function Schedule() {
     setTimeout(() => {
       setVisibleItems(prevItems => [
         ...prevItems,
-        ...data.slice(prevItems.length, Math.min(prevItems.length + 6, data.length)),
+        ...data.slice(prevItems.length, Math.min(prevItems.length + 6, data.length))
       ]);
       setIsLoading(false);
       if (visibleItems.length + 6 >= data.length) {
@@ -156,7 +145,7 @@ function Schedule() {
     let sortedData;
     switch (sortKey) {
       case '최신순':
-        sortedData = [...data].sort((a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime());
+        sortedData = [...data].sort((a, b) => new Date(b.createAt).getTime() - new Date(a.createAt).getTime());
         break;
       case '좋아요':
         sortedData = [...data].sort((a, b) => b.likeCount - a.likeCount);
@@ -202,7 +191,7 @@ function Schedule() {
                     </IconWithCount>
                   </TopContainer>
                   <BottomContainer>
-                    <DateLabel>{item.startDate}</DateLabel>
+                    <DateLabel>{item.createAt}</DateLabel>
                   </BottomContainer>
                 </div>
                 <Img src={item.thumbnail} alt="Post Image" />
