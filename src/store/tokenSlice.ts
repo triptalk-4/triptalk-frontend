@@ -1,12 +1,12 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface TokenState {
-  token: string | null
+  token: string | null;
 }
 
 const initialState: TokenState = {
-  token : null,
-}
+  token: null,
+};
 
 const tokenSlice = createSlice({
   name: 'token',
@@ -16,7 +16,7 @@ const tokenSlice = createSlice({
       state.token, action.payload;
     },
   },
-})
+});
 
 export const { setToken } = tokenSlice.actions;
-export default tokenSlice.reducer
+export default tokenSlice.reducer;
