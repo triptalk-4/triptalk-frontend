@@ -5,7 +5,7 @@ import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import { EffectCoverflow, Pagination, Navigation } from 'swiper/modules';
 import styled, { css } from 'styled-components';
-import { MAIN_COLOR } from '../../../color/color';
+import { MAIN_COLOR } from '../../color/color';
 import { Link } from 'react-router-dom';
 
 interface TravelCarouselProps {
@@ -42,7 +42,7 @@ export default function TravelCarousel({ data }: TravelCarouselProps) {
         modules={[EffectCoverflow, Pagination, Navigation]}>
         {data.map((item, index) => (
           <StyledSwiperSlide key={index}>
-            <Link to="/schedule">
+            <Link to="/page/:id">
               <SwiperImage src={item.imgUrl} />
               {/* 나중에 SwiperImg컨포넌트 추가 예정 */}
               <SwiperText>
@@ -83,9 +83,13 @@ const StyledSwiper = styled(Swiper)`
   padding-top: 55px;
   padding-bottom: 200px;
   margin-bottom: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const StyledSwiperSlide = styled(SwiperSlide)`
+  background-color: #fff;
   background-position: center;
   background-size: cover;
   width: 400px;

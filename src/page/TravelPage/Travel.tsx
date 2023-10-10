@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import TravelCarousel from './CarouselBox/TravelCarousel';
+import TravelCarousel from '../../component/Carousel/TravelCarousel';
 import DetailPopUp from './PopUp/DetailPopUp';
 import { useState, useEffect } from 'react';
 
