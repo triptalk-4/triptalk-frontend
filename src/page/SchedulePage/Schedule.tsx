@@ -31,9 +31,61 @@ function Schedule() {
   const [hasNext, setHasNext] = useState(true);
   const token = useSelector((state: RootState) => state.token.token);
 
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await axios.get('/api/plans?lastId=10&limit=2&sortType=RECENT');
+  //       const data = response.data;
+  //       setHasNext(data.hasNext);
+  //       const transformedData = data.plannerListResponses.map((item: any) => ({
+  //         endDate: item.endDate,
+  //         likeCount: item.likeCount,
+  //         plannerId: item.plannerId,
+  //         startDate: item.startDate,
+  //         thumbnail: item.thumbnail,
+  //         title: item.title,
+  //         views: item.views,
+  //         date: item.startDate
+  //       }));
+  //       setData(transformedData);
+  //       setVisibleItems(transformedData.slice(0, 9));
+  //     } catch (error) {
+  //       console.error('API Request Failure:', error);
+  //     }
+  //   };
+  //   fetchData();
+  // }, []);
+  // console.log(token);
+  // const token = useSelector((state: RootState) => state.token.token);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
+<<<<<<< HEAD
+        console.log(token);
+        if (token) {
+          const config = {
+            headers: {
+              Authorization: token
+            }
+          };
+          const response = await axios.get('/api/plans?lastId=10&limit=2&sortType=RECENT', config);
+          const data = response.data;
+          setHasNext(data.hasNext);
+          const transformedData = data.plannerListResponses.map((item: any) => ({
+            endDate: item.endDate,
+            likeCount: item.likeCount,
+            plannerId: item.plannerId,
+            startDate: item.startDate,
+            thumbnail: item.thumbnail,
+            title: item.title,
+            views: item.views,
+            date: item.startDate
+          }));
+          setData(transformedData);
+          setVisibleItems(transformedData.slice(0, 9));
+        }
+=======
         const config = {
           headers: {
             Authorization: token,
@@ -54,13 +106,13 @@ function Schedule() {
         }));
         setData(transformedData);
         setVisibleItems(transformedData.slice(0, 9));
+>>>>>>> 930174a4cc623dbe8c7451c883cc76a1f47acd28
       } catch (error) {
         console.error('API Request Failure:', error);
       }
     };
     fetchData();
   }, [token]);
-  console.log(useSelector((state: RootState) => state.token));
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
