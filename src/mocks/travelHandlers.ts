@@ -21,7 +21,7 @@ const travelData = [
     lookUpCount: 5,
   },
   {
-    imgUrl: 'img/Travelimg6.jpg',
+    imgUrl: 'img/Travelimg2.jpg',
     title: '부산 바닷가~~ 힐링휴가',
     nickname: '해변객',
     address: '부산 해운대구 해운대해변로 123',
