@@ -4,11 +4,12 @@ import { GrLocation } from 'react-icons/gr';
 import { GRAY_COLOR } from '../../color/color';
 import ViewComments from './ViewComments';
 import EnterComment from './EnterComment';
+import PostImgs from '../Carousel/PostImgs';
 
 export default function PostBox() {
   return (
     <PostBoxContainer>
-      <PostImg src="/img/Carousel.png" alt="대표이미지"></PostImg>
+      <PostImgs />
       <PostInfo>
         <PostText>
           <PostInfoTime>
@@ -41,17 +42,11 @@ const PostBoxContainer = styled.div`
   }
 `;
 
-const PostImg = styled.img`
-  width: 60%;
-  height: 400px;
-  border-radius: 15px 0 0 15px;
-`;
-
 const PostInfo = styled.div`
   width: 40%;
   height: 400px;
   background-color: white;
-  border-radius: 0 15px 15px 0;
+  border-left: 1px solid #d6d6d6;
 `;
 
 const PostText = styled.div`

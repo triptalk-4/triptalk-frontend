@@ -66,7 +66,7 @@ export default function DetailPopUp(props: DetailPopUpProps) {
       if (selectedOrder === '좋아요순') {
         filteredTravels.sort((a, b) => b.heartCount - a.heartCount);
       } else if (selectedOrder === '최신순') {
-        filteredTravels.sort((a, b) => (new Date(b.date) as any) - (new Date(a.date) as any));
+        filteredTravels.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
       } else if (selectedOrder === '조회수순') {
         filteredTravels.sort((a, b) => b.lookUpCount - a.lookUpCount);
       }
