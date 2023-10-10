@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styled, { css } from 'styled-components';
 import PostBox from '../../component/PostBox/PostBox';
 import { MAIN_COLOR } from '../../color/color';
