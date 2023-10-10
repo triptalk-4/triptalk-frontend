@@ -6,14 +6,21 @@ import { useEffect, useState } from 'react';
 import MyInfoPost from './MyInfoPost';
 import MyInfoSaved from './MyInfoSaved';
 import TopButton from '../../component/TopButton/TopButton';
+import axios from 'axios';
+import { setToken } from '../../store/tokenSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
 
 export default function MyInfo() {
   const navigate = useNavigate();
   const [currentTab, setTab] = useState(0); // 탭기능
 
+  const dispatch = useDispatch();
   // msw
   const [nickName, setNickName] = useState('');
   const [img, setImg] = useState('');
+
+  const { token } = useSelector((state: RootState) => state.token); // Redux에서 토큰 가져오기
 
   const myInfoMenuTabs = [
     { name: '게시물', content: <MyInfoPost /> },
@@ -23,6 +30,60 @@ export default function MyInfo() {
   const selectMenuHandler = (index: any) => {
     setTab(index);
   };
+
+  // msw
+  // useEffect(() => {
+  //   const storedUserData = localStorage.getItem('userInfo');
+  //   if (storedUserData) {
+  //     const userData = JSON.parse(storedUserData);
+  //     setNickName(userData.nickname);
+  //     setImg(userData.imageUrl);
+  //   }
+  // }, []);
+
+  // const handleLogOut = () => {
+  //   const storeUserData = localStorage.getItem('userInfo');
+  //   if (storeUserData) {
+  //     localStorage.removeItem('userInfo');
+  //     alert('로그아웃 되었습니다.');
+  //     navigate('/');
+  //   } else {
+  //     alert('로그인 해주세요.');
+  //     navigate('/');
+  //   }
+  // };
+
+  // 연동
+  useEffect(() => {
+    // 비동기 함수를 사용하여 사용자 정보를 가져옴
+    const fetchUserInfo = async () => {
+      try {
+        const response = await axios.get('http://52.79.200.55:8080/api/users/{userId}', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          params: {
+            nickname: nickName,
+            img: img,
+          },
+        });
+
+        if (response.data) {
+          dispatch(setToken(response.data.token)); // 토큰 스토어에 보내기
+          console.log(response.data.token);
+          setNickName(response.data.nickname);
+          setImg(response.data.imgUrl);
+        } else {
+          console.log(response);
+          alert('사용자 정보가 없습니다');
+        }
+      } catch (error) {
+        console.error('사용자 정보 가져오기 오류:', error);
+      }
+    };
+
+    fetchUserInfo(); // 비동기 함수 호출
+  }, [token, nickName, img]);
 
   useEffect(() => {
     const storedUserData = localStorage.getItem('userInfo');
@@ -135,7 +196,7 @@ const UserLogoutBtn = styled.button`
   border: none;
   background-color: transparent;
   text-decoration: underline;
-  padding-bottom: 40px;
+  margin-bottom: 40px;
   cursor: pointer;
 `;
 
