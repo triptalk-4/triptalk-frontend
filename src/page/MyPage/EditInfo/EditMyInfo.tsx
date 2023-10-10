@@ -123,7 +123,7 @@ const ExitBtn = styled.button`
   border: none;
   background-color: transparent;
   text-decoration: underline;
-  padding-top: 40px;
+  margin-top: 40px;
   cursor: pointer;
 `;
 
