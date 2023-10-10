@@ -22,7 +22,7 @@ export default function EditIntroduct({ onUpdateIntro }: EditIntroProps) {
       rows={4}
       cols={50}
       maxLength={200}
-      placeholder="사용자의 소개 내용을 입력하세요"
+      placeholder="소개를 입력해주세요"
     />
   );
 }
