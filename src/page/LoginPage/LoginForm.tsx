@@ -7,7 +7,7 @@ import { setToken } from '../../store/tokenSlice';
 import styled, { css } from 'styled-components';
 import { GRAY_COLOR, MAIN_COLOR } from '../../color/color';
 import { Link, useNavigate } from 'react-router-dom';
-import { SetStateAction, useState } from 'react';
+import { SetStateAction, useEffect, useState } from 'react';
 
 // interface UserData {
 //   id: number;
@@ -31,6 +31,13 @@ const LoginForm = () => {
     // 비밀번호 값 받아오기
     setPassword(e.target.value);
   };
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem('token');
+    if (storedToken) {
+      dispatch(setToken(storedToken));
+    }
+  }, []);
 
   const handleLogin = async () => {
     //로그인 시도
@@ -62,8 +69,8 @@ const LoginForm = () => {
         password: password,
       });
       if (response.status === 200) {
-        console.log(response);
-        dispatch(setToken(response.data.token));
+        localStorage.setItem('token', response.data.token);
+        // dispatch(setToken(response.data.token));
         const message = '로그인 되었습니다.';
         alert(`${message}`);
         setUserEmail('');
