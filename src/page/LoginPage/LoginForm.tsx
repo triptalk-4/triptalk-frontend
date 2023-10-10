@@ -61,20 +61,19 @@ const LoginForm = () => {
         email: userEmail,
         password: password,
       });
-      if (response.data.token) {
+      if (response.status === 200) {
+        console.log(response);
         dispatch(setToken(response.data.token));
-        console.log(response.data.token);
         const message = '로그인 되었습니다.';
         alert(`${message}`);
         setUserEmail('');
         setPassword('');
         naviget('/main');
       } else {
-        console.log(response);
         alert('유효하지 않은 사용자 입니다.');
       }
-    } catch (error) {
-      console.error('error 다', error);
+    } catch (error: any) {
+      alert(`${error.response.data}`);
     }
   };
 
