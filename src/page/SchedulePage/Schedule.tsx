@@ -8,13 +8,18 @@ import { GrEdit } from 'react-icons/gr';
 import { BsFillSuitHeartFill } from 'react-icons/bs';
 import { BsEyeFill } from 'react-icons/bs';
 import { DEFAULT_FONT_COLOR } from '../../color/color';
+import axios from 'axios';
+import { useSelector } from 'react-redux/es/exports';
+import { RootState } from '../../store/store';
 
 interface Item {
-  id: number;
-  img: string;
-  heartCount: number;
-  lookUpCount: number;
-  date: string;
+  endDate: string;
+  likeCount: number;
+  plannerId: number;
+  startDate: string;
+  thumbnail: string;
+  title: string;
+  views: number;
 }
 
 function Schedule() {
@@ -23,17 +28,39 @@ function Schedule() {
   const [isLoading, setIsLoading] = useState(false);
   const [showTopButton, setShowTopButton] = useState(false);
   const [allItemsLoaded, setAllItemsLoaded] = useState(false);
+  const [hasNext, setHasNext] = useState(true);
+  const token = useSelector((state: RootState) => state.token.token);
 
   useEffect(() => {
-    fetch('/api/schedule')
-      .then(res => res.json())
-      .then(data => {
-        const sortedData = [...data].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-        setData(sortedData);
-        setVisibleItems(sortedData.slice(0, 9));
-      })
-      .catch(error => console.error('API Request Failure:', error));
-  }, []);
+    const fetchData = async () => {
+      try {
+        const config = {
+          headers: {
+            Authorization: token
+          }
+        };
+        const response = await axios.get('/api/plans?lastId=10&limit=2&sortType=RECENT', config);
+        const data = response.data;
+        setHasNext(data.hasNext);
+        const transformedData = data.plannerListResponses.map((item: any) => ({
+          endDate: item.endDate,
+          likeCount: item.likeCount,
+          plannerId: item.plannerId,
+          startDate: item.startDate,
+          thumbnail: item.thumbnail,
+          title: item.title,
+          views: item.views,
+          date: item.startDate
+        }));
+        setData(transformedData);
+        setVisibleItems(transformedData.slice(0, 9));
+      } catch (error) {
+        console.error('API Request Failure:', error);
+      }
+    };
+    fetchData();
+  }, [token]);
+  console.log(useSelector((state: RootState) => state.token));
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
@@ -58,6 +85,8 @@ function Schedule() {
     if (visibleItems.length >= data.length) {
       setAllItemsLoaded(true);
       return;
+    } else if (!hasNext || isLoading) {
+      return;
     }
     setIsLoading(true);
     setTimeout(() => {
@@ -75,13 +104,13 @@ function Schedule() {
     let sortedData;
     switch (sortKey) {
       case '최신순':
-        sortedData = [...data].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+        sortedData = [...data].sort((a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime());
         break;
       case '좋아요':
-        sortedData = [...data].sort((a, b) => b.heartCount - a.heartCount);
+        sortedData = [...data].sort((a, b) => b.likeCount - a.likeCount);
         break;
       case '조회순':
-        sortedData = [...data].sort((a, b) => b.lookUpCount - a.lookUpCount);
+        sortedData = [...data].sort((a, b) => b.views - a.views);
         break;
       default:
         sortedData = data;
@@ -107,24 +136,24 @@ function Schedule() {
         </TitleContainer>
         <GridContainer>
           {visibleItems.map((item: Item) => (
-            <Link to={`/page/${item.id}`} key={item.id}>
+            <Link to={`/page/${item.plannerId}`} key={item.plannerId}>
               <StyledPost>
                 <div className="info-container">
                   <TopContainer>
                     <IconWithCount>
                       <Heart />
-                      <Count>{item.heartCount}</Count>
+                      <Count>{item.likeCount}</Count>
                     </IconWithCount>
                     <IconWithCount>
                       <LookUp />
-                      <Count>{item.lookUpCount}</Count>
+                      <Count>{item.views}</Count>
                     </IconWithCount>
                   </TopContainer>
                   <BottomContainer>
-                    <DateLabel>{item.date}</DateLabel>
+                    <DateLabel>{item.startDate}</DateLabel>
                   </BottomContainer>
                 </div>
-                <Img src={item.img} alt="Post Image" />
+                <Img src={item.thumbnail} alt="Post Image" />
               </StyledPost>
             </Link>
           ))}
