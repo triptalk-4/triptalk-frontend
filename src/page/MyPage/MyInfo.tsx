@@ -7,20 +7,12 @@ import MyInfoPost from './MyInfoPost';
 import MyInfoSaved from './MyInfoSaved';
 import TopButton from '../../component/TopButton/TopButton';
 import axios from 'axios';
-import { setToken } from '../../store/tokenSlice';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 
 export default function MyInfo() {
   const navigate = useNavigate();
   const [currentTab, setTab] = useState(0); // 탭기능
-
-  const dispatch = useDispatch();
-  // msw
-  const [nickName, setNickName] = useState('');
-  const [img, setImg] = useState('');
-
-  const { token } = useSelector((state: RootState) => state.token); // Redux에서 토큰 가져오기
 
   const myInfoMenuTabs = [
     { name: '게시물', content: <MyInfoPost /> },
@@ -30,6 +22,13 @@ export default function MyInfo() {
   const selectMenuHandler = (index: any) => {
     setTab(index);
   };
+
+  // msw
+  const [userNickname, setUserNickname] = useState('');
+  const [userImg, setUserImg] = useState('');
+  const [userIntro, setUserIntro] = useState('');
+
+  const token = useSelector((state: RootState) => state.token.token); // Redux에서 토큰 가져오기
 
   // msw
   // useEffect(() => {
@@ -54,45 +53,33 @@ export default function MyInfo() {
   // };
 
   // 연동
+  console.log(token);
   useEffect(() => {
-    // 비동기 함수를 사용하여 사용자 정보를 가져옴
+    const token = localStorage.getItem('token');
     const fetchUserInfo = async () => {
       try {
-        const response = await axios.get('http://52.79.200.55:8080/api/users/{userId}', {
+        const response = await axios.get('http://52.79.200.55:8080/api/users/profile', {
           headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          params: {
-            nickname: nickName,
-            img: img,
+            Authorization: `Bearer ${token}`, //필수
           },
         });
 
         if (response.data) {
-          dispatch(setToken(response.data.token)); // 토큰 스토어에 보내기
-          console.log(response.data.token);
-          setNickName(response.data.nickname);
-          setImg(response.data.imgUrl);
+          const { profile, nickname, aboutMe } = response.data;
+          setUserImg(profile);
+          setUserNickname(nickname);
+          setUserIntro(aboutMe);
         } else {
           console.log(response);
-          alert('사용자 정보가 없습니다');
+          alert('사용자 정보가 없습니다 로그인확인해주세요');
         }
       } catch (error) {
-        console.error('사용자 정보 가져오기 오류:', error);
+        console.error('사용자 정보 가져오기 오류 확인바람:', error);
       }
     };
 
     fetchUserInfo(); // 비동기 함수 호출
-  }, [token, nickName, img]);
-
-  useEffect(() => {
-    const storedUserData = localStorage.getItem('userInfo');
-    if (storedUserData) {
-      const userData = JSON.parse(storedUserData);
-      setNickName(userData.nickname);
-      setImg(userData.imageUrl);
-    }
-  }, []);
+  }, [token, userNickname, userImg, userIntro]);
 
   const handleLogOut = () => {
     const storeUserData = localStorage.getItem('token');
@@ -109,25 +96,25 @@ export default function MyInfo() {
   return (
     <MyPageContainer>
       <UserImgContainer>
-        <UserImg src={img} />
+        <UserImg src={userImg} />
         <UserNickNameContainer>
-          <NickName>{nickName}</NickName>
+          <NickName>{userNickname}</NickName>
           <Setting to="/editmyinfo">
             <AiOutlineSetting />
           </Setting>
         </UserNickNameContainer>
         <IntroTextContainer>
-          <IntroText>사용자의 소개 내용을 입력하세요</IntroText>
+          <IntroText>{userIntro}</IntroText>
         </IntroTextContainer>
         <UserLogoutBtn onClick={handleLogOut}>로그아웃</UserLogoutBtn>
       </UserImgContainer>
       <ContentContainer>
         <ContentUl>
-          {myInfoMenuTabs.map((menu, index) => (
+          {myInfoMenuTabs.map(menu => (
             <ContentItem
-              key={index}
-              className={currentTab === index ? 'active' : ''}
-              onClick={() => selectMenuHandler(index)}>
+              key={menu.name}
+              className={String(currentTab) === String(menu.name) ? 'active' : ''}
+              onClick={() => selectMenuHandler(menu.name)}>
               {menu.name}
             </ContentItem>
           ))}
