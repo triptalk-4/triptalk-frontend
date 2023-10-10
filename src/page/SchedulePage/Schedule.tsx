@@ -61,13 +61,12 @@ function Schedule() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-<<<<<<< HEAD
         console.log(token);
         if (token) {
           const config = {
             headers: {
-              Authorization: token
-            }
+              Authorization: token,
+            },
           };
           const response = await axios.get('/api/plans?lastId=10&limit=2&sortType=RECENT', config);
           const data = response.data;
@@ -80,33 +79,11 @@ function Schedule() {
             thumbnail: item.thumbnail,
             title: item.title,
             views: item.views,
-            date: item.startDate
+            date: item.startDate,
           }));
           setData(transformedData);
           setVisibleItems(transformedData.slice(0, 9));
         }
-=======
-        const config = {
-          headers: {
-            Authorization: token,
-          },
-        };
-        const response = await axios.get('/api/plans?lastId=10&limit=2&sortType=RECENT', config);
-        const data = response.data;
-        setHasNext(data.hasNext);
-        const transformedData = data.plannerListResponses.map((item: any) => ({
-          endDate: item.endDate,
-          likeCount: item.likeCount,
-          plannerId: item.plannerId,
-          startDate: item.startDate,
-          thumbnail: item.thumbnail,
-          title: item.title,
-          views: item.views,
-          date: item.startDate,
-        }));
-        setData(transformedData);
-        setVisibleItems(transformedData.slice(0, 9));
->>>>>>> 930174a4cc623dbe8c7451c883cc76a1f47acd28
       } catch (error) {
         console.error('API Request Failure:', error);
       }
