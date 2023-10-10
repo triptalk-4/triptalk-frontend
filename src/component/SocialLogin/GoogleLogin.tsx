@@ -40,9 +40,9 @@ const GoogleLogin = () => {
         client_id: clientID,
         client_secret: clientSecret,
         redirect_uri: 'http://ec2-52-79-200-55.ap-northeast-2.compute.amazonaws.com:8080/api/auth/google',
-        grant_ype: 'authorization_code',
+        authorization_grant_ype: 'authorization_code',
       });
-
+      console.log(response);
       console.log(response.data);
       return response.data;
     } catch (error) {
