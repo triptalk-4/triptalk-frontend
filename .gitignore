@@ -8,11 +8,11 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-/src/mocks/
 node_modules
 dist
 dist-ssr
 *.local
+/src/mocks/
 
 # Editor directories and files
 !.vscode/extensions.json
