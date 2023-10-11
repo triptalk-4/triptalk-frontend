@@ -10,11 +10,12 @@ interface EditFormProps {
   onDataChange: (data: { newPassword: string; nickname: string }) => void;
 }
 
-export default function EditForm({ onDataChange }: EditFormProps) {
+export default function EditForm({}: EditFormProps) {
   // msw
   const [userEmail, setUserEmail] = useState('');
   const [userNickname, setUserNickname] = useState('');
   const [userPassword, setUserPassword] = useState('');
+  // const [userNewNickname, setUserNewNickname] = useState('');
 
   const token = useSelector((state: RootState) => state.token.token); // Redux에서 토큰 가져오기
 
@@ -57,61 +58,51 @@ export default function EditForm({ onDataChange }: EditFormProps) {
   }, [token, userEmail, userNickname, userPassword]);
 
   ///////////////////////닉네임////////////////////
-  const handleNicknameCheck = () => {
-    // 입력한 닉네임과 기존 닉네임을 비교하여 겹치는지 확인
-    if (nickName === nickName) {
-      setNicknameState({
-        valid: false,
-        message: '현재 닉네임과 동일합니다. 다른 닉네임을 입력해주세요.',
-      });
-    } else {
-      setNicknameState({
-        valid: true,
-        message: '사용 가능한 닉네임입니다.',
-      });
-    }
-  };
-
-  // 유효성 검사 결과를 저장하는 상태 변수
   const [nicknameState, setNicknameState] = useState({
     valid: true,
     message: '',
   });
 
-  // 닉네임 입력이 변경될 때 호출되는 함수
   const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newNickname = e.target.value;
-    setNickName(newNickname);
+    setUserNickname(newNickname);
 
-    const validateNickname = (value: string) => {
-      if (value.length < 2 || value.length > 5) {
-        return { valid: false, message: '닉네임은 2글자 이상 5글자 이하로 입력해야 합니다.' };
+    if (newNickname.length < 2 || newNickname.length > 5) {
+      setNicknameState({
+        valid: false,
+        message: '닉네임은 2글자 이상 5글자 이하로 입력해주세요.',
+      });
+    } else {
+      setNicknameState({
+        valid: true,
+        message: '',
+      });
+    }
+  };
+
+  const handleNicknameCheck = async () => {
+    try {
+      const response = await axios.post('http://52.79.200.55:8080/api/users/update/nickname/check', {
+        nickname: userNickname,
+      });
+      if (response.status === 200) {
+        localStorage.setItem('token', response.data.token);
+        const message = response.data.nicknameCheckOkOrNotOk;
+        alert(`${message}`);
       } else {
-        return { valid: true, message: '사용 가능한 닉네임입니다.' };
+        const messageNo = response.data.nicknameCheckOkOrNotOk;
+        alert(`${messageNo}`);
       }
-    };
-
-    // 닉네임의 유효성 검사를 수행하고 결과를 nicknameState에 저장
-    const validation = validateNickname(newNickname);
-    setNicknameState({
-      valid: validation.valid,
-      message: validation.message,
-    });
-
-    // 새로 입력된 닉네임을 저장하는 변수
-    const newNicknameValue = newNickname;
-
-    onDataChange({
-      newPassword: newPassword,
-      nickname: newNicknameValue,
-    });
+    } catch (error: any) {
+      alert(`${error.response.data}`);
+    }
   };
 
   ///////////////////////현재비밀번호////////////////////
   const handleCurrentPasswordCheck = async () => {
     // 버튼 동작시 현재 비번과 입력값이 같은 지 확인함
     try {
-      const response = await axios.post('http://52.79.200.55:8080/api/users/update/password/check', {
+      const response = await axios.post('http://localhost:8080/api/users/update/password/check', {
         email: userEmail,
         password: userPassword,
       });
@@ -204,7 +195,7 @@ export default function EditForm({ onDataChange }: EditFormProps) {
       <MyInfoField>
         <MyInfoLabel htmlFor="nickname">닉네임</MyInfoLabel>
         <InputWithButton>
-          <MyInfoInput type="text" id="nickname" value={userNickname} onChange={handleNicknameChange} />
+          <MyInfoInput type="text" id="nickname" onChange={handleNicknameChange} />
           <CheckBtn type="button" onClick={handleNicknameCheck}>
             확인
           </CheckBtn>
@@ -218,13 +209,7 @@ export default function EditForm({ onDataChange }: EditFormProps) {
       <MyInfoField>
         <MyInfoLabel htmlFor="current-password">현재비밀번호</MyInfoLabel>
         <InputWithButton>
-          <MyInfoInput
-            type="password"
-            id="current-password"
-            placeholder="현재비밀번호를 입력해주세요."
-            // value={currentPassword}
-            // onChange={handleCurrentPasswordChange}
-          />
+          <MyInfoInput type="password" id="current-password" placeholder="현재비밀번호를 입력해주세요." />
           <CheckBtn type="button" onClick={handleCurrentPasswordCheck}>
             확인
           </CheckBtn>
