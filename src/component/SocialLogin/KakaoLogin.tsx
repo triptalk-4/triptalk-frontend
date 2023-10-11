@@ -2,8 +2,8 @@ import styled from 'styled-components';
 import { TbMessageCircle } from 'react-icons/tb';
 
 const KakaoLogin = () => {
-  const REST_API_KEY = '백엔드한테 받아올거 1';
-  const REDIRECT_URI = '백엔드한테 받아올거 2';
+  const REST_API_KEY = 'c5e7d3418384adeea868cb7470027a67';
+  const REDIRECT_URI = 'http://localhost:3000/auth';
   const link = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
 
   const handleKakaoLogin = () => {

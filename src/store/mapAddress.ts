@@ -15,8 +15,11 @@ const addressSlice = createSlice({
     setAddress: (state, action: PayloadAction<string>) => {
       state.address.push(action.payload) // 배열에 주소 추가
     },
+    removeLastAddress: (state) => {
+      state.address.pop()
+    }
   },
 });
 
-export const { setAddress } = addressSlice.actions
+export const { setAddress , removeLastAddress} = addressSlice.actions
 export default addressSlice.reducer
