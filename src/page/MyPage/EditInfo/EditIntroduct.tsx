@@ -10,7 +10,6 @@ interface EditIntroProps {
 }
 
 export default function EditIntroduct({ onUpdateIntro }: EditIntroProps) {
-  // const [userIntro, setUserIntro] = useState('사용자의 소개 내용을 입력하세요');
   const [userIntro, setUserIntro] = useState('');
 
   const token = useSelector((state: RootState) => state.token.token); // Redux에서 토큰 가져오기
@@ -31,10 +30,10 @@ export default function EditIntroduct({ onUpdateIntro }: EditIntroProps) {
           setUserIntro(aboutMe);
         } else {
           console.log(response);
-          alert('사용자 정보가 없습니다 로그인확인해주세요');
+          alert('사용자 정보가 없습니다 소개글');
         }
       } catch (error) {
-        console.error('사용자 정보 가져오기 오류 확인바람:', error);
+        console.error('사용자 정보 가져오기 오류 확인바람(소개글):', error);
       }
     };
 
@@ -49,7 +48,7 @@ export default function EditIntroduct({ onUpdateIntro }: EditIntroProps) {
 
   return (
     <IntroText
-      value={userIntro}
+      // value={userIntro}
       onChange={handleIntroChange}
       rows={4}
       cols={50}

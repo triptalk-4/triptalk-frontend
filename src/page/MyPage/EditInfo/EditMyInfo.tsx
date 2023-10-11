@@ -3,46 +3,67 @@ import { useNavigate } from 'react-router-dom';
 import { GRAY_COLOR, LIGHT_GRAY_COLOR, LIGHT_ORANGE_COLOR, MAIN_COLOR } from '../../../color/color';
 import EditForm from './EditForm';
 import EditProfile from '../../../component/ImgUpload/EditProfile';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import EditIntroduct from './EditIntroduct';
+import axios from 'axios';
 
 export default function EditMyInfo() {
-  const [profileImage, setProfileImage] = useState('');
-  const [profilenickName, setProfilenickName] = useState('');
-  const [profilePassword, setProfilePassword] = useState('');
-  const [profileIntro, setProfileIntro] = useState('');
-
+  const navigate = useNavigate();
   const [isButtonEnabled, setIsButtonEnabled] = useState(false); // 버튼 활성화 상태 추가
 
+  const [newProfileImage, setNewProfileImage] = useState('');
+  const [newProfileIntro, setNewProfileIntro] = useState('');
+  const [newNickname, setNewNickname] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+
+  // 모든 정보 수정 시 버튼 활성화
+  useEffect(() => {
+    if (newProfileImage && newProfileIntro && newNickname && newPassword) {
+      setIsButtonEnabled(true);
+    } else {
+      setIsButtonEnabled(false);
+    }
+  }, [newProfileImage, newProfileIntro, newNickname, newPassword]);
+
   const handleImageChange = (imageUrl: string) => {
-    setProfileImage(imageUrl);
-    setIsButtonEnabled(true);
+    setNewProfileImage(imageUrl);
   };
 
   const handleIntroUpdate = (text: string) => {
-    setProfileIntro(text);
+    setNewProfileIntro(text);
   };
 
-  const handleEditDataChange = (data: { newPassword: string; nickname: string }) => {
+  const handleEditDataChange = (data: { userNickname: string; userNewPassword: string }) => {
     console.log('Data changed:', data);
-    setProfilenickName(data.nickname);
-    setProfilePassword(data.newPassword);
-    setIsButtonEnabled(true);
+    setNewNickname(data.userNickname);
+    setNewPassword(data.userNewPassword);
   };
 
-  const navigate = useNavigate();
-
-  const handleEditButtonClick = () => {
-    localStorage.removeItem('userInfo');
+  const handleEditButtonClick = async () => {
+    // localStorage.removeItem('userInfo');
+    //  localStorage.setItem('userInfo', JSON.stringify(updatedUserData));
 
     const updatedUserData = {
-      imgUrl: profileImage,
-      newPassword: profilePassword,
-      nickname: profilenickName,
-      text: profileIntro,
+      newProfileImage,
+      newProfileIntro,
+      newNickname,
+      newPassword,
     };
 
-    localStorage.setItem('userInfo', JSON.stringify(updatedUserData));
+    try {
+      // 서버에 PUT 요청 보내기
+      const response = await axios.put('http://52.79.200.55:8080/api/users/update/profile', updatedUserData);
+
+      if (response.status === 200) {
+        console.log('수정 성공:', response.data);
+
+        navigate('/myinfo');
+      } else {
+        console.error('서버 응답 오류:', response);
+      }
+    } catch (error) {
+      console.error('수정 오류:', error);
+    }
 
     navigate('/myinfo');
   };
@@ -153,6 +174,7 @@ const EditBtn = styled.button`
   background-color: ${MAIN_COLOR};
   color: #fff;
   margin-right: 25px;
+  cursor: ${({ disabled }) => (disabled ? 'default' : 'pointer')};
 
   &:disabled {
     background-color: ${LIGHT_ORANGE_COLOR};

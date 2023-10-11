@@ -14,6 +14,8 @@ export default function EditProfile({ onImageChange }: EditProfileProps) {
   const [userImg, setUserImg] = useState(''); // msw
   const token = useSelector((state: RootState) => state.token.token); // Redux에서 토큰 가져오기
 
+  const imgRef = useRef<HTMLInputElement | null>(null); // 초기에는 아무것도 가르키고 있지 않음
+
   // useEffect(() => {
   //   const storedUserData = localStorage.getItem('userInfo');
   //   if (storedUserData) {
@@ -38,23 +40,22 @@ export default function EditProfile({ onImageChange }: EditProfileProps) {
           setUserImg(profile);
         } else {
           console.log(response);
-          alert('사용자 정보가 없습니다 로그인확인해주세요');
+          alert('사용자 정보가 없습니다 사진');
         }
       } catch (error) {
-        console.error('사용자 정보 가져오기 오류 확인바람:', error);
+        console.error('사용자 정보 가져오기 오류 확인바람(프로필):', error);
       }
     };
 
-    fetchUserInfo(); // 비동기 함수 호출
+    fetchUserInfo();
   }, [token, userImg]);
-
-  const imgRef = useRef<HTMLInputElement | null>(null); // 초기에는 아무것도 가르키고 있지 않음
 
   const handleImageUpload = (e: ChangeEvent<HTMLInputElement>) => {
     // 선택한 이미지 보기
     const file = e.target.files?.[0]; // 선택한 파일
     if (file) {
       const imageUrl = URL.createObjectURL(file); // 이미지 파일을 URL로 변환
+      setUserImg(imageUrl);
       onImageChange(imageUrl);
     }
   };
