@@ -27,7 +27,7 @@ const GoogleLogin = () => {
     onError: error => {
       console.error('error다', error);
     },
-    flow: 'auth-code',
+    flow: 'auth-code'
   });
 
   const exchangeCodeForAccessToken = async (code: any) => {
@@ -40,7 +40,7 @@ const GoogleLogin = () => {
         client_id: clientID,
         client_secret: clientSecret,
         redirect_uri: 'http://ec2-52-79-200-55.ap-northeast-2.compute.amazonaws.com:8080/api/auth/google',
-        authorization_grant_ype: 'authorization_code',
+        authorization_grant_ype: 'authorization_code'
       });
       console.log(response);
       console.log(response.data);
