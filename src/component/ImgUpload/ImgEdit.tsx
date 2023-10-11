@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 export default function ImgEdit() {
   const [images, setImages] = useState<any[]>([]);
-  const maxImageCount = 5;
+ // const maxImageCount = 5;
 
   const addImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     const nowSelectImageList = e.target.files;

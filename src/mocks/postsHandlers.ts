@@ -141,6 +141,7 @@ const postsData = [
 
 export const postsHandlers = [
   rest.get<PostItem>('/api/posts', (req, res, ctx) => {
+    console.log(req);
     return res(ctx.status(200), ctx.json(postsData));
   }),
 ];
