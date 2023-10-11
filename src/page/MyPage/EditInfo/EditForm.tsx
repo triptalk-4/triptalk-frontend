@@ -7,10 +7,10 @@ import { RootState } from '../../../store/store';
 import { useSelector } from 'react-redux';
 
 interface EditFormProps {
-  onDataChange: (data: { newPassword: string; nickname: string }) => void;
+  onDataChange: (data: { userNickname: string; userNewPassword: string }) => void;
 }
 
-export default function EditForm({}: EditFormProps) {
+export default function EditForm({ onDataChange }: EditFormProps) {
   // msw
   const [userEmail, setUserEmail] = useState('');
   const [userNickname, setUserNickname] = useState('');
@@ -50,7 +50,7 @@ export default function EditForm({}: EditFormProps) {
           alert('사용자 정보가 없습니다 로그인확인해주세요');
         }
       } catch (error) {
-        console.error('사용자 정보 가져오기 오류 확인바람:', error);
+        console.error('사용자 정보 가져오기 오류 확인바람(개인정보수정):', error);
       }
     };
 
@@ -78,6 +78,9 @@ export default function EditForm({}: EditFormProps) {
         message: '',
       });
     }
+
+    // 닉네임이 변경될 때 onDataChange 콜백 호출
+    onDataChange({ userNickname: newNickname, userNewPassword });
   };
 
   const handleNicknameCheck = async () => {
@@ -154,6 +157,9 @@ export default function EditForm({}: EditFormProps) {
           message: '비밀번호는 8자리 이상, 영문자, 숫자, 특수문자를 포함해야 합니다.',
         });
       }
+
+      // 새 비밀번호가 변경될 때 onDataChange 콜백 호출
+      onDataChange({ userNickname, userNewPassword: newPasswordValue });
     }
   };
 
@@ -194,7 +200,7 @@ export default function EditForm({}: EditFormProps) {
       <MyInfoField>
         <MyInfoLabel htmlFor="nickname">닉네임</MyInfoLabel>
         <InputWithButton>
-          <MyInfoInput type="text" id="nickname" onChange={handleNicknameChange} />
+          <MyInfoInput type="text" id="nickname" value={userNickname} onChange={handleNicknameChange} />
           <CheckBtn type="button" onClick={handleNicknameCheck}>
             확인
           </CheckBtn>
