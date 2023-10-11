@@ -2,8 +2,26 @@ import Slider, { CustomArrowProps } from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import styled, { css } from 'styled-components';
+import axios from 'axios';
 import { MdOutlineKeyboardArrowLeft, MdOutlineKeyboardArrowRight } from 'react-icons/md';
-import { GRAY_COLOR } from '../../color/color';
+import { GRAY_COLOR, MAIN_COLOR } from '../../color/color';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux/es/exports';
+import { RootState } from '../../store/store';
+import { useDispatch } from 'react-redux';
+import { setToken } from '../../store/tokenSlice';
+import { Link } from 'react-router-dom';
+
+interface Item {
+  startDate: number;
+  endDate: number;
+  plannerId: number;
+  thumbnail: string;
+  title: string;
+  nickname: string;
+  views: number;
+  likeCount: number;
+}
 
 function PrevArrow(props: CustomArrowProps) {
   const { onClick } = props;
@@ -24,44 +42,54 @@ function NextArrow(props: CustomArrowProps) {
 }
 
 function MainCarousel() {
-  const data = [
-    {
-      title: '양양 2박 여행',
-      nickname: '제로베이스',
-      schedule: '2023~09.15~2023.09.17',
-      imageUrl: 'img/Carousel.png'
-    },
-    {
-      title: '속초 2박 여행',
-      nickname: '프론트',
-      schedule: '2023~09.22~2023.09.25',
-      imageUrl: 'img/Carousel.png'
-    },
-    {
-      title: '제주 2박 여행',
-      nickname: '백엔드',
-      schedule: '2023~09.01~2023.09.03',
-      imageUrl: 'img/Carousel.png'
-    },
-    {
-      title: '광주 2박 여행',
-      nickname: '리액트',
-      schedule: '2023~08.21~2023.08.23',
-      imageUrl: 'img/Carousel.png'
-    },
-    {
-      title: '부산 2박 여행',
-      nickname: '스프링',
-      schedule: '2023~07.23~2023.08.25',
-      imageUrl: 'img/Carousel.png'
-    },
-    {
-      title: '대구 2박 여행',
-      nickname: '마리아DB',
-      schedule: '2023~09.15~2023.09.17',
-      imageUrl: 'img/Carousel.png'
+  function formatDate(timestamp: number): string {
+    const date = new Date(timestamp);
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date
+      .getDate()
+      .toString()
+      .padStart(2, '0');
+    return `${year}-${day}-${month}`;
+  }
+  const dispatch = useDispatch();
+  const token = useSelector((state: RootState) => state.token.token);
+  const [data, setData] = useState<Item[]>([]);
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem('token');
+    if (storedToken) {
+      dispatch(setToken(storedToken));
     }
-  ];
+    const fetchData = async () => {
+      try {
+        console.log(token);
+        if (token) {
+          const config = {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          };
+          const response = await axios.get('/api/main', config);
+          const data = response.data;
+          const transformedData = data.map((item: Item) => ({
+            startDate: item.startDate,
+            endDate: item.endDate,
+            plannerId: item.plannerId,
+            thumbnail: item.thumbnail,
+            title: item.title,
+            nickname: item.nickname,
+            views: item.views,
+            likeCount: item.likeCount
+          }));
+          setData(transformedData);
+        }
+      } catch (error) {
+        console.error('API Request Failure:', error);
+      }
+    };
+    fetchData();
+  }, [token]);
 
   const settings = {
     dots: false,
@@ -95,10 +123,15 @@ function MainCarousel() {
       <Slider {...settings}>
         {data.map((item, index) => (
           <Card key={index}>
-            <Image src={item.imageUrl} alt="img" />
+            <Badge>{index + 1}등</Badge>
+            <Link to={`/page/${item.plannerId}`} key={item.plannerId}>
+              <Image src={item.thumbnail} alt="img" />
+            </Link>
             <DescriptionTitle>{item.title}</DescriptionTitle>
             <DescriptionNickName>{item.nickname}</DescriptionNickName>
-            <DescriptionSchedule>{item.schedule}</DescriptionSchedule>
+            <DescriptionSchedule>
+              {formatDate(item.startDate)} ~ {formatDate(item.endDate)}
+            </DescriptionSchedule>
           </Card>
         ))}
       </Slider>
@@ -165,4 +198,19 @@ const DescriptionNickName = styled.div`
 const DescriptionSchedule = styled.div`
   font-size: 16px;
   color: gray;
+`;
+const Badge = styled.div`
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: ${MAIN_COLOR};
+  padding: 10px;
+  color: white;
+  font-size: 20px;
+  position: absolute;
+  margin: 10px;
+  top: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
