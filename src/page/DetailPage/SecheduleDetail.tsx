@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styled, { css } from 'styled-components';
 import PostBox from '../../component/PostBox/PostBox';
 import { MAIN_COLOR } from '../../color/color';
@@ -76,7 +76,7 @@ const MapContainer = styled.div`
   margin-bottom: 50px;
   position: sticky;
   top: 0;
-  z-index: 9999;
+  z-index: 10;
   background-color: darkblue;
 `;
 

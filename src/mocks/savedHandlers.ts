@@ -41,6 +41,7 @@ const savedData = [
 
 export const savedHandlers = [
   rest.get<SaveItem>('/api/saved', (req, res, ctx) => {
+    console.log(req)
     return res(ctx.status(200), ctx.json(savedData));
   }),
 ];
