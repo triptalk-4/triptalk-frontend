@@ -19,8 +19,8 @@ interface Item {
   likeCount: number;
   plannerId: number;
   thumbnail: string;
-  title: string;
   views: number;
+  title: string;
 }
 
 function Schedule() {
@@ -32,6 +32,17 @@ function Schedule() {
   const [allItemsLoaded, setAllItemsLoaded] = useState(false);
   const [hasNext, setHasNext] = useState(true);
   const token = useSelector((state: RootState) => state.token.token);
+
+  function formatDate(timestamp: number): string {
+    const date = new Date(timestamp);
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date
+      .getDate()
+      .toString()
+      .padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
 
   // useEffect(() => {
   //   const fetchData = async () => {
@@ -80,18 +91,16 @@ function Schedule() {
               Authorization: `Bearer ${token}`
             }
           };
-          const response = await axios.get('/api/plans?lastId=10&limit=2&sortType=RECENT', config);
+          const response = await axios.get('/api/plans?page=1&size=9&sortType=RECENT', config);
           const data = response.data;
           setHasNext(data.hasNext);
-          const transformedData = data.plannerListResponses.map((item: any) => ({
-            endDate: item.endDate,
+          const transformedData = data.plannerListResponses.content.map((item: any) => ({
             likeCount: item.likeCount,
             plannerId: item.plannerId,
-            startDate: item.startDate,
             thumbnail: item.thumbnail,
             title: item.title,
             views: item.views,
-            date: item.startDate
+            createAt: item.createAt
           }));
           setData(transformedData);
           setVisibleItems(transformedData.slice(0, 9));
@@ -145,7 +154,7 @@ function Schedule() {
     let sortedData;
     switch (sortKey) {
       case '최신순':
-        sortedData = [...data].sort((a, b) => new Date(b.createAt).getTime() - new Date(a.createAt).getTime());
+        sortedData = [...data].sort((a, b) => b.createAt - a.createAt);
         break;
       case '좋아요':
         sortedData = [...data].sort((a, b) => b.likeCount - a.likeCount);
@@ -190,8 +199,9 @@ function Schedule() {
                       <Count>{item.views}</Count>
                     </IconWithCount>
                   </TopContainer>
+                  <MiddleTitleContainer>{item.title}</MiddleTitleContainer>
                   <BottomContainer>
-                    <DateLabel>{item.createAt}</DateLabel>
+                    <DateLabel> {formatDate(item.createAt)} </DateLabel>
                   </BottomContainer>
                 </div>
                 <Img src={item.thumbnail} alt="Post Image" />
@@ -327,6 +337,14 @@ const Count = styled.div`
   margin-left: 5px;
 `;
 
+const MiddleTitleContainer = styled.div`
+  width: 100%;
+  height: 200px;
+  margin-top: 20%;
+  font-size: 24px;
+  font-weight: bold;
+`;
+
 const BottomContainer = styled.div`
   width: 100%;
   display: flex;
@@ -336,7 +354,6 @@ const BottomContainer = styled.div`
 
 const DateLabel = styled.div`
   font-size: 24px;
-  margin-top: 95%;
 `;
 
 const EndOfDataMessage = styled.div`
