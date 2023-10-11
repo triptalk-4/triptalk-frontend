@@ -72,16 +72,10 @@ function MainCarousel() {
           };
           const response = await axios.get('/api/main', config);
           const data = response.data;
-          const transformedData = data.map((item: Item) => ({
-            startDate: item.startDate,
-            endDate: item.endDate,
-            plannerId: item.plannerId,
-            thumbnail: item.thumbnail,
-            title: item.title,
-            nickname: item.nickname,
-            views: item.views,
-            likeCount: item.likeCount
-          }));
+          const transformedData = data.map((item: Item) => {
+            const { startDate, endDate, likeCount, plannerId, thumbnail, views, title } = item;
+            return { startDate, endDate, likeCount, plannerId, thumbnail, views, title };
+          });
           setData(transformedData);
         }
       } catch (error) {
