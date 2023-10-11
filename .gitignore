@@ -12,7 +12,6 @@ node_modules
 dist
 dist-ssr
 *.local
-/src/mocks/
 
 # Editor directories and files
 !.vscode/extensions.json
