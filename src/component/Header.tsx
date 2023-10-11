@@ -45,7 +45,7 @@ export default function Header() {
           alert('사용자 정보가 없습니다 로그인확인해주세요');
         }
       } catch (error) {
-        console.error('사용자 정보 가져오기 오류 확인바람:', error);
+        console.error('사용자 정보 가져오기 오류 확인바람(헤더):', error);
       }
     };
 
