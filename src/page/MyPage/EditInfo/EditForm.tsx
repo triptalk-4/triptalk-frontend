@@ -15,7 +15,6 @@ export default function EditForm({ onDataChange }: EditFormProps) {
   const [userEmail, setUserEmail] = useState('');
   const [userNickname, setUserNickname] = useState('');
   const [userPassword, setUserPassword] = useState('');
-  const [userNewPassword, setUserNewPassword] = useState('');
 
   const token = useSelector((state: RootState) => state.token.token); // Redux에서 토큰 가져오기
 
@@ -30,6 +29,7 @@ export default function EditForm({ onDataChange }: EditFormProps) {
   // }, []);
 
   useEffect(() => {
+    // 데이터 가지고옴
     const token = localStorage.getItem('token');
     const fetchUserInfo = async () => {
       try {
@@ -55,114 +55,6 @@ export default function EditForm({ onDataChange }: EditFormProps) {
 
     fetchUserInfo(); // 비동기 함수 호출
   }, [token, userEmail, userNickname, userPassword]);
-
-  ///////////////////////현재비밀번호////////////////////
-  const [currentPassword, setCurrentPassword] = useState('');
-  const [currentPasswordState, setCurrentPasswordState] = useState({
-    value: '',
-    valid: true,
-    message: '',
-  });
-  const handleCurrentPasswordCheck = () => {
-    if (currentPassword === password) {
-      setCurrentPasswordState({
-        value: currentPassword,
-        valid: true,
-        message: '현재 비밀번호가 일치합니다.',
-      });
-    } else {
-      setCurrentPasswordState({
-        value: currentPassword,
-        valid: false,
-        message: '현재 비밀번호가 일치하지 않습니다.',
-      });
-    }
-  };
-
-  const validateCurrentPassword = (value: string) => {
-    // 기존 비밀번호와 비교하여 일치 여부 확인
-    if (value === password) {
-      setCurrentPasswordState({
-        value,
-        valid: true,
-        message: '현재 비밀번호가 일치합니다.',
-      });
-    } else {
-      setCurrentPasswordState({
-        value,
-        valid: false,
-        message: '현재 비밀번호가 일치하지 않습니다.',
-      });
-    }
-  };
-
-  const handleCurrentPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const currentPasswordValue = e.target.value;
-    setCurrentPassword(currentPasswordValue);
-    validateCurrentPassword(currentPasswordValue);
-  };
-
-  ///////////////////////새비밀번호////////////////////
-  const [newPassword, setNewPassword] = useState('');
-  const [newPasswordState, setNewPasswordState] = useState({
-    value: '',
-    valid: true,
-    message: '',
-  });
-
-  const validateNewPassword = (value: string) => {
-    // 비밀번호 유효성 검사
-
-    if (passwordRegExp.test(value)) {
-      setNewPasswordState({
-        value,
-        valid: true,
-        message: '유효한 비밀번호입니다.',
-      });
-    } else {
-      setNewPasswordState({
-        value,
-        valid: false,
-        message: '비밀번호는 8자리 이상, 영문자, 숫자, 특수문자를 포함해야 합니다.',
-      });
-    }
-  };
-
-  const handleNewPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newPasswordValue = e.target.value;
-    setNewPassword(newPasswordValue);
-    validateNewPassword(newPasswordValue);
-  };
-
-  ///////////////////////새비밀번호확인////////////////////
-  const [confirmNewPassword, setConfirmNewPassword] = useState('');
-  const [confirmNewPasswordState, setConfirmNewPasswordState] = useState({
-    value: '',
-    valid: true,
-    message: '',
-  });
-
-  const validateConfirmNewPassword = (value: string) => {
-    if (value === newPassword) {
-      setConfirmNewPasswordState({
-        value,
-        valid: true,
-        message: '새비밀번호와 일치합니다.',
-      });
-    } else {
-      setConfirmNewPasswordState({
-        value,
-        valid: false,
-        message: '새비밀번호와 일치하지 않습니다.',
-      });
-    }
-  };
-
-  const handleConfirmNewPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const confirmNewPasswordValue = e.target.value;
-    setConfirmNewPassword(confirmNewPasswordValue);
-    validateConfirmNewPassword(confirmNewPasswordValue);
-  };
 
   ///////////////////////닉네임////////////////////
   const handleNicknameCheck = () => {
@@ -215,6 +107,91 @@ export default function EditForm({ onDataChange }: EditFormProps) {
     });
   };
 
+  ///////////////////////현재비밀번호////////////////////
+  const handleCurrentPasswordCheck = async () => {
+    // 버튼 동작시 현재 비번과 입력값이 같은 지 확인함
+    try {
+      const response = await axios.post('http://52.79.200.55:8080/api/users/update/password/check', {
+        email: userEmail,
+        password: userPassword,
+      });
+
+      if (response.status === 200) {
+        localStorage.setItem('token', response.data.token);
+        // dispatch(setToken(response.data.token));
+        const message = response.data.passwordCheckOk;
+        alert(`${message}`);
+        setUserPassword('');
+      } else {
+        alert('유효하지 않은 사용자 입니다.');
+      }
+    } catch (error: any) {
+      alert(`${error.response.data}`);
+    }
+  };
+
+  ///////////////////////새비밀번호////////////////////
+  const [userNewPassword, setUserNewPassword] = useState('');
+  const [newPasswordState, setNewPasswordState] = useState({
+    value: '',
+    valid: true,
+    message: '',
+  });
+
+  const handleNewPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newPasswordValue = e.target.value;
+    setUserNewPassword(newPasswordValue);
+
+    // 현재 비밀번호와 새 비밀번호가 같은 경우 오류 메시지 출력
+    if (newPasswordValue === userPassword) {
+      setNewPasswordState({
+        value: newPasswordValue,
+        valid: false,
+        message: '새 비밀번호는 현재 비밀번호와 달라야 합니다.',
+      });
+    } else {
+      // 비밀번호 유효성 검사
+      if (passwordRegExp.test(newPasswordValue)) {
+        setNewPasswordState({
+          value: newPasswordValue,
+          valid: true,
+          message: '유효한 비밀번호입니다.',
+        });
+      } else {
+        setNewPasswordState({
+          value: newPasswordValue,
+          valid: false,
+          message: '비밀번호는 8자리 이상, 영문자, 숫자, 특수문자를 포함해야 합니다.',
+        });
+      }
+    }
+  };
+
+  ///////////////////////새비밀번호확인////////////////////
+  const [confirmNewPassword, setConfirmNewPassword] = useState('');
+  const [confirmNewPasswordState, setConfirmNewPasswordState] = useState({
+    valid: true,
+    message: '',
+  });
+
+  const handleConfirmNewPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const confirmNewPasswordValue = e.target.value;
+    setConfirmNewPassword(confirmNewPasswordValue);
+
+    // userNewPassword와 confirmNewPassword를 비교하여 일치 여부 확인
+    if (confirmNewPasswordValue === userNewPassword) {
+      setConfirmNewPasswordState({
+        valid: true,
+        message: '새 비밀번호와 일치합니다.',
+      });
+    } else {
+      setConfirmNewPasswordState({
+        valid: false,
+        message: '새 비밀번호와 일치하지 않습니다.',
+      });
+    }
+  };
+
   return (
     <MyInfoGrid>
       <MyInfoField>
@@ -245,16 +222,12 @@ export default function EditForm({ onDataChange }: EditFormProps) {
             type="password"
             id="current-password"
             placeholder="현재비밀번호를 입력해주세요."
-            value={currentPassword}
-            onChange={handleCurrentPasswordChange}
+            // value={currentPassword}
+            // onChange={handleCurrentPasswordChange}
           />
           <CheckBtn type="button" onClick={handleCurrentPasswordCheck}>
             확인
           </CheckBtn>
-          {/* 현재 비밀번호 유효성 메시지를 표시합니다. */}
-          {!currentPasswordState.valid && (
-            <p style={{ color: 'red', paddingLeft: '15px', fontSize: '13px' }}>{currentPasswordState.message}</p>
-          )}
         </InputWithButton>
       </MyInfoField>
 
@@ -265,11 +238,13 @@ export default function EditForm({ onDataChange }: EditFormProps) {
             type="password"
             id="new-password"
             placeholder="비밀번호 8자리이상(영문자+숫자+특수문자)"
-            value={newPassword}
+            value={userNewPassword}
             onChange={handleNewPasswordChange}
           />
           {/* 새비밀번호 유효성 메시지를 표시 */}
-          {!newPasswordState.valid && (
+          {newPasswordState.valid ? (
+            <p style={{ color: 'green', paddingLeft: '15px', fontSize: '13px' }}>{newPasswordState.message}</p>
+          ) : (
             <p style={{ color: 'red', paddingLeft: '15px', fontSize: '13px' }}>{newPasswordState.message}</p>
           )}
         </InputWithButton>
@@ -286,7 +261,9 @@ export default function EditForm({ onDataChange }: EditFormProps) {
             onChange={handleConfirmNewPasswordChange}
           />
           {/* 새비밀번호 확인 유효성 메시지를 표시 */}
-          {!confirmNewPasswordState.valid && (
+          {confirmNewPasswordState.valid ? (
+            <p style={{ color: 'green', paddingLeft: '15px', fontSize: '13px' }}>{confirmNewPasswordState.message}</p>
+          ) : (
             <p style={{ color: 'red', paddingLeft: '15px', fontSize: '13px' }}>{confirmNewPasswordState.message}</p>
           )}
         </InputWithButton>
@@ -334,6 +311,15 @@ const MyInfoInput = styled.input`
 
   &:disabled {
     background-color: #f2f2f2;
+  }
+
+  // 포커스 유무
+  & + p {
+    display: none;
+  }
+
+  &:focus + p {
+    display: block;
   }
 `;
 
