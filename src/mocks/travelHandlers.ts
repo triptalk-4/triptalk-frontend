@@ -172,6 +172,7 @@ const travelData = [
 export const travelHandlers = [
   // 저장한 정보 보내는 것
   rest.get<travelItem>('/api/travels', (req, res, ctx) => {
+    console.log(req);
     return res(ctx.status(200), ctx.json(travelData));
   }),
 ];
