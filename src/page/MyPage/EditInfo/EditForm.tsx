@@ -54,7 +54,7 @@ export default function EditForm({}: EditFormProps) {
       }
     };
 
-    fetchUserInfo(); // 비동기 함수 호출
+    fetchUserInfo();
   }, [token, userEmail, userNickname, userPassword]);
 
   ///////////////////////닉네임////////////////////
@@ -100,9 +100,8 @@ export default function EditForm({}: EditFormProps) {
 
   ///////////////////////현재비밀번호////////////////////
   const handleCurrentPasswordCheck = async () => {
-    // 버튼 동작시 현재 비번과 입력값이 같은 지 확인함
     try {
-      const response = await axios.post('http://localhost:8080/api/users/update/password/check', {
+      const response = await axios.post('http://52.79.200.55:8080/api/users/update/password/check', {
         email: userEmail,
         password: userPassword,
       });
