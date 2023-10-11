@@ -88,6 +88,10 @@ export default function EditSchedule() {
               </ImagePreviews>
               <CommentTextArea placeholder="장소리뷰" />
             </ImgContainer>
+            <ButtonContainer>
+              {coreContainers.length < 5 && <PlusButton onClick={handleAddCoreContainer}>+</PlusButton>}
+              {coreContainers.length > 1 && <MinusButton onClick={handleRemoveCoreContainer}>-</MinusButton>}
+            </ButtonContainer>
           </CoreContainer>
         ))}
         <ButtonContainer>
@@ -189,7 +193,6 @@ const PlusButton = styled.button`
   width: 30px;
   height: 30px;
   border-radius: 10px;
-  margin-top: 10px;
   margin-right: 10px;
   border: none;
   background-color: black;
@@ -201,7 +204,6 @@ const MinusButton = styled.button`
   width: 30px;
   height: 30px;
   border-radius: 10px;
-  margin-top: 10px;
   border: none;
   background-color: black;
   color: white;
