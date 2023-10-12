@@ -8,6 +8,7 @@ import styled, { css } from 'styled-components';
 import { GRAY_COLOR, MAIN_COLOR } from '../../color/color';
 import { Link, useNavigate } from 'react-router-dom';
 import { SetStateAction, useEffect, useState } from 'react';
+import { API_DOMAIN } from '../domain/address';
 
 // interface UserData {
 //   id: number;
@@ -64,7 +65,7 @@ const LoginForm = () => {
     //   console.error('로그인 오류 : ', error);
     // }
     try {
-      const response = await axios.post('http://52.79.200.55:8080/api/users/login', {
+      const response = await axios.post(`${API_DOMAIN}api/users/login`, {
         email: userEmail,
         password: password,
       });

@@ -190,7 +190,7 @@ const Badge = styled.div`
   background-color: ${MAIN_COLOR};
   padding: 10px;
   color: white;
-  font-size: 20px;
+  font-size: 18px;
   position: absolute;
   margin: 10px;
   top: 0px;

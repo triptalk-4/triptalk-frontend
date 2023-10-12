@@ -7,7 +7,7 @@ import ExcludeTimes from '../../component/DatePicker/ExcludeTimes';
 import ScheduleMapLoader from '../../component/ScheduleMap';
 import AddressSearch from '../../component/AddressSearch';
 import { useNavigate } from 'react-router';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { removeLastAddress } from '../../store/mapAddress';
 type CoreContainerData = {
   images: File[];

@@ -3,6 +3,7 @@ import { FcGoogle } from 'react-icons/fc';
 import axios from 'axios';
 import { useGoogleLogin } from '@react-oauth/google';
 import { useNavigate } from 'react-router';
+import { API_DOMAIN } from '../../page/domain/address';
 interface GoogleLoginResponse {
   code: string;
 }
@@ -26,7 +27,7 @@ const GoogleLogin = () => {
     onError: error => {
       console.error('error다', error);
     },
-    flow: 'auth-code'
+    flow: 'auth-code',
   });
 
   const exchangeCodeForAccessToken = async (code: any) => {
@@ -34,12 +35,12 @@ const GoogleLogin = () => {
       const clientID = '57409677042-8qrpnbbfcq8d6jeq9kmvh8357vi4p4up.apps.googleusercontent.com';
       const clientSecret = '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';
 
-      const response = await axios.post('http://52.79.200.55:8080/api/auth/google', {
+      const response = await axios.post(`${API_DOMAIN}api/auth/google`, {
         code,
         client_id: clientID,
         client_secret: clientSecret,
         redirect_uri: 'http://ec2-52-79-200-55.ap-northeast-2.compute.amazonaws.com:8080/api/auth/google',
-        authorization_grant_ype: 'authorization_code'
+        authorization_grant_ype: 'authorization_code',
       });
       console.log(response);
       console.log(response.data);

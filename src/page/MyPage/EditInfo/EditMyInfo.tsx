@@ -3,56 +3,31 @@ import { useNavigate } from 'react-router-dom';
 import { GRAY_COLOR, LIGHT_GRAY_COLOR, LIGHT_ORANGE_COLOR, MAIN_COLOR } from '../../../color/color';
 import EditForm from './EditForm';
 import EditProfile from '../../../component/ImgUpload/EditProfile';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import EditIntroduct from './EditIntroduct';
 import axios from 'axios';
+import { API_DOMAIN } from '../../domain/address';
 
 export default function EditMyInfo() {
   const navigate = useNavigate();
   const [isButtonEnabled, setIsButtonEnabled] = useState(false); // 버튼 활성화 상태 추가
 
-  const [newProfileImage, setNewProfileImage] = useState('');
-  const [newProfileIntro, setNewProfileIntro] = useState('');
-  const [newNickname, setNewNickname] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-
   // 모든 정보 수정 시 버튼 활성화
-  useEffect(() => {
-    if (newProfileImage && newProfileIntro && newNickname && newPassword) {
-      setIsButtonEnabled(true);
-    } else {
-      setIsButtonEnabled(false);
-    }
-  }, [newProfileImage, newProfileIntro, newNickname, newPassword]);
-
-  const handleImageChange = (imageUrl: string) => {
-    setNewProfileImage(imageUrl);
-  };
-
-  const handleIntroUpdate = (text: string) => {
-    setNewProfileIntro(text);
-  };
-
-  const handleEditDataChange = (data: { userNickname: string; userNewPassword: string }) => {
-    console.log('Data changed:', data);
-    setNewNickname(data.userNickname);
-    setNewPassword(data.userNewPassword);
-  };
+  // useEffect(() => {
+  //   if (newProfileImage && newProfileIntro && newNickname && newPassword) {
+  //     setIsButtonEnabled(true);
+  //   } else {
+  //     setIsButtonEnabled(false);
+  //   }
+  // }, [newProfileImage, newProfileIntro, newNickname, newPassword]);
 
   const handleEditButtonClick = async () => {
     // localStorage.removeItem('userInfo');
     //  localStorage.setItem('userInfo', JSON.stringify(updatedUserData));
 
-    const updatedUserData = {
-      newProfileImage,
-      newProfileIntro,
-      newNickname,
-      newPassword,
-    };
-
     try {
       // 서버에 PUT 요청 보내기
-      const response = await axios.put('http://52.79.200.55:8080/api/users/update/profile', updatedUserData);
+      const response = await axios.put(`${API_DOMAIN}api/users/update/profile`);
 
       if (response.status === 200) {
         console.log('수정 성공:', response.data);
@@ -77,16 +52,16 @@ export default function EditMyInfo() {
       <InfoTitle>개인정보수정</InfoTitle>
       <InfoEditContainer>
         <ImgEditContainer>
-          <EditProfile onImageChange={handleImageChange} />
+          <EditProfile />
           <ExitBtn>탈퇴하기</ExitBtn>
         </ImgEditContainer>
 
         <IntroductionContainer>
-          <EditIntroduct onUpdateIntro={handleIntroUpdate} />
+          <EditIntroduct />
         </IntroductionContainer>
 
         <MyInfoEditForm>
-          <EditForm onDataChange={handleEditDataChange} />
+          <EditForm />
         </MyInfoEditForm>
 
         <MyInfoBtnSetting>

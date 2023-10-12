@@ -9,6 +9,7 @@ import TopButton from '../../component/TopButton/TopButton';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
+import { API_DOMAIN } from '../domain/address';
 
 export default function MyInfo() {
   const navigate = useNavigate();
@@ -53,12 +54,12 @@ export default function MyInfo() {
   // };
 
   // 연동
-  console.log(token);
+  // console.log(token);
   useEffect(() => {
     const token = localStorage.getItem('token');
     const fetchUserInfo = async () => {
       try {
-        const response = await axios.get('http://52.79.200.55:8080/api/users/profile', {
+        const response = await axios.get(`${API_DOMAIN}api/users/profile`, {
           headers: {
             Authorization: `Bearer ${token}`, //필수
           },

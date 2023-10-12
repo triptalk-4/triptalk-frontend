@@ -5,14 +5,11 @@ import { LIGHT_GRAY_COLOR } from '../../color/color';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
+import { API_DOMAIN } from '../../page/domain/address';
 
-interface EditProfileProps {
-  onImageChange: (imageUrl: string) => void;
-}
-
-export default function EditProfile({ onImageChange }: EditProfileProps) {
+export default function EditProfile() {
   const [userImg, setUserImg] = useState(''); // msw
-  const token = useSelector((state: RootState) => state.token.token); // Redux에서 토큰 가져오기
+  const token = useSelector((state: RootState) => state.token.token);
 
   const imgRef = useRef<HTMLInputElement | null>(null); // 초기에는 아무것도 가르키고 있지 않음
 
@@ -29,9 +26,9 @@ export default function EditProfile({ onImageChange }: EditProfileProps) {
     const token = localStorage.getItem('token');
     const fetchUserInfo = async () => {
       try {
-        const response = await axios.get('http://52.79.200.55:8080/api/users/profile', {
+        const response = await axios.get(`${API_DOMAIN}api/users/profile`, {
           headers: {
-            Authorization: `Bearer ${token}`, //필수
+            Authorization: `Bearer ${token}`,
           },
         });
 
@@ -52,11 +49,10 @@ export default function EditProfile({ onImageChange }: EditProfileProps) {
 
   const handleImageUpload = (e: ChangeEvent<HTMLInputElement>) => {
     // 선택한 이미지 보기
-    const files = e.target.files?.[0]; // 선택한 파일
+    const files = e.target.files?.[0];
     if (files) {
       const imageUrl = URL.createObjectURL(files); // 이미지 파일을 URL로 변환
       setUserImg(imageUrl);
-      onImageChange(imageUrl);
     }
   };
 
@@ -66,7 +62,7 @@ export default function EditProfile({ onImageChange }: EditProfileProps) {
   };
 
   return (
-    <ProfileImgContainer>
+    <ProfileImgContainer encType="multipart/form-data">
       <ProfileImgLabel htmlFor="profileImg">
         <ProfileImgInput type="file" accept="image/*" id="profileImg" onChange={handleImageUpload} ref={imgRef} />
         <EditProfileBtn type="button" onClick={handleInputImageClick}>
