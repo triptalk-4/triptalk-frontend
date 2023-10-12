@@ -5,18 +5,15 @@ import { passwordRegExp } from '../../../regex/Regex';
 import axios from 'axios';
 import { RootState } from '../../../store/store';
 import { useSelector } from 'react-redux';
+import { API_DOMAIN } from '../../domain/address ';
 
-interface EditFormProps {
-  onDataChange: (data: { userNickname: string; userNewPassword: string }) => void;
-}
-
-export default function EditForm({ onDataChange }: EditFormProps) {
+export default function EditForm() {
   // msw
   const [userEmail, setUserEmail] = useState('');
   const [userNickname, setUserNickname] = useState('');
   const [userPassword, setUserPassword] = useState('');
-  // const [userNewNickname, setUserNewNickname] = useState('');
   const passwordTest = localStorage.getItem('password');
+  const [newNickname, setNewNickname] = useState('');
 
   const token = useSelector((state: RootState) => state.token.token); // Redux에서 토큰 가져오기
 
@@ -37,7 +34,7 @@ export default function EditForm({ onDataChange }: EditFormProps) {
       try {
         const response = await axios.get('http://52.79.200.55:8080/api/users/profile', {
           headers: {
-            Authorization: `Bearer ${token}`, //필수
+            Authorization: `Bearer ${token}`,
           },
         });
 
@@ -65,30 +62,28 @@ export default function EditForm({ onDataChange }: EditFormProps) {
   });
 
   const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newNickname = e.target.value;
-    setUserNickname(newNickname);
+    const updatedNickname = e.target.value;
+    setNewNickname(updatedNickname);
 
-    if (newNickname.length < 2 || newNickname.length > 5) {
+    if (updatedNickname.length >= 2 && updatedNickname.length <= 5) {
+      setNicknameState({
+        valid: true,
+        message: '확인 버튼을 눌려주세요.',
+      });
+    } else {
       setNicknameState({
         valid: false,
         message: '닉네임은 2글자 이상 5글자 이하로 입력해주세요.',
       });
-    } else {
-      setNicknameState({
-        valid: true,
-        message: '',
-      });
     }
-
-    // 닉네임이 변경될 때 onDataChange 콜백 호출
-    onDataChange({ userNickname: newNickname, userNewPassword });
   };
 
   const handleNicknameCheck = async () => {
     try {
       const response = await axios.post('http://52.79.200.55:8080/api/users/update/nickname/check', {
-        nickname: userNickname,
+        nickname: newNickname,
       });
+      console.log(newNickname);
       if (response.status === 200) {
         // localStorage.setItem('token', response.data.token);
         const message = response.data.nicknameCheckOkOrNotOk;
@@ -105,7 +100,7 @@ export default function EditForm({ onDataChange }: EditFormProps) {
   ///////////////////////현재비밀번호////////////////////
   const handleCurrentPasswordCheck = async () => {
     try {
-      const response = await axios.post('http://52.79.200.55:8080/api/users/update/password/check', {
+      const response = await axios.post(`${API_DOMAIN}api/users/update/password/check`, {
         email: userEmail,
         password: passwordTest,
         token: token,
@@ -159,9 +154,6 @@ export default function EditForm({ onDataChange }: EditFormProps) {
           message: '비밀번호는 8자리 이상, 영문자, 숫자, 특수문자를 포함해야 합니다.',
         });
       }
-
-      // 새 비밀번호가 변경될 때 onDataChange 콜백 호출
-      onDataChange({ userNickname, userNewPassword: newPasswordValue });
     }
   };
 
@@ -202,13 +194,15 @@ export default function EditForm({ onDataChange }: EditFormProps) {
       <MyInfoField>
         <MyInfoLabel htmlFor="nickname">닉네임</MyInfoLabel>
         <InputWithButton>
-          <MyInfoInput type="text" id="nickname" value={userNickname} onChange={handleNicknameChange} />
+          <MyInfoInput type="text" id="nickname" defaultValue={userNickname} onChange={handleNicknameChange} />
           <CheckBtn type="button" onClick={handleNicknameCheck}>
             확인
           </CheckBtn>
           {/* 닉네임 유효성 메시지를 표시 */}
-          {!nicknameState.valid && (
+          {!nicknameState.valid ? (
             <p style={{ color: 'red', paddingLeft: '15px', fontSize: '13px' }}>{nicknameState.message}</p>
+          ) : (
+            <p style={{ color: 'green', paddingLeft: '15px', fontSize: '13px' }}>{nicknameState.message}</p>
           )}
         </InputWithButton>
       </MyInfoField>
@@ -220,6 +214,7 @@ export default function EditForm({ onDataChange }: EditFormProps) {
             type="password"
             id="current-password"
             placeholder="현재비밀번호를 입력해주세요."
+            // onChange={handleCurrentPasswordChange}
             // value={userPassword}
           />
           <CheckBtn type="button" onClick={handleCurrentPasswordCheck}>
