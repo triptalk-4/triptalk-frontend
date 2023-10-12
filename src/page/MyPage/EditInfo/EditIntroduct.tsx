@@ -6,7 +6,11 @@ import { RootState } from '../../../store/store';
 import { useSelector } from 'react-redux';
 import { API_DOMAIN } from '../../domain/address';
 
-export default function EditIntroduct() {
+interface EditIntroductProps {
+  onAboutMeChange: (newText: string) => void;
+}
+
+export default function EditIntroduct({ onAboutMeChange }: EditIntroductProps) {
   const [userAboutMe, setUserAboutMe] = useState('');
 
   const token = useSelector((state: RootState) => state.token.token); // Redux에서 토큰 가져오기
@@ -15,7 +19,7 @@ export default function EditIntroduct() {
     const token = localStorage.getItem('token');
     const fetchUserInfo = async () => {
       try {
-        const response = await axios.get(`${API_DOMAIN}api/users/profile`, {
+        const response = await axios.get(`${API_DOMAIN}/api/users/profile`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -39,6 +43,7 @@ export default function EditIntroduct() {
   const handleIntroChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const newText = e.target.value;
     setUserAboutMe(newText);
+    onAboutMeChange(newText);
   };
 
   return (
