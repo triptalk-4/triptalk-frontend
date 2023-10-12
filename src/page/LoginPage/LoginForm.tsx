@@ -71,6 +71,10 @@ const LoginForm = () => {
       if (response.status === 200) {
         localStorage.setItem('token', response.data.token);
         // dispatch(setToken(response.data.token));
+        // 테스트 코드
+        localStorage.setItem('userEmail', userEmail);
+        localStorage.setItem('password', password);
+
         const message = '로그인 되었습니다.';
         alert(`${message}`);
         setUserEmail('');
