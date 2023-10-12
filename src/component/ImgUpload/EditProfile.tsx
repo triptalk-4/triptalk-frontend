@@ -12,6 +12,7 @@ export default function EditProfile() {
   const token = useSelector((state: RootState) => state.token.token);
 
   const imgRef = useRef<HTMLInputElement | null>(null); // 초기에는 아무것도 가르키고 있지 않음
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   // useEffect(() => {
   //   const storedUserData = localStorage.getItem('userInfo');
@@ -47,12 +48,41 @@ export default function EditProfile() {
     fetchUserInfo();
   }, [token, userImg]);
 
+  const handleUploadImage = async () => {
+    if (!selectedFile) {
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('files', selectedFile);
+
+    try {
+      // 서버로 이미지 업로드 요청
+      const response = await axios.post(`${API_DOMAIN}/api/users/update/profile`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      if (response.status === 200) {
+        console.log('이미지 업로드 성공:', response.data);
+        // 서버에서 이미지 업로드 성공 후 필요한 작업을 수행
+      } else {
+        console.error('서버 응답 오류:', response);
+      }
+    } catch (error) {
+      console.error('이미지 업로드 오류:', error);
+    }
+  };
+
   const handleImageUpload = (e: ChangeEvent<HTMLInputElement>) => {
-    // 선택한 이미지 보기
-    const files = e.target.files?.[0];
-    if (files) {
-      const imageUrl = URL.createObjectURL(files); // 이미지 파일을 URL로 변환
+    const files = e.target.files;
+    if (files && files.length > 0) {
+      setSelectedFile(files[0]);
+      const imageUrl = URL.createObjectURL(files[0]);
       setUserImg(imageUrl);
+      handleUploadImage(); // 자동 업로드
     }
   };
 
