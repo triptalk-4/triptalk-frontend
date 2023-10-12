@@ -65,7 +65,7 @@ const LoginForm = () => {
     //   console.error('로그인 오류 : ', error);
     // }
     try {
-      const response = await axios.post(`${API_DOMAIN}api/users/login`, {
+      const response = await axios.post(`${API_DOMAIN}/api/users/login`, {
         email: userEmail,
         password: password,
       });

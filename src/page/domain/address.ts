@@ -1,1 +1,1 @@
-export const API_DOMAIN = 'https://triptalk.xyz/';
+export const API_DOMAIN = 'https://triptalk.xyz';

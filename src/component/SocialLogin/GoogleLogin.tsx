@@ -35,7 +35,7 @@ const GoogleLogin = () => {
       const clientID = '57409677042-8qrpnbbfcq8d6jeq9kmvh8357vi4p4up.apps.googleusercontent.com';
       const clientSecret = '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';
 
-      const response = await axios.post(`${API_DOMAIN}api/auth/google`, {
+      const response = await axios.post(`${API_DOMAIN}/api/auth/google`, {
         code,
         client_id: clientID,
         client_secret: clientSecret,

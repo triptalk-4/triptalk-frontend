@@ -113,7 +113,7 @@ const SignupForm = () => {
   // 회원가입 요청 함수
   const sendSignupData = async (formData: any) => {
     try {
-      const res = await axios.post(`${API_DOMAIN}api/users/register`, formData);
+      const res = await axios.post(`${API_DOMAIN}/api/users/register`, formData);
       return res.data;
     } catch (error: any) {
       if (error.response) {
