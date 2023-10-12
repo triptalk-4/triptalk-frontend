@@ -52,9 +52,9 @@ export default function EditProfile({ onImageChange }: EditProfileProps) {
 
   const handleImageUpload = (e: ChangeEvent<HTMLInputElement>) => {
     // 선택한 이미지 보기
-    const file = e.target.files?.[0]; // 선택한 파일
-    if (file) {
-      const imageUrl = URL.createObjectURL(file); // 이미지 파일을 URL로 변환
+    const files = e.target.files?.[0]; // 선택한 파일
+    if (files) {
+      const imageUrl = URL.createObjectURL(files); // 이미지 파일을 URL로 변환
       setUserImg(imageUrl);
       onImageChange(imageUrl);
     }
