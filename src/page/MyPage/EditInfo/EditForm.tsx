@@ -107,6 +107,7 @@ export default function EditForm({ onDataChange }: EditFormProps) {
       const response = await axios.post('http://52.79.200.55:8080/api/users/update/password/check', {
         email: userEmail,
         password: userPassword,
+        token: token,
       });
 
       if (response.status === 200) {
@@ -119,6 +120,7 @@ export default function EditForm({ onDataChange }: EditFormProps) {
         alert('유효하지 않은 사용자 입니다.');
       }
     } catch (error: any) {
+      console.log('password' + userPassword);
       alert(`${error.response.data}`);
     }
   };
@@ -214,7 +216,12 @@ export default function EditForm({ onDataChange }: EditFormProps) {
       <MyInfoField>
         <MyInfoLabel htmlFor="current-password">현재비밀번호</MyInfoLabel>
         <InputWithButton>
-          <MyInfoInput type="password" id="current-password" placeholder="현재비밀번호를 입력해주세요." />
+          <MyInfoInput
+            type="text"
+            id="current-password"
+            placeholder="현재비밀번호를 입력해주세요."
+            // value={userPassword}
+          />
           <CheckBtn type="button" onClick={handleCurrentPasswordCheck}>
             확인
           </CheckBtn>
