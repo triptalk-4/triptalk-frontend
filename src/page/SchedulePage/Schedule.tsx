@@ -13,6 +13,7 @@ import { useSelector } from 'react-redux/es/exports';
 import { RootState } from '../../store/store';
 import { useDispatch } from 'react-redux';
 import { setToken } from '../../store/tokenSlice';
+import formatDate from '../../utils/formatDate';
 
 interface Item {
   createAt: number;
@@ -26,91 +27,50 @@ interface Item {
 function Schedule() {
   const dispatch = useDispatch();
   const [data, setData] = useState<Item[]>([]);
-  const [visibleItems, setVisibleItems] = useState<Item[]>([]); //첫 로드시 페이지에 나타낼 아이템 갯수
+  const [visibleItems, setVisibleItems] = useState<Item[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [showTopButton, setShowTopButton] = useState(false);
   const [allItemsLoaded, setAllItemsLoaded] = useState(false);
   const [hasNext, setHasNext] = useState(true);
   const token = useSelector((state: RootState) => state.token.token);
-
-  function formatDate(timestamp: number): string {
-    const date = new Date(timestamp);
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date
-      .getDate()
-      .toString()
-      .padStart(2, '0');
-    return `${year}-${month}-${day}`;
-  }
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await axios.get('/api/plans?lastId=10&limit=2&sortType=RECENT');
-  //       const data = response.data;
-  //       setHasNext(data.hasNext);
-  //       const transformedData = data.plannerListResponses.map((item: any) => ({
-  //         endDate: item.endDate,
-  //         likeCount: item.likeCount,
-  //         plannerId: item.plannerId,
-  //         startDate: item.startDate,
-  //         thumbnail: item.thumbnail,
-  //         title: item.title,
-  //         views: item.views,
-  //         date: item.startDate
-  //       }));
-  //       setData(transformedData);
-  //       setVisibleItems(transformedData.slice(0, 9));
-  //     } catch (error) {
-  //       console.error('API Request Failure:', error);
-  //     }
-  //   };
-  //   fetchData();
-  // }, []);
-  // console.log(token);
-  // const token = useSelector((state: RootState) => state.token.token);
-
-  // useEffect(() => {
-  //   if (token) {
-  //     localStorage.setItem('token', token);
-  //   }
-  // }, [token]);
+  const [page, setPage] = useState(0);
+  const [sortType, setSortType] = useState('RECENT');
 
   useEffect(() => {
     const storedToken = localStorage.getItem('token');
+    setIsLoading(true);
     if (storedToken) {
       dispatch(setToken(storedToken));
     }
     const fetchData = async () => {
       try {
-        console.log(token);
         if (token) {
           const config = {
             headers: {
               Authorization: `Bearer ${token}`
             }
           };
-          const response = await axios.get('/api/plans?page=1&size=9&sortType=RECENT', config);
-          const data = response.data;
-          setHasNext(data.hasNext);
-          const transformedData = data.plannerListResponses.content.map((item: any) => ({
-            likeCount: item.likeCount,
-            plannerId: item.plannerId,
-            thumbnail: item.thumbnail,
-            title: item.title,
-            views: item.views,
-            createAt: item.createAt
-          }));
-          setData(transformedData);
-          setVisibleItems(transformedData.slice(0, 9));
+          const response = await axios.get(`/api/plans?page=${page}&size=6&sortType=${sortType}`, config);
+          const fetchedData = response.data;
+          setHasNext(fetchedData.hasNext);
+          const transformedData = fetchedData.plannerListResponses.content.map((item: Item) => {
+            const { likeCount, plannerId, thumbnail, views, createAt, title } = item;
+            return { likeCount, plannerId, thumbnail, views, createAt, title };
+          });
+          setData(prevData => [...prevData, ...transformedData]);
+          setVisibleItems(prevItems => [...prevItems, ...transformedData]);
+          if (!fetchedData.hasNext) {
+            setAllItemsLoaded(true);
+          }
+          setIsLoading(false);
         }
       } catch (error) {
+        setIsLoading(false);
         console.error('API Request Failure:', error);
       }
     };
     fetchData();
-  }, [token]);
+  }, [token, page]);
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
@@ -132,41 +92,34 @@ function Schedule() {
   };
 
   const loadMoreItems = () => {
-    if (visibleItems.length >= data.length) {
+    if (!hasNext) {
       setAllItemsLoaded(true);
       return;
-    } else if (!hasNext || isLoading) {
-      return;
     }
-    setIsLoading(true);
-    setTimeout(() => {
-      setVisibleItems(prevItems => [
-        ...prevItems,
-        ...data.slice(prevItems.length, Math.min(prevItems.length + 6, data.length))
-      ]);
-      setIsLoading(false);
-      if (visibleItems.length + 6 >= data.length) {
-        setAllItemsLoaded(true);
-      }
-    }, 500);
+    setPage(prevPage => prevPage + 1);
   };
+
   const handleSortChange = (sortKey: string) => {
     let sortedData;
     switch (sortKey) {
       case '최신순':
+        setSortType('RECENT');
         sortedData = [...data].sort((a, b) => b.createAt - a.createAt);
         break;
       case '좋아요':
+        setSortType('LIKES');
         sortedData = [...data].sort((a, b) => b.likeCount - a.likeCount);
         break;
       case '조회순':
+        setSortType('VIEWS');
         sortedData = [...data].sort((a, b) => b.views - a.views);
         break;
       default:
         sortedData = data;
     }
     setData(sortedData);
-    setVisibleItems(sortedData.slice(0, 9));
+    setVisibleItems(sortedData.slice(0, 6));
+    setPage(0);
     setAllItemsLoaded(false);
   };
 

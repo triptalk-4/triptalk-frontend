@@ -11,6 +11,7 @@ import { RootState } from '../../store/store';
 import { useDispatch } from 'react-redux';
 import { setToken } from '../../store/tokenSlice';
 import { Link } from 'react-router-dom';
+import formatDate from '../../utils/formatDate';
 
 interface Item {
   startDate: number;
@@ -42,13 +43,6 @@ function NextArrow(props: CustomArrowProps) {
 }
 
 function MainCarousel() {
-  function formatDate(timestamp: number): string {
-    const date = new Date(timestamp);
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
-    return `${year}-${day}-${month}`;
-  }
   const dispatch = useDispatch();
   const token = useSelector((state: RootState) => state.token.token);
   const [data, setData] = useState<Item[]>([]);
@@ -60,12 +54,11 @@ function MainCarousel() {
     }
     const fetchData = async () => {
       try {
-        console.log(token);
         if (token) {
           const config = {
             headers: {
-              Authorization: `Bearer ${token}`,
-            },
+              Authorization: `Bearer ${token}`
+            }
           };
           const response = await axios.get('/api/main', config);
           const data = response.data;
@@ -97,16 +90,16 @@ function MainCarousel() {
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 2,
-        },
+          slidesToShow: 2
+        }
       },
       {
         breakpoint: 760,
         settings: {
-          slidesToShow: 1,
-        },
-      },
-    ],
+          slidesToShow: 1
+        }
+      }
+    ]
   };
 
   return (
