@@ -6,7 +6,7 @@ import EditProfile from '../../../component/ImgUpload/EditProfile';
 import { useState } from 'react';
 import EditIntroduct from './EditIntroduct';
 import axios from 'axios';
-import { API_DOMAIN } from '../../domain/address ';
+import { API_DOMAIN } from '../../domain/address';
 
 export default function EditMyInfo() {
   const navigate = useNavigate();

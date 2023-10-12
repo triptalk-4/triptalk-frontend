@@ -8,7 +8,7 @@ import styled, { css } from 'styled-components';
 import { GRAY_COLOR, MAIN_COLOR } from '../../color/color';
 import { Link, useNavigate } from 'react-router-dom';
 import { SetStateAction, useEffect, useState } from 'react';
-import { API_DOMAIN } from '../domain/address ';
+import { API_DOMAIN } from '../domain/address';
 
 // interface UserData {
 //   id: number;

@@ -5,7 +5,7 @@ import { passwordRegExp } from '../../../regex/Regex';
 import axios from 'axios';
 import { RootState } from '../../../store/store';
 import { useSelector } from 'react-redux';
-import { API_DOMAIN } from '../../domain/address ';
+import { API_DOMAIN } from '../../domain/address';
 
 export default function EditForm() {
   // msw

@@ -4,7 +4,7 @@ import { SUPER_LIGHT_ORANGE_COLOR } from '../../../color/color';
 import axios from 'axios';
 import { RootState } from '../../../store/store';
 import { useSelector } from 'react-redux';
-import { API_DOMAIN } from '../../domain/address ';
+import { API_DOMAIN } from '../../domain/address';
 
 export default function EditIntroduct() {
   const [userAboutMe, setUserAboutMe] = useState('');

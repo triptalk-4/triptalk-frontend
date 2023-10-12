@@ -6,7 +6,7 @@ import { Link, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/store';
-import { API_DOMAIN } from '../page/domain/address ';
+import { API_DOMAIN } from '../page/domain/address';
 
 interface NavItemProps {
   $isActive: boolean;

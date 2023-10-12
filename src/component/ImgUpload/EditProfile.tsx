@@ -5,7 +5,7 @@ import { LIGHT_GRAY_COLOR } from '../../color/color';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
-import { API_DOMAIN } from '../../page/domain/address ';
+import { API_DOMAIN } from '../../page/domain/address';
 
 export default function EditProfile() {
   const [userImg, setUserImg] = useState(''); // msw

@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { GRAY_COLOR, MAIN_COLOR, YELLOW_COLOR } from '../../color/color';
 import { ChangeEvent, useState } from 'react';
 import { FaEyeSlash, FaEye, FaArrowLeft } from 'react-icons/fa';
-import { API_DOMAIN } from '../domain/address ';
+import { API_DOMAIN } from '../domain/address';
 
 interface InputState {
   value: string;

@@ -9,7 +9,7 @@ import TopButton from '../../component/TopButton/TopButton';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
-import { API_DOMAIN } from '../domain/address ';
+import { API_DOMAIN } from '../domain/address';
 
 export default function MyInfo() {
   const navigate = useNavigate();

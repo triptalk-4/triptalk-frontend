@@ -3,7 +3,7 @@ import { FcGoogle } from 'react-icons/fc';
 import axios from 'axios';
 import { useGoogleLogin } from '@react-oauth/google';
 import { useNavigate } from 'react-router';
-import { API_DOMAIN } from '../../page/domain/address ';
+import { API_DOMAIN } from '../../page/domain/address';
 interface GoogleLoginResponse {
   code: string;
 }
