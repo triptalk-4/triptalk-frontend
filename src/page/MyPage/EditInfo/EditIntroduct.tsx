@@ -4,13 +4,10 @@ import { SUPER_LIGHT_ORANGE_COLOR } from '../../../color/color';
 import axios from 'axios';
 import { RootState } from '../../../store/store';
 import { useSelector } from 'react-redux';
+import { API_DOMAIN } from '../../domain/address';
 
-interface EditIntroProps {
-  onUpdateIntro: (text: string) => void;
-}
-
-export default function EditIntroduct({ onUpdateIntro }: EditIntroProps) {
-  const [userIntro, setUserIntro] = useState('');
+export default function EditIntroduct() {
+  const [userAboutMe, setUserAboutMe] = useState('');
 
   const token = useSelector((state: RootState) => state.token.token); // Redux에서 토큰 가져오기
 
@@ -18,16 +15,15 @@ export default function EditIntroduct({ onUpdateIntro }: EditIntroProps) {
     const token = localStorage.getItem('token');
     const fetchUserInfo = async () => {
       try {
-        const response = await axios.get('http://52.79.200.55:8080/api/users/profile', {
+        const response = await axios.get(`${API_DOMAIN}api/users/profile`, {
           headers: {
-            Authorization: `Bearer ${token}`, //필수
+            Authorization: `Bearer ${token}`,
           },
         });
 
         if (response.data) {
           const { aboutMe } = response.data;
-
-          setUserIntro(aboutMe);
+          setUserAboutMe(aboutMe);
         } else {
           console.log(response);
           alert('사용자 정보가 없습니다 소개글');
@@ -37,13 +33,12 @@ export default function EditIntroduct({ onUpdateIntro }: EditIntroProps) {
       }
     };
 
-    fetchUserInfo(); // 비동기 함수 호출
-  }, [token, userIntro]);
+    fetchUserInfo();
+  }, [token, userAboutMe]);
 
   const handleIntroChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const newText = e.target.value;
-    setUserIntro(newText);
-    onUpdateIntro(newText); // 텍스트 변경 시 onUpdateIntro 호출
+    setUserAboutMe(newText);
   };
 
   return (
@@ -53,6 +48,7 @@ export default function EditIntroduct({ onUpdateIntro }: EditIntroProps) {
       rows={4}
       cols={50}
       maxLength={200}
+      defaultValue={userAboutMe}
       placeholder="소개를 입력해주세요"
     />
   );
