@@ -12,6 +12,11 @@ export default function EditMyInfo() {
   const navigate = useNavigate();
   const [isButtonEnabled, setIsButtonEnabled] = useState(false); // 버튼 활성화 상태 추가
 
+  const [editedNickname, setEditedNickname] = useState('');
+  const [editedNewPassword, setEditedNewPassword] = useState('');
+  const [editedAboutMe, setEditedAboutMe] = useState('');
+  const [currentEmail, setCurrentEmail] = useState('');
+
   // 모든 정보 수정 시 버튼 활성화
   // useEffect(() => {
   //   if (newProfileImage && newProfileIntro && newNickname && newPassword) {
@@ -21,17 +26,40 @@ export default function EditMyInfo() {
   //   }
   // }, [newProfileImage, newProfileIntro, newNickname, newPassword]);
 
+  const currentUserEmail = (userEmail: string) => {
+    setCurrentEmail(userEmail);
+  };
+
+  const handleNicknameChange = (newNickname: string) => {
+    setEditedNickname(newNickname);
+  };
+
+  const handleNewPasswordChange = (newPassword: string) => {
+    setEditedNewPassword(newPassword);
+  };
+
+  const handleAboutMeChange = (newAboutMe: string) => {
+    setEditedAboutMe(newAboutMe);
+  };
+
   const handleEditButtonClick = async () => {
     // localStorage.removeItem('userInfo');
     //  localStorage.setItem('userInfo', JSON.stringify(updatedUserData));
 
     try {
       // 서버에 PUT 요청 보내기
-      const response = await axios.put(`${API_DOMAIN}api/users/update/profile`);
+      const response = await axios.put(`${API_DOMAIN}/api/users/update/profile`, {
+        email: currentEmail,
+        newNickname: editedNickname,
+        newPassword: editedNewPassword,
+        newAboutMe: editedAboutMe,
+        newPasswordCheck: editedNewPassword,
+      });
 
       if (response.status === 200) {
         console.log('수정 성공:', response.data);
 
+        // 성공한 경우의 처리 로직 추가
         navigate('/myinfo');
       } else {
         console.error('서버 응답 오류:', response);
@@ -39,8 +67,6 @@ export default function EditMyInfo() {
     } catch (error) {
       console.error('수정 오류:', error);
     }
-
-    navigate('/myinfo');
   };
 
   const handleBackButtonClick = () => {
@@ -57,11 +83,15 @@ export default function EditMyInfo() {
         </ImgEditContainer>
 
         <IntroductionContainer>
-          <EditIntroduct />
+          <EditIntroduct onAboutMeChange={handleAboutMeChange} />
         </IntroductionContainer>
 
         <MyInfoEditForm>
-          <EditForm />
+          <EditForm
+            userEmail={currentUserEmail}
+            onNicknameChange={handleNicknameChange}
+            onNewPasswordChange={handleNewPasswordChange}
+          />
         </MyInfoEditForm>
 
         <MyInfoBtnSetting>

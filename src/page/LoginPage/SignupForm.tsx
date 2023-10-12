@@ -156,7 +156,7 @@ const SignupForm = () => {
   // 이메일 인증 호출
   const sendEmailCertified = async (emailAddress: any) => {
     try {
-      const res = await axios.post('http://52.79.200.55:8080/api/users/register/email/send', {
+      const res = await axios.post(`${API_DOMAIN}/api/users/register/email/send`, {
         email: emailAddress,
       });
       return res.data;
@@ -188,7 +188,7 @@ const SignupForm = () => {
   // 이메일 인증 체크 요청
   const checkEmailInspectionCode = async (inspectionCode: string) => {
     try {
-      const res = await axios.post('http://52.79.200.55:8080/api/users/register/email/check', {
+      const res = await axios.post(`${API_DOMAIN}/api/users/register/email/check`, {
         token: inspectionCode,
       });
       console.log(res);
