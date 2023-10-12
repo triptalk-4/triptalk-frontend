@@ -217,7 +217,7 @@ export default function EditForm({ onDataChange }: EditFormProps) {
         <MyInfoLabel htmlFor="current-password">현재비밀번호</MyInfoLabel>
         <InputWithButton>
           <MyInfoInput
-            type="text"
+            type="password"
             id="current-password"
             placeholder="현재비밀번호를 입력해주세요."
             // value={userPassword}
