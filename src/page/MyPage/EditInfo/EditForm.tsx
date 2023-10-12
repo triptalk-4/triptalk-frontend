@@ -16,6 +16,7 @@ export default function EditForm({ onDataChange }: EditFormProps) {
   const [userNickname, setUserNickname] = useState('');
   const [userPassword, setUserPassword] = useState('');
   // const [userNewNickname, setUserNewNickname] = useState('');
+  const passwordTest = localStorage.getItem('password');
 
   const token = useSelector((state: RootState) => state.token.token); // Redux에서 토큰 가져오기
 
@@ -89,7 +90,7 @@ export default function EditForm({ onDataChange }: EditFormProps) {
         nickname: userNickname,
       });
       if (response.status === 200) {
-        localStorage.setItem('token', response.data.token);
+        // localStorage.setItem('token', response.data.token);
         const message = response.data.nicknameCheckOkOrNotOk;
         alert(`${message}`);
       } else {
@@ -106,12 +107,11 @@ export default function EditForm({ onDataChange }: EditFormProps) {
     try {
       const response = await axios.post('http://52.79.200.55:8080/api/users/update/password/check', {
         email: userEmail,
-        password: userPassword,
+        password: passwordTest,
         token: token,
       });
 
       if (response.status === 200) {
-        localStorage.setItem('token', response.data.token);
         // dispatch(setToken(response.data.token));
         const message = response.data.passwordCheckOk;
         alert(`${message}`);
@@ -138,7 +138,7 @@ export default function EditForm({ onDataChange }: EditFormProps) {
     setUserNewPassword(newPasswordValue);
 
     // 현재 비밀번호와 새 비밀번호가 같은 경우 오류 메시지 출력
-    if (newPasswordValue === userPassword) {
+    if (newPasswordValue === passwordTest) {
       setNewPasswordState({
         value: newPasswordValue,
         valid: false,
@@ -217,7 +217,7 @@ export default function EditForm({ onDataChange }: EditFormProps) {
         <MyInfoLabel htmlFor="current-password">현재비밀번호</MyInfoLabel>
         <InputWithButton>
           <MyInfoInput
-            type="text"
+            type="password"
             id="current-password"
             placeholder="현재비밀번호를 입력해주세요."
             // value={userPassword}

@@ -46,10 +46,7 @@ function MainCarousel() {
     const date = new Date(timestamp);
     const year = date.getFullYear();
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date
-      .getDate()
-      .toString()
-      .padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
     return `${year}-${day}-${month}`;
   }
   const dispatch = useDispatch();
@@ -67,8 +64,8 @@ function MainCarousel() {
         if (token) {
           const config = {
             headers: {
-              Authorization: `Bearer ${token}`
-            }
+              Authorization: `Bearer ${token}`,
+            },
           };
           const response = await axios.get('/api/main', config);
           const data = response.data;
@@ -100,16 +97,16 @@ function MainCarousel() {
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 2
-        }
+          slidesToShow: 2,
+        },
       },
       {
         breakpoint: 760,
         settings: {
-          slidesToShow: 1
-        }
-      }
-    ]
+          slidesToShow: 1,
+        },
+      },
+    ],
   };
 
   return (
@@ -200,7 +197,7 @@ const Badge = styled.div`
   background-color: ${MAIN_COLOR};
   padding: 10px;
   color: white;
-  font-size: 20px;
+  font-size: 18px;
   position: absolute;
   margin: 10px;
   top: 0px;
