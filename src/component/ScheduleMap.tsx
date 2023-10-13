@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux/es/exports';
+import { useDispatch, useSelector } from 'react-redux/es/exports';
 import { RootState } from '../store/store';
 
 import styled from 'styled-components';
+import { setSelectedPlace } from '../store/placeSlice';
+import { MAIN_COLOR } from '../color/color';
 
 const KAKAO_API_KEY = '2cc45017695a59169a1f649bdc77f123';
 
@@ -11,7 +13,7 @@ const ScheduleMapLoader = () => {
   // const { address } = useSelector((state: RootState) => state.address);
   const [searchPlace, setSearchPlace] = useState('');
   const [map, setMap] = useState<kakao.maps.Map | null>(null);
-  const [infoWindowVisible, setInfoWindowVisible] = useState(false);
+  const [selectedMarker, setSelectedMarker] = useState<kakao.maps.Marker | null>(null);
 
   useEffect(() => {
     const script = document.createElement('script');
@@ -36,6 +38,8 @@ const ScheduleMapLoader = () => {
     };
   }, []);
 
+  const dispatch = useDispatch();
+
   const handleSearch = () => {
     if (map) {
       const ps = new kakao.maps.services.Places();
@@ -44,22 +48,36 @@ const ScheduleMapLoader = () => {
       ps.keywordSearch(searchPlace, (data, status) => {
         if (status === kakao.maps.services.Status.OK) {
           const bounds = new kakao.maps.LatLngBounds();
-
-          for (let i = 0; i < 3; i++) {
+          for (let i = 0; i < 1; i++) {
             const place = data[i];
+            console.log(place);
+
+            if (place) {
+              const selectedPlaceInfo = {
+                position: {
+                  lat: Number(place.y),
+                  lng: Number(place.x),
+                },
+                addressName: place.address_name,
+                placeName: place.place_name,
+                roadAddressName: place.road_address_name, // 리덕스에 저장할 정보들
+              };
+              dispatch(setSelectedPlace(selectedPlaceInfo)); //Redux 스토어에 정보 저장
+            }
 
             // 마커를 생성하고 지도에 표시
             const marker = new kakao.maps.Marker({
               map,
               position: new kakao.maps.LatLng(Number(place.y), Number(place.x)),
             });
-
             kakao.maps.event.addListener(marker, 'click', () => {
               // 마커 클릭 이벤트
               const infowindow = new kakao.maps.InfoWindow({
                 content: `<div style="padding: 5px; font-size:12px">${place.place_name}</div>`,
               });
               infowindow.open(map, marker);
+              const position = marker.getPosition();
+              console.log('마커 클릭 위치:', position.getLat(), position.getLng());
             });
 
             bounds.extend(new kakao.maps.LatLng(Number(place.y), Number(place.x)));
@@ -75,8 +93,8 @@ const ScheduleMapLoader = () => {
   return (
     <>
       <Con id="map" style={{ width: '80%', height: '400px' }}></Con>
-      <input type="text" placeholder="장소 검색" onChange={e => setSearchPlace(e.target.value)} />
-      <button onClick={handleSearch}>검색</button>
+      <Input type="text" placeholder="장소 검색" onChange={e => setSearchPlace(e.target.value)} />
+      <Button onClick={handleSearch}>검색</Button>
     </>
   );
 };
@@ -85,4 +103,28 @@ export default ScheduleMapLoader;
 
 const Con = styled.div`
   margin: 5% auto;
+`;
+
+const Input = styled.input`
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: border-color 0.3s;
+  outline: none;
+  margin-bottom: 4px;
+  &:focus {
+    border-color: ${MAIN_COLOR};
+  }
+`;
+const Button = styled.button`
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: border-color 0.3s;
+  outline: none;
+  &:focus {
+    border-color: ${MAIN_COLOR};
+  }
 `;
