@@ -5,7 +5,6 @@ import { passwordRegExp } from '../../../regex/Regex';
 import axios from 'axios';
 import { RootState } from '../../../store/store';
 import { useSelector } from 'react-redux';
-import { API_DOMAIN } from '../../domain/address';
 
 interface EditFormProps {
   userEmail: (userEmail: string) => void;
@@ -38,7 +37,7 @@ export default function EditForm(props: EditFormProps) {
     const token = localStorage.getItem('token');
     const fetchUserInfo = async () => {
       try {
-        const response = await axios.get(`${API_DOMAIN}/api/users/profile`, {
+        const response = await axios.get('/api/users/profile', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -89,7 +88,7 @@ export default function EditForm(props: EditFormProps) {
 
   const handleNicknameCheck = async () => {
     try {
-      const response = await axios.post(`${API_DOMAIN}/api/users/update/nickname/check`, {
+      const response = await axios.post('/api/users/update/nickname/check', {
         nickname: newNickname,
       });
       console.log(newNickname);
@@ -109,7 +108,7 @@ export default function EditForm(props: EditFormProps) {
   ///////////////////////현재비밀번호////////////////////
   const handleCurrentPasswordCheck = async () => {
     try {
-      const response = await axios.post(`${API_DOMAIN}/api/users/update/password/check`, {
+      const response = await axios.post('/api/users/update/password/check', {
         email: userEmail,
         password: passwordTest,
         // token: token,

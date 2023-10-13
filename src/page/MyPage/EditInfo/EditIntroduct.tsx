@@ -4,7 +4,6 @@ import { SUPER_LIGHT_ORANGE_COLOR } from '../../../color/color';
 import axios from 'axios';
 import { RootState } from '../../../store/store';
 import { useSelector } from 'react-redux';
-import { API_DOMAIN } from '../../domain/address';
 
 interface EditIntroductProps {
   onAboutMeChange: (newText: string) => void;
@@ -19,7 +18,7 @@ export default function EditIntroduct({ onAboutMeChange }: EditIntroductProps) {
     const token = localStorage.getItem('token');
     const fetchUserInfo = async () => {
       try {
-        const response = await axios.get(`${API_DOMAIN}/api/users/profile`, {
+        const response = await axios.get('/api/users/profile', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
