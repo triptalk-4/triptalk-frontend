@@ -17,9 +17,9 @@ const SearchPage = () => {
       </Gnb>
       <Container>
         <SearchHead />
-        <SearchPopular />
+        {/* <SearchPopular />
         <Divider />
-        <SearchRecent />
+        <SearchRecent /> */}
       </Container>
     </>
   );
