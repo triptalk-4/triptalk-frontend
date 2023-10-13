@@ -43,6 +43,7 @@ function Schedule() {
       dispatch(setToken(storedToken));
     }
     const fetchData = async () => {
+      setIsLoading(true);
       try {
         if (token) {
           const config = {
@@ -58,19 +59,20 @@ function Schedule() {
             return { likeCount, plannerId, thumbnail, views, createAt, title };
           });
           setData(prevData => [...prevData, ...transformedData]);
-          setVisibleItems(prevItems => [...prevItems, ...transformedData]);
+          setVisibleItems(prevItems => [...prevItems, ...transformedData.slice(0, 6)]);
           if (!fetchedData.hasNext) {
             setAllItemsLoaded(true);
           }
-          setIsLoading(false);
         }
       } catch (error) {
-        setIsLoading(false);
         console.error('API Request Failure:', error);
+      } finally {
+        setIsLoading(false);
       }
     };
+
     fetchData();
-  }, [token, page]);
+  }, [token, page, sortType]);
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
@@ -100,25 +102,23 @@ function Schedule() {
   };
 
   const handleSortChange = (sortKey: string) => {
-    let sortedData;
+    let newSortType;
     switch (sortKey) {
       case '최신순':
-        setSortType('RECENT');
-        sortedData = [...data].sort((a, b) => b.createAt - a.createAt);
+        newSortType = 'RECENT';
         break;
       case '좋아요':
-        setSortType('LIKES');
-        sortedData = [...data].sort((a, b) => b.likeCount - a.likeCount);
+        newSortType = 'LIKES';
         break;
       case '조회순':
-        setSortType('VIEWS');
-        sortedData = [...data].sort((a, b) => b.views - a.views);
+        newSortType = 'VIEWS';
         break;
       default:
-        sortedData = data;
+        newSortType = 'RECENT';
     }
-    setData(sortedData);
-    setVisibleItems(sortedData.slice(0, 6));
+    setSortType(newSortType);
+    setData([]);
+    setVisibleItems([]);
     setPage(0);
     setAllItemsLoaded(false);
   };
