@@ -9,12 +9,16 @@ import AddressSearch from '../../component/AddressSearch';
 import { useNavigate } from 'react-router';
 import { useDispatch } from 'react-redux';
 import { removeLastAddress } from '../../store/mapAddress';
+import axios from 'axios';
 type CoreContainerData = {
   images: File[];
   imagePreviews: string[];
 };
 
 export default function EditSchedule() {
+  const [title, setTitle] = useState('');
+  const [reviews, setReviews] = useState('');
+
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -53,6 +57,30 @@ export default function EditSchedule() {
     }
   };
 
+  const handleEditButtonClick = async () => {
+    try {
+      const formData = new FormData();
+      formData.append('title', title);
+      formData.append('reviews', reviews);
+      coreContainers.forEach((container, index) => {
+        container.images.forEach(image => {
+          formData.append(`images`, image);
+        });
+      });
+
+      const response = await axios.post('/api/planner', formData);
+
+      if (response.status === 200) {
+        alert('일정이 등록 완료');
+        navigate('/schedule');
+      } else {
+        alert('일정 등록 실패');
+      }
+    } catch (error) {
+      console.error('이벤트등록 error', error);
+    }
+  };
+
   const handleBackButtonClick = () => {
     navigate('/schedule');
   };
@@ -63,7 +91,10 @@ export default function EditSchedule() {
       <MainContainer>
         <ScheduleMapLoader />
         <TitleContainer>
-          <Title placeholder="제목 (최대 40자)"></Title>
+          <Title
+            placeholder="제목 (최대 40자)"
+            value={title}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)}></Title>
           <FullSchedule />
         </TitleContainer>
         {coreContainers.map((container, index) => (
