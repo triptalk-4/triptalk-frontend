@@ -3,42 +3,52 @@ import { useNavigate } from 'react-router-dom';
 import { GRAY_COLOR, LIGHT_GRAY_COLOR, LIGHT_ORANGE_COLOR, MAIN_COLOR } from '../../../color/color';
 import EditForm from './EditForm';
 import EditProfile from '../../../component/ImgUpload/EditProfile';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import EditIntroduct from './EditIntroduct';
 import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  setCurrentEmail,
+  setEditedAboutMe,
+  setEditedNewPassword,
+  setEditedNickname,
+} from '../../../store/editMyInfoSlice';
+import { RootState } from '../../../store/store';
 
 export default function EditMyInfo() {
   const navigate = useNavigate();
   const [isButtonEnabled, setIsButtonEnabled] = useState(false); // 버튼 활성화 상태 추가
 
-  const [editedNickname, setEditedNickname] = useState('');
-  const [editedNewPassword, setEditedNewPassword] = useState('');
-  const [editedAboutMe, setEditedAboutMe] = useState('');
-  const [currentEmail, setCurrentEmail] = useState('');
+  const dispatch = useDispatch();
 
-  // 모든 정보 수정 시 버튼 활성화
-  // useEffect(() => {
-  //   if (newProfileImage && newProfileIntro && newNickname && newPassword) {
-  //     setIsButtonEnabled(true);
-  //   } else {
-  //     setIsButtonEnabled(false);
-  //   }
-  // }, [newProfileImage, newProfileIntro, newNickname, newPassword]);
+  const editedNickname = useSelector((state: RootState) => state.editMyInfo.editedNickname);
+  const editedNewPassword = useSelector((state: RootState) => state.editMyInfo.editedNickname);
+  const editedAboutMe = useSelector((state: RootState) => state.editMyInfo.editedNickname);
+  const currentEmail = useSelector((state: RootState) => state.editMyInfo.editedNickname);
+
+  useEffect(() => {
+    // 모든 정보가 입력되었을 때 버튼을 활성화
+    if (editedNickname && editedNewPassword && editedAboutMe) {
+      setIsButtonEnabled(true);
+    } else {
+      setIsButtonEnabled(false);
+    }
+  }, [editedNickname, editedNewPassword, editedAboutMe]);
 
   const currentUserEmail = (userEmail: string) => {
-    setCurrentEmail(userEmail);
+    dispatch(setCurrentEmail(userEmail));
   };
 
   const handleNicknameChange = (newNickname: string) => {
-    setEditedNickname(newNickname);
+    dispatch(setEditedNickname(newNickname));
   };
 
   const handleNewPasswordChange = (newPassword: string) => {
-    setEditedNewPassword(newPassword);
+    dispatch(setEditedNewPassword(newPassword));
   };
 
   const handleAboutMeChange = (newAboutMe: string) => {
-    setEditedAboutMe(newAboutMe);
+    dispatch(setEditedAboutMe(newAboutMe));
   };
 
   const handleEditButtonClick = async () => {
