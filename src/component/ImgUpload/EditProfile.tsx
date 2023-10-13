@@ -46,7 +46,7 @@ export default function EditProfile() {
     };
 
     fetchUserInfo();
-  }, [token, userImg]);
+  }, []);
 
   const handleUploadImage = async () => {
     if (!selectedFile) {
@@ -58,7 +58,7 @@ export default function EditProfile() {
 
     try {
       // 서버로 이미지 업로드 요청
-      const response = await axios.post(`${API_DOMAIN}/api/users/update/profile`, formData, {
+      const response = await axios.put(`${API_DOMAIN}/api/users/update/profile`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',
