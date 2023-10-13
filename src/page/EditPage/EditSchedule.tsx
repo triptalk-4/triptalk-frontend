@@ -7,9 +7,10 @@ import ExcludeTimes from '../../component/DatePicker/ExcludeTimes';
 import ScheduleMapLoader from '../../component/ScheduleMap';
 import AddressSearch from '../../component/AddressSearch';
 import { useNavigate } from 'react-router';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { removeLastAddress } from '../../store/mapAddress';
 import axios from 'axios';
+import { RootState } from '../../store/store';
 type CoreContainerData = {
   images: File[];
   imagePreviews: string[];
@@ -19,6 +20,7 @@ export default function EditSchedule() {
   const [title, setTitle] = useState('');
   const [reviews, setReviews] = useState('');
 
+  const selectedPlace = useSelector((state: RootState) => state.place.selectedPlace);
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -47,6 +49,7 @@ export default function EditSchedule() {
   const handleAddCoreContainer = () => {
     if (coreContainers.length < coreContainers_LIMIT) {
       setCoreContainers(prevContainers => [...prevContainers, { images: [], imagePreviews: [] }]);
+      console.log(selectedPlace);
     }
   };
 
@@ -68,7 +71,7 @@ export default function EditSchedule() {
         });
       });
 
-      const response = await axios.post('/api/planner', formData);
+      const response = await axios.post('/api/plans', formData);
 
       if (response.status === 200) {
         alert('일정이 등록 완료');
@@ -101,7 +104,7 @@ export default function EditSchedule() {
           <CoreContainer key={index}>
             <CoreTopContainer>
               <ExcludeTimes />
-              <AddressSearch />
+              {/* <AddressSearch /> */}
             </CoreTopContainer>
             <ImgContainer>
               <CustomFileInput
