@@ -3,7 +3,7 @@ import { FcGoogle } from 'react-icons/fc';
 import axios from 'axios';
 import { useGoogleLogin } from '@react-oauth/google';
 import { useNavigate } from 'react-router';
-import { API_DOMAIN } from '../../page/domain/address';
+
 interface GoogleLoginResponse {
   code: string;
 }
@@ -35,7 +35,7 @@ const GoogleLogin = () => {
       const clientID = '57409677042-8qrpnbbfcq8d6jeq9kmvh8357vi4p4up.apps.googleusercontent.com';
       const clientSecret = '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';
 
-      const response = await axios.post(`${API_DOMAIN}/api/auth/google`, {
+      const response = await axios.post('/api/auth/google', {
         code,
         client_id: clientID,
         client_secret: clientSecret,

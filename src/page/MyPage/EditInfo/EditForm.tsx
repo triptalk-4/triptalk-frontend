@@ -5,9 +5,14 @@ import { passwordRegExp } from '../../../regex/Regex';
 import axios from 'axios';
 import { RootState } from '../../../store/store';
 import { useSelector } from 'react-redux';
-import { API_DOMAIN } from '../../domain/address';
 
-export default function EditForm() {
+interface EditFormProps {
+  userEmail: (userEmail: string) => void;
+  onNicknameChange: (newNickname: string) => void;
+  onNewPasswordChange: (newPassword: string) => void;
+}
+
+export default function EditForm(props: EditFormProps) {
   // msw
   const [userEmail, setUserEmail] = useState('');
   const [userNickname, setUserNickname] = useState('');
@@ -32,7 +37,7 @@ export default function EditForm() {
     const token = localStorage.getItem('token');
     const fetchUserInfo = async () => {
       try {
-        const response = await axios.get('http://52.79.200.55:8080/api/users/profile', {
+        const response = await axios.get('/api/users/profile', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -76,11 +81,14 @@ export default function EditForm() {
         message: '닉네임은 2글자 이상 5글자 이하로 입력해주세요.',
       });
     }
+
+    // 부모 컴포넌트로 닉네임 정보 전달
+    props.onNicknameChange(updatedNickname);
   };
 
   const handleNicknameCheck = async () => {
     try {
-      const response = await axios.post('http://52.79.200.55:8080/api/users/update/nickname/check', {
+      const response = await axios.post('/api/users/update/nickname/check', {
         nickname: newNickname,
       });
       console.log(newNickname);
@@ -100,10 +108,10 @@ export default function EditForm() {
   ///////////////////////현재비밀번호////////////////////
   const handleCurrentPasswordCheck = async () => {
     try {
-      const response = await axios.post(`${API_DOMAIN}api/users/update/password/check`, {
+      const response = await axios.post('/api/users/update/password/check', {
         email: userEmail,
         password: passwordTest,
-        token: token,
+        // token: token,
       });
 
       if (response.status === 200) {
@@ -154,6 +162,9 @@ export default function EditForm() {
           message: '비밀번호는 8자리 이상, 영문자, 숫자, 특수문자를 포함해야 합니다.',
         });
       }
+
+      // 부모 컴포넌트로 새 비밀번호 정보 전달
+      props.onNewPasswordChange(newPasswordValue);
     }
   };
 
@@ -168,7 +179,6 @@ export default function EditForm() {
     const confirmNewPasswordValue = e.target.value;
     setConfirmNewPassword(confirmNewPasswordValue);
 
-    // userNewPassword와 confirmNewPassword를 비교하여 일치 여부 확인
     if (confirmNewPasswordValue === userNewPassword) {
       setConfirmNewPasswordState({
         valid: true,
