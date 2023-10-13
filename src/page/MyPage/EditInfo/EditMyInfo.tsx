@@ -26,6 +26,8 @@ export default function EditMyInfo() {
   const editedAboutMe = useSelector((state: RootState) => state.editMyInfo.editedNickname);
   const currentEmail = useSelector((state: RootState) => state.editMyInfo.editedNickname);
 
+  const token = useSelector((state: RootState) => state.token.token);
+
   useEffect(() => {
     // 모든 정보가 입력되었을 때 버튼을 활성화
     if (editedNickname && editedNewPassword && editedAboutMe) {
@@ -56,11 +58,15 @@ export default function EditMyInfo() {
     //  localStorage.setItem('userInfo', JSON.stringify(updatedUserData));
 
     try {
+      console.log(token);
       // 서버에 PUT 요청 보내기
       const response = await axios.put('/api/users/update/profile', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
         email: currentEmail,
-        newNickname: editedNickname,
         newPassword: editedNewPassword,
+        newNickname: editedNickname,
         newAboutMe: editedAboutMe,
         newPasswordCheck: editedNewPassword,
       });
