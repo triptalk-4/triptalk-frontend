@@ -6,7 +6,6 @@ import EditProfile from '../../../component/ImgUpload/EditProfile';
 import { useState } from 'react';
 import EditIntroduct from './EditIntroduct';
 import axios from 'axios';
-import { API_DOMAIN } from '../../domain/address';
 
 export default function EditMyInfo() {
   const navigate = useNavigate();
@@ -48,7 +47,7 @@ export default function EditMyInfo() {
 
     try {
       // 서버에 PUT 요청 보내기
-      const response = await axios.put(`${API_DOMAIN}/api/users/update/profile`, {
+      const response = await axios.put('/api/users/update/profile', {
         email: currentEmail,
         newNickname: editedNickname,
         newPassword: editedNewPassword,
