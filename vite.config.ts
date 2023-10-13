@@ -6,13 +6,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      '/api': {
-        target: 'https://triptalk.xyz',
-        changeOrigin: true,
-        rewrite: path => path.replace(/^\/api/, ''),
-        secure: false,
-        ws: true,
-      },
+      '/api': 'http://52.79.200.55:8080',
     },
     port: 3000,
   },

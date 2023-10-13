@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import styled, { css } from 'styled-components';
 import PostBox from '../../component/PostBox/PostBox';
-import { MAIN_COLOR } from '../../color/color';
+import { GRAY_COLOR, MAIN_COLOR } from '../../color/color';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 import { FaSave } from 'react-icons/fa';
 
@@ -31,6 +31,7 @@ export default function SecheduleDetail() {
               <DateSpan>23.09.05~23.09.07</DateSpan>
             </Title>
             <UserWarp>
+              <DeleteBtn>삭제</DeleteBtn>
               <EidtBtn>수정</EidtBtn>
               <UserName>
                 <UserProfile src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" />
@@ -108,15 +109,24 @@ const UserWarp = styled.div`
   align-items: center;
 `;
 
-const EidtBtn = styled.button`
-  background-color: ${MAIN_COLOR};
-  color: #fff;
+const UserBtnStyle = css`
   width: 60px;
   height: 40px;
   border: none;
   border-radius: 15px;
   margin-right: 15px;
   cursor: pointer;
+`;
+
+const EidtBtn = styled.button`
+  ${UserBtnStyle}
+  background-color: ${MAIN_COLOR};
+  color: #fff;
+`;
+const DeleteBtn = styled.button`
+  ${UserBtnStyle}
+  background-color: ${GRAY_COLOR};
+  color: #fff;
 `;
 
 const UserName = styled.div`
