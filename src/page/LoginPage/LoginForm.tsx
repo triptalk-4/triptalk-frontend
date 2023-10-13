@@ -8,7 +8,6 @@ import styled, { css } from 'styled-components';
 import { GRAY_COLOR, MAIN_COLOR } from '../../color/color';
 import { Link, useNavigate } from 'react-router-dom';
 import { SetStateAction, useEffect, useState } from 'react';
-import { API_DOMAIN } from '../domain/address';
 
 // interface UserData {
 //   id: number;
@@ -35,6 +34,8 @@ const LoginForm = () => {
 
   useEffect(() => {
     const storedToken = localStorage.getItem('token');
+    console.log(storedToken);
+
     if (storedToken) {
       dispatch(setToken(storedToken));
     }
@@ -76,6 +77,7 @@ const LoginForm = () => {
         // 테스트 코드
         localStorage.setItem('userEmail', userEmail);
         localStorage.setItem('password', password);
+        console.log(response.data.token);
 
         const message = '로그인 되었습니다.';
         alert(`${message}`);
