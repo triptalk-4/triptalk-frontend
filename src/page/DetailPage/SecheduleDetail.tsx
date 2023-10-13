@@ -7,6 +7,7 @@ import { FaSave } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import axios from 'axios';
+import formatDate from '../../utils/formatDate';
 
 export default function SecheduleDetail() {
   const [likeCount, setLikeCount] = useState(0); // 좋아요 카운트 상태
@@ -16,10 +17,11 @@ export default function SecheduleDetail() {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [nickname, setNickname] = useState('');
+  const [userImg, setUserImg] = useState('');
 
   const token = useSelector((state: RootState) => state.token.token);
 
-  const plannerId = 27;
+  const plannerId = 27; // 임의로 만듬
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -32,12 +34,13 @@ export default function SecheduleDetail() {
         });
 
         if (response.data) {
-          const { title, likeCount, startDate, endDate, nickname } = response.data;
+          const { title, likeCount, startDate, endDate, nickname, profile } = response.data;
           setTitle(title);
           setLikeCount(likeCount);
           setStartDate(startDate);
           setEndDate(endDate);
           setNickname(nickname);
+          setUserImg(profile);
         } else {
           console.log(response);
           alert('사용자 정보가 없습니다 상세페이지확인해주세요');
@@ -59,6 +62,24 @@ export default function SecheduleDetail() {
     setIsSaved(!isSaved);
   };
 
+  // 삭제
+  const deletePost = async (postId: number) => {
+    try {
+      const response = await axios.delete(`/api/plans/details/${postId}`);
+      if (response.status === 204) {
+        console.log('게시물이 삭제되었습니다.');
+      }
+    } catch (error) {
+      console.error('게시물 삭제 중 오류 발생:', error);
+    }
+  };
+
+  // 삭제 버튼을 클릭할 때 호출할 함수
+  const handleDeleteClick = () => {
+    const postId = 17; // 삭제할 게시물의 ID를 지정해야 합니다.
+    deletePost(postId);
+  };
+
   return (
     <DetailContainer>
       <PostContainer>
@@ -68,14 +89,15 @@ export default function SecheduleDetail() {
             <Title>
               {title}
               <DateSpan>
-                {startDate}~{endDate}
+                {formatDate(Date.parse(startDate))} ~ {formatDate(Date.parse(endDate))}
               </DateSpan>
             </Title>
             <UserWarp>
-              <DeleteBtn>삭제</DeleteBtn>
+              <DeleteBtn onClick={handleDeleteClick}>삭제</DeleteBtn>
               <EidtBtn>수정</EidtBtn>
               <UserName>
-                <UserProfile src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" />
+                <UserProfile src={userImg} />
+                {/* <UserProfile src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" /> */}
                 {nickname}
               </UserName>
             </UserWarp>
