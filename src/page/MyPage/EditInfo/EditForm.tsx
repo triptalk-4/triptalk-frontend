@@ -73,7 +73,7 @@ export default function EditForm(props: EditFormProps) {
     if (updatedNickname.length >= 2 && updatedNickname.length <= 5) {
       setNicknameState({
         valid: true,
-        message: '확인 버튼을 눌려주세요.',
+        message: '사용가능한 닉네임인지 확인해주세요.',
       });
     } else {
       setNicknameState({
