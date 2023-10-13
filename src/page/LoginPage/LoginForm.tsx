@@ -8,6 +8,7 @@ import styled, { css } from 'styled-components';
 import { GRAY_COLOR, MAIN_COLOR } from '../../color/color';
 import { Link, useNavigate } from 'react-router-dom';
 import { SetStateAction, useEffect, useState } from 'react';
+import { API_DOMAIN } from '../domain/address';
 
 // interface UserData {
 //   id: number;
@@ -68,6 +69,7 @@ const LoginForm = () => {
         email: userEmail,
         password: password,
       });
+
       if (response.status === 200) {
         localStorage.setItem('token', response.data.token);
         // dispatch(setToken(response.data.token));
@@ -84,6 +86,7 @@ const LoginForm = () => {
         alert('유효하지 않은 사용자 입니다.');
       }
     } catch (error: any) {
+      console.log(location.origin);
       alert(`${error.response.data}`);
     }
   };
