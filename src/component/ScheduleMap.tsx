@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux/es/exports';
 import { RootState } from '../store/store';
 
@@ -8,7 +8,10 @@ const KAKAO_API_KEY = '2cc45017695a59169a1f649bdc77f123';
 
 const ScheduleMapLoader = () => {
   // redux에서 정보가져오기
-  const { address } = useSelector((state: RootState) => state.address);
+  // const { address } = useSelector((state: RootState) => state.address);
+  const [searchPlace, setSearchPlace] = useState('');
+  const [map, setMap] = useState<kakao.maps.Map | null>(null);
+  const [infoWindowVisible, setInfoWindowVisible] = useState(false);
 
   useEffect(() => {
     const script = document.createElement('script');
@@ -21,31 +24,8 @@ const ScheduleMapLoader = () => {
           center: new kakao.maps.LatLng(37.5665, 126.978), // 초기 지도 중심 좌표
           level: 5, // 지도 확대 레벨
         };
-        const map = new kakao.maps.Map(container, options);
-
-        // 주소 정보를 이용하여 지도에 마커 표시
-        if (address && address.length > 0) {
-          const geocoder = new kakao.maps.services.Geocoder();
-
-          address.forEach(address => {
-            geocoder.addressSearch(address, function (result, status) {
-              if (status === kakao.maps.services.Status.OK) {
-                const y = parseFloat(result[0].y);
-                const x = parseFloat(result[0].x);
-
-                const coords = new kakao.maps.LatLng(y, x);
-                const marker = new kakao.maps.Marker({
-                  map: map,
-                  position: coords,
-                });
-
-                marker.setPosition(coords);
-                // 검색된 주소로 이동
-                map.setCenter(coords);
-              }
-            });
-          });
-        }
+        const newMap = new kakao.maps.Map(container, options);
+        setMap(newMap);
       });
     };
 
@@ -54,9 +34,51 @@ const ScheduleMapLoader = () => {
     return () => {
       document.head.removeChild(script);
     };
-  }, [address]);
+  }, []);
 
-  return <Con id="map" style={{ width: '80%', height: '400px' }}></Con>;
+  const handleSearch = () => {
+    if (map) {
+      const ps = new kakao.maps.services.Places();
+
+      // 입력한 키워드로 장소를 검색
+      ps.keywordSearch(searchPlace, (data, status) => {
+        if (status === kakao.maps.services.Status.OK) {
+          const bounds = new kakao.maps.LatLngBounds();
+
+          for (let i = 0; i < 3; i++) {
+            const place = data[i];
+
+            // 마커를 생성하고 지도에 표시
+            const marker = new kakao.maps.Marker({
+              map,
+              position: new kakao.maps.LatLng(Number(place.y), Number(place.x)),
+            });
+
+            kakao.maps.event.addListener(marker, 'click', () => {
+              // 마커 클릭 이벤트
+              const infowindow = new kakao.maps.InfoWindow({
+                content: `<div style="padding: 5px; font-size:12px">${place.place_name}</div>`,
+              });
+              infowindow.open(map, marker);
+            });
+
+            bounds.extend(new kakao.maps.LatLng(Number(place.y), Number(place.x)));
+          }
+
+          // 검색된 장소 위치를 기준으로 지도 범위를 재설정
+          map.setBounds(bounds);
+        }
+      });
+    }
+  };
+
+  return (
+    <>
+      <Con id="map" style={{ width: '80%', height: '400px' }}></Con>
+      <input type="text" placeholder="장소 검색" onChange={e => setSearchPlace(e.target.value)} />
+      <button onClick={handleSearch}>검색</button>
+    </>
+  );
 };
 
 export default ScheduleMapLoader;
