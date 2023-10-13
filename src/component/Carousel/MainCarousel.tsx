@@ -63,8 +63,8 @@ function MainCarousel() {
           const response = await axios.get('/api/main', config);
           const data = response.data;
           const transformedData = data.map((item: Item) => {
-            const { startDate, endDate, likeCount, plannerId, thumbnail, views, title } = item;
-            return { startDate, endDate, likeCount, plannerId, thumbnail, views, title };
+            const { startDate, endDate, likeCount, plannerId, thumbnail, views, title, nickname } = item;
+            return { startDate, endDate, likeCount, plannerId, thumbnail, views, title, nickname };
           });
           setData(transformedData);
         }
