@@ -21,6 +21,8 @@ export default function EditMyInfo() {
 
   const dispatch = useDispatch();
 
+  const token = useSelector((state: RootState) => state.token.token);
+
   const editedNickname = useSelector((state: RootState) => state.editMyInfo.editedNickname);
   const editedNewPassword = useSelector((state: RootState) => state.editMyInfo.editedNickname);
   const editedAboutMe = useSelector((state: RootState) => state.editMyInfo.editedNickname);
@@ -58,6 +60,9 @@ export default function EditMyInfo() {
     try {
       // 서버에 PUT 요청 보내기
       const response = await axios.put('/api/users/update/profile', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
         email: currentEmail,
         newNickname: editedNickname,
         newPassword: editedNewPassword,
