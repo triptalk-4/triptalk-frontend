@@ -5,8 +5,53 @@ import { GRAY_COLOR } from '../../color/color';
 import ViewComments from './ViewComments';
 import EnterComment from './EnterComment';
 import PostImgs from '../Carousel/PostImgs';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
+import axios from 'axios';
 
 export default function PostBox() {
+  const token = useSelector((state: RootState) => state.token.token);
+
+  const plannerId = 27; // 임의로 만듬
+
+  const [userId, setUserId] = useState('');
+  const [date, setDate] = useState('');
+  const [description, setDescription] = useState('');
+  const [placeResponse, setPlaceResponse] = useState('');
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    const fetchDetailPage = async () => {
+      try {
+        const response = await axios.get(`/api/plans/${plannerId}/details`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.data) {
+          const { userId, date, placeResponse, description } = response.data;
+
+          setUserId(userId);
+          setDate(date);
+          setPlaceResponse(placeResponse);
+          setDescription(description);
+        } else {
+          console.log(response);
+          alert('사용자 정보가 없습니다 상세페이지확인해주세요');
+        }
+      } catch (error) {
+        console.log(date);
+        console.log(placeResponse);
+        console.log(description);
+        console.error('사용자 정보 가져오기 오류 확인바람(헤더):', error);
+      }
+    };
+
+    fetchDetailPage();
+  }, [token]);
+
   return (
     <PostBoxContainer>
       <PostImgs />
@@ -14,13 +59,14 @@ export default function PostBox() {
         <PostText>
           <PostInfoTime>
             <Time />
-            10월 3, 2023 11:30 오전
+            {date}
           </PostInfoTime>
           <PostInfoAddress>
             <Location />
-            강원도 양양군 현북면 하조대해안길 119
+            {placeResponse}
+            강원특별자치도 양양군 걍현면 전진리
           </PostInfoAddress>
-          <PostInfoDescription>물만 엄청먹고 왔음 ㅠㅠ</PostInfoDescription>
+          <PostInfoDescription>{description}</PostInfoDescription>
         </PostText>
         <PostBorder></PostBorder>
         <ViewComments />
@@ -50,7 +96,7 @@ const PostInfo = styled.div`
 `;
 
 const PostText = styled.div`
-  padding: 20px 10px;
+  padding: 15px 10px;
 `;
 
 const IconStyle = css`
@@ -76,6 +122,7 @@ const PostInfoTime = styled.div`
   ${FontStyle}
   font-size: 12px;
   font-weight: 500;
+  margin-bottom: 5px;
 `;
 
 const PostInfoAddress = styled.div`
