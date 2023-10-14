@@ -37,7 +37,7 @@ export default function EditForm(props: EditFormProps) {
     const token = localStorage.getItem('token');
     const fetchUserInfo = async () => {
       try {
-        const response = await axios.get('/api/users/profile', {
+        const response = await axios.get('/address/api/users/profile', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -88,7 +88,7 @@ export default function EditForm(props: EditFormProps) {
 
   const handleNicknameCheck = async () => {
     try {
-      const response = await axios.post('/api/users/update/nickname/check', {
+      const response = await axios.post('/address/api/users/update/nickname/check', {
         nickname: newNickname,
       });
       console.log(newNickname);
@@ -108,7 +108,7 @@ export default function EditForm(props: EditFormProps) {
   ///////////////////////현재비밀번호////////////////////
   const handleCurrentPasswordCheck = async () => {
     try {
-      const response = await axios.post('/api/users/update/password/check', {
+      const response = await axios.post('/address/api/users/update/password/check', {
         email: userEmail,
         password: passwordTest,
         // token: token,

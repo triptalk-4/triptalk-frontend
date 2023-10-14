@@ -71,7 +71,7 @@ export default function EditSchedule() {
         });
       });
 
-      const response = await axios.post('/api/plans', formData);
+      const response = await axios.post('/address/api/plans', formData);
 
       if (response.status === 200) {
         alert('일정이 등록 완료');
@@ -97,8 +97,7 @@ export default function EditSchedule() {
           <Title
             placeholder="제목 (최대 40자)"
             value={title}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)}
-          ></Title>
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)}></Title>
           <FullSchedule />
         </TitleContainer>
         {coreContainers.map((container, index) => (

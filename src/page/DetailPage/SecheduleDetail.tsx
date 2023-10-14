@@ -27,7 +27,7 @@ export default function SecheduleDetail() {
     const token = localStorage.getItem('token');
     const fetchDetailPage = async () => {
       try {
-        const response = await axios.get(`/api/plans/${plannerId}/details`, {
+        const response = await axios.get(`/address/api/plans/${plannerId}/details`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -65,7 +65,7 @@ export default function SecheduleDetail() {
   // 삭제
   const deletePost = async (postId: number) => {
     try {
-      const response = await axios.delete(`/api/plans/details/${postId}`);
+      const response = await axios.delete(`/address/api/plans/details/${postId}`);
       if (response.status === 204) {
         console.log('게시물이 삭제되었습니다.');
       }

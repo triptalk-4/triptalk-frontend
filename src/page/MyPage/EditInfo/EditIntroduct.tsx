@@ -12,13 +12,13 @@ interface EditIntroductProps {
 export default function EditIntroduct({ onAboutMeChange }: EditIntroductProps) {
   const [userAboutMe, setUserAboutMe] = useState('');
 
-  const token = useSelector((state: RootState) => state.token.token); // Redux에서 토큰 가져오기
+  const token = useSelector((state: RootState) => state.token.token);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
     const fetchUserInfo = async () => {
       try {
-        const response = await axios.get('/api/users/profile', {
+        const response = await axios.get('/address/api/users/profile', {
           headers: {
             Authorization: `Bearer ${token}`,
           },

@@ -24,7 +24,7 @@ export default function PostBox() {
     const token = localStorage.getItem('token');
     const fetchDetailPage = async () => {
       try {
-        const response = await axios.get(`/api/plans/detail/${plannerDetailId}`, {
+        const response = await axios.get(`/address/api/plans/detail/${plannerDetailId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

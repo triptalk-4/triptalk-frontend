@@ -112,7 +112,7 @@ const SignupForm = () => {
   // 회원가입 요청 함수
   const sendSignupData = async (formData: any) => {
     try {
-      const res = await axios.post('/api/users/register', formData);
+      const res = await axios.post('/address/api/users/register', formData);
       return res.data;
     } catch (error: any) {
       if (error.response) {
@@ -155,7 +155,7 @@ const SignupForm = () => {
   // 이메일 인증 호출
   const sendEmailCertified = async (emailAddress: any) => {
     try {
-      const res = await axios.post('/api/users/register/email/send', {
+      const res = await axios.post('/address/api/users/register/email/send', {
         email: emailAddress,
       });
       return res.data;
@@ -187,7 +187,7 @@ const SignupForm = () => {
   // 이메일 인증 체크 요청
   const checkEmailInspectionCode = async (inspectionCode: string) => {
     try {
-      const res = await axios.post('/api/users/register/email/check', {
+      const res = await axios.post('/address/api/users/register/email/check', {
         token: inspectionCode,
       });
       console.log(res);

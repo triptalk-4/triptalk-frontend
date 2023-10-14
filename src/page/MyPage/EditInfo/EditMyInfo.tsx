@@ -60,7 +60,7 @@ export default function EditMyInfo() {
     try {
       console.log(token);
       // 서버에 PUT 요청 보내기
-      const response = await axios.put('/api/users/update/profile', {
+      const response = await axios.put('/address/api/users/update/profile', {
         headers: {
           Authorization: `Bearer ${token}`,
         },

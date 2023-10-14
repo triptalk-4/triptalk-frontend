@@ -16,7 +16,7 @@ export default function MyInfoPost() {
   const targetRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    fetch('/api/posts')
+    fetch('/address/api/posts')
       .then(res => res.json())
       .then(data => {
         setPostsData(data.slice(0, 6)); // 처음에 6개게시물만 나오게 설정
@@ -56,7 +56,7 @@ export default function MyInfoPost() {
           const endIndex = startIndex + 3;
 
           // msw를 통해 postsData에 데이터 추가
-          fetch(`/api/posts?page=${endIndex / 3 + 1}`)
+          fetch(`/address/api/posts?page=${endIndex / 3 + 1}`)
             .then(res => res.json())
             .then(data => {
               setIsLoading(true);

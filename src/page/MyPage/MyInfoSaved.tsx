@@ -16,7 +16,7 @@ export default function MyInfoSaved() {
   const targetRef = useRef(null);
 
   useEffect(() => {
-    fetch('/api/saved')
+    fetch('/address/api/saved')
       .then(res => res.json())
       .then(data => {
         setSavedData(data.slice(0, 6));
@@ -50,7 +50,7 @@ export default function MyInfoSaved() {
 
           const endIndex = startIndex + 3;
 
-          fetch(`/api/saved?page=${endIndex / 3 + 1}`)
+          fetch(`/address/api/saved?page=${endIndex / 3 + 1}`)
             .then(res => res.json())
             .then(data => {
               setIsLoading(true);
