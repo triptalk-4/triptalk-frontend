@@ -60,7 +60,7 @@ function MainCarousel() {
               Authorization: `Bearer ${token}`,
             },
           };
-          const response = await axios.get('/api/main', config);
+          const response = await axios.get('/address/api/main', config);
           const data = response.data;
           const transformedData = data.map((item: Item) => {
             const { startDate, endDate, likeCount, plannerId, thumbnail, views, title, nickname } = item;

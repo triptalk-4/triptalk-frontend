@@ -58,7 +58,7 @@ export default function MyInfo() {
     const token = localStorage.getItem('token');
     const fetchUserInfo = async () => {
       try {
-        const response = await axios.get('/api/users/profile', {
+        const response = await axios.get('/address/api/users/profile', {
           headers: {
             Authorization: `Bearer ${token}`, //필수
           },

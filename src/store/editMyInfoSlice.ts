@@ -20,6 +20,7 @@ const editMyInfoSlice = createSlice({
     },
     setCurrentEmail: (state, action) => {
       state.currentEmail = action.payload;
+      console.warn(`===`, action.payload);
     },
   },
 });

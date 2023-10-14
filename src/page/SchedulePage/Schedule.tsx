@@ -48,10 +48,10 @@ function Schedule() {
         if (token) {
           const config = {
             headers: {
-              Authorization: `Bearer ${token}`
-            }
+              Authorization: `Bearer ${token}`,
+            },
           };
-          const response = await axios.get(`/api/plans?page=${page}&size=6&sortType=${sortType}`, config);
+          const response = await axios.get(`/address/api/plans?page=${page}&size=6&sortType=${sortType}`, config);
           const fetchedData = response.data;
           setHasNext(fetchedData.hasNext);
           const transformedData = fetchedData.plannerListResponses.content.map((item: Item) => {

@@ -44,7 +44,7 @@ const LoginForm = () => {
   const handleLogin = async () => {
     //로그인 시도
     // try {
-    //   const response = await fetch('/api/login', {
+    //   const response = await fetch('/address/api/login', {
     //     method: 'POST',
     //     headers: {
     //       'Content-Type': 'application/json',
@@ -66,7 +66,7 @@ const LoginForm = () => {
     //   console.error('로그인 오류 : ', error);
     // }
     try {
-      const response = await axios.post('/api/users/login', {
+      const response = await axios.post('/address/api/users/login', {
         email: userEmail,
         password: password,
       });

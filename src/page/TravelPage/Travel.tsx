@@ -19,7 +19,7 @@ export default function Travel() {
   // const [selectedOrder, setSelectedOrder] = useState(''); // 선택한 순서
 
   useEffect(() => {
-    fetch('/api/travels')
+    fetch('/address/api/travels')
       .then(res => res.json())
       .then(data => setTravelsData(data))
       .catch(error => console.error('가짜 API 요청 실패:', error));

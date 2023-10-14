@@ -7,12 +7,7 @@ import { useEffect, useState } from 'react';
 import EditIntroduct from './EditIntroduct';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  setCurrentEmail,
-  setEditedAboutMe,
-  setEditedNewPassword,
-  setEditedNickname,
-} from '../../../store/editMyInfoSlice';
+import { setEditedAboutMe, setEditedNewPassword, setEditedNickname } from '../../../store/editMyInfoSlice';
 import { RootState } from '../../../store/store';
 
 export default function EditMyInfo() {
@@ -22,9 +17,9 @@ export default function EditMyInfo() {
   const dispatch = useDispatch();
 
   const editedNickname = useSelector((state: RootState) => state.editMyInfo.editedNickname);
-  const editedNewPassword = useSelector((state: RootState) => state.editMyInfo.editedNickname);
-  const editedAboutMe = useSelector((state: RootState) => state.editMyInfo.editedNickname);
-  const currentEmail = useSelector((state: RootState) => state.editMyInfo.editedNickname);
+  const editedNewPassword = useSelector((state: RootState) => state.editMyInfo.editedNewPassword);
+  const editedAboutMe = useSelector((state: RootState) => state.editMyInfo.editedAboutMe);
+  const currentEmail = useSelector((state: RootState) => state.editMyInfo.currentEmail);
 
   const token = useSelector((state: RootState) => state.token.token);
 
@@ -36,10 +31,6 @@ export default function EditMyInfo() {
       setIsButtonEnabled(false);
     }
   }, [editedNickname, editedNewPassword, editedAboutMe]);
-
-  const currentUserEmail = (userEmail: string) => {
-    dispatch(setCurrentEmail(userEmail));
-  };
 
   const handleNicknameChange = (newNickname: string) => {
     dispatch(setEditedNickname(newNickname));
@@ -59,17 +50,23 @@ export default function EditMyInfo() {
 
     try {
       console.log(token);
+      console.log('currentEmail', currentEmail);
       // 서버에 PUT 요청 보내기
-      const response = await axios.put('/api/users/update/profile', {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const response = await axios.put(
+        '/address/api/users/update/profile',
+        {
+          email: currentEmail,
+          newPassword: editedNewPassword,
+          newNickname: editedNickname,
+          newAboutMe: editedAboutMe,
+          newPasswordCheck: editedNewPassword,
         },
-        email: currentEmail,
-        newPassword: editedNewPassword,
-        newNickname: editedNickname,
-        newAboutMe: editedAboutMe,
-        newPasswordCheck: editedNewPassword,
-      });
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       if (response.status === 200) {
         console.log('수정 성공:', response.data);
@@ -102,11 +99,7 @@ export default function EditMyInfo() {
         </IntroductionContainer>
 
         <MyInfoEditForm>
-          <EditForm
-            userEmail={currentUserEmail}
-            onNicknameChange={handleNicknameChange}
-            onNewPasswordChange={handleNewPasswordChange}
-          />
+          <EditForm onNicknameChange={handleNicknameChange} onNewPasswordChange={handleNewPasswordChange} />
         </MyInfoEditForm>
 
         <MyInfoBtnSetting>

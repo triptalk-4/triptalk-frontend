@@ -26,7 +26,7 @@ export default function EditProfile() {
     const token = localStorage.getItem('token');
     const fetchUserInfo = async () => {
       try {
-        const response = await axios.get('/api/users/profile', {
+        const response = await axios.get('/address/api/users/profile', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -57,7 +57,7 @@ export default function EditProfile() {
 
     try {
       // 서버로 이미지 업로드 요청
-      const response = await axios.put('/api/users/update/profile', formData, {
+      const response = await axios.put('/address/api/users/update/profile', formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',
