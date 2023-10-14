@@ -60,13 +60,14 @@ export default function PostBox() {
           <PostInfoTime>
             <Time />
             {date}
+            2023.10.14 오후11시00분
           </PostInfoTime>
           <PostInfoAddress>
             <Location />
             {placeResponse}
-            강원특별자치도 양양군 걍현면 전진리
+            강원특별자치도 양양군 강현면 전진리
           </PostInfoAddress>
-          <PostInfoDescription>{description}</PostInfoDescription>
+          <PostInfoDescription>{description}물 엄청나게 먹고오뮤ㅜ</PostInfoDescription>
         </PostText>
         <PostBorder></PostBorder>
         <ViewComments />
