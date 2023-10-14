@@ -7,7 +7,6 @@ import { RootState } from '../../../store/store';
 import { useSelector } from 'react-redux';
 
 interface EditFormProps {
-  userEmail: (userEmail: string) => void;
   onNicknameChange: (newNickname: string) => void;
   onNewPasswordChange: (newPassword: string) => void;
 }
@@ -45,6 +44,7 @@ export default function EditForm(props: EditFormProps) {
 
         if (response.data) {
           const { email, nickname, password } = response.data;
+          console.warn(`===`, email);
           setUserEmail(email);
           setUserPassword(password);
           setUserNickname(nickname);
