@@ -9,11 +9,11 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
 
 export default function PostBox() {
   const token = useSelector((state: RootState) => state.token.token);
-
-  const plannerId = 27; // 임의로 만듬
+  const { plannerDetailId } = useParams();
 
   const [userId, setUserId] = useState('');
   const [date, setDate] = useState('');
@@ -24,7 +24,7 @@ export default function PostBox() {
     const token = localStorage.getItem('token');
     const fetchDetailPage = async () => {
       try {
-        const response = await axios.get(`/api/plans/${plannerId}/details`, {
+        const response = await axios.get(`/api/plans/detail/${plannerDetailId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
