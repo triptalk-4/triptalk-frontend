@@ -25,7 +25,7 @@ function App() {
           <Route path="/travel" element={<Travel />} />
           <Route path="/myinfo" element={<MyInfo />} />
           <Route path="/lookmap" element={<LookMap />} />
-          <Route path="/page/:id" element={<SecheduleDetail />} />
+          <Route path="/page/:plannerId" element={<SecheduleDetail />} />
         </Route>
         {/* Header,Footer을 안 보여주고 싶은 컴포넌트 */}
         <Route path="/editmyinfo" element={<EditMyInfo />} />

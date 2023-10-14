@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import axios from 'axios';
 import formatDate from '../../utils/formatDate';
+import { useParams } from 'react-router-dom';
 
 export default function SecheduleDetail() {
   const [likeCount, setLikeCount] = useState(0); // 좋아요 카운트 상태
@@ -20,8 +21,7 @@ export default function SecheduleDetail() {
   const [userImg, setUserImg] = useState('');
 
   const token = useSelector((state: RootState) => state.token.token);
-
-  const plannerId = 27; // 임의로 만듬
+  const { plannerId } = useParams();
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -46,7 +46,7 @@ export default function SecheduleDetail() {
           alert('사용자 정보가 없습니다 상세페이지확인해주세요');
         }
       } catch (error) {
-        console.error('사용자 정보 가져오기 오류 확인바람(헤더):', error);
+        console.error('사용자 정보 가져오기 오류 확인바람(상세페이지):', error);
       }
     };
 
