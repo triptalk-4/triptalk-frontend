@@ -97,7 +97,8 @@ export default function EditSchedule() {
           <Title
             placeholder="제목 (최대 40자)"
             value={title}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)}></Title>
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)}
+          ></Title>
           <FullSchedule />
         </TitleContainer>
         {coreContainers.map((container, index) => (
@@ -128,10 +129,7 @@ export default function EditSchedule() {
             </ButtonContainer>
           </CoreContainer>
         ))}
-        <ButtonContainer>
-          {coreContainers.length < 5 && <PlusButton onClick={handleAddCoreContainer}>+</PlusButton>}
-          {coreContainers.length > 1 && <MinusButton onClick={handleRemoveCoreContainer}>-</MinusButton>}
-        </ButtonContainer>
+        <ButtonContainer></ButtonContainer>
         <ButtonContainer>
           <EditButton>등록</EditButton>
           <CancelButton onClick={handleBackButtonClick}>취소</CancelButton>
@@ -172,6 +170,7 @@ const CoreTopContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
+  margin-bottom: 50px;
 `;
 
 const ImgContainer = styled.div`
@@ -202,6 +201,7 @@ const CustomFileInputLabel = styled.label`
   color: white;
   padding: 10px 20px;
   cursor: pointer;
+  margin-top: 20px;
 `;
 
 const CommentTextArea = styled.textarea`
