@@ -70,8 +70,8 @@ const SearchBody = () => {
       </Container>
       <BodyContainer>
         {paginatedResults.length > 0 ? (
-          paginatedResults.map((result, index) => (
-            <ResultContainer key={index}>
+          paginatedResults.map(result => (
+            <ResultContainer key={result.userId}>
               <ProfileAndName>
                 <ProfileImage src={result.profile} alt={`${result.nickname}의 프로필 사진`} />
                 <ResultItem>{result.nickname}</ResultItem>
@@ -85,7 +85,11 @@ const SearchBody = () => {
         {filteredResults.length > resultsPerPage && (
           <Pagination>
             {Array.from({ length: Math.ceil(filteredResults.length / resultsPerPage) }, (_, index) => (
-              <PageNumber key={index} isActive={index + 1 === currentPage} onClick={() => setCurrentPage(index + 1)}>
+              <PageNumber
+                key={index + 1}
+                $isActive={index + 1 === currentPage}
+                onClick={() => setCurrentPage(index + 1)}
+              >
                 {index + 1}
               </PageNumber>
             ))}
@@ -144,14 +148,13 @@ const Pagination = styled.div`
   margin-top: 20px;
 `;
 
-const PageNumber = styled.button<{ isActive: boolean }>`
+const PageNumber = styled.button<{ $isActive: boolean }>`
   margin: 0 5px;
   padding: 5px 10px;
   cursor: pointer;
-  background-color: ${props => (props.isActive ? MAIN_COLOR : 'transparent')};
+  background-color: ${props => (props.$isActive ? MAIN_COLOR : 'transparent')};
   border: 1px solid ${MAIN_COLOR};
-  color: ${props => (props.isActive ? 'white' : MAIN_COLOR)};
-
+  color: ${props => (props.$isActive ? 'white' : MAIN_COLOR)};
   &:hover {
     background-color: ${MAIN_COLOR};
     color: white;
