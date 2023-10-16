@@ -1,16 +1,27 @@
+import React from 'react';
 import DatePicker from 'react-datepicker';
-import { useState } from 'react';
+import 'react-datepicker/dist/react-datepicker.css';
 import { ko } from 'date-fns/esm/locale';
 
-export default function ExcludeTimes() {
-  const [startDate, setStartDate] = useState<Date | null>(null);
+interface ExcludeTimesProps {
+  startDate: Date | null;
+  setStartDate: (date: Date | null) => void;
+}
+
+export default function ExcludeTimes(props: ExcludeTimesProps) {
+  const { startDate, setStartDate } = props;
+
+  const handleDatePickerChange = (date: Date | null) => {
+    setStartDate(date);
+    console.log('선택날짜 :', date);
+  };
 
   return (
     <DatePicker
       locale={ko}
       selected={startDate}
       minDate={new Date()}
-      onChange={date => setStartDate(date)}
+      onChange={handleDatePickerChange}
       showTimeSelect
       excludeTimes={[]}
       dateFormat="MMMM d, yyyy h:mm aa"
