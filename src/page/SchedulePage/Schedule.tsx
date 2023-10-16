@@ -37,10 +37,10 @@ function Schedule() {
   const [sortType, setSortType] = useState('RECENT');
 
   useEffect(() => {
-    const storedToken = localStorage.getItem('token');
+    const Access_token = localStorage.getItem('token');
     setIsLoading(true);
-    if (storedToken) {
-      dispatch(setToken(storedToken));
+    if (Access_token) {
+      dispatch(setToken(Access_token));
     }
     const fetchData = async () => {
       setIsLoading(true);
@@ -48,8 +48,8 @@ function Schedule() {
         if (token) {
           const config = {
             headers: {
-              Authorization: `Bearer ${token}`,
-            },
+              Authorization: `Bearer ${token}`
+            }
           };
           const response = await axios.get(`/address/api/plans?page=${page}&size=6&sortType=${sortType}`, config);
           const fetchedData = response.data;
