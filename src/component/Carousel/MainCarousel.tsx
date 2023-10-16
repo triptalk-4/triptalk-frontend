@@ -48,17 +48,17 @@ function MainCarousel() {
   const [data, setData] = useState<Item[]>([]);
 
   useEffect(() => {
-    const storedToken = localStorage.getItem('token');
-    if (storedToken) {
-      dispatch(setToken(storedToken));
+    const Access_token = localStorage.getItem('token');
+    if (Access_token) {
+      dispatch(setToken(Access_token));
     }
     const fetchData = async () => {
       try {
         if (token) {
           const config = {
             headers: {
-              Authorization: `Bearer ${token}`,
-            },
+              Authorization: `Bearer ${token}`
+            }
           };
           const response = await axios.get('/address/api/main', config);
           const data = response.data;
@@ -90,16 +90,16 @@ function MainCarousel() {
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 2,
-        },
+          slidesToShow: 2
+        }
       },
       {
         breakpoint: 760,
         settings: {
-          slidesToShow: 1,
-        },
-      },
-    ],
+          slidesToShow: 1
+        }
+      }
+    ]
   };
 
   return (
