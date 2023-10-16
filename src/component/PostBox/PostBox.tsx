@@ -39,13 +39,13 @@ export default function PostBox() {
           setDescription(description);
         } else {
           console.log(response);
-          alert('사용자 정보가 없습니다 상세페이지확인해주세요');
+          alert('사용자 정보가 없습니다 상세페이지(포스트박스)확인해주세요');
         }
       } catch (error) {
         console.log(date);
         console.log(placeResponse);
         console.log(description);
-        console.error('사용자 정보 가져오기 오류 확인바람(헤더):', error);
+        console.error('사용자 정보 가져오기 오류 확인바람(포스트박스):', error);
       }
     };
 
