@@ -27,10 +27,12 @@ type CoreContainerData = {
 };
 
 export default function EditSchedule() {
+  const Access_token = localStorage.getItem('token');
+  console.log(Access_token);
   const [title, setTitle] = useState('');
   const [reviews, setReviews] = useState('');
+  const [selectedPlaceInfo, setSelectedPlaceInfo] = useState<PlaceInfo | null>(null);
 
-  const selectedPlace = useSelector((state: RootState) => state.place.selectedPlace);
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [selectedDateRange, setSelectedDateRange] = useState<[Date | null, Date | null]>([null, null]);
 
@@ -44,7 +46,7 @@ export default function EditSchedule() {
   const dispatch = useDispatch();
 
   const [coreContainers, setCoreContainers] = useState<CoreContainerData[]>([
-    { images: [], imagePreviews: [], startDate: null }
+    { images: [], imagePreviews: [], startDate: null },
   ]);
 
   const coreContainers_LIMIT = 5;
@@ -66,10 +68,14 @@ export default function EditSchedule() {
     setCoreContainers(updatedData);
   };
 
+  const handlePlaceSelected = (placeInfo: PlaceInfo) => {
+    setSelectedPlaceInfo(placeInfo);
+  };
+
   const handleAddCoreContainer = () => {
     if (coreContainers.length < coreContainers_LIMIT) {
       setCoreContainers(prevContainers => [...prevContainers, { images: [], imagePreviews: [], startDate: null }]);
-      console.log(selectedPlace);
+      console.log(selectedPlaceInfo);
     }
   };
 
@@ -81,23 +87,27 @@ export default function EditSchedule() {
   };
 
   const handleEditButtonClick = async () => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${Access_token}`,
+      },
+    };
+
     try {
       const formData = new FormData();
-      formData.append('title', title);
-      formData.append('reviews', reviews);
       coreContainers.forEach((container, index) => {
         container.images.forEach(image => {
-          formData.append(`images`, image);
+          formData.append('images', image);
         });
       });
 
-      const response = await axios.post('/address/api/plans', formData);
+      const response = await axios.post('/address/api/images', formData, config);
 
       if (response.status === 200) {
-        alert('일정이 등록 완료');
-        navigate('/schedule');
+        const imageUrls = response.data;
+        console.log(imageUrls);
       } else {
-        alert('일정 등록 실패');
+        console.log('업로드 실패');
       }
     } catch (error) {
       console.error('이벤트등록 error', error);
@@ -112,17 +122,12 @@ export default function EditSchedule() {
     <>
       <Header />
       <MainContainer>
-        <ScheduleMapLoader
-          onPlacesSelected={function(PlaceInfo: PlaceInfo): void {
-            throw new Error('Function not implemented.');
-          }}
-        />
+        <ScheduleMapLoader onPlacesSelected={handlePlaceSelected} />
         <TitleContainer>
           <Title
             placeholder="제목 (최대 40자)"
             value={title}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)}
-          ></Title>
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)}></Title>
           <FullSchedule selectedDateRange={selectedDateRange} onDateRangeChange={handleDateRangeChange} />
         </TitleContainer>
         {coreContainers.map((container, index) => (
@@ -162,7 +167,7 @@ export default function EditSchedule() {
         ))}
         <ButtonContainer></ButtonContainer>
         <ButtonContainer>
-          <EditButton>등록</EditButton>
+          <EditButton onClick={handleEditButtonClick}>등록</EditButton>
           <CancelButton onClick={handleBackButtonClick}>취소</CancelButton>
         </ButtonContainer>
       </MainContainer>
