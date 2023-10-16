@@ -11,9 +11,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { removeLastAddress } from '../../store/mapAddress';
 import axios from 'axios';
 import { RootState } from '../../store/store';
+
 type CoreContainerData = {
   images: File[];
   imagePreviews: string[];
+  startDate: Date | null;
 };
 
 export default function EditSchedule() {
@@ -22,12 +24,20 @@ export default function EditSchedule() {
 
   const selectedPlace = useSelector((state: RootState) => state.place.selectedPlace);
   const [startDate, setStartDate] = useState<Date | null>(null);
+  const [selectedDateRange, setSelectedDateRange] = useState<[Date | null, Date | null]>([null, null]);
+
+  const handleDateRangeChange = (newDateRange: [Date | null, Date | null]) => {
+    setSelectedDateRange(newDateRange);
+    console.log(newDateRange);
+  };
 
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
 
-  const [coreContainers, setCoreContainers] = useState<CoreContainerData[]>([{ images: [], imagePreviews: [] }]);
+  const [coreContainers, setCoreContainers] = useState<CoreContainerData[]>([
+    { images: [], imagePreviews: [], startDate: null }
+  ]);
 
   const coreContainers_LIMIT = 5;
 
@@ -50,7 +60,7 @@ export default function EditSchedule() {
 
   const handleAddCoreContainer = () => {
     if (coreContainers.length < coreContainers_LIMIT) {
-      setCoreContainers(prevContainers => [...prevContainers, { images: [], imagePreviews: [] }]);
+      setCoreContainers(prevContainers => [...prevContainers, { images: [], imagePreviews: [], startDate: null }]);
       console.log(selectedPlace);
     }
   };
@@ -101,12 +111,19 @@ export default function EditSchedule() {
             value={title}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)}
           ></Title>
-          <FullSchedule />
+          <FullSchedule selectedDateRange={selectedDateRange} onDateRangeChange={handleDateRangeChange} />
         </TitleContainer>
         {coreContainers.map((container, index) => (
           <CoreContainer key={index}>
             <CoreTopContainer>
-              <ExcludeTimes startDate={startDate} setStartDate={setStartDate} />
+              <ExcludeTimes
+                startDate={container.startDate}
+                setStartDate={(date: Date | null) => {
+                  const updatedContainers = [...coreContainers];
+                  updatedContainers[index].startDate = date;
+                  setCoreContainers(updatedContainers);
+                }}
+              />
               {/* <AddressSearch /> */}
             </CoreTopContainer>
             <ImgContainer>
