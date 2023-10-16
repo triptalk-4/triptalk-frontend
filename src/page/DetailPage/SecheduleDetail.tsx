@@ -221,6 +221,7 @@ const BtnStyle = css`
   justify-content: center;
   flex-direction: column;
   border: none;
+  z-index: 10;
 `;
 
 const HeartBtn = styled.button`
