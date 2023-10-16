@@ -59,7 +59,7 @@ export default function EditMyInfo() {
           newPassword: editedNewPassword,
           newNickname: editedNickname,
           newAboutMe: editedAboutMe,
-          newPasswordCheck: editedNewPassword,
+          // newPasswordCheck: editedNewPassword,
         },
         {
           headers: {
