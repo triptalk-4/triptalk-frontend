@@ -1,6 +1,7 @@
 import styled from 'styled-components';
-import Search from '../component/Search/SearchHead';
+import Search from '../component/Search/SearchBody';
 import { Link } from 'react-router-dom';
+import SearchBody from '../component/Search/SearchBody';
 
 const SearchPage = () => {
   return (
@@ -15,6 +16,7 @@ const SearchPage = () => {
       </Gnb>
       <Container>
         <Search />
+        <SearchBody />
         {/* <SearchPopular />
         <Divider />
         <SearchRecent /> */}
