@@ -89,7 +89,7 @@ export default function EditSchedule() {
       plannerDetailListRequests: [
         {
           date: coreContainers[0].startDate,
-          description: '리뷰부분',
+          description: reviews,
           images: [`${imageUrls}`],
           placeInfo: {
             addressName: selectedPlaceInfo?.addressName,
@@ -101,10 +101,10 @@ export default function EditSchedule() {
         },
       ],
       plannerRequest: {
-        description: 'review',
+        description: reviews,
         endDate: selectedDateRange[1],
         startDate: selectedDateRange[0],
-        title: '으아아',
+        title: title,
       },
     };
 
@@ -199,7 +199,11 @@ export default function EditSchedule() {
                   <img key={imgIndex} src={preview} alt={`Image ${imgIndex}`} />
                 ))}
               </ImagePreviews>
-              <CommentTextArea placeholder="장소리뷰" />
+              <CommentTextArea
+                type="text"
+                placeholder="장소리뷰"
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setReviews(e.target.value)}
+              />
             </ImgContainer>
             <ButtonContainer>
               {coreContainers.length < 5 && <PlusButton onClick={handleAddCoreContainer}>+</PlusButton>}
@@ -282,7 +286,7 @@ const CustomFileInputLabel = styled.label`
   margin-top: 20px;
 `;
 
-const CommentTextArea = styled.textarea`
+const CommentTextArea = styled.input`
   width: 500px;
   height: 100px;
   border: 2px solid black;
