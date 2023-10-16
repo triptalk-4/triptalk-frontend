@@ -1,7 +1,5 @@
 import styled from 'styled-components';
-import SearchHead from '../component/Search/SearchHead';
-import SearchPopular from '../component/Search/SearchPopular';
-import SearchRecent from '../component/Search/SearchRecent';
+import Search from '../component/Search/SearchHead';
 import { Link } from 'react-router-dom';
 
 const SearchPage = () => {
@@ -16,7 +14,7 @@ const SearchPage = () => {
         </Avatar> */}
       </Gnb>
       <Container>
-        <SearchHead />
+        <Search />
         {/* <SearchPopular />
         <Divider />
         <SearchRecent /> */}
