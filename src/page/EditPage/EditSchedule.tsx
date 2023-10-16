@@ -21,6 +21,8 @@ export default function EditSchedule() {
   const [reviews, setReviews] = useState('');
 
   const selectedPlace = useSelector((state: RootState) => state.place.selectedPlace);
+  const [startDate, setStartDate] = useState<Date | null>(null);
+
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -97,13 +99,14 @@ export default function EditSchedule() {
           <Title
             placeholder="제목 (최대 40자)"
             value={title}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)}></Title>
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)}
+          ></Title>
           <FullSchedule />
         </TitleContainer>
         {coreContainers.map((container, index) => (
           <CoreContainer key={index}>
             <CoreTopContainer>
-              <ExcludeTimes />
+              <ExcludeTimes startDate={startDate} setStartDate={setStartDate} />
               {/* <AddressSearch /> */}
             </CoreTopContainer>
             <ImgContainer>
