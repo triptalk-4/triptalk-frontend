@@ -1,16 +1,25 @@
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux/es/exports';
-import { RootState } from '../store/store';
 
 import styled from 'styled-components';
-import { setSelectedPlace } from '../store/placeSlice';
 import { MAIN_COLOR } from '../color/color';
 
 const KAKAO_API_KEY = '2cc45017695a59169a1f649bdc77f123';
 
-const ScheduleMapLoader = () => {
-  // redux에서 정보가져오기
-  // const { address } = useSelector((state: RootState) => state.address);
+interface PlaceInfo {
+  position: {
+    lat: number;
+    lng: number;
+  };
+  addressName: string;
+  placeName: string;
+  roadAddressName: string;
+}
+
+interface SchduleMapLoaderProps {
+  onPlacesSelected: (PlaceInfo: PlaceInfo) => void;
+}
+
+const ScheduleMapLoader: React.FC<SchduleMapLoaderProps> = ({ onPlacesSelected }) => {
   const [searchPlace, setSearchPlace] = useState('');
   const [map, setMap] = useState<kakao.maps.Map | null>(null);
   const [selectedMarker, setSelectedMarker] = useState<kakao.maps.Marker | null>(null);
@@ -38,8 +47,6 @@ const ScheduleMapLoader = () => {
     };
   }, []);
 
-  const dispatch = useDispatch();
-
   const handleSearch = () => {
     if (map) {
       const ps = new kakao.maps.services.Places();
@@ -60,9 +67,10 @@ const ScheduleMapLoader = () => {
                 },
                 addressName: place.address_name,
                 placeName: place.place_name,
-                roadAddressName: place.road_address_name, // 리덕스에 저장할 정보들
+                roadAddressName: place.road_address_name,
               };
-              dispatch(setSelectedPlace(selectedPlaceInfo)); //Redux 스토어에 정보 저장
+
+              onPlacesSelected(selectedPlaceInfo);
             }
 
             // 마커를 생성하고 지도에 표시
