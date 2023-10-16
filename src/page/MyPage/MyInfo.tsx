@@ -19,7 +19,7 @@ export default function MyInfo() {
     { name: '저장함', content: <MyInfoSaved /> },
   ];
 
-  const selectMenuHandler = (index: any) => {
+  const selectMenuHandler = (index: number) => {
     setTab(index);
   };
 
@@ -28,7 +28,7 @@ export default function MyInfo() {
   const [userImg, setUserImg] = useState('');
   const [userIntro, setUserIntro] = useState('');
 
-  const token = useSelector((state: RootState) => state.token.token); // Redux에서 토큰 가져오기
+  const token = useSelector((state: RootState) => state.token.token);
 
   // msw
   // useEffect(() => {
@@ -55,12 +55,12 @@ export default function MyInfo() {
   // 연동
   // console.log(token);
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const Access_token = localStorage.getItem('token');
     const fetchUserInfo = async () => {
       try {
         const response = await axios.get('/address/api/users/profile', {
           headers: {
-            Authorization: `Bearer ${token}`, //필수
+            Authorization: `Bearer ${Access_token}`,
           },
         });
 
@@ -110,11 +110,11 @@ export default function MyInfo() {
       </UserImgContainer>
       <ContentContainer>
         <ContentUl>
-          {myInfoMenuTabs.map(menu => (
+          {myInfoMenuTabs.map((menu, index) => (
             <ContentItem
               key={menu.name}
-              className={String(currentTab) === String(menu.name) ? 'active' : ''}
-              onClick={() => selectMenuHandler(menu.name)}>
+              className={currentTab === index ? 'active' : ''}
+              onClick={() => selectMenuHandler(index)}>
               {menu.name}
             </ContentItem>
           ))}
