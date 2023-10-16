@@ -23,6 +23,8 @@ interface PlaceInfo {
 }
 
 export default function EditSchedule() {
+  const Access_token = localStorage.getItem('token');
+  console.log(Access_token);
   const [title, setTitle] = useState('');
   const [reviews, setReviews] = useState('');
   const [selectedPlaceInfo, setSelectedPlaceInfo] = useState<PlaceInfo | null>(null);
@@ -60,6 +62,7 @@ export default function EditSchedule() {
     if (coreContainers.length < coreContainers_LIMIT) {
       setCoreContainers(prevContainers => [...prevContainers, { images: [], imagePreviews: [] }]);
       console.log(selectedPlaceInfo);
+      console.log(startDate?.toISOString);
     }
   };
 
@@ -70,24 +73,27 @@ export default function EditSchedule() {
   };
 
   const handleEditButtonClick = async () => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${Access_token}`,
+      },
+    };
+
     try {
       const formData = new FormData();
-      formData.append('title', title);
-      formData.append('reviews', reviews);
-      formData.append('schedyleMapData', JSON.stringify(selectedPlaceInfo));
       coreContainers.forEach((container, index) => {
         container.images.forEach(image => {
-          formData.append(`images`, image);
+          formData.append('images', image);
         });
       });
 
-      const response = await axios.post('/address/api/plans', formData);
+      const response = await axios.post('/address/api/images', formData, config);
 
       if (response.status === 200) {
-        alert('일정이 등록 완료');
-        navigate('/schedule');
+        const imageUrls = response.data;
+        console.log(imageUrls);
       } else {
-        alert('일정 등록 실패');
+        console.log('업로드 실패');
       }
     } catch (error) {
       console.error('이벤트등록 error', error);
@@ -140,7 +146,7 @@ export default function EditSchedule() {
         ))}
         <ButtonContainer></ButtonContainer>
         <ButtonContainer>
-          <EditButton>등록</EditButton>
+          <EditButton onClick={handleEditButtonClick}>등록</EditButton>
           <CancelButton onClick={handleBackButtonClick}>취소</CancelButton>
         </ButtonContainer>
       </MainContainer>
