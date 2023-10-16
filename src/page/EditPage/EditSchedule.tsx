@@ -5,29 +5,37 @@ import 'react-datepicker/dist/react-datepicker.css';
 import FullSchedule from '../../component/DatePicker/ FullSchedule';
 import ExcludeTimes from '../../component/DatePicker/ExcludeTimes';
 import ScheduleMapLoader from '../../component/ScheduleMap';
-import AddressSearch from '../../component/AddressSearch';
 import { useNavigate } from 'react-router';
-import { useDispatch, useSelector } from 'react-redux';
-import { removeLastAddress } from '../../store/mapAddress';
 import axios from 'axios';
-import { RootState } from '../../store/store';
 type CoreContainerData = {
   images: File[];
   imagePreviews: string[];
 };
 
+interface PlaceInfo {
+  position: {
+    lat: number;
+    lng: number;
+  };
+  addressName: string;
+  placeName: string;
+  roadAddressName: string;
+}
+
 export default function EditSchedule() {
   const [title, setTitle] = useState('');
   const [reviews, setReviews] = useState('');
+  const [selectedPlaceInfo, setSelectedPlaceInfo] = useState<PlaceInfo | null>(null);
 
-  const selectedPlace = useSelector((state: RootState) => state.place.selectedPlace);
   const navigate = useNavigate();
-
-  const dispatch = useDispatch();
 
   const [coreContainers, setCoreContainers] = useState<CoreContainerData[]>([{ images: [], imagePreviews: [] }]);
 
   const coreContainers_LIMIT = 5;
+
+  const handlePlaceSelected = (placeInfo: PlaceInfo) => {
+    setSelectedPlaceInfo(placeInfo);
+  }; // 스케쥴맵 컴포넌트로 받아옴
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
     const selectedImages = Array.from(e.target.files as FileList);
@@ -49,14 +57,13 @@ export default function EditSchedule() {
   const handleAddCoreContainer = () => {
     if (coreContainers.length < coreContainers_LIMIT) {
       setCoreContainers(prevContainers => [...prevContainers, { images: [], imagePreviews: [] }]);
-      console.log(selectedPlace);
+      console.log(selectedPlaceInfo);
     }
   };
 
   const handleRemoveCoreContainer = () => {
     if (coreContainers.length > 1) {
       setCoreContainers(prevContainers => prevContainers.slice(0, prevContainers.length - 1));
-      dispatch(removeLastAddress());
     }
   };
 
@@ -65,6 +72,7 @@ export default function EditSchedule() {
       const formData = new FormData();
       formData.append('title', title);
       formData.append('reviews', reviews);
+      formData.append('schedyleMapData', JSON.stringify(selectedPlaceInfo));
       coreContainers.forEach((container, index) => {
         container.images.forEach(image => {
           formData.append(`images`, image);
@@ -92,7 +100,7 @@ export default function EditSchedule() {
     <>
       <Header />
       <MainContainer>
-        <ScheduleMapLoader />
+        <ScheduleMapLoader onPlacesSelected={handlePlaceSelected} />
         <TitleContainer>
           <Title
             placeholder="제목 (최대 40자)"
