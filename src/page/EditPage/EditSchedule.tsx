@@ -5,13 +5,12 @@ import 'react-datepicker/dist/react-datepicker.css';
 import FullSchedule from '../../component/DatePicker/ FullSchedule';
 import ExcludeTimes from '../../component/DatePicker/ExcludeTimes';
 import ScheduleMapLoader from '../../component/ScheduleMap';
+import AddressSearch from '../../component/AddressSearch';
 import { useNavigate } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
+import { removeLastAddress } from '../../store/mapAddress';
 import axios from 'axios';
-type CoreContainerData = {
-  images: File[];
-  imagePreviews: string[];
-};
-
+import { RootState } from '../../store/store';
 interface PlaceInfo {
   position: {
     lat: number;
@@ -21,6 +20,11 @@ interface PlaceInfo {
   placeName: string;
   roadAddressName: string;
 }
+type CoreContainerData = {
+  images: File[];
+  imagePreviews: string[];
+  startDate: Date | null;
+};
 
 export default function EditSchedule() {
   const Access_token = localStorage.getItem('token');
@@ -30,16 +34,22 @@ export default function EditSchedule() {
   const [selectedPlaceInfo, setSelectedPlaceInfo] = useState<PlaceInfo | null>(null);
 
   const [startDate, setStartDate] = useState<Date | null>(null);
+  const [selectedDateRange, setSelectedDateRange] = useState<[Date | null, Date | null]>([null, null]);
+
+  const handleDateRangeChange = (newDateRange: [Date | null, Date | null]) => {
+    setSelectedDateRange(newDateRange);
+    console.log(newDateRange);
+  };
 
   const navigate = useNavigate();
 
-  const [coreContainers, setCoreContainers] = useState<CoreContainerData[]>([{ images: [], imagePreviews: [] }]);
+  const dispatch = useDispatch();
+
+  const [coreContainers, setCoreContainers] = useState<CoreContainerData[]>([
+    { images: [], imagePreviews: [], startDate: null },
+  ]);
 
   const coreContainers_LIMIT = 5;
-
-  const handlePlaceSelected = (placeInfo: PlaceInfo) => {
-    setSelectedPlaceInfo(placeInfo);
-  }; // 스케쥴맵 컴포넌트로 받아옴
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
     const selectedImages = Array.from(e.target.files as FileList);
@@ -58,17 +68,21 @@ export default function EditSchedule() {
     setCoreContainers(updatedData);
   };
 
+  const handlePlaceSelected = (placeInfo: PlaceInfo) => {
+    setSelectedPlaceInfo(placeInfo);
+  };
+
   const handleAddCoreContainer = () => {
     if (coreContainers.length < coreContainers_LIMIT) {
-      setCoreContainers(prevContainers => [...prevContainers, { images: [], imagePreviews: [] }]);
+      setCoreContainers(prevContainers => [...prevContainers, { images: [], imagePreviews: [], startDate: null }]);
       console.log(selectedPlaceInfo);
-      console.log(startDate?.toISOString);
     }
   };
 
   const handleRemoveCoreContainer = () => {
     if (coreContainers.length > 1) {
       setCoreContainers(prevContainers => prevContainers.slice(0, prevContainers.length - 1));
+      dispatch(removeLastAddress());
     }
   };
 
@@ -114,12 +128,19 @@ export default function EditSchedule() {
             placeholder="제목 (최대 40자)"
             value={title}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)}></Title>
-          <FullSchedule />
+          <FullSchedule selectedDateRange={selectedDateRange} onDateRangeChange={handleDateRangeChange} />
         </TitleContainer>
         {coreContainers.map((container, index) => (
           <CoreContainer key={index}>
             <CoreTopContainer>
-              <ExcludeTimes startDate={startDate} setStartDate={setStartDate} />
+              <ExcludeTimes
+                startDate={container.startDate}
+                setStartDate={(date: Date | null) => {
+                  const updatedContainers = [...coreContainers];
+                  updatedContainers[index].startDate = date;
+                  setCoreContainers(updatedContainers);
+                }}
+              />
               {/* <AddressSearch /> */}
             </CoreTopContainer>
             <ImgContainer>

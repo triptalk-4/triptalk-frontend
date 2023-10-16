@@ -106,16 +106,22 @@ export default function EditForm(props: EditFormProps) {
   };
 
   ///////////////////////현재비밀번호////////////////////
+  const [currentPasswordValue, setCurrentPasswordValue] = useState('');
+  const handleCurrentPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newPasswordValue = e.target.value;
+    setCurrentPasswordValue(newPasswordValue);
+    console.log(newPasswordValue);
+  };
+
   const handleCurrentPasswordCheck = async () => {
     try {
       const response = await axios.post('/address/api/users/update/password/check', {
         email: userEmail,
-        password: passwordTest,
+        password: currentPasswordValue,
         // token: token,
       });
 
       if (response.status === 200) {
-        // dispatch(setToken(response.data.token));
         const message = response.data.passwordCheckOk;
         alert(`${message}`);
         setUserPassword('');
@@ -123,7 +129,7 @@ export default function EditForm(props: EditFormProps) {
         alert('유효하지 않은 사용자 입니다.');
       }
     } catch (error: any) {
-      console.log('password' + userPassword);
+      // console.log('password', currentPasswordValue);
       alert(`${error.response.data}`);
     }
   };
@@ -224,7 +230,7 @@ export default function EditForm(props: EditFormProps) {
             type="password"
             id="current-password"
             placeholder="현재비밀번호를 입력해주세요."
-            // onChange={handleCurrentPasswordChange}
+            onChange={handleCurrentPasswordChange}
             // value={userPassword}
           />
           <CheckBtn type="button" onClick={handleCurrentPasswordCheck}>

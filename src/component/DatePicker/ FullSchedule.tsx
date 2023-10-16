@@ -1,11 +1,17 @@
+import React from 'react';
 import DatePicker from 'react-datepicker';
-import { useState } from 'react';
 import { ko } from 'date-fns/esm/locale';
 import './edit.css';
 
-export default function FullSchedule() {
-  const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([null, null]);
-  const [startDate, endDate] = dateRange;
+interface FullScheduleProps {
+  selectedDateRange: [Date | null, Date | null];
+  onDateRangeChange: (newDateRange: [Date | null, Date | null]) => void;
+}
+
+export default function FullSchedule(props: FullScheduleProps) {
+  const { selectedDateRange, onDateRangeChange } = props;
+  const [startDate, endDate] = selectedDateRange;
+
   return (
     <DatePicker
       locale={ko}
@@ -14,7 +20,7 @@ export default function FullSchedule() {
       endDate={endDate}
       minDate={new Date()}
       onChange={update => {
-        setDateRange(update);
+        onDateRangeChange(update);
       }}
       isClearable={true}
       placeholderText="날짜를 선택하세요"
