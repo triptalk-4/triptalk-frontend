@@ -5,12 +5,9 @@ import 'react-datepicker/dist/react-datepicker.css';
 import FullSchedule from '../../component/DatePicker/ FullSchedule';
 import ExcludeTimes from '../../component/DatePicker/ExcludeTimes';
 import ScheduleMapLoader from '../../component/ScheduleMap';
-import AddressSearch from '../../component/AddressSearch';
 import { useNavigate } from 'react-router';
-import { useDispatch, useSelector } from 'react-redux';
 import { removeLastAddress } from '../../store/mapAddress';
 import axios from 'axios';
-import { RootState } from '../../store/store';
 interface PlaceInfo {
   position: {
     lat: number;
@@ -42,8 +39,6 @@ export default function EditSchedule() {
   };
 
   const navigate = useNavigate();
-
-  const dispatch = useDispatch();
 
   const [coreContainers, setCoreContainers] = useState<CoreContainerData[]>([
     { images: [], imagePreviews: [], startDate: null },
@@ -82,7 +77,6 @@ export default function EditSchedule() {
   const handleRemoveCoreContainer = () => {
     if (coreContainers.length > 1) {
       setCoreContainers(prevContainers => prevContainers.slice(0, prevContainers.length - 1));
-      dispatch(removeLastAddress());
     }
   };
 
