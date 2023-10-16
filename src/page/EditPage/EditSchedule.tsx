@@ -25,7 +25,7 @@ type CoreContainerData = {
 
 export default function EditSchedule() {
   const Access_token = localStorage.getItem('token');
-  console.log(Access_token);
+
   const [title, setTitle] = useState('');
   const [reviews, setReviews] = useState('');
   const [selectedPlaceInfo, setSelectedPlaceInfo] = useState<PlaceInfo | null>(null);
@@ -37,6 +37,8 @@ export default function EditSchedule() {
     setSelectedDateRange(newDateRange);
     console.log(newDateRange);
   };
+
+  console.log(selectedDateRange);
 
   const navigate = useNavigate();
 
@@ -70,7 +72,7 @@ export default function EditSchedule() {
   const handleAddCoreContainer = () => {
     if (coreContainers.length < coreContainers_LIMIT) {
       setCoreContainers(prevContainers => [...prevContainers, { images: [], imagePreviews: [], startDate: null }]);
-      console.log(selectedPlaceInfo);
+      console.log(coreContainers[0].images[0]);
     }
   };
 
@@ -80,26 +82,71 @@ export default function EditSchedule() {
     }
   };
 
-  const handleEditButtonClick = async () => {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${Access_token}`,
+  console.log(selectedPlaceInfo?.position.lat);
+
+  const sendData = async (imageUrls: string) => {
+    const dataToSend = {
+      plannerDetailListRequests: [
+        {
+          date: coreContainers[0].startDate,
+          description: '리뷰부분',
+          images: [`${imageUrls}`],
+          placeInfo: {
+            addressName: selectedPlaceInfo?.addressName,
+            latitude: selectedPlaceInfo?.position.lat,
+            longitude: selectedPlaceInfo?.position.lng,
+            placeName: selectedPlaceInfo?.placeName,
+            roadAddress: selectedPlaceInfo?.roadAddressName,
+          },
+        },
+      ],
+      plannerRequest: {
+        description: 'review',
+        endDate: selectedDateRange[1],
+        startDate: selectedDateRange[0],
+        title: '으아아',
       },
     };
 
     try {
+      const response = await axios.post('/address/api/plans', dataToSend, {
+        headers: {
+          Authorization: `Bearer ${Access_token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+      if (response.status === 200) {
+        console.log('데이터 전송 완료');
+      } else {
+        console.log('데이터 전송 실패');
+      }
+    } catch (error) {
+      console.error('데이터 전송 오류', error);
+    }
+  };
+
+  const handleEditButtonClick = async () => {
+    try {
       const formData = new FormData();
-      coreContainers.forEach((container, index) => {
-        container.images.forEach(image => {
-          formData.append('images', image);
+      coreContainers.map((container, index) => {
+        container.images.map(image => {
+          formData.append('files', image);
         });
       });
-
-      const response = await axios.post('/address/api/images', formData, config);
-
+      for (const key of formData.values()) {
+        console.log(key);
+      }
+      console.log(formData);
+      const response = await axios.post('/address/api/images', formData, {
+        headers: {
+          Authorization: `Bearer ${Access_token}`,
+          'Content-Type': 'multipart/form-data',
+        },
+      });
       if (response.status === 200) {
         const imageUrls = response.data;
         console.log(imageUrls);
+        sendData(imageUrls);
       } else {
         console.log('업로드 실패');
       }
@@ -142,6 +189,7 @@ export default function EditSchedule() {
                 type="file"
                 accept="image/*"
                 multiple
+                name={`images[${index}]`}
                 onChange={e => handleImageUpload(e, index)}
                 id={`fileInput-${index}`}
               />
