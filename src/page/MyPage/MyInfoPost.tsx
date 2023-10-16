@@ -1,5 +1,9 @@
+import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { RootState } from '../../store/store';
+import { BsEyeFill, BsFillSuitHeartFill } from 'react-icons/bs';
 
 interface Post {
   id: number;
@@ -7,6 +11,8 @@ interface Post {
   title: string;
   schedule: string;
   date: string;
+  likes: number;
+  views: number;
 }
 
 export default function MyInfoPost() {
@@ -15,14 +21,42 @@ export default function MyInfoPost() {
   const [isLoading, setIsLoading] = useState(true); // 로딩 상태
   const targetRef = useRef<HTMLDivElement | null>(null);
 
+  const token = useSelector((state: RootState) => state.token.token);
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(1);
+
+  // useEffect(() => {
+  //   fetch('/api/posts')
+  //     .then(res => res.json())
+  //     .then(data => {
+  //       setPostsData(data.slice(0, 6)); // 처음에 6개게시물만 나오게 설정
+  //     })
+  //     .catch(error => console.error('가짜 API 요청 실패:', error));
+  // }, []);
+
   useEffect(() => {
-    fetch('/address/api/posts')
-      .then(res => res.json())
-      .then(data => {
-        setPostsData(data.slice(0, 6)); // 처음에 6개게시물만 나오게 설정
-      })
-      .catch(error => console.error('가짜 API 요청 실패:', error));
-  }, []);
+    const token = localStorage.getItem('token');
+    const fetchUserPost = async () => {
+      try {
+        const response = await axios.get(`/address/api/users/planners/byUser?${page}&${pageSize}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.data) {
+          const {} = response.data;
+        } else {
+          console.log(response);
+          alert('사용자 정보가 없습니다 로그인확인해주세요');
+        }
+      } catch (error) {
+        console.error('사용자 정보 가져오기 오류 확인바람(포스트):', error);
+      }
+    };
+
+    fetchUserPost();
+  }, [token, page, pageSize]);
 
   useEffect(() => {
     // 게시물 갯수에 따라 스타일 변경
@@ -56,7 +90,7 @@ export default function MyInfoPost() {
           const endIndex = startIndex + 3;
 
           // msw를 통해 postsData에 데이터 추가
-          fetch(`/address/api/posts?page=${endIndex / 3 + 1}`)
+          fetch(`/api/posts?page=${endIndex / 3 + 1}`)
             .then(res => res.json())
             .then(data => {
               setIsLoading(true);
@@ -96,8 +130,17 @@ const MyPost = ({ postsData }: { postsData: Post }) => {
           <TextImg src={postsData.imgSrc} alt="첫번째 이미지" />
         </ImgDiv>
         <Info>
+          <TopContainer>
+            <IconWithCount>
+              <Heart />
+              <Count>{postsData.likes}</Count>
+            </IconWithCount>
+            <IconWithCount>
+              <LookUp />
+              <Count>{postsData.views}</Count>
+            </IconWithCount>
+          </TopContainer>
           <TitleText>{postsData.title}</TitleText>
-          <ScheduleeText>{postsData.schedule}</ScheduleeText>
           <DateText>{postsData.date}</DateText>
         </Info>
       </Box>
@@ -184,17 +227,39 @@ const Info = styled.div`
   }
 `;
 
-const TitleText = styled.h2`
-  font-size: 30px;
+const TopContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
 `;
 
-const ScheduleeText = styled.h5`
-  font-size: 20px;
-  font-weight: 500;
+const IconWithCount = styled.div`
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+`;
+
+const Count = styled.div`
+  margin-left: 5px;
+`;
+
+const Heart = styled(BsFillSuitHeartFill)`
+  width: 30px;
+  height: 30px;
+`;
+
+const LookUp = styled(BsEyeFill)`
+  width: 30px;
+  height: 30px;
+`;
+
+const TitleText = styled.h2`
+  margin-top: 10%;
+  font-size: 30px;
 `;
 
 const DateText = styled.p`
   position: absolute;
   bottom: 15px;
-  right: 15px;
+  left: 15px;
 `;
