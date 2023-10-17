@@ -28,7 +28,7 @@ interface DetailType {
 export default function PostBox({ data }: { data: DetailType }) {
   const token = useSelector((state: RootState) => state.token.token);
   const { plannerId } = useParams();
-  // const [detailDatas, setDetailDatas] = useState<DetailType[]>([]);
+  const [, setDetailDatas] = useState<DetailType[]>([]);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -54,22 +54,24 @@ export default function PostBox({ data }: { data: DetailType }) {
 
     fetchDetailPage();
   }, [token]);
-
+  console.log('날짜:', data.date);
+  console.log('리뷰:', data.description);
+  console.log('위치:', data.placeResponse.addressName);
   return (
     <PostBoxContainer>
       <Postdiv>
-        <PostImgs />
+        <PostImgs imagesUrl={data.imagesUrl} />
         <PostInfo>
           <PostText>
             <PostInfoTime>
               <Time />
-              {data.date} {/* `data` 객체의 date를 사용 */}
+              {data.date}
             </PostInfoTime>
             <PostInfoAddress>
               <Location />
-              {data.placeResponse.addressName} {/* `data` 객체의 addressName을 사용 */}
+              {data.placeResponse.addressName}
             </PostInfoAddress>
-            <PostInfoDescription>{data.description}</PostInfoDescription> {/* `data` 객체의 description을 사용 */}
+            <PostInfoDescription>{data.description}</PostInfoDescription>
           </PostText>
           <PostBorder></PostBorder>
           <ViewComments />
