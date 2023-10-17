@@ -15,13 +15,15 @@ interface travelItem {
 
 export default function Travel() {
   const [travelsData, setTravelsData] = useState<travelItem[]>([]); // msw
-  // const [selectedRegion, setSelectedRegion] = useState(''); // 선택한 지역
-  // const [selectedOrder, setSelectedOrder] = useState(''); // 선택한 순서
+  const [carouselData, setCarouselData] = useState<travelItem[]>([]);
 
   useEffect(() => {
-    fetch('/address/api/travels')
+    fetch('/api/travels')
       .then(res => res.json())
-      .then(data => setTravelsData(data))
+      .then(data => {
+        setTravelsData(data);
+        setCarouselData(data);
+      })
       .catch(error => console.error('가짜 API 요청 실패:', error));
   }, []);
 
@@ -30,12 +32,11 @@ export default function Travel() {
       <TravelTitleContainer>
         <TravelTitle>국내 다양한 여행지를 둘러보세요.</TravelTitle>
         <TravelSelectBox>
-          {/* <TravelSelect /> */}
-          <DetailPopUp travelsData={travelsData} setTravelsData={setTravelsData} />
+          <DetailPopUp travelsData={travelsData} setCarouselData={setCarouselData} />
         </TravelSelectBox>
       </TravelTitleContainer>
       <TravelCarouselContainer>
-        <TravelCarousel data={travelsData} />
+        <TravelCarousel data={carouselData} />
       </TravelCarouselContainer>
     </TravelContainer>
   );
