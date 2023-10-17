@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import SearchBody from '../component/Search/SearchBody';
 import { Link } from 'react-router-dom';
-import Search from '../component/Search/Search';
 
 const SearchPage = () => {
   return (
@@ -15,7 +14,6 @@ const SearchPage = () => {
         </Avatar> */}
       </Gnb>
       <Container>
-        <Search />
         <SearchBody />
         {/* <SearchPopular />
         <Divider />
