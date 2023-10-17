@@ -30,8 +30,8 @@ export default function SecheduleDetail() {
       try {
         const response = await axios.get(`/address/api/plans/${plannerId}/details`, {
           headers: {
-            Authorization: `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         });
 
         if (response.data) {
@@ -68,8 +68,8 @@ export default function SecheduleDetail() {
       const token = localStorage.getItem('token');
       const response = await axios.delete(`/address/api/plans/${plannerId}`, {
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
       if (response.status === 204) {
         alert('게시물이 삭제되었습니다.');
@@ -97,7 +97,6 @@ export default function SecheduleDetail() {
               <EidtBtn>수정</EidtBtn>
               <UserName>
                 <UserProfile src={userImg} />
-                {/* <UserProfile src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" /> */}
                 {nickname}
               </UserName>
             </UserWarp>

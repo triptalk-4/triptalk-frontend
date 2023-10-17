@@ -11,40 +11,43 @@ import { RootState } from '../../store/store';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 
+interface DetailType {
+  userId: number;
+  date: string;
+  placeResponse: {
+    placeName: string;
+    roadAddress: string;
+    addressName: string;
+    latitude: number;
+    longitude: number;
+  };
+  description: string;
+  imagesUrl: string[];
+}
+
 export default function PostBox() {
   const token = useSelector((state: RootState) => state.token.token);
-  const { plannerDetailId } = useParams();
-
-  const [userId, setUserId] = useState('');
-  const [date, setDate] = useState('');
-  const [description, setDescription] = useState('');
-  const [placeResponse, setPlaceResponse] = useState('');
+  const { plannerId } = useParams();
+  const [details, setDetails] = useState<DetailType[]>([]);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
     const fetchDetailPage = async () => {
       try {
-        const response = await axios.get(`/address/api/plans/detail/${plannerDetailId}`, {
+        const response = await axios.get(`/address/api/plans/${plannerId}/details`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
 
-        if (response.data) {
-          const { userId, date, placeResponse, description } = response.data;
-
-          setUserId(userId);
-          setDate(date);
-          setPlaceResponse(placeResponse);
-          setDescription(description);
+        if (response.data && response.data.plannerDetailResponse) {
+          const plannerDetails: DetailType[] = response.data.plannerDetailResponse;
+          setDetails(plannerDetails); // 상세 정보를 상태에 저장
         } else {
           console.log(response);
           alert('사용자 정보가 없습니다 상세페이지(포스트박스)확인해주세요');
         }
       } catch (error) {
-        console.log(date);
-        console.log(placeResponse);
-        console.log(description);
         console.error('사용자 정보 가져오기 오류 확인바람(포스트박스):', error);
       }
     };
@@ -54,26 +57,28 @@ export default function PostBox() {
 
   return (
     <PostBoxContainer>
-      <PostImgs />
-      <PostInfo>
-        <PostText>
-          <PostInfoTime>
-            <Time />
-            {date}
-            2023.10.14 오후11시00분
-          </PostInfoTime>
-          <PostInfoAddress>
-            <Location />
-            {placeResponse}
-            강원특별자치도 양양군 강현면 전진리
-          </PostInfoAddress>
-          <PostInfoDescription>{description}물 엄청나게 먹고오뮤ㅜ</PostInfoDescription>
-        </PostText>
-        <PostBorder></PostBorder>
-        <ViewComments />
-        <PostBorder></PostBorder>
-        <EnterComment />
-      </PostInfo>
+      {details.map((detail, index) => (
+        <Postdiv key={index}>
+          <PostImgs />
+          <PostInfo>
+            <PostText>
+              <PostInfoTime>
+                <Time />
+                {detail.date}
+              </PostInfoTime>
+              <PostInfoAddress>
+                <Location />
+                {detail.placeResponse.addressName}
+              </PostInfoAddress>
+              <PostInfoDescription>{detail.description}</PostInfoDescription>
+            </PostText>
+            <PostBorder></PostBorder>
+            <ViewComments />
+            <PostBorder></PostBorder>
+            <EnterComment />
+          </PostInfo>
+        </Postdiv>
+      ))}
     </PostBoxContainer>
   );
 }
@@ -87,6 +92,11 @@ const PostBoxContainer = styled.div`
   &:last-child {
     margin-bottom: 0;
   }
+`;
+
+const Postdiv = styled.div`
+  width: 100%;
+  display: flex;
 `;
 
 const PostInfo = styled.div`
