@@ -10,20 +10,6 @@ import axios from 'axios';
 import formatDate from '../../utils/formatDate';
 import { useParams, useNavigate } from 'react-router-dom';
 
-interface ScheduleType {
-  userId: number;
-  date: string;
-  placeResponse: {
-    placeName: string;
-    roadAddress: string;
-    addressName: string;
-    latitude: number;
-    longitude: number;
-  };
-  description: string;
-  imagesUrl: string[];
-}
-
 export default function SecheduleDetail() {
   const [likeCount, setLikeCount] = useState(0); // 좋아요 카운트 상태
   const [isLiked, setIsLiked] = useState(false); // 좋아요 상태 (눌렸는지 안눌렸는지)
