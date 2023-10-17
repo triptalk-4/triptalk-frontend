@@ -10,6 +10,10 @@ import axios from 'axios';
 import formatDate from '../../utils/formatDate';
 import { useParams, useNavigate } from 'react-router-dom';
 
+interface DetailType {
+  userId: number;
+}
+
 export default function SecheduleDetail() {
   const [likeCount, setLikeCount] = useState(0); // 좋아요 카운트 상태
   const [isLiked, setIsLiked] = useState(false); // 좋아요 상태 (눌렸는지 안눌렸는지)
@@ -19,34 +23,45 @@ export default function SecheduleDetail() {
   const [endDate, setEndDate] = useState('');
   const [nickname, setNickname] = useState('');
   const [userImg, setUserImg] = useState('');
+  const [userNum, setUserNum] = useState('');
+  const [matchUserNum, setMatchUserNum] = useState('');
 
   const token = useSelector((state: RootState) => state.token.token);
   const { plannerId } = useParams();
   const navigate = useNavigate();
-  const [plannerDetailResponse, setPlannerDetailResponse] = useState([]);
+  const [plannerDetailResponseDate, setPlannerDetailResponseDate] = useState([]);
+  // const [isAuthor, setIsAuthor] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const Access_token = localStorage.getItem('token');
+    // const Email_token = localStorage.getItem('userEmail');
     const fetchDetailPage = async () => {
       try {
         const response = await axios.get(`/address/api/plans/${plannerId}/details`, {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${Access_token}`,
           },
         });
-        console.log('Received data from the server:', response.data);
+        //  console.log('Received data from the server:', response.data);
 
         if (response.data && response.data.plannerDetailResponse) {
-          const { title, likeCount, startDate, endDate, nickname, profile } = response.data;
+          const { title, likeCount, startDate, endDate, nickname, profile, userId } = response.data;
           setTitle(title);
           setLikeCount(likeCount);
           setStartDate(startDate);
           setEndDate(endDate);
           setNickname(nickname);
           setUserImg(profile);
-
+          setUserNum(userId);
+          console.log(userId);
           const plannerDetails = response.data.plannerDetailResponse;
-          setPlannerDetailResponse(plannerDetails);
+          setPlannerDetailResponseDate(plannerDetails);
+
+          const userIds = plannerDetails.map((detail: DetailType) => detail.userId);
+          setMatchUserNum(userIds);
+          console.log(userIds);
+
+          // setIsAuthor(userId === Email_token);
         } else {
           console.log(response);
           alert('사용자 정보가 없습니다 상세페이지확인해주세요');
@@ -98,15 +113,19 @@ export default function SecheduleDetail() {
               </DateSpan>
             </Title>
             <UserWarp>
-              <DeleteBtn onClick={deletePost}>삭제</DeleteBtn>
-              <EidtBtn>수정</EidtBtn>
+              {userNum === matchUserNum && (
+                <>
+                  <DeleteBtn onClick={deletePost}>삭제</DeleteBtn>
+                  <EidtBtn>수정</EidtBtn>
+                </>
+              )}
               <UserName>
                 <UserProfile src={userImg} />
                 {nickname}
               </UserName>
             </UserWarp>
           </PostText>
-          {plannerDetailResponse.map((detail, index) => (
+          {plannerDetailResponseDate.map((detail, index) => (
             <PostBox key={index} data={detail} />
           ))}
         </PostBg>
