@@ -5,6 +5,7 @@ import { MAIN_COLOR } from '../../color/color';
 import { FaArrowLeft } from 'react-icons/fa';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 const SearchBody = () => {
   const navigator = useNavigate();
@@ -71,13 +72,15 @@ const SearchBody = () => {
       <BodyContainer>
         {paginatedResults.length > 0 ? (
           paginatedResults.map((result, index) => (
-            <ResultContainer key={index}>
-              <ProfileAndName>
-                <ProfileImage src={result.profile} alt={`${result.nickname}의 프로필 사진`} />
-                <ResultItem>{result.nickname}</ResultItem>
-              </ProfileAndName>
-              <ResultDescription>{result.aboutMe}</ResultDescription>
-            </ResultContainer>
+            <Link to={`/myinfo:${result.userId}`} style={{ color: 'inherit', textDecoration: 'none' }}>
+              <ResultContainer key={index}>
+                <ProfileAndName>
+                  <ProfileImage src={result.profile} alt={`${result.nickname}의 프로필 사진`} />
+                  <ResultItem>{result.nickname}</ResultItem>
+                </ProfileAndName>
+                <ResultDescription>{result.aboutMe}</ResultDescription>
+              </ResultContainer>
+            </Link>
           ))
         ) : (
           <NoResultContainer>검색 결과가 없습니다.</NoResultContainer>
