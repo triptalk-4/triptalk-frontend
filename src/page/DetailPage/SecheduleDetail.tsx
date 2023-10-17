@@ -34,6 +34,7 @@ export default function SecheduleDetail() {
             Authorization: `Bearer ${token}`,
           },
         });
+        console.log('Received data from the server:', response.data);
 
         if (response.data && response.data.plannerDetailResponse) {
           const { title, likeCount, startDate, endDate, nickname, profile } = response.data;
