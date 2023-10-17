@@ -54,9 +54,9 @@ export default function PostBox({ data }: { data: DetailType }) {
 
     fetchDetailPage();
   }, [token]);
-  console.log('날짜:', data.date);
-  console.log('리뷰:', data.description);
-  console.log('위치:', data.placeResponse.addressName);
+  // console.log('날짜:', data.date);
+  // console.log('리뷰:', data.description);
+  // console.log('위치:', data.placeResponse.addressName);
   return (
     <PostBoxContainer>
       <Postdiv>
