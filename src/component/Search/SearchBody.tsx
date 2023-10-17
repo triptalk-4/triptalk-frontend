@@ -70,8 +70,8 @@ const SearchBody = () => {
       </Container>
       <BodyContainer>
         {paginatedResults.length > 0 ? (
-          paginatedResults.map(result => (
-            <ResultContainer key={result.userId}>
+          paginatedResults.map((result, index) => (
+            <ResultContainer key={index}>
               <ProfileAndName>
                 <ProfileImage src={result.profile} alt={`${result.nickname}의 프로필 사진`} />
                 <ResultItem>{result.nickname}</ResultItem>
