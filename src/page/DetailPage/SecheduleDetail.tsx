@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import axios from 'axios';
 import formatDate from '../../utils/formatDate';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 export default function SecheduleDetail() {
   const [likeCount, setLikeCount] = useState(0); // 좋아요 카운트 상태
@@ -22,6 +22,7 @@ export default function SecheduleDetail() {
 
   const token = useSelector((state: RootState) => state.token.token);
   const { plannerId } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -29,8 +30,8 @@ export default function SecheduleDetail() {
       try {
         const response = await axios.get(`/address/api/plans/${plannerId}/details`, {
           headers: {
-            Authorization: `Bearer ${token}`,
-          },
+            Authorization: `Bearer ${token}`
+          }
         });
 
         if (response.data) {
@@ -62,22 +63,21 @@ export default function SecheduleDetail() {
     setIsSaved(!isSaved);
   };
 
-  // 삭제
-  const deletePost = async (postId: number) => {
+  const deletePost = async () => {
     try {
-      const response = await axios.delete(`/address/api/plans/details/${postId}`);
+      const token = localStorage.getItem('token');
+      const response = await axios.delete(`/address/api/plans/${plannerId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
       if (response.status === 204) {
-        console.log('게시물이 삭제되었습니다.');
+        alert('게시물이 삭제되었습니다.');
+        navigate('/schedule');
       }
     } catch (error) {
       console.error('게시물 삭제 중 오류 발생:', error);
     }
-  };
-
-  // 삭제 버튼을 클릭할 때 호출할 함수
-  const handleDeleteClick = () => {
-    const postId = 17; // 삭제할 게시물의 ID를 지정해야 합니다.
-    deletePost(postId);
   };
 
   return (
@@ -93,7 +93,7 @@ export default function SecheduleDetail() {
               </DateSpan>
             </Title>
             <UserWarp>
-              <DeleteBtn onClick={handleDeleteClick}>삭제</DeleteBtn>
+              <DeleteBtn onClick={deletePost}>삭제</DeleteBtn>
               <EidtBtn>수정</EidtBtn>
               <UserName>
                 <UserProfile src={userImg} />
