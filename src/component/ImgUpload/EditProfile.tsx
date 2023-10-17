@@ -23,12 +23,12 @@ export default function EditProfile() {
   // }, []);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const Access_token = localStorage.getItem('token');
     const fetchUserInfo = async () => {
       try {
         const response = await axios.get('/address/api/users/profile', {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${Access_token}`,
           },
         });
 
@@ -52,12 +52,12 @@ export default function EditProfile() {
       return;
     }
 
-    const formData = new FormData();
-    formData.append('files', selectedFile);
+    const formFilesData = new FormData();
+    formFilesData.append('files', selectedFile);
 
     try {
       // 서버로 이미지 업로드 요청
-      const response = await axios.put('/address/api/users/update/profile', formData, {
+      const response = await axios.put('/address/api/users/update/profile', formFilesData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',
@@ -73,15 +73,18 @@ export default function EditProfile() {
     } catch (error) {
       console.error('이미지 업로드 오류:', error);
     }
-  };
 
+    handleUploadImage(); // 자동 업로드
+  };
+  console.log('Selected File:', selectedFile);
   const handleImageUpload = (e: ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (files && files.length > 0) {
-      setSelectedFile(files[0]);
-      const imageUrl = URL.createObjectURL(files[0]);
+    const file = e.target.files;
+    if (file && file.length > 0) {
+      setSelectedFile(file[0]);
+      const imageUrl = URL.createObjectURL(file[0]);
       setUserImg(imageUrl);
-      handleUploadImage(); // 자동 업로드
+
+      console.log('userImg :', userImg);
     }
   };
 
@@ -91,7 +94,7 @@ export default function EditProfile() {
   };
 
   return (
-    <ProfileImgContainer encType="multipart/form-data">
+    <ProfileImgContainer method="post" encType="multipart/form-data">
       <ProfileImgLabel htmlFor="profileImg">
         <ProfileImgInput type="file" accept="image/*" id="profileImg" onChange={handleImageUpload} ref={imgRef} />
         <EditProfileBtn type="button" onClick={handleInputImageClick}>

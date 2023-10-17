@@ -2,17 +2,20 @@ import styled, { css } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { GRAY_COLOR, LIGHT_GRAY_COLOR, LIGHT_ORANGE_COLOR, MAIN_COLOR } from '../../../color/color';
 import EditForm from './EditForm';
-import EditProfile from '../../../component/ImgUpload/EditProfile';
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import EditIntroduct from './EditIntroduct';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { setEditedAboutMe, setEditedNewPassword, setEditedNickname } from '../../../store/editMyInfoSlice';
 import { RootState } from '../../../store/store';
+import { LuSettings } from 'react-icons/lu';
 
 export default function EditMyInfo() {
   const navigate = useNavigate();
   const [isButtonEnabled, setIsButtonEnabled] = useState(false); // 버튼 활성화 상태 추가
+  const [userImg, setUserImg] = useState('');
+  const imgRef = useRef<HTMLInputElement | null>(null); // 초기에는 아무것도 가르키고 있지 않음
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const dispatch = useDispatch();
 
@@ -22,6 +25,48 @@ export default function EditMyInfo() {
   const currentEmail = useSelector((state: RootState) => state.editMyInfo.currentEmail);
 
   const token = useSelector((state: RootState) => state.token.token);
+
+  useEffect(() => {
+    const Access_token = localStorage.getItem('token');
+    const fetchUserInfo = async () => {
+      try {
+        const response = await axios.get('/address/api/users/profile', {
+          headers: {
+            Authorization: `Bearer ${Access_token}`,
+          },
+        });
+
+        if (response.data) {
+          const { profile } = response.data;
+          setUserImg(profile);
+        } else {
+          console.log(response);
+          alert('사용자 정보가 없습니다 사진');
+        }
+      } catch (error) {
+        console.error('사용자 정보 가져오기 오류 확인바람(프로필):', error);
+      }
+    };
+
+    fetchUserInfo();
+  }, []);
+
+  const handleImageUpload = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files;
+    if (file && file.length > 0) {
+      const changeImg = file[0];
+      setSelectedFile(changeImg);
+      const imageUrl = URL.createObjectURL(file[0]);
+      setUserImg(imageUrl);
+      console.log('setSelectedFile:', changeImg);
+      console.log('userImg:', userImg);
+    }
+  };
+
+  const handleInputImageClick = () => {
+    // 사용자가 선택한 파일 업로드가 나타남
+    imgRef.current?.click();
+  };
 
   useEffect(() => {
     // 모든 정보가 입력되었을 때 버튼을 활성화
@@ -48,36 +93,41 @@ export default function EditMyInfo() {
     // localStorage.removeItem('userInfo');
     //  localStorage.setItem('userInfo', JSON.stringify(updatedUserData));
 
-    try {
-      console.log(token);
-      console.log('currentEmail', currentEmail);
-      // 서버에 PUT 요청 보내기
-      const response = await axios.put(
-        '/address/api/users/update/profile',
-        {
+    if (selectedFile) {
+      const formData = new FormData();
+      formData.append('files', selectedFile);
+      formData.append(
+        'request',
+        JSON.stringify({
           email: currentEmail,
           newPassword: editedNewPassword,
           newNickname: editedNickname,
           newAboutMe: editedAboutMe,
-          // newPasswordCheck: editedNewPassword,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        })
       );
 
-      if (response.status === 200) {
-        console.log('수정 성공:', response.data);
+      try {
+        console.log(token);
+        console.log('currentEmail', currentEmail);
+        // 서버에 PUT 요청 보내기
+        const response = await axios.put('/address/api/users/update/profile', formData, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data',
+          },
+        });
 
-        // 성공한 경우의 처리 로직 추가
-        navigate('/myinfo');
-      } else {
-        console.error('서버 응답 오류:', response);
+        if (response.status === 200) {
+          console.log('수정 성공:', response.data);
+
+          // 성공한 경우의 처리 로직 추가
+          navigate('/myinfo');
+        } else {
+          console.error('서버 응답 오류:', response);
+        }
+      } catch (error) {
+        console.error('수정 오류:', error);
       }
-    } catch (error) {
-      console.error('수정 오류:', error);
     }
   };
 
@@ -90,7 +140,15 @@ export default function EditMyInfo() {
       <InfoTitle>개인정보수정</InfoTitle>
       <InfoEditContainer>
         <ImgEditContainer>
-          <EditProfile />
+          <ProfileImgContainer method="post" encType="multipart/form-data">
+            <ProfileImgLabel htmlFor="profileImg">
+              <ProfileImgInput type="file" accept="image/*" id="profileImg" onChange={handleImageUpload} ref={imgRef} />
+              <EditProfileBtn type="button" onClick={handleInputImageClick}>
+                <LuSettings />
+              </EditProfileBtn>
+            </ProfileImgLabel>
+            <PreviewImage src={userImg} alt="프로필 이미지" />
+          </ProfileImgContainer>
           <ExitBtn>탈퇴하기</ExitBtn>
         </ImgEditContainer>
 
@@ -125,6 +183,44 @@ const InfoContainer = styled.div`
 const InfoTitle = styled.p`
   font-size: 50px;
   font-weight: 700;
+`;
+
+const ProfileImgContainer = styled.form`
+  position: relative;
+`;
+
+const ProfileImgLabel = styled.label`
+  font-size: 13px;
+  display: inline-block;
+`;
+
+const ProfileImgInput = styled.input`
+  display: none;
+`;
+
+const EditProfileBtn = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  top: 80%;
+  left: 90%;
+  transform: translate(-50%, -50%);
+  border: 1px solid ${LIGHT_GRAY_COLOR};
+  border-radius: 100%;
+  background-color: #fff;
+  font-size: 50px;
+  z-index: 1;
+  cursor: pointer;
+`;
+
+const PreviewImage = styled.img`
+  width: 300px;
+  height: 300px;
+  border: 1px solid ${LIGHT_GRAY_COLOR};
+  border-radius: 100%;
 `;
 
 const InfoEditContainer = styled.div`

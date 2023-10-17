@@ -7,7 +7,7 @@ import OrderButton from './OrderButton';
 
 interface DetailPopUpProps {
   travelsData: travelItem[];
-  setTravelsData: (data: travelItem[]) => void;
+  setCarouselData: (data: travelItem[]) => void;
 }
 
 interface travelItem {
@@ -60,19 +60,22 @@ export default function DetailPopUp(props: DetailPopUpProps) {
     // console.log('선택한 보고싶은 순:', selectedOrder);
 
     if (selectedRegion && selectedOrder) {
+      console.warn(props.travelsData);
       // 주소 지역선택
-      const filteredTravels = props.travelsData.filter(travel => travel.address.includes(selectedRegion));
+      const filteredTravels = props.travelsData.filter(travel => {
+        return travel.address.includes(selectedRegion);
+      });
 
       if (selectedOrder === '좋아요순') {
         filteredTravels.sort((a, b) => b.heartCount - a.heartCount);
       } else if (selectedOrder === '최신순') {
         filteredTravels.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-      } else if (selectedOrder === '조회수순') {
+      } else if (selectedOrder === '조회순') {
         filteredTravels.sort((a, b) => b.lookUpCount - a.lookUpCount);
       }
 
       // 정렬된 여행 정보
-      props.setTravelsData(filteredTravels);
+      props.setCarouselData(filteredTravels);
 
       setIsModalOpen(false);
     } else {

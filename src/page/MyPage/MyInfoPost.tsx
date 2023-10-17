@@ -4,15 +4,17 @@ import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { RootState } from '../../store/store';
 import { BsEyeFill, BsFillSuitHeartFill } from 'react-icons/bs';
+import formatDate from '../../utils/formatDate';
+import { Link } from 'react-router-dom';
 
 interface Post {
   id: number;
-  imgSrc: string;
+  thumbnail: string;
   title: string;
-  schedule: string;
-  date: string;
-  likes: number;
+  createAt: number;
+  likeCount: number;
   views: number;
+  plannerId: number;
 }
 
 export default function MyInfoPost() {
@@ -23,7 +25,8 @@ export default function MyInfoPost() {
 
   const token = useSelector((state: RootState) => state.token.token);
   const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(1);
+  const [pageSize, setPageSize] = useState(6);
+  // const [hasMoreData, setHasMoreData] = useState(true);
 
   // useEffect(() => {
   //   fetch('/api/posts')
@@ -35,17 +38,18 @@ export default function MyInfoPost() {
   // }, []);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const Access_token = localStorage.getItem('token');
     const fetchUserPost = async () => {
       try {
-        const response = await axios.get(`/address/api/users/planners/byUser?${page}&${pageSize}`, {
+        const response = await axios.get(`/address/api/users/planners/byUser?${page}&pageSize=6`, {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${Access_token}`,
           },
         });
 
         if (response.data) {
-          const {} = response.data;
+          const { content } = response.data;
+          setPostsData(content);
         } else {
           console.log(response);
           alert('사용자 정보가 없습니다 로그인확인해주세요');
@@ -68,7 +72,7 @@ export default function MyInfoPost() {
   }, [postsData]);
 
   useEffect(() => {
-    // IntersectionObserver 생성및 초기화
+    // IntersectionObserver 생성 및 초기화
     const observer = new IntersectionObserver(handleIntersection, {
       root: null,
       rootMargin: '0px',
@@ -83,21 +87,23 @@ export default function MyInfoPost() {
     function handleIntersection(entries: IntersectionObserverEntry[]) {
       entries.forEach(entry => {
         if (entry && entry.isIntersecting) {
-          // 현재 게시물 길이
-          const startIndex = postsData.length;
+          setPage(prevPage => prevPage + 1);
+          setPageSize(prevPageSize => prevPageSize + 3);
 
-          // 스크롤하면 3개씩 생성
-          const endIndex = startIndex + 3;
+          setIsLoading(true);
 
-          // msw를 통해 postsData에 데이터 추가
-          fetch(`/api/posts?page=${endIndex / 3 + 1}`)
-            .then(res => res.json())
-            .then(data => {
-              setIsLoading(true);
+          const Access_token = localStorage.getItem('token');
 
-              // 새로운 데이터를 기존 데이터와 병합
-              setPostsData(prevData => [...prevData, ...data.slice(startIndex, endIndex)]);
+          axios
+            .get(`/address/api/posts?page=${page}&pageSize=${pageSize}`, {
+              headers: {
+                Authorization: `Bearer ${Access_token}`,
+              },
+            })
+            .then(response => {
               setIsLoading(false);
+              const newData = response.data;
+              setPostsData(prevData => [...prevData, ...newData]);
             })
             .catch(error => console.error('데이터 요청 실패:', error));
         }
@@ -111,10 +117,54 @@ export default function MyInfoPost() {
     };
   }, [postsData]);
 
+  // useEffect(() => {
+  //   // IntersectionObserver 생성및 초기화
+  //   const observer = new IntersectionObserver(handleIntersection, {
+  //     root: null,
+  //     rootMargin: '0px',
+  //     threshold: 1,
+  //   });
+
+  //   // 대상 엘리먼트를 관찰
+  //   if (targetRef.current) {
+  //     observer.observe(targetRef.current);
+  //   }
+
+  //   function handleIntersection(entries: IntersectionObserverEntry[]) {
+  //     entries.forEach(entry => {
+  //       if (entry && entry.isIntersecting) {
+  //         // 현재 게시물 길이
+  //         const startIndex = postsData.length;
+
+  //         // 스크롤하면 3개씩 생성
+  //         const endIndex = startIndex + 3;
+
+  //         // msw를 통해 postsData에 데이터 추가
+  //         fetch(`/api/posts?page=${endIndex / 3 + 1}`)
+  //           .then(res => res.json())
+  //           .then(data => {
+  //             setIsLoading(true);
+
+  //             // 새로운 데이터를 기존 데이터와 병합
+  //             setPostsData(prevData => [...prevData, ...data.slice(startIndex, endIndex)]);
+  //             setIsLoading(false);
+  //           })
+  //           .catch(error => console.error('데이터 요청 실패:', error));
+  //       }
+  //     });
+  //   }
+
+  //   return () => {
+  //     if (targetRef.current) {
+  //       observer.unobserve(targetRef.current);
+  //     }
+  //   };
+  // }, [postsData]);
+
   return (
     <PostContainer className={containerClassName}>
       {postsData.map(item => (
-        <MyPost key={item.id} postsData={item} />
+        <MyPost key={item.plannerId} postsData={item} />
       ))}
       <ObserverTarget ref={targetRef} />
       {isLoading && <LoadingMessage>로딩 중...</LoadingMessage>}
@@ -125,25 +175,27 @@ export default function MyInfoPost() {
 const MyPost = ({ postsData }: { postsData: Post }) => {
   return (
     <BoxWrap>
-      <Box>
-        <ImgDiv>
-          <TextImg src={postsData.imgSrc} alt="첫번째 이미지" />
-        </ImgDiv>
-        <Info>
-          <TopContainer>
-            <IconWithCount>
-              <Heart />
-              <Count>{postsData.likes}</Count>
-            </IconWithCount>
-            <IconWithCount>
-              <LookUp />
-              <Count>{postsData.views}</Count>
-            </IconWithCount>
-          </TopContainer>
-          <TitleText>{postsData.title}</TitleText>
-          <DateText>{postsData.date}</DateText>
-        </Info>
-      </Box>
+      <Link to={`/page/${postsData.plannerId}`} key={postsData.plannerId}>
+        <Box>
+          <ImgDiv>
+            <TextImg src={postsData.thumbnail} alt="첫번째 이미지" />
+          </ImgDiv>
+          <Info>
+            <TopContainer>
+              <IconWithCount>
+                <Heart />
+                <Count>{postsData.likeCount}</Count>
+              </IconWithCount>
+              <IconWithCount>
+                <LookUp />
+                <Count>{postsData.views}</Count>
+              </IconWithCount>
+            </TopContainer>
+            <TitleText>{postsData.title}</TitleText>
+            <DateText>{formatDate(postsData.createAt)}</DateText>
+          </Info>
+        </Box>
+      </Link>
     </BoxWrap>
   );
 };
