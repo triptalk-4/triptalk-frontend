@@ -16,13 +16,13 @@ interface PlaceInfo {
 }
 
 interface SchduleMapLoaderProps {
-  onPlacesSelected: (PlaceInfo: PlaceInfo) => void;
+  onPlacesSelected: (PlaceInfo: PlaceInfo[]) => void;
 }
 
 const ScheduleMapLoader: React.FC<SchduleMapLoaderProps> = ({ onPlacesSelected }) => {
   const [searchPlace, setSearchPlace] = useState('');
   const [map, setMap] = useState<kakao.maps.Map | null>(null);
-  const [selectedMarker, setSelectedMarker] = useState<kakao.maps.Marker | null>(null);
+  const [selectedPlaceInfos, setSelectedPlaceInfos] = useState<PlaceInfo[]>([]);
 
   useEffect(() => {
     const script = document.createElement('script');
@@ -47,6 +47,10 @@ const ScheduleMapLoader: React.FC<SchduleMapLoaderProps> = ({ onPlacesSelected }
     };
   }, []);
 
+  useEffect(() => {
+    console.log(selectedPlaceInfos);
+  }, [selectedPlaceInfos]);
+
   const handleSearch = () => {
     if (map) {
       const ps = new kakao.maps.services.Places();
@@ -55,9 +59,9 @@ const ScheduleMapLoader: React.FC<SchduleMapLoaderProps> = ({ onPlacesSelected }
       ps.keywordSearch(searchPlace, (data, status) => {
         if (status === kakao.maps.services.Status.OK) {
           const bounds = new kakao.maps.LatLngBounds();
+          const newPlaceInfos: PlaceInfo[] = [];
           for (let i = 0; i < 1; i++) {
             const place = data[i];
-            console.log(place);
 
             if (place) {
               const selectedPlaceInfo = {
@@ -70,7 +74,7 @@ const ScheduleMapLoader: React.FC<SchduleMapLoaderProps> = ({ onPlacesSelected }
                 roadAddressName: place.road_address_name,
               };
 
-              onPlacesSelected(selectedPlaceInfo);
+              newPlaceInfos.push(selectedPlaceInfo);
             }
 
             // 마커를 생성하고 지도에 표시
@@ -91,6 +95,10 @@ const ScheduleMapLoader: React.FC<SchduleMapLoaderProps> = ({ onPlacesSelected }
             bounds.extend(new kakao.maps.LatLng(Number(place.y), Number(place.x)));
           }
 
+          setSelectedPlaceInfos([...selectedPlaceInfos, ...newPlaceInfos]);
+
+          onPlacesSelected(selectedPlaceInfos);
+          console.log(selectedPlaceInfos);
           // 검색된 장소 위치를 기준으로 지도 범위를 재설정
           map.setBounds(bounds);
         }
