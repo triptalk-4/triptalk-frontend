@@ -58,7 +58,7 @@ export default function MyInfoPost() {
         console.error('사용자 정보 가져오기 오류 확인바람(포스트):', error);
       }
     };
-
+    console.log('게시물', postsData);
     fetchUserPost();
   }, [token, page, pageSize]);
 
@@ -102,7 +102,7 @@ export default function MyInfoPost() {
             })
             .then(response => {
               setIsLoading(false);
-              const newData = response.data;
+              const newData = response.data.content;
               setPostsData(prevData => [...prevData, ...newData]);
             })
             .catch(error => console.error('데이터 요청 실패:', error));
