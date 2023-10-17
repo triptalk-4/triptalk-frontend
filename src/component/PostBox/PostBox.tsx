@@ -39,7 +39,7 @@ export default function PostBox({ data }: { data: DetailType }) {
             Authorization: `Bearer ${token}`,
           },
         });
-
+        // console.log('Received data from the server:', response.data);
         if (response.data && response.data.plannerDetailResponse) {
           const plannerDetails: DetailType[] = response.data.plannerDetailResponse;
           setDetailDatas(plannerDetails); // 상세 정보를 상태에 저장
@@ -54,9 +54,10 @@ export default function PostBox({ data }: { data: DetailType }) {
 
     fetchDetailPage();
   }, [token]);
-  console.log('날짜:', data.date);
-  console.log('리뷰:', data.description);
-  console.log('위치:', data.placeResponse.addressName);
+  //console.log('userId:', data.userId);
+  // console.log('날짜:', data.date);
+  // console.log('리뷰:', data.description);
+  // console.log('위치:', data.placeResponse.addressName);
   return (
     <PostBoxContainer>
       <Postdiv>
