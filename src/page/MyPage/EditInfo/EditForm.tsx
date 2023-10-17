@@ -44,7 +44,7 @@ export default function EditForm(props: EditFormProps) {
 
         if (response.data) {
           const { email, nickname, password } = response.data;
-          console.warn(`===`, email);
+          // console.warn(`===`, email);
           setUserEmail(email);
           setUserPassword(password);
           setUserNickname(nickname);
