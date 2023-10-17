@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import Search from '../component/Search/SearchBody';
-import { Link } from 'react-router-dom';
 import SearchBody from '../component/Search/SearchBody';
+import { Link } from 'react-router-dom';
+import Search from '../component/Search/Search';
 
 const SearchPage = () => {
   return (
