@@ -25,10 +25,10 @@ interface DetailType {
   imagesUrl: string[];
 }
 
-export default function PostBox() {
+export default function PostBox({ data }: { data: DetailType }) {
   const token = useSelector((state: RootState) => state.token.token);
   const { plannerId } = useParams();
-  const [details, setDetails] = useState<DetailType[]>([]);
+  // const [detailDatas, setDetailDatas] = useState<DetailType[]>([]);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -42,7 +42,7 @@ export default function PostBox() {
 
         if (response.data && response.data.plannerDetailResponse) {
           const plannerDetails: DetailType[] = response.data.plannerDetailResponse;
-          setDetails(plannerDetails); // 상세 정보를 상태에 저장
+          setDetailDatas(plannerDetails); // 상세 정보를 상태에 저장
         } else {
           console.log(response);
           alert('사용자 정보가 없습니다 상세페이지(포스트박스)확인해주세요');
@@ -57,28 +57,26 @@ export default function PostBox() {
 
   return (
     <PostBoxContainer>
-      {details.map((detail, index) => (
-        <Postdiv key={index}>
-          <PostImgs />
-          <PostInfo>
-            <PostText>
-              <PostInfoTime>
-                <Time />
-                {detail.date}
-              </PostInfoTime>
-              <PostInfoAddress>
-                <Location />
-                {detail.placeResponse.addressName}
-              </PostInfoAddress>
-              <PostInfoDescription>{detail.description}</PostInfoDescription>
-            </PostText>
-            <PostBorder></PostBorder>
-            <ViewComments />
-            <PostBorder></PostBorder>
-            <EnterComment />
-          </PostInfo>
-        </Postdiv>
-      ))}
+      <Postdiv>
+        <PostImgs />
+        <PostInfo>
+          <PostText>
+            <PostInfoTime>
+              <Time />
+              {data.date} {/* `data` 객체의 date를 사용 */}
+            </PostInfoTime>
+            <PostInfoAddress>
+              <Location />
+              {data.placeResponse.addressName} {/* `data` 객체의 addressName을 사용 */}
+            </PostInfoAddress>
+            <PostInfoDescription>{data.description}</PostInfoDescription> {/* `data` 객체의 description을 사용 */}
+          </PostText>
+          <PostBorder></PostBorder>
+          <ViewComments />
+          <PostBorder></PostBorder>
+          <EnterComment />
+        </PostInfo>
+      </Postdiv>
     </PostBoxContainer>
   );
 }
