@@ -21,13 +21,14 @@ type CoreContainerData = {
   images: File[];
   imagePreviews: string[];
   startDate: Date | null;
+  review: string;
 };
 
 export default function EditSchedule() {
   const Access_token = localStorage.getItem('token');
 
   const [title, setTitle] = useState('');
-  const [reviews, setReviews] = useState('');
+  // const [reviews, setReviews] = useState('');
   const [selectedPlaceInfo, setSelectedPlaceInfo] = useState<PlaceInfo | null>(null);
 
   const [startDate, setStartDate] = useState<Date | null>(null);
@@ -38,12 +39,10 @@ export default function EditSchedule() {
     console.log(newDateRange);
   };
 
-  console.log(selectedDateRange);
-
   const navigate = useNavigate();
 
   const [coreContainers, setCoreContainers] = useState<CoreContainerData[]>([
-    { images: [], imagePreviews: [], startDate: null },
+    { images: [], imagePreviews: [], startDate: null, review: '' },
   ]);
 
   const coreContainers_LIMIT = 5;
@@ -71,7 +70,10 @@ export default function EditSchedule() {
 
   const handleAddCoreContainer = () => {
     if (coreContainers.length < coreContainers_LIMIT) {
-      setCoreContainers(prevContainers => [...prevContainers, { images: [], imagePreviews: [], startDate: null }]);
+      setCoreContainers(prevContainers => [
+        ...prevContainers,
+        { images: [], imagePreviews: [], startDate: null, review: '' },
+      ]);
       console.log(coreContainers[0].images[0]);
     }
   };
@@ -82,26 +84,26 @@ export default function EditSchedule() {
     }
   };
 
-  console.log(selectedPlaceInfo?.position.lat);
-
   const sendData = async (imageUrls: string) => {
-    const dataToSend = {
-      plannerDetailListRequests: [
-        {
-          date: coreContainers[0].startDate,
-          description: reviews,
-          images: [`${imageUrls}`],
-          placeInfo: {
-            addressName: selectedPlaceInfo?.addressName,
-            latitude: selectedPlaceInfo?.position.lat,
-            longitude: selectedPlaceInfo?.position.lng,
-            placeName: selectedPlaceInfo?.placeName,
-            roadAddress: selectedPlaceInfo?.roadAddressName,
-          },
+    const detailRequests = coreContainers.map((container, index) => {
+      return {
+        date: container.startDate,
+        description: container.review,
+        images: imageUrls,
+        placeInfo: {
+          addressName: selectedPlaceInfo?.addressName,
+          latitude: selectedPlaceInfo?.position.lat,
+          longitude: selectedPlaceInfo?.position.lng,
+          placeName: selectedPlaceInfo?.placeName,
+          roadAddress: selectedPlaceInfo?.roadAddressName,
         },
-      ],
+      };
+    });
+    console.log(detailRequests);
+    const dataToSend = {
+      plannerDetailListRequests: detailRequests,
       plannerRequest: {
-        description: reviews,
+        description: '',
         endDate: selectedDateRange[1],
         startDate: selectedDateRange[0],
         title: title,
@@ -117,8 +119,10 @@ export default function EditSchedule() {
       });
       if (response.status === 200) {
         console.log('데이터 전송 완료');
+        alert('일정 등록 완료!');
+        navigate('/schedule');
       } else {
-        console.log('데이터 전송 실패');
+        alert('일정 등록 실패');
       }
     } catch (error) {
       console.error('데이터 전송 오류', error);
@@ -128,10 +132,14 @@ export default function EditSchedule() {
   const handleEditButtonClick = async () => {
     try {
       const formData = new FormData();
-      coreContainers.map((container, index) => {
-        container.images.map(image => {
-          formData.append('files', image);
-        });
+      // coreContainers.map((container, index) => {
+      //   container.images.map(image => {
+      //     formData.append('files', image);
+      //   });
+      // });
+      const allImages = coreContainers.flatMap(container => container.images);
+      allImages.forEach(image => {
+        formData.append('files', image);
       });
       for (const key of formData.values()) {
         console.log(key);
@@ -145,10 +153,9 @@ export default function EditSchedule() {
       });
       if (response.status === 200) {
         const imageUrls = response.data;
-        console.log(imageUrls);
         sendData(imageUrls);
       } else {
-        console.log('업로드 실패');
+        alert('이미지 전송 실패');
       }
     } catch (error) {
       console.error('이벤트등록 error', error);
@@ -202,7 +209,11 @@ export default function EditSchedule() {
               <CommentTextArea
                 type="text"
                 placeholder="장소리뷰"
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setReviews(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  const updatedContainers = [...coreContainers];
+                  updatedContainers[index].review = e.target.value;
+                  setCoreContainers(updatedContainers);
+                }}
               />
             </ImgContainer>
             <ButtonContainer>
