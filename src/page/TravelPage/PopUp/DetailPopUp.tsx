@@ -60,8 +60,11 @@ export default function DetailPopUp(props: DetailPopUpProps) {
     // console.log('선택한 보고싶은 순:', selectedOrder);
 
     if (selectedRegion && selectedOrder) {
+      console.warn(props.travelsData);
       // 주소 지역선택
-      const filteredTravels = props.travelsData.filter(travel => travel.address.includes(selectedRegion));
+      const filteredTravels = props.travelsData.filter(travel => {
+        return travel.address.includes(selectedRegion);
+      });
 
       if (selectedOrder === '좋아요순') {
         filteredTravels.sort((a, b) => b.heartCount - a.heartCount);
