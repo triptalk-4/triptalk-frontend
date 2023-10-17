@@ -69,7 +69,7 @@ export default function PostImgs({ imagesUrl }: PostImgsProps) {
         mousewheel={false}
         keyboard={true}
         modules={[Pagination, Navigation, Mousewheel, Keyboard]}>
-        {imagesUrl.map((imageUrl, index) => (
+        {imagesUrl?.map((imageUrl, index) => (
           <StyledSwiperSlide key={index}>
             <SwiperImage src={imageUrl} />
           </StyledSwiperSlide>
