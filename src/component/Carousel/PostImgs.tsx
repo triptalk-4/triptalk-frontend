@@ -26,9 +26,13 @@ interface DetailType {
   imagesUrl: string[];
 }
 
-export default function PostImgs() {
+interface PostImgsProps {
+  imagesUrl: string[];
+}
+
+export default function PostImgs({ imagesUrl }: PostImgsProps) {
   const { plannerId } = useParams();
-  const [userImgCarousels, setUserImgCarousels] = useState<DetailType[]>([]);
+  const [, setUserImgCarousels] = useState<DetailType[]>([]);
   const token = useSelector((state: RootState) => state.token.token);
 
   useEffect(() => {
@@ -65,11 +69,9 @@ export default function PostImgs() {
         mousewheel={false}
         keyboard={true}
         modules={[Pagination, Navigation, Mousewheel, Keyboard]}>
-        {userImgCarousels.map((userImgCarousel, index) => (
+        {imagesUrl.map((imageUrl, index) => (
           <StyledSwiperSlide key={index}>
-            {userImgCarousel.imagesUrl.map((imageUrl, imageIndex) => (
-              <SwiperImage key={imageIndex} src={imageUrl} />
-            ))}
+            <SwiperImage src={imageUrl} />
           </StyledSwiperSlide>
         ))}
       </StyledSwiper>
