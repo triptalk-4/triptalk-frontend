@@ -6,7 +6,6 @@ import FullSchedule from '../../component/DatePicker/ FullSchedule';
 import ExcludeTimes from '../../component/DatePicker/ExcludeTimes';
 import ScheduleMapLoader from '../../component/ScheduleMap';
 import { useNavigate } from 'react-router';
-import { removeLastAddress } from '../../store/mapAddress';
 import axios from 'axios';
 interface PlaceInfo {
   position: {
@@ -17,11 +16,13 @@ interface PlaceInfo {
   placeName: string;
   roadAddressName: string;
 }
+
 type CoreContainerData = {
   images: File[];
   imagePreviews: string[];
   startDate: Date | null;
   review: string;
+  placeInfo: PlaceInfo | null;
 };
 
 export default function EditSchedule() {
@@ -31,7 +32,6 @@ export default function EditSchedule() {
   // const [reviews, setReviews] = useState('');
   const [selectedPlaceInfo, setSelectedPlaceInfo] = useState<PlaceInfo | null>(null);
 
-  const [startDate, setStartDate] = useState<Date | null>(null);
   const [selectedDateRange, setSelectedDateRange] = useState<[Date | null, Date | null]>([null, null]);
 
   const handleDateRangeChange = (newDateRange: [Date | null, Date | null]) => {
@@ -42,7 +42,7 @@ export default function EditSchedule() {
   const navigate = useNavigate();
 
   const [coreContainers, setCoreContainers] = useState<CoreContainerData[]>([
-    { images: [], imagePreviews: [], startDate: null, review: '' },
+    { images: [], imagePreviews: [], startDate: null, review: '', placeInfo: null },
   ]);
 
   const coreContainers_LIMIT = 5;
@@ -64,15 +64,21 @@ export default function EditSchedule() {
     setCoreContainers(updatedData);
   };
 
-  const handlePlaceSelected = (placeInfo: PlaceInfo) => {
-    setSelectedPlaceInfo(placeInfo);
+  const handlePlaceSelected = (placeInfos: PlaceInfo[]) => {
+    const updatedContainers = [...coreContainers];
+    placeInfos.forEach((placeInfo, index) => {
+      if (index < updatedContainers.length) {
+        updatedContainers[index].placeInfo = placeInfo;
+      }
+    });
+    setCoreContainers(updatedContainers);
   };
 
   const handleAddCoreContainer = () => {
     if (coreContainers.length < coreContainers_LIMIT) {
       setCoreContainers(prevContainers => [
         ...prevContainers,
-        { images: [], imagePreviews: [], startDate: null, review: '' },
+        { images: [], imagePreviews: [], startDate: null, review: '', placeInfo: null },
       ]);
       console.log(coreContainers[0].images[0]);
     }
@@ -84,78 +90,123 @@ export default function EditSchedule() {
     }
   };
 
-  const sendData = async (imageUrls: string) => {
-    const detailRequests = coreContainers.map((container, index) => {
-      return {
-        date: container.startDate,
-        description: container.review,
-        images: imageUrls,
-        placeInfo: {
-          addressName: selectedPlaceInfo?.addressName,
-          latitude: selectedPlaceInfo?.position.lat,
-          longitude: selectedPlaceInfo?.position.lng,
-          placeName: selectedPlaceInfo?.placeName,
-          roadAddress: selectedPlaceInfo?.roadAddressName,
-        },
-      };
-    });
-    console.log(detailRequests);
-    const dataToSend = {
-      plannerDetailListRequests: detailRequests,
-      plannerRequest: {
+  // const sendData = async (imageUrls: string) => {
+  //   const detailRequests = coreContainers.map((container, index) => {
+  //     return {
+  //       date: container.startDate,
+  //       description: container.review,
+  //       images: imageUrls,
+  //       placeInfo: {
+  //         addressName: container.placeInfo?.addressName,
+  //         latitude: container.placeInfo?.position.lat,
+  //         longitude: container.placeInfo?.position.lng,
+  //         placeName: container.placeInfo?.placeName,
+  //         roadAddress: container.placeInfo?.roadAddressName,
+  //       },
+  //     };
+  //   });
+  //   const plannerRequest = {
+  //     description: '',
+  //     endDate: selectedDateRange[1],
+  //     startDate: selectedDateRange[0],
+  //     title: title,
+  //   };
+  //   console.log(detailRequests);
+
+  //   const dataToSend = {
+  //     plannerDetailListRequests: detailRequests,
+  //     plannerRequest: plannerRequest,
+  //   };
+
+  //   try {
+  //     const response = await axios.post('/address/api/plans', dataToSend, {
+  //       headers: {
+  //         Authorization: `Bearer ${Access_token}`,
+  //         'Content-Type': 'application/json',
+  //       },
+  //     });
+  //     if (response.status === 200) {
+  //       console.log('데이터 전송 완료');
+  //       alert('일정 등록 완료!');
+  //       navigate('/schedule');
+  //     } else {
+  //       alert('일정 등록 실패');
+  //     }
+  //   } catch (error) {
+  //     console.error('데이터 전송 오류', error);
+  //   }
+  // };
+
+  const handleEditButtonClick = async () => {
+    try {
+      const formDataArray = coreContainers.map(container => {
+        const formData = new FormData();
+        container.images.forEach(image => {
+          formData.append('files', image);
+        });
+        return formData;
+      });
+
+      const imageUrlsArray = await Promise.all(
+        formDataArray.map(formData =>
+          axios.post('/address/api/images', formData, {
+            headers: {
+              Authorization: `Bearer ${Access_token}`,
+              'Content-Type': 'multipart/form-data',
+            },
+          })
+        )
+      );
+
+      const imageUrls = imageUrlsArray.map(response => response.data);
+
+      const detailRequests = coreContainers.map((container, index) => {
+        return {
+          date: container.startDate,
+          description: container.review,
+          images: imageUrls[index], // 이미지 URL을 사용
+          placeInfo: {
+            addressName: container.placeInfo?.addressName,
+            latitude: container.placeInfo?.position.lat,
+            longitude: container.placeInfo?.position.lng,
+            placeName: container.placeInfo?.placeName,
+            roadAddress: container.placeInfo?.roadAddressName,
+          },
+        };
+      });
+
+      const plannerRequest = {
         description: '',
         endDate: selectedDateRange[1],
         startDate: selectedDateRange[0],
         title: title,
-      },
-    };
+      };
 
-    try {
-      const response = await axios.post('/address/api/plans', dataToSend, {
-        headers: {
-          Authorization: `Bearer ${Access_token}`,
-          'Content-Type': 'application/json',
-        },
-      });
-      if (response.status === 200) {
-        console.log('데이터 전송 완료');
-        alert('일정 등록 완료!');
-        navigate('/schedule');
-      } else {
-        alert('일정 등록 실패');
-      }
-    } catch (error) {
-      console.error('데이터 전송 오류', error);
-    }
-  };
+      const dataToSend = {
+        plannerDetailListRequests: detailRequests,
+        plannerRequest: plannerRequest,
+      };
 
-  const handleEditButtonClick = async () => {
-    try {
-      const formData = new FormData();
-      // coreContainers.map((container, index) => {
-      //   container.images.map(image => {
-      //     formData.append('files', image);
-      //   });
-      // });
-      const allImages = coreContainers.flatMap(container => container.images);
-      allImages.forEach(image => {
-        formData.append('files', image);
-      });
-      for (const key of formData.values()) {
-        console.log(key);
-      }
-      console.log(formData);
-      const response = await axios.post('/address/api/images', formData, {
-        headers: {
-          Authorization: `Bearer ${Access_token}`,
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      if (response.status === 200) {
-        const imageUrls = response.data;
-        sendData(imageUrls);
-      } else {
-        alert('이미지 전송 실패');
+      console.log(dataToSend);
+      console.log(plannerRequest);
+      console.log(detailRequests[0].images);
+
+      try {
+        const response = await axios.post('/address/api/plans', dataToSend, {
+          headers: {
+            Authorization: `Bearer ${Access_token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+        if (response.status === 200) {
+          console.log('데이터 전송 완료');
+          alert('일정 등록 완료!');
+          navigate('/schedule');
+        } else {
+          alert('일정 등록 실패');
+        }
+      } catch (error) {
+        console.error('데이터 전송 오류', error);
       }
     } catch (error) {
       console.error('이벤트등록 error', error);
@@ -170,7 +221,7 @@ export default function EditSchedule() {
     <>
       <Header />
       <MainContainer>
-        <ScheduleMapLoader onPlacesSelected={handlePlaceSelected} />
+        <ScheduleMapLoader onPlacesSelected={(placeInfos: PlaceInfo[]) => handlePlaceSelected(placeInfos)} />
         <TitleContainer>
           <Title
             placeholder="제목 (최대 40자)"
