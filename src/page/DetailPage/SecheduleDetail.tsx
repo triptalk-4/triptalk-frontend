@@ -32,14 +32,14 @@ export default function SecheduleDetail() {
   const [plannerDetailResponseDate, setPlannerDetailResponseDate] = useState([]);
 
   useEffect(() => {
-    const Access_token = localStorage.getItem('token');
-    // const Email_token = localStorage.getItem('userEmail');
     const fetchDetailPage = async () => {
+      const Access_token = localStorage.getItem('token');
       try {
+        // 페이지 상세 내용 가져오기
         const response = await axios.get(`/address/api/plans/${plannerId}/details`, {
           headers: {
-            Authorization: `Bearer ${Access_token}`,
-          },
+            Authorization: `Bearer ${Access_token}`
+          }
         });
 
         if (response.data) {
@@ -59,23 +59,65 @@ export default function SecheduleDetail() {
           const userIds = plannerDetails.map((detail: DetailType) => detail.userId);
           setMatchUserNum(userIds[0]);
           console.log('setMatchUserNum', userIds);
-
-          // setIsAuthor(userId === Email_token);
         } else {
           console.log(response);
           alert('사용자 정보가 없습니다 상세페이지확인해주세요');
         }
+
+        const likeAndSaveResponse = await axios.get(`/address/api/likes/plans/user/check/save/like/${plannerId}`, {
+          headers: {
+            Authorization: `Bearer ${Access_token}`
+          }
+        });
+        const { userSaveYn, userLikeYn } = likeAndSaveResponse.data;
+        setIsLiked(userLikeYn === 'ok');
+        setIsSaved(userSaveYn === 'ok');
       } catch (error) {
-        console.error('사용자 정보 가져오기 오류 확인바람(상세페이지):', error);
+        console.error('상세 페이지 정보 및 좋아요/저장 상태 가져오기 오류:', error);
       }
     };
 
     fetchDetailPage();
-  }, [token]);
+  }, [token, plannerId]);
 
-  const handleLikeClick = () => {
-    setLikeCount(prevCount => (isLiked ? prevCount - 1 : prevCount + 1)); // 좋아요 상태에 따라 숫자 증가 혹은 감소
-    setIsLiked(!isLiked);
+  const handleLikeClick = async () => {
+    const Access_token = localStorage.getItem('token');
+    try {
+      // 좋아요 눌렸으면 취소
+      if (isLiked) {
+        const response = await axios.post(
+          `/address/api/likes/minus/plans/${plannerId}`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${Access_token}`
+            }
+          }
+        );
+        if (response.data.ok === '좋아요가 취소되었습니다') {
+          alert('좋아요가 취소되었습니다.');
+          setLikeCount(prevCount => prevCount - 1);
+          setIsLiked(false);
+        }
+      } else {
+        const response = await axios.post(
+          `/address/api/likes/plans/${plannerId}`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${Access_token}`
+            }
+          }
+        );
+        if (response.data.ok === '좋아요가 완료되었습니다') {
+          alert('좋아요가 완료되었습니다.');
+          setLikeCount(prevCount => prevCount + 1);
+          setIsLiked(true);
+        }
+      }
+    } catch (error) {
+      console.error('좋아요 기능에서 오류 발생:', error);
+    }
   };
 
   const handleSaveClick = () => {
@@ -87,8 +129,8 @@ export default function SecheduleDetail() {
       const token = localStorage.getItem('token');
       const response = await axios.delete(`/address/api/plans/${plannerId}`, {
         headers: {
-          Authorization: `Bearer ${token}`,
-        },
+          Authorization: `Bearer ${token}`
+        }
       });
       if (response.status === 204) {
         alert('게시물이 삭제되었습니다.');
