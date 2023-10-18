@@ -42,9 +42,9 @@ export default function SecheduleDetail() {
             Authorization: `Bearer ${Access_token}`,
           },
         });
-        //  console.log('Received data from the server:', response.data);
+        console.log('Received data from the server:', response.data);
 
-        if (response.data && response.data.plannerDetailResponse) {
+        if (response.data) {
           const { title, likeCount, startDate, endDate, nickname, profile, userId } = response.data;
           setTitle(title);
           setLikeCount(likeCount);
@@ -53,13 +53,13 @@ export default function SecheduleDetail() {
           setNickname(nickname);
           setUserImg(profile);
           setUserNum(userId);
-          console.log(userId);
+          console.log('setUserImg', userId);
           const plannerDetails = response.data.plannerDetailResponse;
           setPlannerDetailResponseDate(plannerDetails);
 
           const userIds = plannerDetails.map((detail: DetailType) => detail.userId);
-          setMatchUserNum(userIds);
-          console.log(userIds);
+          setMatchUserNum(userIds[0]);
+          console.log('setMatchUserNum', userIds);
 
           // setIsAuthor(userId === Email_token);
         } else {
