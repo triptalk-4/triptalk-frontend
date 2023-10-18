@@ -16,6 +16,7 @@ export default function EditMyInfo() {
   const [userImg, setUserImg] = useState('');
   const imgRef = useRef<HTMLInputElement | null>(null); // 초기에는 아무것도 가르키고 있지 않음
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [currentImg, setCurrentImg] = useState('');
 
   const dispatch = useDispatch();
 
@@ -39,6 +40,7 @@ export default function EditMyInfo() {
         if (response.data) {
           const { profile } = response.data;
           setUserImg(profile);
+          setCurrentImg(profile);
         } else {
           console.log(response);
           alert('사용자 정보가 없습니다 사진');
@@ -89,7 +91,7 @@ export default function EditMyInfo() {
     dispatch(setEditedAboutMe(newAboutMe));
   };
 
-  const handleEditButtonClick = async () => {
+  const handleUsrsEditButtonClick = async () => {
     // localStorage.removeItem('userInfo');
     //  localStorage.setItem('userInfo', JSON.stringify(updatedUserData));
 
@@ -101,7 +103,7 @@ export default function EditMyInfo() {
     formData.append('files', selectedFile);
 
     try {
-      const response = await axios.put('/address/api/images', formData, {
+      const response = await axios.post('/address/api/images', formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',
@@ -111,7 +113,9 @@ export default function EditMyInfo() {
       if (response.status === 200) {
         console.log('이미지 업로드 성공:', response.data);
 
-        const imageUrls = response.data;
+        const imageUrls = response.data[0];
+
+        console.log(selectedFile);
 
         const requestData = {
           email: currentEmail,
@@ -119,65 +123,34 @@ export default function EditMyInfo() {
           newNickname: editedNickname,
           newAboutMe: editedAboutMe,
           newImage: imageUrls,
-          oldImage: userImg,
+          oldImage: currentImg,
         };
+        console.log(imageUrls);
+        console.log(requestData);
 
-        const infoResponse = await axios.put('/address/api/users/update/profile', requestData, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json', // JSON 데이터로 전송
-          },
-        });
+        try {
+          const infoResponse = await axios.put('/address/api/users/update/profile', requestData, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          });
 
-        if (infoResponse.status === 200) {
-          console.log('정보 업로드 성공:', infoResponse.data);
-          navigate('/myinfo');
-        } else {
-          console.error('정보 업로드 서버 응답 오류:', infoResponse);
+          if (infoResponse.status === 200) {
+            console.log('정보 업로드 성공:', infoResponse.data);
+            navigate('/myinfo');
+          } else {
+            alert('정보 업로드 실패');
+          }
+        } catch (error) {
+          console.error('정보 업로드 오류:', error);
         }
       } else {
         console.error('이미지 업로드 서버 응답 오류:', response);
       }
     } catch (error) {
-      console.error('업로드 오류:', error);
+      console.error('이미지 업로드 오류:', error);
     }
-
-    // if (selectedFile) {
-    //   const formData = new FormData();
-    //   formData.append('files', selectedFile);
-    //   formData.append(
-    //     'request',
-    //     JSON.stringify({
-    //       email: currentEmail,
-    //       newPassword: editedNewPassword,
-    //       newNickname: editedNickname,
-    //       newAboutMe: editedAboutMe,
-    //     })
-    //   );
-
-    //   try {
-    //     console.log(token);
-    //     console.log('currentEmail', currentEmail);
-    //     // 서버에 PUT 요청 보내기
-    //     const response = await axios.put('/address/api/users/update/profile', formData, {
-    //       headers: {
-    //         Authorization: `Bearer ${token}`,
-    //         'Content-Type': 'multipart/form-data',
-    //       },
-    //     });
-
-    //     if (response.status === 200) {
-    //       console.log('수정 성공:', response.data);
-
-    //       // 성공한 경우의 처리 로직 추가
-    //       navigate('/myinfo');
-    //     } else {
-    //       console.error('서버 응답 오류:', response);
-    //     }
-    //   } catch (error) {
-    //     console.error('수정 오류:', error);
-    //   }
-    // }
   };
 
   const handleBackButtonClick = () => {
@@ -210,7 +183,7 @@ export default function EditMyInfo() {
         </MyInfoEditForm>
 
         <MyInfoBtnSetting>
-          <EditBtn type="submit" onClick={handleEditButtonClick} disabled={!isButtonEnabled}>
+          <EditBtn type="submit" onClick={handleUsrsEditButtonClick} disabled={!isButtonEnabled}>
             수정하기
           </EditBtn>
           <CancelBtn onClick={handleBackButtonClick}>취소</CancelBtn>

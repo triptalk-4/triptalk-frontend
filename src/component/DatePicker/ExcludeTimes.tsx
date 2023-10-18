@@ -1,4 +1,3 @@
-import React from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { ko } from 'date-fns/esm/locale';
@@ -20,7 +19,6 @@ export default function ExcludeTimes(props: ExcludeTimesProps) {
     <DatePicker
       locale={ko}
       selected={startDate}
-      minDate={new Date()}
       onChange={handleDatePickerChange}
       showTimeSelect
       excludeTimes={[]}
