@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import styled from 'styled-components';
-import { MAIN_COLOR } from '../color/color';
+import { MAIN_COLOR, YELLOW_COLOR } from '../color/color';
 
 const KAKAO_API_KEY = '2cc45017695a59169a1f649bdc77f123';
 
@@ -123,7 +123,9 @@ const ScheduleMapLoader: React.FC<SchduleMapLoaderProps> = ({ onPlacesSelected }
 
   return (
     <>
-      <Con id="map" style={{ width: '80%', height: '400px' }}></Con>
+      <Con
+        id="map"
+        style={{ width: '80%', height: '400px', border: `1px solid ${YELLOW_COLOR}`, borderRadius: '4px' }}></Con>
       <Input type="text" placeholder="장소 검색" onChange={e => setSearchPlace(e.target.value)} />
       <Button onClick={handleSearch}>검색</Button>
     </>
@@ -139,11 +141,12 @@ const Con = styled.div`
 const Input = styled.input`
   padding: 10px;
   font-size: 16px;
-  border: 1px solid #ccc;
+  border: 1px solid ${MAIN_COLOR};
   border-radius: 4px;
   transition: border-color 0.3s;
   outline: none;
   margin-bottom: 4px;
+  margin-right: 4px;
   &:focus {
     border-color: ${MAIN_COLOR};
   }
@@ -151,7 +154,9 @@ const Input = styled.input`
 const Button = styled.button`
   padding: 10px;
   font-size: 16px;
-  border: 1px solid #ccc;
+  color: #fff;
+  border: 1px solid ${MAIN_COLOR};
+  background: ${MAIN_COLOR};
   border-radius: 4px;
   transition: border-color 0.3s;
   outline: none;

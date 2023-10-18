@@ -7,6 +7,7 @@ import ExcludeTimes from '../../component/DatePicker/ExcludeTimes';
 import ScheduleMapLoader from '../../component/ScheduleMap';
 import { useNavigate } from 'react-router';
 import axios from 'axios';
+import { MAIN_COLOR } from '../../color/color';
 interface PlaceInfo {
   position: {
     lat: number;
@@ -269,15 +270,16 @@ export default function EditSchedule() {
                   <img key={imgIndex} src={preview} alt={`Image ${imgIndex}`} />
                 ))}
               </ImagePreviews>
-              <CommentTextArea
-                type="text"
-                placeholder="장소리뷰"
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                  const updatedContainers = [...coreContainers];
-                  updatedContainers[index].review = e.target.value;
-                  setCoreContainers(updatedContainers);
-                }}
-              />
+              <div>
+                <CommentTextArea
+                  placeholder="장소리뷰"
+                  onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
+                    const updatedContainers = [...coreContainers];
+                    updatedContainers[index].review = e.target.value;
+                    setCoreContainers(updatedContainers);
+                  }}
+                />
+              </div>
             </ImgContainer>
             <ButtonContainer>
               {coreContainers.length < 5 && <PlusButton onClick={handleAddCoreContainer}>+</PlusButton>}
@@ -309,8 +311,10 @@ const TitleContainer = styled.div`
 
 const Title = styled.input.attrs({ maxLength: 40 })`
   width: 40%;
-  height: 30px;
-  border: 2px solid black;
+  height: 40px;
+  border: 2px solid ${MAIN_COLOR};
+  border-radius: 4px;
+  padding: 8px 0px 8px 4px;
   outline: none;
   margin-right: 36%;
 `;
@@ -337,7 +341,8 @@ const ImagePreviews = styled.div`
   display: flex;
   flex-wrap: wrap;
   margin-top: 10px;
-  border: 2px solid black;
+  border: 2px solid ${MAIN_COLOR};
+  border-radius: 4px;
   width: 300px;
   height: 227px;
 
@@ -358,17 +363,19 @@ const CustomFileInputLabel = styled.label`
   padding: 10px 20px;
   cursor: pointer;
   margin-top: 20px;
+  border-radius: 4px;
 `;
 
-const CommentTextArea = styled.input`
+const CommentTextArea = styled.textarea`
   width: 500px;
   height: 100px;
-  border: 2px solid black;
+  border: 2px solid ${MAIN_COLOR};
   outline: none;
   resize: none;
   position: absolute;
   top: 34px;
   left: 47%;
+  border-radius: 4px;
 `;
 
 const ButtonContainer = styled.div`
@@ -385,7 +392,7 @@ const PlusButton = styled.button`
   border-radius: 10px;
   margin-right: 10px;
   border: none;
-  background-color: black;
+  background-color: ${MAIN_COLOR};
   color: white;
   cursor: pointer;
 `;
@@ -395,7 +402,7 @@ const MinusButton = styled.button`
   height: 30px;
   border-radius: 10px;
   border: none;
-  background-color: black;
+  background-color: ${MAIN_COLOR};
   color: white;
   cursor: pointer;
 `;
@@ -405,7 +412,7 @@ const EditButton = styled.button`
   height: 30px;
   margin-right: 30px;
   border: none;
-  background-color: #f46222;
+  background-color: ${MAIN_COLOR};
   border-radius: 25px;
   color: white;
   cursor: pointer;
