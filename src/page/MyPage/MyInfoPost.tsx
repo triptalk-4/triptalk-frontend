@@ -26,7 +26,6 @@ export default function MyInfoPost() {
   const token = useSelector((state: RootState) => state.token.token);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(6);
-  // const [hasMoreData, setHasMoreData] = useState(true);
 
   // useEffect(() => {
   //   fetch('/api/posts')
@@ -96,7 +95,7 @@ export default function MyInfoPost() {
           const Access_token = localStorage.getItem('token');
 
           axios
-            .get(`/address/api/posts?page=${nextPage}&pageSize=${pageSize}`, {
+            .get(`/address/api/users/planners/byUser?page=${nextPage}&pageSize=${pageSize}`, {
               headers: {
                 Authorization: `Bearer ${Access_token}`,
               },
