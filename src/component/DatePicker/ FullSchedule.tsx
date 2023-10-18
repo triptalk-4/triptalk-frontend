@@ -18,7 +18,6 @@ export default function FullSchedule(props: FullScheduleProps) {
       selectsRange={true}
       startDate={startDate}
       endDate={endDate}
-      minDate={new Date()}
       onChange={update => {
         onDateRangeChange(update);
       }}
