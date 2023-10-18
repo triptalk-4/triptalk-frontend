@@ -24,7 +24,7 @@ export default function MyInfoPost() {
   const targetRef = useRef<HTMLDivElement | null>(null);
 
   const token = useSelector((state: RootState) => state.token.token);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(6);
 
   // useEffect(() => {

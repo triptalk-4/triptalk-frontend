@@ -307,6 +307,7 @@ const TitleContainer = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
+  justify-content: space-between;
 `;
 
 const Title = styled.input.attrs({ maxLength: 40 })`
@@ -316,7 +317,6 @@ const Title = styled.input.attrs({ maxLength: 40 })`
   border-radius: 4px;
   padding: 8px 0px 8px 4px;
   outline: none;
-  margin-right: 36%;
 `;
 
 const CoreContainer = styled.div`
@@ -324,6 +324,8 @@ const CoreContainer = styled.div`
   height: 340px;
   margin-top: 5%;
   background-color: #f7eae4;
+  padding: 15px;
+  position: relative;
 `;
 
 const CoreTopContainer = styled.div`
@@ -334,7 +336,7 @@ const CoreTopContainer = styled.div`
 `;
 
 const ImgContainer = styled.div`
-  position: relative;
+  // position: relative;
 `;
 
 const ImagePreviews = styled.div`
@@ -344,7 +346,7 @@ const ImagePreviews = styled.div`
   border: 2px solid ${MAIN_COLOR};
   border-radius: 4px;
   width: 300px;
-  height: 227px;
+  height: 195px;
 
   img {
     max-width: 80px;
@@ -373,16 +375,17 @@ const CommentTextArea = styled.textarea`
   outline: none;
   resize: none;
   position: absolute;
-  top: 34px;
-  left: 47%;
+  top: 35%;
+  right: 15px;
   border-radius: 4px;
 `;
 
 const ButtonContainer = styled.div`
   width: 100%;
-  height: 40px;
+  height: 60px;
   display: flex;
   justify-content: center;
+  align-items: center;
   margin-top: 10px;
 `;
 
