@@ -30,7 +30,7 @@ export default function EditSchedule() {
 
   const [title, setTitle] = useState('');
   // const [reviews, setReviews] = useState('');
-  const [selectedPlaceInfo, setSelectedPlaceInfo] = useState<PlaceInfo | null>(null);
+  const [placeInfo, setPlaceInfo] = useState<PlaceInfo[]>([]);
 
   const [selectedDateRange, setSelectedDateRange] = useState<[Date | null, Date | null]>([null, null]);
 
@@ -65,13 +65,30 @@ export default function EditSchedule() {
   };
 
   const handlePlaceSelected = (placeInfos: PlaceInfo[]) => {
-    const updatedContainers = [...coreContainers];
-    placeInfos.forEach((placeInfo, index) => {
-      if (index < updatedContainers.length) {
-        updatedContainers[index].placeInfo = placeInfo;
+    // const updatedContainers = [...coreContainers];
+    // placeInfos.forEach((placeInfo, index) => {
+    //   if (index < updatedContainers.length) {
+    //     updatedContainers[index].placeInfo = placeInfo;
+    //   }
+    // });
+    // setCoreContainers(prevContainers =>
+    //   prevContainers.map((container, index) => ({
+    //     ...container,
+    //     placeInfo: placeInfos[index] || container.placeInfo,
+    //   }))
+    // );
+    setPlaceInfo(placeInfos);
+    const updatedContainers = coreContainers.map((container, index) => {
+      if (index < placeInfos.length) {
+        return {
+          ...container,
+          placeInfo: placeInfos[index],
+        };
       }
+      return container;
     });
     setCoreContainers(updatedContainers);
+    console.log(placeInfos);
   };
 
   const handleAddCoreContainer = () => {
@@ -80,10 +97,8 @@ export default function EditSchedule() {
         ...prevContainers,
         { images: [], imagePreviews: [], startDate: null, review: '', placeInfo: null },
       ]);
-      console.log(coreContainers[0].images[0]);
     }
   };
-
   const handleRemoveCoreContainer = () => {
     if (coreContainers.length > 1) {
       setCoreContainers(prevContainers => prevContainers.slice(0, prevContainers.length - 1));
@@ -161,8 +176,9 @@ export default function EditSchedule() {
       const imageUrls = imageUrlsArray.map(response => response.data);
 
       const detailRequests = coreContainers.map((container, index) => {
+        console.log('PlaceInfo in detailRequests', container.placeInfo);
         return {
-          date: container.startDate,
+          date: container.startDate?.toISOString,
           description: container.review,
           images: imageUrls[index], // 이미지 URL을 사용
           placeInfo: {
@@ -174,7 +190,6 @@ export default function EditSchedule() {
           },
         };
       });
-
       const plannerRequest = {
         description: '',
         endDate: selectedDateRange[1],
@@ -187,9 +202,7 @@ export default function EditSchedule() {
         plannerRequest: plannerRequest,
       };
 
-      console.log(dataToSend);
-      console.log(plannerRequest);
-      console.log(detailRequests[0].images);
+      console.log('dataToSend', dataToSend);
 
       try {
         const response = await axios.post('/address/api/plans', dataToSend, {
@@ -240,7 +253,6 @@ export default function EditSchedule() {
                   setCoreContainers(updatedContainers);
                 }}
               />
-              {/* <AddressSearch /> */}
             </CoreTopContainer>
             <ImgContainer>
               <CustomFileInput
