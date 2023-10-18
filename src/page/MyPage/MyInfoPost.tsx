@@ -88,7 +88,7 @@ export default function MyInfoPost() {
       entries.forEach(entry => {
         if (entry && entry.isIntersecting) {
           const nextPage = page + 1;
-
+          //const nextPageSize = pageSize + 3;
           setPageSize(prevPageSize => prevPageSize + 3);
 
           setIsLoading(true);
@@ -107,6 +107,7 @@ export default function MyInfoPost() {
               const ThreeItems = newData.slice(0, 3);
               setPostsData(prevData => [...prevData, ...ThreeItems]);
               setPage(nextPage);
+              // setPageSize(nextPageSize);
             })
             .catch(error => console.error('데이터 요청 실패:', error));
         }
