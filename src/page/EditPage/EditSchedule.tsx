@@ -179,7 +179,7 @@ export default function EditSchedule() {
       const detailRequests = coreContainers.map((container, index) => {
         console.log('PlaceInfo in detailRequests', container.placeInfo);
         return {
-          date: container.startDate?.toISOString,
+          date: container.startDate,
           description: container.review,
           images: imageUrls[index], // 이미지 URL을 사용
           placeInfo: {
