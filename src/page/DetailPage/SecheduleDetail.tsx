@@ -10,10 +10,6 @@ import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import moment from 'moment';
 
-interface DetailType {
-  userId: number;
-}
-
 export default function SecheduleDetail() {
   const [likeCount, setLikeCount] = useState(0); // 좋아요 카운트 상태
   const [isLiked, setIsLiked] = useState(false); // 좋아요 상태 (눌렸는지 안눌렸는지)
@@ -23,13 +19,14 @@ export default function SecheduleDetail() {
   const [endDate, setEndDate] = useState<number>(0);
   const [nickname, setNickname] = useState('');
   const [userImg, setUserImg] = useState('');
-  const [userNum, setUserNum] = useState('');
-  const [matchUserNum, setMatchUserNum] = useState('');
+
+  const [userEmail, setUserEmail] = useState('');
 
   const token = useSelector((state: RootState) => state.token.token);
   const { plannerId } = useParams();
   const navigate = useNavigate();
   const [plannerDetailResponseDate, setPlannerDetailResponseDate] = useState([]);
+  const Email_token = localStorage.getItem('userEmail');
 
   useEffect(() => {
     const fetchDetailPage = async () => {
@@ -43,7 +40,7 @@ export default function SecheduleDetail() {
         });
 
         if (response.data) {
-          const { title, likeCount, startDate, endDate, nickname, profile, userId } = response.data;
+          const { title, likeCount, startDate, endDate, nickname, profile, email } = response.data;
 
           setTitle(title);
           setLikeCount(likeCount);
@@ -51,14 +48,10 @@ export default function SecheduleDetail() {
           setEndDate(endDate);
           setNickname(nickname);
           setUserImg(profile);
-          setUserNum(userId);
-          console.log('setUserImg', userId);
+          setUserEmail(email);
+
           const plannerDetails = response.data.plannerDetailResponse;
           setPlannerDetailResponseDate(plannerDetails);
-
-          const userIds = plannerDetails.map((detail: DetailType) => detail.userId);
-          setMatchUserNum(userIds[0]);
-          console.log('setMatchUserNum', userIds);
         } else {
           console.log(response);
           alert('사용자 정보가 없습니다 상세페이지확인해주세요');
@@ -144,6 +137,7 @@ export default function SecheduleDetail() {
   // 시간
   const startTime = moment(startDate).add(9, 'hours').format('YYYY-MM-DD');
   const endTime = moment(endDate).add(9, 'hours').format('YYYY-MM-DD');
+  
   return (
     <DetailContainer>
       <PostContainer>
@@ -157,7 +151,7 @@ export default function SecheduleDetail() {
               </DateSpan>
             </Title>
             <UserWarp>
-              {userNum === matchUserNum && (
+              {userEmail === Email_token && (
                 <>
                   <DeleteBtn onClick={deletePost}>삭제</DeleteBtn>
                   <EidtBtn>수정</EidtBtn>

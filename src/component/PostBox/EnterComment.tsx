@@ -1,13 +1,50 @@
 import { PiArrowFatLineUpBold } from 'react-icons/pi';
 import styled from 'styled-components';
 import { GRAY_COLOR, MAIN_COLOR } from '../../color/color';
+import { useState } from 'react';
+import axios from 'axios';
+import { useParams } from 'react-router';
 
 export default function EnterComment() {
+  const [comment, setComment] = useState('');
+  const Access_token = localStorage.getItem('token');
+  const { plannerDetailId } = useParams();
+
+  const handleCommentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setComment(e.target.value);
+  };
+
+  const handleCommentSubmit = async () => {
+    const newComment = { text: comment };
+
+    try {
+      const response = await axios.post(
+        `/address/api/plans/detail/${plannerDetailId}/reply`, // plannerDetailId 변수로 대체
+        newComment,
+        {
+          headers: {
+            Authorization: `Bearer ${Access_token}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        console.log('데이터 전송 완료');
+        alert('댓글 등록 완료!');
+      } else {
+        alert('댓글 등록 실패');
+      }
+    } catch (error) {
+      console.error('데이터 전송 오류', error);
+    }
+  };
+
   return (
     <CommentInputContainer>
       <InputWrap>
-        <CommentInput placeholder="댓글 달기" />
-        <EnterBtn type="button" />
+        <CommentInput placeholder="댓글 달기" value={comment} onChange={handleCommentChange} />
+        <EnterBtn type="button" onClick={handleCommentSubmit} />
       </InputWrap>
     </CommentInputContainer>
   );

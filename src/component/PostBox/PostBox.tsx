@@ -56,11 +56,13 @@ export default function PostBox({ data }: { data: DetailType }) {
     fetchDetailPage();
   }, [token]);
   //console.log('userId:', data.userId);
-  // console.log('날짜:', data.date);
+  //console.log('날짜:', data.date);
   // console.log('리뷰:', data.description);
   // console.log('위치:', data.placeResponse.addressName);
 
-  const scheduleDate = moment(data.date).add(9, 'hours').format('YYYY-MM-DD HH:mm');
+  const scheduleDate = moment(data.date, 'YYYY-MM-DDTHH:mm:ss').add(9, 'hours').format('YYYY-MM-DD HH:mm');
+  // console.log(scheduleDate);
+
   return (
     <PostBoxContainer>
       <Postdiv>
