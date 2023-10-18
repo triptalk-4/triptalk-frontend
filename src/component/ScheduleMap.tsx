@@ -15,6 +15,14 @@ interface PlaceInfo {
   roadAddressName: string;
 }
 
+interface PlaceSearchResult {
+  place_name: string;
+  address_name: string;
+  road_address_name: string;
+  x: string;
+  y: string;
+}
+
 interface SchduleMapLoaderProps {
   onPlacesSelected: (PlaceInfo: PlaceInfo[]) => void;
 }
@@ -47,62 +55,69 @@ const ScheduleMapLoader: React.FC<SchduleMapLoaderProps> = ({ onPlacesSelected }
     };
   }, []);
 
-  useEffect(() => {
-    console.log(selectedPlaceInfos);
-  }, [selectedPlaceInfos]);
-
-  const handleSearch = () => {
+  const handleSearch = async () => {
     if (map) {
       const ps = new kakao.maps.services.Places();
 
-      // 입력한 키워드로 장소를 검색
-      ps.keywordSearch(searchPlace, (data, status) => {
-        if (status === kakao.maps.services.Status.OK) {
-          const bounds = new kakao.maps.LatLngBounds();
-          const newPlaceInfos: PlaceInfo[] = [];
-          for (let i = 0; i < 1; i++) {
-            const place = data[i];
-
-            if (place) {
-              const selectedPlaceInfo = {
-                position: {
-                  lat: Number(place.y),
-                  lng: Number(place.x),
-                },
-                addressName: place.address_name,
-                placeName: place.place_name,
-                roadAddressName: place.road_address_name,
-              };
-
-              newPlaceInfos.push(selectedPlaceInfo);
+      try {
+        // 입력한 키워드로 장소를 검색
+        const data = await new Promise<PlaceSearchResult[]>((resolve, reject) => {
+          ps.keywordSearch(searchPlace, (data, status) => {
+            if (status === kakao.maps.services.Status.OK) {
+              resolve(data);
+            } else {
+              reject(status);
             }
+          });
+        });
 
-            // 마커를 생성하고 지도에 표시
-            const marker = new kakao.maps.Marker({
-              map,
-              position: new kakao.maps.LatLng(Number(place.y), Number(place.x)),
-            });
-            kakao.maps.event.addListener(marker, 'click', () => {
-              // 마커 클릭 이벤트
-              const infowindow = new kakao.maps.InfoWindow({
-                content: `<div style="padding: 5px; font-size:12px">${place.place_name}</div>`,
-              });
-              infowindow.open(map, marker);
-              const position = marker.getPosition();
-              console.log('마커 클릭 위치:', position.getLat(), position.getLng());
-            });
+        const bounds = new kakao.maps.LatLngBounds();
+        const newPlaceInfos: PlaceInfo[] = [];
 
-            bounds.extend(new kakao.maps.LatLng(Number(place.y), Number(place.x)));
+        for (let i = 0; i < 1; i++) {
+          const place = data[0];
+
+          if (place) {
+            const selectedPlaceInfo: PlaceInfo = {
+              position: {
+                lat: Number(place.y),
+                lng: Number(place.x),
+              },
+              addressName: place.address_name,
+              placeName: place.place_name,
+              roadAddressName: place.road_address_name,
+            };
+
+            newPlaceInfos.push(selectedPlaceInfo);
           }
 
-          setSelectedPlaceInfos([...selectedPlaceInfos, ...newPlaceInfos]);
+          // 마커를 생성하고 지도에 표시
+          const marker = new kakao.maps.Marker({
+            map,
+            position: new kakao.maps.LatLng(Number(place.y), Number(place.x)),
+          });
+          kakao.maps.event.addListener(marker, 'click', () => {
+            const infowindow = new kakao.maps.InfoWindow({
+              content: `<div style="padding:5px; font-size:12px">${place.place_name}</div>`,
+            });
+            infowindow.open(map, marker);
+          });
 
-          onPlacesSelected(selectedPlaceInfos);
-          console.log(selectedPlaceInfos);
-          // 검색된 장소 위치를 기준으로 지도 범위를 재설정
-          map.setBounds(bounds);
+          bounds.extend(new kakao.maps.LatLng(Number(place.y), Number(place.x)));
         }
-      });
+
+        // 이전 상태와 새로운 장소 정보를 합치고 상태를 업데이트
+        setSelectedPlaceInfos(prevPlaceInfos => {
+          const updatedPlaceInfos = [...prevPlaceInfos, ...newPlaceInfos];
+          onPlacesSelected(updatedPlaceInfos);
+          return updatedPlaceInfos;
+        });
+
+        // 검색된 장소 위치를 기준으로 지도 범위를 재설정
+        map.setBounds(bounds);
+      } catch (error) {
+        console.error('검색 오류:', error);
+      }
     }
   };
 
