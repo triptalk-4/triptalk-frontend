@@ -26,7 +26,6 @@ export default function MyInfoPost() {
   const token = useSelector((state: RootState) => state.token.token);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(6);
-  // const [hasMoreData, setHasMoreData] = useState(true);
 
   // useEffect(() => {
   //   fetch('/api/posts')
@@ -41,7 +40,7 @@ export default function MyInfoPost() {
     const Access_token = localStorage.getItem('token');
     const fetchUserPost = async () => {
       try {
-        const response = await axios.get(`/address/api/users/planners/byUser?${page}&pageSize=6`, {
+        const response = await axios.get(`/address/api/users/planners/byUser?${page}&pageSize=${pageSize}`, {
           headers: {
             Authorization: `Bearer ${Access_token}`,
           },
@@ -87,7 +86,8 @@ export default function MyInfoPost() {
     function handleIntersection(entries: IntersectionObserverEntry[]) {
       entries.forEach(entry => {
         if (entry && entry.isIntersecting) {
-          setPage(prevPage => prevPage + 1);
+          const nextPage = page + 1;
+          //const nextPageSize = pageSize + 3;
           setPageSize(prevPageSize => prevPageSize + 3);
 
           setIsLoading(true);
@@ -95,7 +95,7 @@ export default function MyInfoPost() {
           const Access_token = localStorage.getItem('token');
 
           axios
-            .get(`/address/api/posts?page=${page}&pageSize=${pageSize}`, {
+            .get(`/address/api/users/planners/byUser?page=${nextPage}&pageSize=${pageSize}`, {
               headers: {
                 Authorization: `Bearer ${Access_token}`,
               },
@@ -103,7 +103,10 @@ export default function MyInfoPost() {
             .then(response => {
               setIsLoading(false);
               const newData = response.data.content;
-              setPostsData(prevData => [...prevData, ...newData]);
+              const ThreeItems = newData.slice(0, 3);
+              setPostsData(prevData => [...prevData, ...ThreeItems]);
+              setPage(nextPage);
+              // setPageSize(nextPageSize);
             })
             .catch(error => console.error('데이터 요청 실패:', error));
         }

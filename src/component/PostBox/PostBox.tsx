@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import { formatDateTime } from '../../utils/formatDateTime';
+import moment from 'moment';
 
 interface DetailType {
   userId: number;
@@ -59,6 +59,8 @@ export default function PostBox({ data }: { data: DetailType }) {
   // console.log('날짜:', data.date);
   // console.log('리뷰:', data.description);
   // console.log('위치:', data.placeResponse.addressName);
+
+  const scheduleDate = moment(data.date).add(9, 'hours').format('YYYY-MM-DD HH:mm');
   return (
     <PostBoxContainer>
       <Postdiv>
@@ -67,7 +69,7 @@ export default function PostBox({ data }: { data: DetailType }) {
           <PostText>
             <PostInfoTime>
               <Time />
-              {formatDateTime(data.date)}
+              {scheduleDate}
             </PostInfoTime>
             <PostInfoAddress>
               <Location />

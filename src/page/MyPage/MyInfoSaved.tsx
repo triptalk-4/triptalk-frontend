@@ -1,28 +1,65 @@
 import { useState, useEffect, useRef } from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { RootState } from '../../store/store';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
+import formatDate from '../../utils/formatDate';
+import { BsEyeFill, BsFillSuitHeartFill } from 'react-icons/bs';
 
 interface Save {
   id: number;
-  imgSrc: string;
+  thumbnail: string;
   title: string;
-  schedule: string;
-  date: string;
+  createAt: number;
+  likeCount: number;
+  views: number;
+  plannerId: number;
 }
 
 export default function MyInfoSaved() {
   const [savedData, setSavedData] = useState<Save[]>([]); // msw
   const [containerClassName, setContainerClassName] = useState('flex-start');
   const [isLoading, setIsLoading] = useState(true); // 로딩 상태
-  const targetRef = useRef(null);
+  const targetRef = useRef<HTMLDivElement | null>(null);
+
+  const token = useSelector((state: RootState) => state.token.token);
+  const [page, setPage] = useState(0);
+  const [pageSize, setPageSize] = useState(6);
+
+  // useEffect(() => {
+  //   fetch('/address/api/saved')
+  //     .then(res => res.json())
+  //     .then(data => {
+  //       setSavedData(data.slice(0, 6));
+  //     })
+  //     .catch(error => console.error('가짜 API 요청 실패:', error));
+  // }, []);
 
   useEffect(() => {
-    fetch('/address/api/saved')
-      .then(res => res.json())
-      .then(data => {
-        setSavedData(data.slice(0, 6));
-      })
-      .catch(error => console.error('가짜 API 요청 실패:', error));
-  }, []);
+    const Access_token = localStorage.getItem('token');
+    const fetchUserPost = async () => {
+      try {
+        const response = await axios.get(`/address/api/users/planners/userSave?${page}&pageSize=${pageSize}`, {
+          headers: {
+            Authorization: `Bearer ${Access_token}`,
+          },
+        });
+
+        if (response.data) {
+          const { content } = response.data;
+          setSavedData(content);
+        } else {
+          console.log(response);
+          alert('사용자 정보가 없습니다 로그인확인해주세요');
+        }
+      } catch (error) {
+        console.error('사용자 정보 가져오기 오류 확인바람(저장함):', error);
+      }
+    };
+    console.log('저장함', savedData);
+    fetchUserPost();
+  }, [token, page, pageSize]);
 
   useEffect(() => {
     if (savedData.length >= 2) {
@@ -46,17 +83,27 @@ export default function MyInfoSaved() {
     function handleIntersection(entries: IntersectionObserverEntry[]) {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          const startIndex = savedData.length;
+          const nextPage = page + 1;
 
-          const endIndex = startIndex + 3;
+          setPageSize(prevPageSize => prevPageSize + 3);
 
-          fetch(`/address/api/saved?page=${endIndex / 3 + 1}`)
-            .then(res => res.json())
-            .then(data => {
-              setIsLoading(true);
+          setIsLoading(true);
 
-              setSavedData(prevData => [...prevData, ...data.slice(startIndex, endIndex)]);
+          const Access_token = localStorage.getItem('token');
+
+          axios
+            .get(`/address/api/users/planners/userSave?page=${nextPage}&pageSize=${pageSize}`, {
+              headers: {
+                Authorization: `Bearer ${Access_token}`,
+              },
+            })
+            .then(response => {
               setIsLoading(false);
+              const newData = response.data.content;
+              const ThreeItems = newData.slice(0, 3);
+              setSavedData(prevData => [...prevData, ...ThreeItems]);
+              setPage(nextPage);
+              // setPageSize(nextPageSize);
             })
             .catch(error => console.error('데이터 요청 실패:', error));
         }
@@ -84,16 +131,29 @@ export default function MyInfoSaved() {
 const MySaved = ({ savedData }: { savedData: Save }) => {
   return (
     <BoxWrap>
-      <Box>
-        <ImgDiv>
-          <TextImg src={savedData.imgSrc} alt="첫번째 이미지" />
-        </ImgDiv>
-        <Info>
-          <TitleText>{savedData.title}</TitleText>
-          <ScheduleeText>{savedData.schedule}</ScheduleeText>
-          <DateText>{savedData.date}</DateText>
-        </Info>
-      </Box>
+      {' '}
+      <Link to={`/page/${savedData.plannerId}`} key={savedData.plannerId}>
+        <Box>
+          <ImgDiv>
+            <TextImg src={savedData.thumbnail} alt="첫번째 이미지" />
+          </ImgDiv>
+          <Info>
+            <TopContainer>
+              <IconWithCount>
+                <Heart />
+                <Count>{savedData.likeCount}</Count>
+              </IconWithCount>
+              <IconWithCount>
+                <LookUp />
+                <Count>{savedData.views}</Count>
+              </IconWithCount>
+            </TopContainer>
+            <TitleText>{savedData.title}</TitleText>
+            <ScheduleeText>{savedData.title}</ScheduleeText>
+            <DateText>{formatDate(savedData.createAt)}</DateText>
+          </Info>
+        </Box>
+      </Link>
     </BoxWrap>
   );
 };
@@ -150,6 +210,7 @@ const ImgDiv = styled.div`
   width: 300px;
   height: 350px;
 `;
+
 const TextImg = styled.img`
   width: 100%;
   height: 100%;
@@ -175,6 +236,32 @@ const Info = styled.div`
   ${Box}:hover & {
     opacity: 1;
   }
+`;
+
+const TopContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+`;
+
+const IconWithCount = styled.div`
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+`;
+
+const Count = styled.div`
+  margin-left: 5px;
+`;
+
+const Heart = styled(BsFillSuitHeartFill)`
+  width: 30px;
+  height: 30px;
+`;
+
+const LookUp = styled(BsEyeFill)`
+  width: 30px;
+  height: 30px;
 `;
 
 const TitleText = styled.h2`
