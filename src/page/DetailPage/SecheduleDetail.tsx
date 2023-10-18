@@ -7,8 +7,8 @@ import { FaSave } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import axios from 'axios';
-import formatDate from '../../utils/formatDate';
 import { useParams, useNavigate } from 'react-router-dom';
+import moment from 'moment';
 
 interface DetailType {
   userId: number;
@@ -19,8 +19,8 @@ export default function SecheduleDetail() {
   const [isLiked, setIsLiked] = useState(false); // 좋아요 상태 (눌렸는지 안눌렸는지)
   const [isSaved, setIsSaved] = useState(false);
   const [title, setTitle] = useState('');
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+  const [startDate, setStartDate] = useState<number>(0);
+  const [endDate, setEndDate] = useState<number>(0);
   const [nickname, setNickname] = useState('');
   const [userImg, setUserImg] = useState('');
   const [userNum, setUserNum] = useState('');
@@ -30,7 +30,6 @@ export default function SecheduleDetail() {
   const { plannerId } = useParams();
   const navigate = useNavigate();
   const [plannerDetailResponseDate, setPlannerDetailResponseDate] = useState([]);
-  // const [isAuthor, setIsAuthor] = useState(false);
 
   useEffect(() => {
     const Access_token = localStorage.getItem('token');
@@ -42,10 +41,10 @@ export default function SecheduleDetail() {
             Authorization: `Bearer ${Access_token}`,
           },
         });
-        console.log('Received data from the server:', response.data);
 
         if (response.data) {
           const { title, likeCount, startDate, endDate, nickname, profile, userId } = response.data;
+
           setTitle(title);
           setLikeCount(likeCount);
           setStartDate(startDate);
@@ -100,6 +99,9 @@ export default function SecheduleDetail() {
     }
   };
 
+  // 시간
+  const startTime = moment(startDate).add(9, 'hours').format('YYYY-MM-DD');
+  const endTime = moment(endDate).add(9, 'hours').format('YYYY-MM-DD');
   return (
     <DetailContainer>
       <PostContainer>
@@ -109,7 +111,7 @@ export default function SecheduleDetail() {
             <Title>
               {title}
               <DateSpan>
-                {formatDate(Date.parse(startDate))} ~ {formatDate(Date.parse(endDate))}
+                {startTime} ~ {endTime}
               </DateSpan>
             </Title>
             <UserWarp>
