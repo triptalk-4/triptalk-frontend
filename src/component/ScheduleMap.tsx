@@ -125,7 +125,7 @@ const ScheduleMapLoader: React.FC<SchduleMapLoaderProps> = ({ onPlacesSelected }
     <>
       <Con
         id="map"
-        style={{ width: '80%', height: '400px', border: `1px solid ${YELLOW_COLOR}`, borderRadius: '4px' }}></Con>
+        style={{ width: '100%', height: '400px', border: `1px solid ${YELLOW_COLOR}`, borderRadius: '4px' }}></Con>
       <Input type="text" placeholder="장소 검색" onChange={e => setSearchPlace(e.target.value)} />
       <Button onClick={handleSearch}>검색</Button>
     </>
