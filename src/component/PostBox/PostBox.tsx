@@ -10,10 +10,11 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import { formatDateTime } from '../../utils/formatDateTime';
 
 interface DetailType {
   userId: number;
-  date: string;
+  date: number;
   placeResponse: {
     placeName: string;
     roadAddress: string;
@@ -66,7 +67,7 @@ export default function PostBox({ data }: { data: DetailType }) {
           <PostText>
             <PostInfoTime>
               <Time />
-              {data.date}
+              {formatDateTime(data.date)}
             </PostInfoTime>
             <PostInfoAddress>
               <Location />
