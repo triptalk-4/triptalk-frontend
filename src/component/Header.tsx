@@ -17,6 +17,7 @@ export default function Header() {
   const tabsRef = useRef<HTMLUListElement>(null);
   const location = useLocation();
   const [userUniqueId, setUserUniqueId] = useState('');
+  console.log(userUniqueId);
 
   // useEffect(() => {
   //   const storedUserData = localStorage.getItem('userInfo');
