@@ -123,10 +123,11 @@ export default function SecheduleDetail() {
             Authorization: `Bearer ${Access_token}`,
           },
         });
-        console.log(response);
-        if (response.data.ok === '저장이 취소되었습니다') {
+        if (response.data.ok === '저장함 삭제가 완료되었습니다.') {
           alert('저장이 취소되었습니다.');
           setIsSaved(false);
+        } else {
+          alert('저장이 취소되지 않았습니다.'); // 저장 취소 실패시 알림
         }
       } else {
         const response = await axios.post(`/address/api/likes/plans/user/save/planner/${plannerId}`, null, {
@@ -134,14 +135,16 @@ export default function SecheduleDetail() {
             Authorization: `Bearer ${Access_token}`,
           },
         });
-        console.log(response);
-        if (response.data.ok === '저장이 완료되었습니다') {
+        if (response.data.ok === '저장 추가가 완료되었습니다.') {
           alert('저장이 완료되었습니다.');
           setIsSaved(true);
+        } else {
+          alert('저장이 되지 않았습니다.'); // 저장 실패시 알림
         }
       }
     } catch (error) {
       console.error('저장함 기능에서 오류 발생:', error);
+      alert('저장 기능에서 오류가 발생했습니다.');
     }
   };
 
