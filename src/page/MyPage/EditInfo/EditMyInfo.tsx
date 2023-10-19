@@ -17,6 +17,7 @@ export default function EditMyInfo() {
   const imgRef = useRef<HTMLInputElement | null>(null); // 초기에는 아무것도 가르키고 있지 않음
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [currentImg, setCurrentImg] = useState('');
+  const [userUniqueId, setUserUniqueId] = useState('');
 
   const dispatch = useDispatch();
 
@@ -38,9 +39,10 @@ export default function EditMyInfo() {
         });
 
         if (response.data) {
-          const { profile } = response.data;
+          const { profile, userId } = response.data;
           setUserImg(profile);
           setCurrentImg(profile);
+          setUserUniqueId(userId);
         } else {
           console.log(response);
           alert('사용자 정보가 없습니다 사진');
@@ -138,7 +140,7 @@ export default function EditMyInfo() {
 
           if (infoResponse.status === 200) {
             console.log('정보 업로드 성공:', infoResponse.data);
-            navigate('/myinfo');
+            navigate(`/myinfo:${userUniqueId}`);
           } else {
             alert('정보 업로드 실패');
           }
@@ -154,7 +156,7 @@ export default function EditMyInfo() {
   };
 
   const handleBackButtonClick = () => {
-    navigate('/myinfo'); // 이전 페이지로 이동
+    navigate(`/myinfo:${userUniqueId}`); // 이전 페이지로 이동
   };
 
   return (
