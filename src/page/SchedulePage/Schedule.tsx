@@ -141,7 +141,7 @@ function Schedule() {
         <GridContainer>
           {visibleItems.map((item: Item) => (
             <Link to={`/page/${item.plannerId}`} key={item.plannerId}>
-              <StyledPost key={item.plannerId}>
+              <StyledPost>
                 <div className="info-container">
                   <TopContainer>
                     <IconWithCount>
