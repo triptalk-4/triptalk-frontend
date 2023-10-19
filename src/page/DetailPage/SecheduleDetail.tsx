@@ -9,6 +9,14 @@ import { RootState } from '../../store/store';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import moment from 'moment';
+import ScheduleMapLoader from '../../component/ScheduleMap';
+
+interface PlannerDetail {
+  placeResponse: {
+    latitude: number;
+    longitude: number;
+  };
+}
 
 export default function SecheduleDetail() {
   const [likeCount, setLikeCount] = useState(0); // 좋아요 카운트 상태
@@ -19,6 +27,7 @@ export default function SecheduleDetail() {
   const [endDate, setEndDate] = useState<number>(0);
   const [nickname, setNickname] = useState('');
   const [userImg, setUserImg] = useState('');
+  const [userPing, setUserPing] = useState('');
 
   const [userEmail, setUserEmail] = useState('');
 
@@ -52,9 +61,14 @@ export default function SecheduleDetail() {
 
           const plannerDetails = response.data.plannerDetailResponse;
           setPlannerDetailResponseDate(plannerDetails);
-        } else {
-          console.log(response);
-          alert('사용자 정보가 없습니다 상세페이지확인해주세요');
+
+          const allCoordinates = plannerDetails.map((detail: PlannerDetail) => {
+            return {
+              latitude: detail.placeResponse.latitude,
+              longitude: detail.placeResponse.longitude,
+            };
+          });
+          setUserPing(allCoordinates);
         }
 
         const likeAndSaveResponse = await axios.get(`/address/api/likes/plans/user/check/save/like/${plannerId}`, {
