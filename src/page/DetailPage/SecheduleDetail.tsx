@@ -118,29 +118,23 @@ export default function SecheduleDetail() {
     try {
       // 저장 눌렸으면 취소
       if (isSaved) {
-        const response = await axios.post(
-          `/address/api/likes/plans/user/save/planner/${plannerId}`,
-          {},
-          {
-            headers: {
-              Authorization: `Bearer ${Access_token}`,
-            },
-          }
-        );
+        const response = await axios.delete(`/address/api/likes/plans/user/cancel/planner/${plannerId}`, {
+          headers: {
+            Authorization: `Bearer ${Access_token}`,
+          },
+        });
+        console.log(response);
         if (response.data.ok === '저장이 취소되었습니다') {
           alert('저장이 취소되었습니다.');
           setIsSaved(false);
         }
       } else {
-        const response = await axios.post(
-          `/address/api/likes/plans/user/save/planner/${plannerId}`,
-          {},
-          {
-            headers: {
-              Authorization: `Bearer ${Access_token}`,
-            },
-          }
-        );
+        const response = await axios.post(`/address/api/likes/plans/user/save/planner/${plannerId}`, null, {
+          headers: {
+            Authorization: `Bearer ${Access_token}`,
+          },
+        });
+        console.log(response);
         if (response.data.ok === '저장이 완료되었습니다') {
           alert('저장이 완료되었습니다.');
           setIsSaved(true);
@@ -159,6 +153,7 @@ export default function SecheduleDetail() {
           Authorization: `Bearer ${token}`,
         },
       });
+
       if (response.status === 204) {
         alert('게시물이 삭제되었습니다.');
         navigate('/schedule');
