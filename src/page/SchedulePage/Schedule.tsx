@@ -27,6 +27,7 @@ interface Item {
 function Schedule() {
   const dispatch = useDispatch();
   const [data, setData] = useState<Item[]>([]);
+  console.log(data);
   const [visibleItems, setVisibleItems] = useState<Item[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [showTopButton, setShowTopButton] = useState(false);

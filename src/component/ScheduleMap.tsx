@@ -31,7 +31,7 @@ const ScheduleMapLoader: React.FC<SchduleMapLoaderProps> = ({ onPlacesSelected }
   const [searchPlace, setSearchPlace] = useState('');
   const [map, setMap] = useState<kakao.maps.Map | null>(null);
   const [selectedPlaceInfos, setSelectedPlaceInfos] = useState<PlaceInfo[]>([]);
-
+  console.log(selectedPlaceInfos);
   useEffect(() => {
     const script = document.createElement('script');
     script.async = true;
