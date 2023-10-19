@@ -88,8 +88,11 @@ const LoginForm = () => {
         alert('유효하지 않은 사용자 입니다.');
       }
     } catch (error: any) {
-      console.log(location.origin);
-      alert(`${error.response.data}`);
+      if (error.response.data) {
+        alert('아이디와 비밀번호가 일치하지 않습니다.');
+      } else {
+        alert('서버와의 연결이 끊어졌습니다.');
+      }
     }
   };
 
