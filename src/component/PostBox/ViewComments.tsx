@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import { BsThreeDots } from 'react-icons/bs';
+import styled, { css } from 'styled-components';
+
 export default function ViewComments() {
   return (
     <UserCommentContainer>
@@ -11,7 +11,10 @@ export default function ViewComments() {
               <UserName>zerobase</UserName>
               좋아요~~1
             </UserComment>
-            <Dots />
+            <EnDdiv>
+              <EditBtn>수정</EditBtn>
+              <DeleteBtn>삭제</DeleteBtn>
+            </EnDdiv>
           </UserBox>
         </CommentBox>
         <CommentBox>
@@ -21,7 +24,10 @@ export default function ViewComments() {
               <UserName>zerobase</UserName>
               좋아요~~2
             </UserComment>
-            <Dots />
+            <EnDdiv>
+              <EditBtn>수정</EditBtn>
+              <DeleteBtn>삭제</DeleteBtn>
+            </EnDdiv>
           </UserBox>
         </CommentBox>
         <CommentBox>
@@ -31,7 +37,10 @@ export default function ViewComments() {
               <UserName>zerobase</UserName>
               좋아요~~3
             </UserComment>
-            <Dots />
+            <EnDdiv>
+              <EditBtn>수정</EditBtn>
+              <DeleteBtn>삭제</DeleteBtn>
+            </EnDdiv>
           </UserBox>
         </CommentBox>
         <CommentBox>
@@ -41,7 +50,10 @@ export default function ViewComments() {
               <UserName>zerobase</UserName>
               좋아요~~4
             </UserComment>
-            <Dots />
+            <EnDdiv>
+              <EditBtn>수정</EditBtn>
+              <DeleteBtn>삭제</DeleteBtn>
+            </EnDdiv>
           </UserBox>
         </CommentBox>
         <CommentBox>
@@ -51,7 +63,10 @@ export default function ViewComments() {
               <UserName>zerobase</UserName>
               좋아요~~5
             </UserComment>
-            <Dots />
+            <EnDdiv>
+              <EditBtn>수정</EditBtn>
+              <DeleteBtn>삭제</DeleteBtn>
+            </EnDdiv>
           </UserBox>
         </CommentBox>
         <CommentBox>
@@ -61,7 +76,10 @@ export default function ViewComments() {
               <UserName>zerobase</UserName>
               좋아요~~6
             </UserComment>
-            <Dots />
+            <EnDdiv>
+              <EditBtn>수정</EditBtn>
+              <DeleteBtn>삭제</DeleteBtn>
+            </EnDdiv>
           </UserBox>
         </CommentBox>
         <CommentBox>
@@ -71,7 +89,10 @@ export default function ViewComments() {
               <UserName>zerobase</UserName>
               좋아요~~7
             </UserComment>
-            <Dots />
+            <EnDdiv>
+              <EditBtn>수정</EditBtn>
+              <DeleteBtn>삭제</DeleteBtn>
+            </EnDdiv>
           </UserBox>
         </CommentBox>
         <CommentBox>
@@ -81,7 +102,10 @@ export default function ViewComments() {
               <UserName>zerobase</UserName>
               좋아요~~8
             </UserComment>
-            <Dots />
+            <EnDdiv>
+              <EditBtn>수정</EditBtn>
+              <DeleteBtn>삭제</DeleteBtn>
+            </EnDdiv>
           </UserBox>
         </CommentBox>
       </UserCommentContainerInner>
@@ -146,7 +170,24 @@ const UserName = styled.h1`
   font-weight: 700;
 `;
 
-const Dots = styled(BsThreeDots)`
-  font-size: 15px;
+const EnDdiv = styled.div``;
+
+const EnDStyle = css`
+  background-color: transparent;
+  border: none;
+  font-size: 10px;
   cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
+const EditBtn = styled.button`
+  ${EnDStyle}
+  color: #b8b8b8;
+`;
+const DeleteBtn = styled.button`
+  ${EnDStyle}
+  color: #ff8181;
 `;

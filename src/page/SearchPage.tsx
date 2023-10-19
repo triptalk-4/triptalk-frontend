@@ -9,15 +9,9 @@ const SearchPage = () => {
         <Logo to="/main">
           <LogoImg src="/img/logo.png" alt="로고" />
         </Logo>
-        {/* <Avatar to="/myinfo">
-          <AvatarImg src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" />
-        </Avatar> */}
       </Gnb>
       <Container>
         <SearchBody />
-        {/* <SearchPopular />
-        <Divider />
-        <SearchRecent /> */}
       </Container>
     </>
   );

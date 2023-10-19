@@ -27,6 +27,8 @@ export default function MyInfo() {
   const [userNickname, setUserNickname] = useState('');
   const [userImg, setUserImg] = useState('');
   const [userIntro, setUserIntro] = useState('');
+  const [userUniqueId, setUserUniqueId] = useState('');
+  const [anotheruserId, setAnotheruserId] = useState('');
 
   const token = useSelector((state: RootState) => state.token.token);
 
@@ -65,10 +67,11 @@ export default function MyInfo() {
         });
 
         if (response.data) {
-          const { profile, nickname, aboutMe } = response.data;
+          const { profile, nickname, aboutMe, userId } = response.data;
           setUserImg(profile);
           setUserNickname(nickname);
           setUserIntro(aboutMe);
+          setUserUniqueId(userId);
         } else {
           console.log(response);
           alert('사용자 정보가 없습니다 로그인확인해주세요');
@@ -80,6 +83,31 @@ export default function MyInfo() {
 
     fetchUserInfo(); // 비동기 함수 호출
   }, [token, userNickname, userImg, userIntro]);
+
+  useEffect(() => {
+    const Access_token = localStorage.getItem('token');
+    const fetchSerch = async () => {
+      try {
+        const response = await axios.get('/address/api/users/profile', {
+          headers: {
+            Authorization: `Bearer ${Access_token}`,
+          },
+        });
+
+        if (response.data) {
+          const { userId } = response.data;
+          setAnotheruserId(userId);
+        } else {
+          console.log(response);
+          alert('사용자 정보가 없습니다 로그인확인해주세요');
+        }
+      } catch (error) {
+        console.error('사용자 정보 가져오기 오류 확인바람(내정보):', error);
+      }
+    };
+
+    fetchSerch();
+  }, [token]);
 
   const handleLogOut = () => {
     const storeUserData = localStorage.getItem('token');
@@ -99,14 +127,16 @@ export default function MyInfo() {
         <UserImg src={userImg} />
         <UserNickNameContainer>
           <NickName>{userNickname}</NickName>
-          <Setting to="/editmyinfo">
-            <AiOutlineSetting />
-          </Setting>
+          {userUniqueId === anotheruserId ? (
+            <Setting to="/editmyinfo">
+              <AiOutlineSetting />
+            </Setting>
+          ) : null}
         </UserNickNameContainer>
         <IntroTextContainer>
           <IntroText>{userIntro}</IntroText>
         </IntroTextContainer>
-        <UserLogoutBtn onClick={handleLogOut}>로그아웃</UserLogoutBtn>
+        {userUniqueId === anotheruserId ? <UserLogoutBtn onClick={handleLogOut}>로그아웃</UserLogoutBtn> : null}
       </UserImgContainer>
       <ContentContainer>
         <ContentUl>
