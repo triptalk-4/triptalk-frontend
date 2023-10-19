@@ -6,7 +6,7 @@ import 'swiper/css/navigation';
 import { EffectCoverflow, Pagination, Navigation } from 'swiper/modules';
 import styled, { css } from 'styled-components';
 import { MAIN_COLOR } from '../../color/color';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 
 interface TravelCarouselProps {
   data: travelItem[];
@@ -42,23 +42,21 @@ export default function TravelCarousel({ data }: TravelCarouselProps) {
         modules={[EffectCoverflow, Pagination, Navigation]}>
         {data.map((item, index) => (
           <StyledSwiperSlide key={index}>
-            <Link to="/page/:id">
-              <SwiperImage src={item.imgUrl} />
-              {/* 나중에 SwiperImg컨포넌트 추가 예정 */}
-              <SwiperText>
-                <SwiperTopText>
-                  <SwiperTitle> {item.title.length > 10 ? item.title.slice(0, 10) + '...' : item.title}</SwiperTitle>
-                  <SwiperNickname>
-                    <UserProfile src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" />
-                    {item.nickname}
-                  </SwiperNickname>
-                </SwiperTopText>
-                <SwiperBottomText>
-                  <SwiperAddress>{item.address}</SwiperAddress>
-                  <SwiperDate>{item.date}</SwiperDate>
-                </SwiperBottomText>
-              </SwiperText>
-            </Link>
+            <SwiperImage src={item.imgUrl} />
+            {/* 나중에 SwiperImg컨포넌트 추가 예정 */}
+            <SwiperText>
+              <SwiperTopText>
+                <SwiperTitle> {item.title.length > 10 ? item.title.slice(0, 10) + '...' : item.title}</SwiperTitle>
+                <SwiperNickname>
+                  <UserProfile src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" />
+                  {item.nickname}
+                </SwiperNickname>
+              </SwiperTopText>
+              <SwiperBottomText>
+                <SwiperAddress>{item.address}</SwiperAddress>
+                <SwiperDate>{item.date}</SwiperDate>
+              </SwiperBottomText>
+            </SwiperText>
           </StyledSwiperSlide>
         ))}
       </StyledSwiper>
