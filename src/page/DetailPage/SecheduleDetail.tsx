@@ -9,7 +9,6 @@ import { RootState } from '../../store/store';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import moment from 'moment';
-import ScheduleMapLoader from '../../component/ScheduleMap';
 
 interface PlannerDetail {
   placeResponse: {
@@ -28,7 +27,7 @@ export default function SecheduleDetail() {
   const [nickname, setNickname] = useState('');
   const [userImg, setUserImg] = useState('');
   const [userPing, setUserPing] = useState('');
-
+  console.log(userPing);
   const [userEmail, setUserEmail] = useState('');
 
   const token = useSelector((state: RootState) => state.token.token);
