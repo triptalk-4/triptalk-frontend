@@ -14,6 +14,7 @@ import SecheduleDetail from './page/DetailPage/SecheduleDetail';
 import EditSchedule from './page/EditPage/EditSchedule';
 import Travel from './page/TravelPage/Travel';
 import AuthHandler from './component/SocialLogin/AuthHandler';
+import GoogleLogin from './component/SocialLogin/GoogleLogin';
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
         <Route path="/search" element={<SearchPage />} />
         <Route path="/editschedule" element={<EditSchedule />} />
         <Route path="/auth" Component={AuthHandler} />
+        <Route path="/googleLogin" Component={GoogleLogin} />
       </Routes>
     </BrowserRouter>
   );

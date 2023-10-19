@@ -1,6 +1,6 @@
 import axios from 'axios';
 import KakaoLogin from '../../component/SocialLogin/KakaoLogin';
-import GoogleLogin from '../../component/SocialLogin/GoogleLogin';
+import GoogleLogin from '../../component/SocialLogin/Google';
 import { useDispatch } from 'react-redux';
 import { setToken } from '../../store/tokenSlice';
 
