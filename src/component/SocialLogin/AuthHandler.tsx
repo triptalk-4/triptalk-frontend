@@ -18,7 +18,7 @@ const AuthHandler = () => {
 
   const sendCodeToServer = (code: string) => {
     axios
-      .post('', { code })
+      .post('/address/kakao/login', { code })
       .then(response => {
         console.log(response);
       })
