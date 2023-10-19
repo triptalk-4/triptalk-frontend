@@ -62,7 +62,7 @@ export default function Header() {
             <LogoImg src="/img/logo.png" alt="로고" />
           </Logo>
         </LogoDiv>
-        <User to={'/myinfo'}>
+        <User to={`/myinfo:${userUniqueId}`}>
           <UserImg src={userImg} />
         </User>
       </Gnb>
