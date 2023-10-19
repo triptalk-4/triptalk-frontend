@@ -32,7 +32,7 @@ export default function EditSchedule() {
   const [title, setTitle] = useState('');
   // const [reviews, setReviews] = useState('');
   const [placeInfo, setPlaceInfo] = useState<PlaceInfo[]>([]);
-
+  console.log(placeInfo);
   const [selectedDateRange, setSelectedDateRange] = useState<[Date | null, Date | null]>([null, null]);
 
   const handleDateRangeChange = (newDateRange: [Date | null, Date | null]) => {

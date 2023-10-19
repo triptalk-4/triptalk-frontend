@@ -43,19 +43,3 @@ const LogoImg = styled.img`
   width: 200px;
   height: auto;
 `;
-
-// const Avatar = styled(Link)`
-//   height: 50px;
-// `;
-
-// const AvatarImg = styled.img`
-//   width: 50px;
-//   height: 50px;
-//   border-radius: 100%;
-// `;
-
-const Divider = styled.div`
-  width: 100%;
-  border-top: 1px solid #242424;
-  margin-top: 60px;
-`;

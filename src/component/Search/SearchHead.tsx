@@ -10,7 +10,7 @@ const SearchHead = () => {
   const navigator = useNavigate();
 
   const [keyword, setKeyword] = useState('%^&');
-
+  console.log(keyword);
   const handleSearch = (event: { target: { value: SetStateAction<string> } }) => {
     if (event.target.value === '') {
       setKeyword('%^&');
