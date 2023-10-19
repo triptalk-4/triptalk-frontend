@@ -199,7 +199,7 @@ export default function SecheduleDetail() {
               {userEmail === Email_token && (
                 <>
                   <DeleteBtn onClick={deletePost}>삭제</DeleteBtn>
-                  <EidtBtn>수정</EidtBtn>
+                  <EditBtn onClick={() => navigate('/EditSchedule')}>수정</EditBtn>
                 </>
               )}
               <UserName>
@@ -288,7 +288,7 @@ const UserBtnStyle = css`
   cursor: pointer;
 `;
 
-const EidtBtn = styled.button`
+const EditBtn = styled.button`
   ${UserBtnStyle}
   background-color: ${MAIN_COLOR};
   color: #fff;
