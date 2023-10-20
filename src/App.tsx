@@ -25,7 +25,7 @@ function App() {
         <Route element={<MainLayout />}>
           <Route path="/main" element={<Main />} />
           <Route path="/travel" element={<Travel />} />
-          <Route path="/myinfo" element={<MyInfo />} />
+          <Route path="/myinfo/:userId" element={<MyInfo />} />
           <Route path="/lookmap" element={<LookMap />} />
           <Route path="/page/:plannerId" element={<SecheduleDetail />} />
           <Route path="/editSchedule/:plannerId" element={<EditSchedule />} />
