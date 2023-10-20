@@ -127,7 +127,7 @@ const HeadWrap = styled.div`
 `;
 
 const Input = styled.input`
-  width: 70%;
+  width: 100%;
   height: 40px;
   &:focus {
     outline: none;

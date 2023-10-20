@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { AiOutlineSetting } from 'react-icons/ai';
 import { DEFAULT_FONT_COLOR, GRAY_COLOR, LIGHT_GRAY_COLOR } from '../../color/color';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import MyInfoPost from './MyInfoPost';
 import MyInfoSaved from './MyInfoSaved';
@@ -12,6 +12,7 @@ import { RootState } from '../../store/store';
 
 export default function MyInfo() {
   const navigate = useNavigate();
+  const { userId } = useParams();
   const [currentTab, setTab] = useState(0); // 탭기능
 
   const myInfoMenuTabs = [
@@ -28,7 +29,10 @@ export default function MyInfo() {
   const [userImg, setUserImg] = useState('');
   const [userIntro, setUserIntro] = useState('');
   const [userUniqueId, setUserUniqueId] = useState('');
-  const [anotheruserId, setAnotheruserId] = useState('');
+  const [anotherUserId, setAnotherUserId] = useState('');
+  const [anotheruserNickname, setAnotheruserNickname] = useState('');
+  const [anotheruserAboutMe, setAnotheruserAboutMe] = useState('');
+  const [anotheruserProfile, setAnotheruserProfile] = useState('');
 
   const token = useSelector((state: RootState) => state.token.token);
 
@@ -84,7 +88,6 @@ export default function MyInfo() {
     fetchUserInfo();
   }, [token, userNickname, userImg, userIntro]);
 
-  const userId = 3; // 검색된 유저아이디
   useEffect(() => {
     const Access_token = localStorage.getItem('token');
     const fetchSerch = async () => {
@@ -96,8 +99,11 @@ export default function MyInfo() {
         });
 
         if (response.data) {
-          const { userId } = response.data;
-          setAnotheruserId(userId);
+          const { userId, nickname, aboutMe, profile } = response.data;
+          setAnotherUserId(userId);
+          setAnotheruserNickname(nickname);
+          setAnotheruserAboutMe(aboutMe);
+          setAnotheruserProfile(profile);
         } else {
           console.log(response);
           alert('사용자 정보가 없습니다 로그인확인해주세요');
@@ -108,8 +114,10 @@ export default function MyInfo() {
     };
 
     fetchSerch();
-  }, [token]);
+  }, [token, userId]);
 
+  console.log(anotherUserId);
+  console.log(userUniqueId);
   const handleLogOut = () => {
     const storeUserData = localStorage.getItem('token');
     if (storeUserData) {
@@ -124,34 +132,48 @@ export default function MyInfo() {
 
   return (
     <MyPageContainer>
-      <UserImgContainer>
-        <UserImg src={userImg} />
-        <UserNickNameContainer>
-          <NickName>{userNickname}</NickName>
-          {userUniqueId === anotheruserId ? (
+      {userUniqueId === anotherUserId ? (
+        <UserImgContainer>
+          <UserImg src={userImg} />
+          <UserNickNameContainer>
+            <NickName>{userNickname}</NickName>
             <Setting to="/editmyinfo">
               <AiOutlineSetting />
             </Setting>
-          ) : null}
-        </UserNickNameContainer>
-        <IntroTextContainer>
-          <IntroText>{userIntro}</IntroText>
-        </IntroTextContainer>
-        {userUniqueId === anotheruserId ? <UserLogoutBtn onClick={handleLogOut}>로그아웃</UserLogoutBtn> : null}
-      </UserImgContainer>
+          </UserNickNameContainer>
+          <IntroTextContainer>
+            <IntroText>{userIntro}</IntroText>
+          </IntroTextContainer>
+          <UserLogoutBtn onClick={handleLogOut}>로그아웃</UserLogoutBtn>
+        </UserImgContainer>
+      ) : (
+        <UserImgContainer>
+          <UserImg src={anotheruserProfile} />
+          <UserNickNameContainer>
+            <NickName>{anotheruserNickname}</NickName>
+          </UserNickNameContainer>
+          <IntroTextContainer>
+            <IntroText>{anotheruserAboutMe}</IntroText>
+          </IntroTextContainer>
+        </UserImgContainer>
+      )}
+
       <ContentContainer>
         <ContentUl>
-          {myInfoMenuTabs.map((menu, index) => (
-            <ContentItem
-              key={menu.name}
-              className={currentTab === index ? 'active' : ''}
-              onClick={() => selectMenuHandler(index)}>
-              {menu.name}
-            </ContentItem>
-          ))}
+          {myInfoMenuTabs
+            .filter(menu => menu.name !== '저장함') // "저장함" 탭 제거
+            .map((menu, index) => (
+              <ContentItem
+                key={menu.name}
+                className={currentTab === index ? 'active' : ''}
+                onClick={() => selectMenuHandler(index)}>
+                {menu.name}
+              </ContentItem>
+            ))}
         </ContentUl>
         {myInfoMenuTabs[currentTab].content}
       </ContentContainer>
+
       <TopButton />
     </MyPageContainer>
   );
@@ -197,7 +219,6 @@ const IntroText = styled.p`
 
 const NickName = styled.p`
   font-size: 25px;
-  padding-left: 25px;
 `;
 
 const Setting = styled(Link)`
