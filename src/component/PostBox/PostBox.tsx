@@ -14,6 +14,7 @@ import moment from 'moment';
 interface DetailType {
   userId: number;
   date: number;
+  plannerDetailId: number;
   placeResponse: {
     placeName: string;
     roadAddress: string;
@@ -54,6 +55,7 @@ export default function PostBox({ data }: { data: DetailType }) {
 
     fetchDetailPage();
   }, [token]);
+  console.log(plannerId);
   //console.log('userId:', data.userId);
   //console.log('날짜:', data.date);
   // console.log('리뷰:', data.description);
@@ -79,7 +81,7 @@ export default function PostBox({ data }: { data: DetailType }) {
             <PostInfoDescription>{data.description}</PostInfoDescription>
           </PostText>
           <PostBorder></PostBorder>
-          <ViewComments/>
+          <ViewComments plannerDetailId={data.plannerDetailId} />
         </PostInfo>
       </Postdiv>
     </PostBoxContainer>
