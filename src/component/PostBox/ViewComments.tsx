@@ -3,20 +3,19 @@ import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import styled, { css } from 'styled-components';
 import { RootState } from '../../store/store';
-import { useParams } from 'react-router';
 import { PiArrowFatLineUpBold } from 'react-icons/pi';
 import { GRAY_COLOR, MAIN_COLOR } from '../../color/color';
 
-export default function ViewComments() {
-  const { plannerDetailId } = useParams();
+export default function ViewComments({ plannerDetailId }: { plannerDetailId: number }) {
   const [commentUserImg, setCommentUserImg] = useState('');
   const [commentUserNickname, setCommentUserNickname] = useState('');
   const [commentUserReply, setCommentUserReply] = useState('');
+  const [newComment, setNewComment] = useState('');
 
   const token = useSelector((state: RootState) => state.token.token);
 
   useEffect(() => {
-    const fetchDetailPage = async () => {
+    const fetchtComment = async () => {
       const Access_token = localStorage.getItem('token');
       try {
         const response = await axios.get(`/address/api/reply/detail/replies/${plannerDetailId}`, {
@@ -24,7 +23,7 @@ export default function ViewComments() {
             Authorization: `Bearer ${Access_token}`,
           },
         });
-        console.log(plannerDetailId);
+
         if (response.data) {
           const { nickname, profile, reply } = response.data;
           setCommentUserNickname(nickname);
@@ -36,8 +35,40 @@ export default function ViewComments() {
       }
     };
 
-    fetchDetailPage();
-  }, [token, plannerDetailId]);
+    fetchtComment();
+  }, [token]);
+
+  console.log(plannerDetailId);
+
+  const handleCommentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNewComment(e.target.value); // 사용자의 입력을 업데이트
+  };
+
+  const handleCommentSubmit = async () => {
+    try {
+      const Access_token = localStorage.getItem('token');
+      const response = await axios.post(
+        `/address/api/reply/detail/${plannerDetailId}`,
+        {
+          reply: newComment,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${Access_token}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        console.log('댓글 업로드 성공:', response.data);
+      } else {
+        console.error('서버 응답 오류:', response);
+      }
+    } catch (error) {
+      console.error('댓글 보내기 오류:', error);
+    }
+  };
 
   return (
     <>
@@ -57,12 +88,12 @@ export default function ViewComments() {
             </UserBox>
           </CommentBox>
         </UserCommentContainerInner>
-      </UserCommentContainer>{' '}
+      </UserCommentContainer>
       <PostBorder></PostBorder>
       <CommentInputContainer>
         <InputWrap>
-          <CommentInput placeholder="댓글 달기" />
-          <EnterBtn type="button" />
+          <CommentInput placeholder="댓글 달기" value={newComment} onChange={handleCommentChange} />
+          <EnterBtn type="button" onClick={handleCommentSubmit} />
         </InputWrap>
       </CommentInputContainer>
     </>
