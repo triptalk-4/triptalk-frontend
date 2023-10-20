@@ -27,7 +27,6 @@ export default function SecheduleDetail() {
   const [nickname, setNickname] = useState('');
   const [userImg, setUserImg] = useState('');
   const [userPing, setUserPing] = useState('');
-  console.log(userPing);
   const [userEmail, setUserEmail] = useState('');
 
   const token = useSelector((state: RootState) => state.token.token);
