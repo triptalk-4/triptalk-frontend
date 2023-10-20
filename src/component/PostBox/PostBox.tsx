@@ -3,7 +3,6 @@ import { BiTime } from 'react-icons/bi';
 import { GrLocation } from 'react-icons/gr';
 import { GRAY_COLOR } from '../../color/color';
 import ViewComments from './ViewComments';
-import EnterComment from './EnterComment';
 import PostImgs from '../Carousel/PostImgs';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -80,9 +79,7 @@ export default function PostBox({ data }: { data: DetailType }) {
             <PostInfoDescription>{data.description}</PostInfoDescription>
           </PostText>
           <PostBorder></PostBorder>
-          <ViewComments />
-          <PostBorder></PostBorder>
-          <EnterComment />
+          <ViewComments/>
         </PostInfo>
       </Postdiv>
     </PostBoxContainer>
