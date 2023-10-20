@@ -3,19 +3,33 @@ import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import styled, { css } from 'styled-components';
 import { RootState } from '../../store/store';
-import { PiArrowFatLineUpBold } from 'react-icons/pi';
-import { GRAY_COLOR, MAIN_COLOR } from '../../color/color';
 
-export default function ViewComments({ plannerDetailId }: { plannerDetailId: number }) {
-  const [commentUserImg, setCommentUserImg] = useState('');
-  const [commentUserNickname, setCommentUserNickname] = useState('');
-  const [commentUserReply, setCommentUserReply] = useState('');
-  const [newComment, setNewComment] = useState('');
+interface ItemType {
+  nickname: string;
+  profile: string;
+  reply: string;
+}
+
+export default function ViewComments({
+  plannerDetailId,
+  commentUserNickname,
+  commentUserProfile,
+  commentUserRreply,
+}: {
+  plannerDetailId: number;
+  commentUserNickname: string;
+  commentUserProfile: string;
+  commentUserRreply: string;
+}) {
+  const [, setCommentUserNickname] = useState('');
+  const [, setCommentUserProfile] = useState('');
+  const [, setCommentUserReply] = useState('');
 
   const token = useSelector((state: RootState) => state.token.token);
 
   useEffect(() => {
     const fetchtComment = async () => {
+      console.log('댓글어디:', plannerDetailId);
       const Access_token = localStorage.getItem('token');
       try {
         const response = await axios.get(`/address/api/reply/detail/replies/${plannerDetailId}`, {
@@ -25,61 +39,37 @@ export default function ViewComments({ plannerDetailId }: { plannerDetailId: num
         });
 
         if (response.data) {
-          const { nickname, profile, reply } = response.data;
-          setCommentUserNickname(nickname);
-          setCommentUserImg(profile);
-          setCommentUserReply(reply);
+          const commentData = response.data.map((item: ItemType) => {
+            return {
+              nickname: item.nickname,
+              profile: item.profile,
+              reply: item.reply,
+            };
+          });
+          setCommentUserNickname(commentData.map((item: ItemType) => item.nickname));
+          setCommentUserProfile(commentData.map((item: ItemType) => item.profile));
+          setCommentUserReply(commentData.map((item: ItemType) => item.reply));
         }
+        console.log('response.data', response.data[0]);
       } catch (error) {
         console.error('댓글 가지고오기 오류:', error);
       }
     };
 
     fetchtComment();
-  }, [token]);
-
-  console.log(plannerDetailId);
-
-  const handleCommentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNewComment(e.target.value); // 사용자의 입력을 업데이트
-  };
-
-  const handleCommentSubmit = async () => {
-    try {
-      const Access_token = localStorage.getItem('token');
-      const response = await axios.post(
-        `/address/api/reply/detail/${plannerDetailId}`,
-        {
-          reply: newComment,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${Access_token}`,
-            'Content-Type': 'application/json',
-          },
-        }
-      );
-
-      if (response.status === 200) {
-        console.log('댓글 업로드 성공:', response.data);
-      } else {
-        console.error('서버 응답 오류:', response);
-      }
-    } catch (error) {
-      console.error('댓글 보내기 오류:', error);
-    }
-  };
+  }, [token, plannerDetailId]);
+  // console.log('번호', plannerDetailId);
 
   return (
     <>
       <UserCommentContainer>
         <UserCommentContainerInner>
           <CommentBox>
-            <UserImg src={commentUserImg} />
+            <UserImg src={commentUserProfile} />
             <UserBox>
               <UserComment>
                 <UserName>{commentUserNickname}</UserName>
-                {commentUserReply}
+                {commentUserRreply}
               </UserComment>
               <EnDdiv>
                 <EditBtn>수정</EditBtn>
@@ -89,13 +79,6 @@ export default function ViewComments({ plannerDetailId }: { plannerDetailId: num
           </CommentBox>
         </UserCommentContainerInner>
       </UserCommentContainer>
-      <PostBorder></PostBorder>
-      <CommentInputContainer>
-        <InputWrap>
-          <CommentInput placeholder="댓글 달기" value={newComment} onChange={handleCommentChange} />
-          <EnterBtn type="button" onClick={handleCommentSubmit} />
-        </InputWrap>
-      </CommentInputContainer>
     </>
   );
 }
@@ -177,42 +160,4 @@ const EditBtn = styled.button`
 const DeleteBtn = styled.button`
   ${EnDStyle}
   color: #ff8181;
-`;
-
-const PostBorder = styled.div`
-  border: 1px solid ${GRAY_COLOR};
-`;
-
-const CommentInputContainer = styled.div`
-  padding: 20px 10px;
-`;
-
-const CommentInput = styled.input`
-  width: 100%;
-  height: 25px;
-
-  border-bottom: 1px solid ${GRAY_COLOR};
-  padding: 0 20px 0 10px;
-  font-size: 12px;
-  outline: none;
-
-  &::placeholder {
-    color: ${GRAY_COLOR};
-    font-size: 12px;
-  }
-`;
-
-const InputWrap = styled.div`
-  display: flex;
-`;
-
-const EnterBtn = styled(PiArrowFatLineUpBold)`
-  width: 25px;
-  height: 25px;
-  cursor: pointer;
-  color: #000;
-
-  &:hover {
-    color: ${MAIN_COLOR};
-  }
 `;

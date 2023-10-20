@@ -10,6 +10,7 @@ import { RootState } from '../../store/store';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import moment from 'moment';
+import EnterComment from './EnterComment';
 
 interface DetailType {
   userId: number;
@@ -24,6 +25,9 @@ interface DetailType {
   };
   description: string;
   imagesUrl: string[];
+  commentUsernickname: string;
+  commentUserProfile: string;
+  commentUserRreply: string;
 }
 
 export default function PostBox({ data }: { data: DetailType }) {
@@ -55,7 +59,7 @@ export default function PostBox({ data }: { data: DetailType }) {
 
     fetchDetailPage();
   }, [token]);
-  console.log(plannerId);
+  // console.log(plannerId);
   //console.log('userId:', data.userId);
   //console.log('날짜:', data.date);
   // console.log('리뷰:', data.description);
@@ -81,7 +85,14 @@ export default function PostBox({ data }: { data: DetailType }) {
             <PostInfoDescription>{data.description}</PostInfoDescription>
           </PostText>
           <PostBorder></PostBorder>
-          <ViewComments plannerDetailId={data.plannerDetailId} />
+          <ViewComments
+            plannerDetailId={data.plannerDetailId}
+            commentUserNickname={data.commentUsernickname}
+            commentUserProfile={data.commentUserProfile}
+            commentUserRreply={data.commentUserRreply}
+          />
+          <PostBorder></PostBorder>
+          <EnterComment plannerDetailId={data.plannerDetailId} />
         </PostInfo>
       </Postdiv>
     </PostBoxContainer>
