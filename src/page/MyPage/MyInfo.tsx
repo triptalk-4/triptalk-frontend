@@ -29,7 +29,10 @@ export default function MyInfo() {
   const [userImg, setUserImg] = useState('');
   const [userIntro, setUserIntro] = useState('');
   const [userUniqueId, setUserUniqueId] = useState('');
-  const [anotheruserId, setAnotheruserId] = useState('');
+  const [anotherUserId, setAnotherUserId] = useState('');
+  const [anotheruserNickname, setAnotheruserNickname] = useState('');
+  const [anotheruserAboutMe, setAnotheruserAboutMe] = useState('');
+  const [anotheruserProfile, setAnotheruserProfile] = useState('');
 
   const token = useSelector((state: RootState) => state.token.token);
 
@@ -96,8 +99,11 @@ export default function MyInfo() {
         });
 
         if (response.data) {
-          const { userId } = response.data;
-          setAnotheruserId(userId);
+          const { userId, nickname, aboutMe, profile } = response.data;
+          setAnotherUserId(userId);
+          setAnotheruserNickname(nickname);
+          setAnotheruserAboutMe(aboutMe);
+          setAnotheruserProfile(profile);
         } else {
           console.log(response);
           alert('사용자 정보가 없습니다 로그인확인해주세요');
@@ -110,7 +116,7 @@ export default function MyInfo() {
     fetchSerch();
   }, [token, userId]);
 
-  console.log(anotheruserId);
+  console.log(anotherUserId);
   console.log(userUniqueId);
   const handleLogOut = () => {
     const storeUserData = localStorage.getItem('token');
@@ -126,21 +132,33 @@ export default function MyInfo() {
 
   return (
     <MyPageContainer>
-      <UserImgContainer>
-        <UserImg src={userImg} />
-        <UserNickNameContainer>
-          <NickName>{userNickname}</NickName>
-          {userUniqueId === anotheruserId ? (
+      {userUniqueId === anotherUserId ? (
+        <UserImgContainer>
+          <UserImg src={userImg} />
+          <UserNickNameContainer>
+            <NickName>{userNickname}</NickName>
             <Setting to="/editmyinfo">
               <AiOutlineSetting />
             </Setting>
-          ) : null}
-        </UserNickNameContainer>
-        <IntroTextContainer>
-          <IntroText>{userIntro}</IntroText>
-        </IntroTextContainer>
-        {userUniqueId === anotheruserId ? <UserLogoutBtn onClick={handleLogOut}>로그아웃</UserLogoutBtn> : null}
-      </UserImgContainer>
+          </UserNickNameContainer>
+          <IntroTextContainer>
+            <IntroText>{userIntro}</IntroText>
+          </IntroTextContainer>
+          <UserLogoutBtn onClick={handleLogOut}>로그아웃</UserLogoutBtn>
+        </UserImgContainer>
+      ) : (
+        // 여기서 anotherUserId를 사용하여 검색한 사용자의 정보를 표시할 수 있습니다.
+        <UserImgContainer>
+          <UserImg src={anotheruserProfile} />
+          <UserNickNameContainer>
+            <NickName>{anotheruserNickname}</NickName>
+          </UserNickNameContainer>
+          <IntroTextContainer>
+            <IntroText>{anotheruserAboutMe}</IntroText>
+          </IntroTextContainer>
+        </UserImgContainer>
+      )}
+
       <ContentContainer>
         <ContentUl>
           {myInfoMenuTabs.map((menu, index) => (
@@ -199,7 +217,6 @@ const IntroText = styled.p`
 
 const NickName = styled.p`
   font-size: 25px;
-  padding-left: 25px;
 `;
 
 const Setting = styled(Link)`
