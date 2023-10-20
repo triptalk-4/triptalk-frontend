@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { AiOutlineSetting } from 'react-icons/ai';
 import { DEFAULT_FONT_COLOR, GRAY_COLOR, LIGHT_GRAY_COLOR } from '../../color/color';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import MyInfoPost from './MyInfoPost';
 import MyInfoSaved from './MyInfoSaved';
@@ -12,6 +12,7 @@ import { RootState } from '../../store/store';
 
 export default function MyInfo() {
   const navigate = useNavigate();
+  const { userId } = useParams();
   const [currentTab, setTab] = useState(0); // 탭기능
 
   const myInfoMenuTabs = [
@@ -84,7 +85,6 @@ export default function MyInfo() {
     fetchUserInfo();
   }, [token, userNickname, userImg, userIntro]);
 
-  const userId = 3; // 검색된 유저아이디
   useEffect(() => {
     const Access_token = localStorage.getItem('token');
     const fetchSerch = async () => {
@@ -108,8 +108,10 @@ export default function MyInfo() {
     };
 
     fetchSerch();
-  }, [token]);
+  }, [token, userId]);
 
+  console.log(anotheruserId);
+  console.log(userUniqueId);
   const handleLogOut = () => {
     const storeUserData = localStorage.getItem('token');
     if (storeUserData) {
