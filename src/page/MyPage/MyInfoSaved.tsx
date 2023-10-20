@@ -20,7 +20,7 @@ interface Save {
 export default function MyInfoSaved() {
   const [savedData, setSavedData] = useState<Save[]>([]); // msw
   const [containerClassName, setContainerClassName] = useState('flex-start');
-  const [isLoading, setIsLoading] = useState(true); // 로딩 상태
+  const [isLoading, setIsLoading] = useState(false); // 로딩 상태
   const targetRef = useRef<HTMLDivElement | null>(null);
 
   const token = useSelector((state: RootState) => state.token.token);
@@ -98,6 +98,7 @@ export default function MyInfoSaved() {
               },
             })
             .then(response => {
+              console.log(response.data);
               setIsLoading(false);
               const newData = response.data.content;
               const ThreeItems = newData.slice(0, 3);
@@ -131,7 +132,6 @@ export default function MyInfoSaved() {
 const MySaved = ({ savedData }: { savedData: Save }) => {
   return (
     <BoxWrap>
-      {' '}
       <Link to={`/page/${savedData.plannerId}`} key={savedData.plannerId}>
         <Box>
           <ImgDiv>

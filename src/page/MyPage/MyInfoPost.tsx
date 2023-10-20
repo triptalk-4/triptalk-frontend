@@ -20,7 +20,7 @@ interface Post {
 export default function MyInfoPost() {
   const [postsData, setPostsData] = useState<Post[]>([]); // msw
   const [containerClassName, setContainerClassName] = useState('flex-start');
-  const [isLoading, setIsLoading] = useState(true); // 로딩 상태
+  const [isLoading, setIsLoading] = useState(false); // 로딩 상태
   const targetRef = useRef<HTMLDivElement | null>(null);
 
   const token = useSelector((state: RootState) => state.token.token);
