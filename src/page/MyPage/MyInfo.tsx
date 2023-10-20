@@ -147,7 +147,6 @@ export default function MyInfo() {
           <UserLogoutBtn onClick={handleLogOut}>로그아웃</UserLogoutBtn>
         </UserImgContainer>
       ) : (
-        // 여기서 anotherUserId를 사용하여 검색한 사용자의 정보를 표시할 수 있습니다.
         <UserImgContainer>
           <UserImg src={anotheruserProfile} />
           <UserNickNameContainer>
@@ -161,17 +160,20 @@ export default function MyInfo() {
 
       <ContentContainer>
         <ContentUl>
-          {myInfoMenuTabs.map((menu, index) => (
-            <ContentItem
-              key={menu.name}
-              className={currentTab === index ? 'active' : ''}
-              onClick={() => selectMenuHandler(index)}>
-              {menu.name}
-            </ContentItem>
-          ))}
+          {myInfoMenuTabs
+            .filter(menu => menu.name !== '저장함') // "저장함" 탭 제거
+            .map((menu, index) => (
+              <ContentItem
+                key={menu.name}
+                className={currentTab === index ? 'active' : ''}
+                onClick={() => selectMenuHandler(index)}>
+                {menu.name}
+              </ContentItem>
+            ))}
         </ContentUl>
         {myInfoMenuTabs[currentTab].content}
       </ContentContainer>
+
       <TopButton />
     </MyPageContainer>
   );
