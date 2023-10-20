@@ -12,7 +12,7 @@ const GoogleLogin = () => {
     const google = async () => {
       if (code) {
         try {
-          const response = await axios.get(`/address/api/auth/google`, {
+          const response = await axios.post(`/address/api/auth/google`, {
             params: { code: decodedCode },
           });
           console.log(response);
