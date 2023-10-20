@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import Header from '../../component/Header';
 import 'react-datepicker/dist/react-datepicker.css';
 import FullSchedule from '../../component/DatePicker/ FullSchedule';
 import ExcludeTimes from '../../component/DatePicker/ExcludeTimes';
@@ -8,6 +7,8 @@ import ScheduleMapLoader from '../../component/ScheduleMap';
 import { useNavigate, useParams } from 'react-router';
 import axios from 'axios';
 import { MAIN_COLOR } from '../../color/color';
+import { RootState } from '../../store/store';
+import { useSelector } from 'react-redux';
 
 interface PlaceInfo {
   position: {
@@ -26,6 +27,21 @@ type CoreContainerData = {
   review: string;
   placeInfo: PlaceInfo | null;
 };
+
+interface PlannerDetail {
+  userId: number;
+  plannerDetailId: number;
+  date: string;
+  placeResponse: {
+    placeName: string;
+    roadAddress: string;
+    addressName: string;
+    latitude: number;
+    longitude: number;
+  };
+  description: string;
+  imagesUrl: string[];
+}
 
 export default function EditSchedule() {
   const Access_token = localStorage.getItem('token');
@@ -93,13 +109,49 @@ export default function EditSchedule() {
     }
   };
 
+  //// 작업 ////
+  const token = useSelector((state: RootState) => state.token.token);
   useEffect(() => {
-    axios.get(`/address/api/plans/${plannerId}`).then(res => {
-      const plannerData = res.data;
+    const fetchEditPage = async () => {
+      const Access_token = localStorage.getItem('token');
+      try {
+        const response = await axios.get(`/address/api/plans/${plannerId}/details`, {
+          headers: {
+            Authorization: `Bearer ${Access_token}`,
+          },
+        });
+        if (response.data) {
+          const { title } = response.data;
+          setTitle(title);
 
-      console.log(plannerData);
-    });
-  }, []);
+          const plannerDetailRes = response.data.plannerDetailResponse;
+          const updatedContainers = plannerDetailRes.map((detail: PlannerDetail) => {
+            return {
+              images: detail.imagesUrl,
+              startDate: detail.date,
+              review: detail.description,
+              placeInfo: {
+                addressName: detail.placeResponse.addressName,
+                position: {
+                  lat: detail.placeResponse.latitude,
+                  lng: detail.placeResponse.longitude,
+                },
+                placeName: detail.placeResponse.placeName,
+                roadAddressName: detail.placeResponse.roadAddress,
+              },
+            };
+          });
+          setCoreContainers(updatedContainers);
+        }
+
+        console.log('서버:', response.data);
+      } catch (error) {
+        console.error('상세 페이지 정보 및 오류:', error);
+      }
+    };
+    fetchEditPage();
+  }, [token, plannerId]);
+  console.log('돼냐?', coreContainers);
 
   const handleEditButtonClick = async () => {
     try {

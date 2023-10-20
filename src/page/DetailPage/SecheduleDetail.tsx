@@ -199,7 +199,7 @@ export default function SecheduleDetail() {
               {userEmail === Email_token && (
                 <>
                   <DeleteBtn onClick={deletePost}>삭제</DeleteBtn>
-                  <EditBtn onClick={() => navigate(`/EditSchedule/:${plannerId}`)}>수정</EditBtn>
+                  <EditBtn onClick={() => navigate(`/EditSchedule/${plannerId}`)}>수정</EditBtn>
                 </>
               )}
               <UserName>

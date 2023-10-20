@@ -49,8 +49,8 @@ function Schedule() {
         if (token) {
           const config = {
             headers: {
-              Authorization: `Bearer ${token}`
-            }
+              Authorization: `Bearer ${token}`,
+            },
           };
           const response = await axios.get(`/address/api/plans?page=${page}&size=6&sortType=${sortType}`, config);
           const fetchedData = response.data;
@@ -133,7 +133,7 @@ function Schedule() {
           <SelectBox>
             <SecheduleSelect onSortChange={handleSortChange} />
           </SelectBox>
-          <EditButton to="/editschedule">
+          <EditButton to="/addSchedule">
             일정등록하기
             <EditIcon />
           </EditButton>

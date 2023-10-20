@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import Header from '../../component/Header';
 import 'react-datepicker/dist/react-datepicker.css';
 import FullSchedule from '../../component/DatePicker/ FullSchedule';
 import ExcludeTimes from '../../component/DatePicker/ExcludeTimes';

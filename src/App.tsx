@@ -29,6 +29,7 @@ function App() {
           <Route path="/lookmap" element={<LookMap />} />
           <Route path="/page/:plannerId" element={<SecheduleDetail />} />
           <Route path="/editSchedule/:plannerId" element={<EditSchedule />} />
+          <Route path="/addSchedule" element={<AddSchedule />} />
         </Route>
         {/* Header,Footer을 안 보여주고 싶은 컴포넌트 */}
         <Route path="/editmyinfo" element={<EditMyInfo />} />
@@ -36,7 +37,6 @@ function App() {
         <Route path="/signup" element={<SignupForm />} />
         <Route path="/schedule" element={<Schedule />} />
         <Route path="/search" element={<SearchPage />} />
-        <Route path="/addSchedule" element={<AddSchedule />} />
         <Route path="/auth" Component={AuthHandler} />
         <Route path="/google" Component={GoogleLogin} />
       </Routes>
