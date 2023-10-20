@@ -18,7 +18,7 @@ const AuthHandler = () => {
 
   const sendCodeToServer = (code: string) => {
     axios
-      .post('', { code })
+      .post('/address/api/social/login', { code })
       .then(response => {
         console.log(response);
       })

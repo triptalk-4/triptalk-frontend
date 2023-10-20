@@ -11,10 +11,11 @@ import LookMap from './page/ReviewMap/LookMap';
 import Schedule from './page/SchedulePage/Schedule';
 import SearchPage from './page/SearchPage';
 import SecheduleDetail from './page/DetailPage/SecheduleDetail';
-import EditSchedule from './page/EditPage/EditSchedule';
+import AddSchedule from './page/EditPage/AddSchedule';
 import Travel from './page/TravelPage/Travel';
 import AuthHandler from './component/SocialLogin/AuthHandler';
 import GoogleLogin from './component/SocialLogin/GoogleLogin';
+import EditSchedule from './page/EditPage/EditSchedule';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           <Route path="/myinfo" element={<MyInfo />} />
           <Route path="/lookmap" element={<LookMap />} />
           <Route path="/page/:plannerId" element={<SecheduleDetail />} />
+          <Route path="/EditSchedule" element={<EditSchedule />} />
         </Route>
         {/* Header,Footer을 안 보여주고 싶은 컴포넌트 */}
         <Route path="/editmyinfo" element={<EditMyInfo />} />
@@ -34,7 +36,7 @@ function App() {
         <Route path="/signup" element={<SignupForm />} />
         <Route path="/schedule" element={<Schedule />} />
         <Route path="/search" element={<SearchPage />} />
-        <Route path="/editschedule" element={<EditSchedule />} />
+        <Route path="/editschedule" element={<AddSchedule />} />
         <Route path="/auth" Component={AuthHandler} />
         <Route path="/googleLogin" Component={GoogleLogin} />
       </Routes>
