@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { RootState } from '../../store/store';
 import { BsEyeFill, BsFillSuitHeartFill } from 'react-icons/bs';
 import formatDate from '../../utils/formatDate';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 interface Post {
   id: number;
@@ -27,6 +27,11 @@ export default function MyInfoPost() {
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(6);
 
+  const { userId } = useParams();
+  const [userUniqueId, setUserUniqueId] = useState('');
+  const [anotherUserId, setAnotherUserId] = useState('');
+  const [anotherPlanners, setAnotherPlanners] = useState('');
+
   // useEffect(() => {
   //   fetch('/api/posts')
   //     .then(res => res.json())
@@ -35,6 +40,57 @@ export default function MyInfoPost() {
   //     })
   //     .catch(error => console.error('가짜 API 요청 실패:', error));
   // }, []);
+
+  useEffect(() => {
+    const Access_token = localStorage.getItem('token');
+    const fetchUserInfo = async () => {
+      try {
+        const response = await axios.get('/address/api/users/profile', {
+          headers: {
+            Authorization: `Bearer ${Access_token}`,
+          },
+        });
+
+        if (response.data) {
+          const { userId } = response.data;
+          setUserUniqueId(userId);
+        } else {
+          console.log(response);
+          alert('사용자 정보가 없습니다 로그인확인해주세요');
+        }
+      } catch (error) {
+        console.error('사용자 정보 가져오기 오류 확인바람(내정보):', error);
+      }
+    };
+
+    fetchUserInfo();
+  }, [token]);
+
+  useEffect(() => {
+    const Access_token = localStorage.getItem('token');
+    const fetchSerch = async () => {
+      try {
+        const response = await axios.get(`/address/api/search/user/${userId}`, {
+          headers: {
+            Authorization: `Bearer ${Access_token}`,
+          },
+        });
+
+        if (response.data) {
+          const { userId, planners } = response.data;
+          setAnotherUserId(userId);
+          setAnotherPlanners(planners);
+        } else {
+          console.log(response);
+          alert('사용자 정보가 없습니다 로그인확인해주세요');
+        }
+      } catch (error) {
+        console.error('사용자 정보 가져오기 오류 확인바람(내정보):', error);
+      }
+    };
+
+    fetchSerch();
+  }, [token, userId]);
 
   useEffect(() => {
     const Access_token = localStorage.getItem('token');
