@@ -32,6 +32,7 @@ interface PlannerDetail {
   userId: number;
   plannerDetailId: number;
   date: string;
+  startDate: Date | null;
   placeResponse: {
     placeName: string;
     roadAddress: string;
@@ -41,12 +42,14 @@ interface PlannerDetail {
   };
   description: string;
   imagesUrl: string[];
+  imagePreviews: [];
 }
 
 export default function EditSchedule() {
   const Access_token = localStorage.getItem('token');
 
   const [title, setTitle] = useState('');
+  const [review, setReview] = useState('');
   const { plannerId } = useParams();
   const [selectedDateRange, setSelectedDateRange] = useState<[Date | null, Date | null]>([null, null]);
 
@@ -120,33 +123,32 @@ export default function EditSchedule() {
             Authorization: `Bearer ${Access_token}`,
           },
         });
-        if (response.data) {
-          const { title } = response.data;
-          setTitle(title);
+        const plannerData = response.data;
+        setTitle(plannerData.title);
+        setReview(plannerData.plannerDetailResponse[0].description); // 테스트로 수동적으로 뽑아서 넣음.
+        setSelectedDateRange([response.data.startDate, response.data.plannerData.endDate]);
 
-          const plannerDetailRes = response.data.plannerDetailResponse;
-          const updatedContainers = plannerDetailRes.map((detail: PlannerDetail) => {
-            return {
-              images: detail.imagesUrl,
-              startDate: detail.date,
-              review: detail.description,
-              placeInfo: {
-                addressName: detail.placeResponse.addressName,
-                position: {
-                  lat: detail.placeResponse.latitude,
-                  lng: detail.placeResponse.longitude,
-                },
-                placeName: detail.placeResponse.placeName,
-                roadAddressName: detail.placeResponse.roadAddress,
+        const updatedContainers = plannerData.plannerDetailResponse.map((detail: PlannerDetail) => {
+          const coreContainer: CoreContainerData = {
+            images: [],
+            imagePreviews: detail.imagePreviews,
+            startDate: detail.date ? new Date(detail.date) : null,
+            review: detail.description,
+            placeInfo: {
+              addressName: detail.placeResponse.addressName,
+              position: {
+                lat: detail.placeResponse.latitude,
+                lng: detail.placeResponse.longitude,
               },
-            };
-          });
-          setCoreContainers(updatedContainers);
-        }
-
-        console.log('서버:', response.data);
+              placeName: detail.placeResponse.placeName,
+              roadAddressName: detail.placeResponse.roadAddress,
+            },
+          };
+          return coreContainer;
+        });
+        setCoreContainers(updatedContainers);
       } catch (error) {
-        console.error('상세 페이지 정보 및 오류:', error);
+        console.error('데이터 가져오기 실패', error);
       }
     };
     fetchEditPage();
@@ -162,6 +164,10 @@ export default function EditSchedule() {
         });
         return formData;
       });
+
+      if (coreContainers.length === 0) {
+        formDataArray.length = 0;
+      }
 
       const imageUrlsArray = await Promise.all(
         formDataArray.map(formData =>
@@ -272,6 +278,7 @@ export default function EditSchedule() {
               <div>
                 <CommentTextArea
                   placeholder="장소리뷰"
+                  value={review}
                   onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
                     const updatedContainers = [...coreContainers];
                     updatedContainers[index].review = e.target.value;
