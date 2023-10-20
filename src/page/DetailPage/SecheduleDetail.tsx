@@ -9,7 +9,6 @@ import { RootState } from '../../store/store';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import moment from 'moment';
-import ScheduleMapLoader from '../../component/ScheduleMap';
 
 interface PlannerDetail {
   placeResponse: {
