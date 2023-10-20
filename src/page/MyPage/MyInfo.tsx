@@ -158,11 +158,10 @@ export default function MyInfo() {
         </UserImgContainer>
       )}
 
-      <ContentContainer>
-        <ContentUl>
-          {myInfoMenuTabs
-            .filter(menu => menu.name !== '저장함') // "저장함" 탭 제거
-            .map((menu, index) => (
+      {userUniqueId === anotherUserId ? (
+        <ContentContainer>
+          <ContentUl>
+            {myInfoMenuTabs.map((menu, index) => (
               <ContentItem
                 key={menu.name}
                 className={currentTab === index ? 'active' : ''}
@@ -170,9 +169,26 @@ export default function MyInfo() {
                 {menu.name}
               </ContentItem>
             ))}
-        </ContentUl>
-        {myInfoMenuTabs[currentTab].content}
-      </ContentContainer>
+          </ContentUl>
+          {myInfoMenuTabs[currentTab].content}
+        </ContentContainer>
+      ) : (
+        <ContentContainer>
+          <ContentUl>
+            {myInfoMenuTabs
+              .filter(menu => menu.name !== '저장함') // "저장함" 탭 제거
+              .map((menu, index) => (
+                <ContentItem
+                  key={menu.name}
+                  className={currentTab === index ? 'active' : ''}
+                  onClick={() => selectMenuHandler(index)}>
+                  {menu.name}
+                </ContentItem>
+              ))}
+          </ContentUl>
+          {myInfoMenuTabs[currentTab].content}
+        </ContentContainer>
+      )}
 
       <TopButton />
     </MyPageContainer>
