@@ -3,7 +3,7 @@ import { FcGoogle } from 'react-icons/fc';
 
 const clientId = '57409677042-8qrpnbbfcq8d6jeq9kmvh8357vi4p4up.apps.googleusercontent.com';
 
-const redirectUri = 'http://localhost:3000/googleLogin';
+const redirectUri = 'http://localhost:3000/google';
 
 const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${clientId}&scope=email profile%20profile%20email&redirect_uri=${redirectUri}`;
 
