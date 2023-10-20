@@ -17,7 +17,6 @@ export default function Header() {
   const tabsRef = useRef<HTMLUListElement>(null);
   const location = useLocation();
   const [userUniqueId, setUserUniqueId] = useState('');
-  console.log(userUniqueId);
 
   // useEffect(() => {
   //   const storedUserData = localStorage.getItem('userInfo');
@@ -63,7 +62,7 @@ export default function Header() {
             <LogoImg src="/img/logo.png" alt="로고" />
           </Logo>
         </LogoDiv>
-        <User to={'/myinfo'}>
+        <User to={`/myinfo/${userUniqueId}`}>
           <UserImg src={userImg} />
         </User>
       </Gnb>

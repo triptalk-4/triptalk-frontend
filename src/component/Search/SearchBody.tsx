@@ -29,8 +29,8 @@ const SearchBody = () => {
         if (Access_token) {
           const config = {
             headers: {
-              Authorization: `Bearer ${Access_token}`
-            }
+              Authorization: `Bearer ${Access_token}`,
+            },
           };
           try {
             const response = await axios.get(
@@ -72,7 +72,7 @@ const SearchBody = () => {
       <BodyContainer>
         {paginatedResults.length > 0 ? (
           paginatedResults.map((result, index) => (
-            <Link to={`/myinfo:${result.userId}`} style={{ color: 'inherit', textDecoration: 'none' }}>
+            <Link to={`/myinfo/${result.userId}`} style={{ color: 'inherit', textDecoration: 'none' }}>
               <ResultContainer key={index}>
                 <ProfileAndName>
                   <ProfileImage src={result.profile} alt={`${result.nickname}의 프로필 사진`} />
@@ -91,8 +91,7 @@ const SearchBody = () => {
               <PageNumber
                 key={index + 1}
                 $isActive={index + 1 === currentPage}
-                onClick={() => setCurrentPage(index + 1)}
-              >
+                onClick={() => setCurrentPage(index + 1)}>
                 {index + 1}
               </PageNumber>
             ))}

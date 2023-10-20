@@ -81,14 +81,15 @@ export default function MyInfo() {
       }
     };
 
-    fetchUserInfo(); // 비동기 함수 호출
+    fetchUserInfo();
   }, [token, userNickname, userImg, userIntro]);
 
+  const userId = 3; // 검색된 유저아이디
   useEffect(() => {
     const Access_token = localStorage.getItem('token');
     const fetchSerch = async () => {
       try {
-        const response = await axios.get('/address/api/users/profile', {
+        const response = await axios.get(`/address/api/search/user/${userId}`, {
           headers: {
             Authorization: `Bearer ${Access_token}`,
           },
