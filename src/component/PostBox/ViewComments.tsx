@@ -50,7 +50,7 @@ export default function ViewComments({
           setCommentUserProfile(commentData.map((item: ItemType) => item.profile));
           setCommentUserReply(commentData.map((item: ItemType) => item.reply));
         }
-        console.log('response.data', response.data[0]);
+        console.log('response.data', response.data);
       } catch (error) {
         console.error('댓글 가지고오기 오류:', error);
       }
