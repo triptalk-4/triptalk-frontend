@@ -16,9 +16,9 @@ const AuthHandler = () => {
     }
   }, []);
 
-  const sendCodeToServer = (code: string) => {
+  const sendCodeToServer = (ingaCode: string) => {
     axios
-      .post('/address/api/social/login', { code })
+      .post('/address/api/users/kakao/login', { ingaCode })
       .then(response => {
         console.log(response);
       })

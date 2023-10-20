@@ -27,7 +27,7 @@ type CoreContainerData = {
   placeInfo: PlaceInfo | null;
 };
 
-export default function EditSchedule() {
+export default function AddSchedule() {
   const Access_token = localStorage.getItem('token');
 
   const [title, setTitle] = useState('');
@@ -234,7 +234,6 @@ export default function EditSchedule() {
 
   return (
     <>
-      <Header />
       <MainContainer>
         <ScheduleMapLoader onPlacesSelected={(placeInfos: PlaceInfo[]) => handlePlaceSelected(placeInfos)} />
         <TitleContainer>
