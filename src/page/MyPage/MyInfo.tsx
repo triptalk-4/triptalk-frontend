@@ -244,6 +244,7 @@ const Setting = styled(Link)`
   color: ${GRAY_COLOR};
   padding-left: 5px;
   cursor: pointer;
+  height: 30px;
 `;
 
 const UserLogoutBtn = styled.button`
