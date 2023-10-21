@@ -27,7 +27,7 @@ interface DetailType {
   imagesUrl: string[];
   commentUsernickname: string;
   commentUserProfile: string;
-  commentUserRreply: string;
+  commentUserReply: string;
 }
 
 export default function PostBox({ data }: { data: DetailType }) {
@@ -89,7 +89,7 @@ export default function PostBox({ data }: { data: DetailType }) {
             plannerDetailId={data.plannerDetailId}
             commentUserNickname={data.commentUsernickname}
             commentUserProfile={data.commentUserProfile}
-            commentUserRreply={data.commentUserRreply}
+            commentUserReply={data.commentUserReply}
           />
           <PostBorder></PostBorder>
           <EnterComment plannerDetailId={data.plannerDetailId} />
