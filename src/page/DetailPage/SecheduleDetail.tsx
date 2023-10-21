@@ -29,7 +29,6 @@ export default function SecheduleDetail() {
   const [userPing, setUserPing] = useState('');
   console.log(userPing);
   const [userEmail, setUserEmail] = useState('');
-
   const token = useSelector((state: RootState) => state.token.token);
   const { plannerId } = useParams();
   const navigate = useNavigate();

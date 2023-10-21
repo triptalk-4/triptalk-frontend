@@ -17,6 +17,15 @@ interface Post {
   plannerId: number;
 }
 
+interface AnotherPost {
+  plannerId: number;
+  thumbnail: string;
+  title: string;
+  createAt: number;
+  likeCount: number;
+  views: number;
+}
+
 export default function MyInfoPost() {
   const [postsData, setPostsData] = useState<Post[]>([]); // msw
   const [containerClassName, setContainerClassName] = useState('flex-start');
@@ -30,7 +39,7 @@ export default function MyInfoPost() {
   const { userId } = useParams();
   const [userUniqueId, setUserUniqueId] = useState('');
   const [anotherUserId, setAnotherUserId] = useState('');
-  const [anotherPlanners, setAnotherPlanners] = useState('');
+  const [anotherPlanners, setAnotherPlanners] = useState<AnotherPost[]>([]);
 
   // useEffect(() => {
   //   fetch('/api/posts')
@@ -157,7 +166,7 @@ export default function MyInfoPost() {
               },
             })
             .then(response => {
-              setIsLoading(false);
+              setIsLoading(true);
               const newData = response.data.content;
               const ThreeItems = newData.slice(0, 3);
               setPostsData(prevData => [...prevData, ...ThreeItems]);
@@ -222,9 +231,11 @@ export default function MyInfoPost() {
 
   return (
     <PostContainer className={containerClassName}>
-      {postsData.map(item => (
-        <MyPost key={item.plannerId} postsData={item} />
-      ))}
+      {userUniqueId === anotherUserId
+        ? postsData.map(item => <MyPost key={item.plannerId} postsData={item} />)
+        : anotherPlanners.map((aontherItem: AnotherPost) => (
+            <AnotherPlanner key={aontherItem.plannerId} plannerData={aontherItem} />
+          ))}
       <ObserverTarget ref={targetRef} />
       {isLoading && <LoadingMessage>로딩 중...</LoadingMessage>}
     </PostContainer>
@@ -252,6 +263,34 @@ const MyPost = ({ postsData }: { postsData: Post }) => {
             </TopContainer>
             <TitleText>{postsData.title}</TitleText>
             <DateText>{formatDate(postsData.createAt)}</DateText>
+          </Info>
+        </Box>
+      </Link>
+    </BoxWrap>
+  );
+};
+
+const AnotherPlanner = ({ plannerData }: { plannerData: AnotherPost }) => {
+  return (
+    <BoxWrap>
+      <Link to={`/page/${plannerData.plannerId}`} key={plannerData.plannerId}>
+        <Box>
+          <ImgDiv>
+            <TextImg src={plannerData.thumbnail} alt="첫번째 이미지" />
+          </ImgDiv>
+          <Info>
+            <TopContainer>
+              <IconWithCount>
+                <Heart />
+                <Count>{plannerData.likeCount}</Count>
+              </IconWithCount>
+              <IconWithCount>
+                <LookUp />
+                <Count>{plannerData.views}</Count>
+              </IconWithCount>
+            </TopContainer>
+            <TitleText>{plannerData.title}</TitleText>
+            <DateText>{formatDate(plannerData.createAt)}</DateText>
           </Info>
         </Box>
       </Link>
