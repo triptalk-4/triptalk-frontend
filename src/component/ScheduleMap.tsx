@@ -25,9 +25,11 @@ interface PlaceSearchResult {
 
 interface SchduleMapLoaderProps {
   onPlacesSelected: (PlaceInfo: PlaceInfo[]) => void;
+  onPlace?: Array<{ latitude: number; longitude: number }>;
 }
 
-const ScheduleMapLoader: React.FC<SchduleMapLoaderProps> = ({ onPlacesSelected }) => {
+const ScheduleMapLoader: React.FC<SchduleMapLoaderProps> = ({ onPlacesSelected, onPlace }) => {
+  console.log('userPing', onPlace);
   const [searchPlace, setSearchPlace] = useState('');
   const [map, setMap] = useState<kakao.maps.Map | null>(null);
   const [selectedPlaceInfos, setSelectedPlaceInfos] = useState<PlaceInfo[]>([]);
@@ -54,6 +56,27 @@ const ScheduleMapLoader: React.FC<SchduleMapLoaderProps> = ({ onPlacesSelected }
       document.head.removeChild(script);
     };
   }, []);
+
+  useEffect(() => {
+    const addMarker = (places: Array<{ latitude: number; longitude: number }>) => {
+      const bounds = new kakao.maps.LatLngBounds();
+      places.forEach(place => {
+        const marker = new kakao.maps.Marker({
+          position: new kakao.maps.LatLng(place.latitude, place.longitude),
+        });
+        marker.setMap(map);
+        bounds.extend(new kakao.maps.LatLng(place.latitude, place.longitude));
+      });
+      if (map) {
+        map.setBounds(bounds);
+      }
+    };
+
+    if (onPlace && onPlace.length > 0) {
+      addMarker(onPlace);
+    }
+    console.log('marker', onPlace);
+  }, [onPlace]);
 
   const handleSearch = async () => {
     if (map) {

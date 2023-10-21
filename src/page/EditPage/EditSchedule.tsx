@@ -127,7 +127,7 @@ export default function EditSchedule() {
         const plannerData = response.data;
         setTitle(plannerData.title);
         setReview(plannerData.plannerDetailResponse[0].description); // 테스트로 수동적으로 뽑아서 넣음.
-        
+
         const imagesUrlArray = plannerData.plannerDetailResponse.map((detail: PlannerDetail) => detail.imagesUrl);
         setPickImg(imagesUrlArray[0]);
 

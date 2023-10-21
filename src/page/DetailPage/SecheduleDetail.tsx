@@ -9,6 +9,7 @@ import { RootState } from '../../store/store';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import moment from 'moment';
+import ScheduleMapLoader from '../../component/ScheduleMap';
 
 interface PlannerDetail {
   placeResponse: {
@@ -26,7 +27,7 @@ export default function SecheduleDetail() {
   const [endDate, setEndDate] = useState<number>(0);
   const [nickname, setNickname] = useState('');
   const [userImg, setUserImg] = useState('');
-  const [userPing, setUserPing] = useState('');
+  const [userPing, setUserPing] = useState([]);
   const [userEmail, setUserEmail] = useState('');
   const token = useSelector((state: RootState) => state.token.token);
   const { plannerId } = useParams();
@@ -180,11 +181,12 @@ export default function SecheduleDetail() {
   // 시간
   const startTime = moment(startDate).add(9, 'hours').format('YYYY-MM-DD');
   const endTime = moment(endDate).add(9, 'hours').format('YYYY-MM-DD');
-  console.log(userPing);
+
+  console.log('상세페이지', userPing);
   return (
     <DetailContainer>
       <PostContainer>
-        <MapContainer></MapContainer>
+        <ScheduleMapLoader onPlacesSelected={() => {}} onPlace={userPing} />
         <PostBg>
           <PostText>
             <Title>
