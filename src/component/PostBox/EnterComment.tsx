@@ -8,7 +8,7 @@ export default function EnterComment({ plannerDetailId }: { plannerDetailId: num
   const [newComment, setNewComment] = useState('');
 
   const handleCommentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNewComment(e.target.value); // 사용자의 입력을 업데이트
+    setNewComment(e.target.value);
   };
 
   const handleCommentSubmit = async () => {
