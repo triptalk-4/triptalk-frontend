@@ -4,11 +4,11 @@ import { useSelector } from 'react-redux';
 import styled, { css } from 'styled-components';
 import { RootState } from '../../store/store';
 
-interface ItemType {
-  nickname: string;
-  profile: string;
-  reply: string;
-}
+// interface ItemType {
+//   nickname: string;
+//   profile: string;
+//   reply: string;
+// }
 
 export default function ViewComments({
   plannerDetailId,
@@ -29,7 +29,6 @@ export default function ViewComments({
 
   useEffect(() => {
     const fetchtComment = async () => {
-      console.log('댓글어디:', plannerDetailId);
       const Access_token = localStorage.getItem('token');
       try {
         const response = await axios.get(`/address/api/reply/detail/replies/${plannerDetailId}`, {
@@ -39,16 +38,13 @@ export default function ViewComments({
         });
 
         if (response.data) {
-          const commentData = response.data.map((item: ItemType) => {
-            return {
-              nickname: item.nickname,
-              profile: item.profile,
-              reply: item.reply,
-            };
-          });
-          setCommentUserNickname(commentData.map((item: ItemType) => item.nickname));
-          setCommentUserProfile(commentData.map((item: ItemType) => item.profile));
-          setCommentUserReply(commentData.map((item: ItemType) => item.reply));
+          console.log('닉', response.data.nickname);
+          const commentNickname = response.data.nickname;
+          const commentprofile = response.data.profile;
+          const commentreply = response.data.reply;
+          setCommentUserNickname(commentNickname);
+          setCommentUserProfile(commentprofile);
+          setCommentUserReply(commentreply);
         }
         console.log('response.data', response.data);
       } catch (error) {
@@ -57,29 +53,27 @@ export default function ViewComments({
     };
 
     fetchtComment();
-  }, [token, plannerDetailId]);
-  // console.log('번호', plannerDetailId);
+  }, [token]);
+  console.log('번호', plannerDetailId);
 
   return (
-    <>
-      <UserCommentContainer>
-        <UserCommentContainerInner>
-          <CommentBox>
-            <UserImg src={commentUserProfile} />
-            <UserBox>
-              <UserComment>
-                <UserName>{commentUserNickname}</UserName>
-                {commentUserRreply}
-              </UserComment>
-              <EnDdiv>
-                <EditBtn>수정</EditBtn>
-                <DeleteBtn>삭제</DeleteBtn>
-              </EnDdiv>
-            </UserBox>
-          </CommentBox>
-        </UserCommentContainerInner>
-      </UserCommentContainer>
-    </>
+    <UserCommentContainer>
+      <UserCommentContainerInner>
+        <CommentBox>
+          <UserImg src={commentUserProfile} />
+          <UserBox>
+            <UserComment>
+              <UserName>{commentUserNickname}</UserName>
+              {commentUserRreply}
+            </UserComment>
+            <EnDdiv>
+              <EditBtn>수정</EditBtn>
+              <DeleteBtn>삭제</DeleteBtn>
+            </EnDdiv>
+          </UserBox>
+        </CommentBox>
+      </UserCommentContainerInner>
+    </UserCommentContainer>
   );
 }
 
