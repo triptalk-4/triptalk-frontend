@@ -10,7 +10,6 @@ import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import moment from 'moment';
 import ScheduleMapLoader from '../../component/ScheduleMap';
-import ScheduleDetailMap from '../../component/ScheduleDetailMap';
 
 interface PlannerDetail {
   placeResponse: {
@@ -188,7 +187,8 @@ export default function SecheduleDetail() {
   return (
     <DetailContainer>
       <PostContainer>
-        <ScheduleDetailMap onPlacesSelected={() => {}} onPlace={userPing} />
+        {/* <ScheduleDetailMap onPlacesSelected={() => {}} onPlace={userPing} /> */}
+        <ScheduleMapLoader onPlacesSelected={() => {}} onPlace={userPing} />
         <PostBg>
           <PostText>
             <Title>
