@@ -12,6 +12,7 @@ interface IReplyData {
   readonly nickname: string;
   readonly profile: string;
   readonly reply: string;
+  readonly email: string;
 }
 
 export default function ViewComments({ plannerDetailId }: { plannerDetailId: number }) {
@@ -19,7 +20,6 @@ export default function ViewComments({ plannerDetailId }: { plannerDetailId: num
   const [commentUserReply, setCommentUserReply] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [newComment, setNewComment] = useState('');
-  const [email, setEmail] = useState('');
 
   const [replyId, setReplyId] = useState('');
 
@@ -36,14 +36,13 @@ export default function ViewComments({ plannerDetailId }: { plannerDetailId: num
         });
 
         if (response.data) {
-          const { replyId, reply, email } = response.data;
+          const { replyId, reply } = response.data;
           setReplyId(replyId);
           setCommentUserReply(reply);
           setCommentData(response.data);
-          setEmail(email);
         }
         console.log(replyId);
-        console.log(email);
+
         console.log('response.data', response.data);
       } catch (error) {
         console.error('댓글 가지고오기 오류:', error);
@@ -59,10 +58,8 @@ export default function ViewComments({ plannerDetailId }: { plannerDetailId: num
   };
 
   const Access_token = localStorage.getItem('userEmail');
-  const showBtn = Access_token === email;
 
   console.log(Access_token);
-  console.log(email);
 
   // 수정
   const handleSaveClick = async () => {
@@ -158,7 +155,7 @@ export default function ViewComments({ plannerDetailId }: { plannerDetailId: num
                   {isEditing ? (
                     <SaveBtn onClick={handleSaveClick}>저장</SaveBtn>
                   ) : (
-                    showBtn && (
+                    Access_token === comment.email && (
                       <>
                         <EditBtn onClick={handleEditClick}>수정</EditBtn>
                         <DeleteBtn onClick={handleDeleteClick}>삭제</DeleteBtn>
