@@ -116,8 +116,8 @@ export default function MyInfo() {
     fetchSerch();
   }, [token, userId]);
 
-  console.log(anotherUserId);
-  console.log(userUniqueId);
+  // console.log(anotherUserId);
+  // console.log(userUniqueId);
   const handleLogOut = () => {
     const storeUserData = localStorage.getItem('token');
     if (storeUserData) {
