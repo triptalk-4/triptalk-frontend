@@ -10,7 +10,6 @@ import { RootState } from '../../store/store';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import moment from 'moment';
-import EnterComment from './EnterComment';
 
 interface DetailType {
   userId: number;
@@ -85,14 +84,7 @@ export default function PostBox({ data }: { data: DetailType }) {
             <PostInfoDescription>{data.description}</PostInfoDescription>
           </PostText>
           <PostBorder></PostBorder>
-          <ViewComments
-            plannerDetailId={data.plannerDetailId}
-            commentUserNickname={data.commentUsernickname}
-            commentUserProfile={data.commentUserProfile}
-            commentUserReply={data.commentUserReply}
-          />
-          <PostBorder></PostBorder>
-          <EnterComment plannerDetailId={data.plannerDetailId} />
+          <ViewComments plannerDetailId={data.plannerDetailId} />
         </PostInfo>
       </Postdiv>
     </PostBoxContainer>
