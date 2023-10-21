@@ -60,15 +60,27 @@ const ScheduleMapLoader: React.FC<SchduleMapLoaderProps> = ({ onPlacesSelected, 
   useEffect(() => {
     const addMarker = (places: Array<{ latitude: number; longitude: number }>) => {
       const bounds = new kakao.maps.LatLngBounds();
+      const linePath: any = [];
       places.forEach(place => {
         const marker = new kakao.maps.Marker({
           position: new kakao.maps.LatLng(place.latitude, place.longitude),
         });
         marker.setMap(map);
         bounds.extend(new kakao.maps.LatLng(place.latitude, place.longitude));
+        linePath.push(new kakao.maps.LatLng(place.latitude, place.longitude));
       });
       if (map) {
         map.setBounds(bounds);
+        if (linePath.length > 1) {
+          const polyline = new kakao.maps.Polyline({
+            map,
+            path: linePath,
+            strokeWeight: 3,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0.7,
+            strokeStyle: 'solid',
+          });
+        }
       }
     };
 
@@ -149,8 +161,12 @@ const ScheduleMapLoader: React.FC<SchduleMapLoaderProps> = ({ onPlacesSelected, 
       <Con
         id="map"
         style={{ width: '100%', height: '400px', border: `1px solid ${YELLOW_COLOR}`, borderRadius: '4px' }}></Con>
-      <Input type="text" placeholder="장소 검색" onChange={e => setSearchPlace(e.target.value)} />
-      <Button onClick={handleSearch}>검색</Button>
+      {selectedPlaceInfos.length > 0 && ( // selectedPlaceInfos 배열에 요소가 있을 때만 아래 요소들을 렌더링
+        <>
+          <Input type="text" placeholder="장소 검색" onChange={e => setSearchPlace(e.target.value)} />
+          <Button onClick={handleSearch}>검색</Button>
+        </>
+      )}
     </>
   );
 };

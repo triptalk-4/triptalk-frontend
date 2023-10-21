@@ -122,6 +122,8 @@ export default function MyInfo() {
     const storeUserData = localStorage.getItem('token');
     if (storeUserData) {
       localStorage.removeItem('token');
+      localStorage.removeItem('userEmail');
+      localStorage.removeItem('password');
       alert('로그아웃 되었습니다.');
       navigate('/');
     } else {
