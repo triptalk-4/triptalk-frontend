@@ -1,6 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 import Header from '../../component/Header';
 import SecheduleSelect from '../../component/SecheduleSelect/SecheduleSelect';
 import TopButton from '../../component/TopButton/TopButton';
@@ -14,6 +13,8 @@ import { RootState } from '../../store/store';
 import { useDispatch } from 'react-redux';
 import { setToken } from '../../store/tokenSlice';
 import formatDate from '../../utils/formatDate';
+import { Link } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 interface Item {
   createAt: number;
@@ -26,6 +27,8 @@ interface Item {
 
 function Schedule() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [data, setData] = useState<Item[]>([]);
   console.log(data);
   const [visibleItems, setVisibleItems] = useState<Item[]>([]);
@@ -35,22 +38,39 @@ function Schedule() {
   const [hasNext, setHasNext] = useState(true);
   const token = useSelector((state: RootState) => state.token.token);
   const [page, setPage] = useState(0);
-  const [sortType, setSortType] = useState('RECENT');
+  const query = new URLSearchParams(location.search);
+  const initialSortType = query.get('sortType') || 'RECENT';
+
+  const [sortType, setSortType] = useState(initialSortType);
+
+  const previousToken = useRef<string | null>(null);
+  const previousPage = useRef<number | null>(null);
+  const previousSortType = useRef<string | null>(null);
 
   useEffect(() => {
-    const Access_token = localStorage.getItem('token');
-    setIsLoading(true);
-    if (Access_token) {
-      dispatch(setToken(Access_token));
+    if (token === null) {
+      const Access_token = localStorage.getItem('token');
+      if (Access_token) {
+        dispatch(setToken(Access_token));
+      }
+      return;
     }
+    if (previousToken.current === token && previousPage.current === page && previousSortType.current === sortType) {
+      return;
+    }
+    previousToken.current = token;
+    previousPage.current = page;
+    previousSortType.current = sortType;
+
+    setIsLoading(true);
+
     const fetchData = async () => {
-      setIsLoading(true);
       try {
         if (token) {
           const config = {
             headers: {
-              Authorization: `Bearer ${token}`,
-            },
+              Authorization: `Bearer ${token}`
+            }
           };
           const response = await axios.get(`/address/api/plans?page=${page}&size=6&sortType=${sortType}`, config);
           const fetchedData = response.data;
@@ -122,7 +142,16 @@ function Schedule() {
     setVisibleItems([]);
     setPage(0);
     setAllItemsLoaded(false);
+    navigate(`?sortType=${newSortType}`);
   };
+
+  useEffect(() => {
+    const query = new URLSearchParams(location.search);
+    const querySortType = query.get('sortType');
+    if (querySortType && ['RECENT', 'LIKES', 'VIEWS'].includes(querySortType)) {
+      setSortType(querySortType);
+    }
+  }, [location.search]);
 
   return (
     <>
@@ -131,7 +160,7 @@ function Schedule() {
         <TitleContainer>
           <Title>여러분의 일정을 보여주세요!</Title>
           <SelectBox>
-            <SecheduleSelect onSortChange={handleSortChange} />
+            <SecheduleSelect onSortChange={handleSortChange} currentSortType={sortType} />
           </SelectBox>
           <EditButton to="/addSchedule">
             일정등록하기
