@@ -10,6 +10,7 @@ import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import moment from 'moment';
 import ScheduleMapLoader from '../../component/ScheduleMap';
+import ScheduleDetailMap from '../../component/ScheduleDetailMap';
 
 interface PlannerDetail {
   placeResponse: {
@@ -182,11 +183,12 @@ export default function SecheduleDetail() {
   // 시간
   const startTime = moment(startDate).add(9, 'hours').format('YYYY-MM-DD');
   const endTime = moment(endDate).add(9, 'hours').format('YYYY-MM-DD');
+
   console.log(userPing);
   return (
     <DetailContainer>
       <PostContainer>
-        <ScheduleMapLoader onPlacesSelected={() => {}} onPlace={userPing} />
+        <ScheduleDetailMap onPlacesSelected={() => {}} onPlace={userPing} />
         <PostBg>
           <PostText>
             <Title>
@@ -239,16 +241,6 @@ const PostContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-`;
-
-const MapContainer = styled.div`
-  width: 100%;
-  height: 350px;
-  margin-bottom: 50px;
-  /* position: sticky;
-  top: 0;
-  z-index: 10; */
-  background-color: darkblue;
 `;
 
 const PostBg = styled.div`
