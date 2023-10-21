@@ -60,15 +60,27 @@ const ScheduleMapLoader: React.FC<SchduleMapLoaderProps> = ({ onPlacesSelected, 
   useEffect(() => {
     const addMarker = (places: Array<{ latitude: number; longitude: number }>) => {
       const bounds = new kakao.maps.LatLngBounds();
+      const linePath: any = [];
       places.forEach(place => {
         const marker = new kakao.maps.Marker({
           position: new kakao.maps.LatLng(place.latitude, place.longitude),
         });
         marker.setMap(map);
         bounds.extend(new kakao.maps.LatLng(place.latitude, place.longitude));
+        linePath.push(new kakao.maps.LatLng(place.latitude, place.longitude));
       });
       if (map) {
         map.setBounds(bounds);
+        if (linePath.length > 1) {
+          const polyline = new kakao.maps.Polyline({
+            map,
+            path: linePath,
+            strokeWeight: 3,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0.7,
+            strokeStyle: 'solid',
+          });
+        }
       }
     };
 
