@@ -3,29 +3,23 @@ import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import styled, { css } from 'styled-components';
 import { RootState } from '../../store/store';
+import { GRAY_COLOR, LIGHT_GRAY_COLOR, MAIN_COLOR } from '../../color/color';
+import { PiArrowFatLineUpBold } from 'react-icons/pi';
 
-interface ItemType {
-  nickname: string;
-  profile: string;
-  reply: string;
-  replyId: number;
+interface IReplyData {
+  readonly replyId: number;
+  readonly createDt: string;
+  readonly nickname: string;
+  readonly profile: string;
+  readonly reply: string;
 }
 
-export default function ViewComments({
-  plannerDetailId,
-  commentUserNickname,
-  commentUserProfile,
-  commentUserReply,
-}: {
-  plannerDetailId: number;
-  commentUserNickname: string;
-  commentUserProfile: string;
-  commentUserReply: string;
-}) {
-  const [, setCommentUserNickname] = useState('');
-  const [, setCommentUserProfile] = useState('');
-  const [, setCommentUserReply] = useState('');
+export default function ViewComments({ plannerDetailId }: { plannerDetailId: number }) {
+  const [commentData, setCommentData] = useState<IReplyData[]>([]);
+  const [commentUserReply, setCommentUserReply] = useState('');
   const [isEditing, setIsEditing] = useState(false);
+  const [newComment, setNewComment] = useState('');
+
   const [replyId, setReplyId] = useState('');
 
   const token = useSelector((state: RootState) => state.token.token);
@@ -41,17 +35,12 @@ export default function ViewComments({
         });
 
         if (response.data) {
-          response.data.forEach((item: ItemType) => {
-            console.log('닉', item.nickname);
-            const commentNickname = item.nickname;
-            const commentprofile = item.profile;
-            const commentreply = item.reply;
-            setCommentUserNickname(commentNickname);
-            setCommentUserProfile(commentprofile);
-            setCommentUserReply(commentreply);
-            setReplyId(replyId);
-          });
+          const { replyId, reply } = response.data;
+          setReplyId(replyId);
+          setCommentUserReply(reply);
+          setCommentData(response.data);
         }
+        console.log(replyId);
         console.log('response.data', response.data);
       } catch (error) {
         console.error('댓글 가지고오기 오류:', error);
@@ -67,7 +56,8 @@ export default function ViewComments({
   };
 
   const Access_token = localStorage.getItem('token');
-  // const showBtn = Access_token === token;
+  const showBtn = Access_token === token;
+
   console.log(Access_token);
   console.log(token);
 
@@ -117,41 +107,75 @@ export default function ViewComments({
     }
   };
 
+  const handleCommentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNewComment(e.target.value);
+  };
+
+  const handleCommentSubmit = async () => {
+    console.log('댓글보내:', plannerDetailId);
+    try {
+      const Access_token = localStorage.getItem('token');
+      const response = await axios.post(
+        `/address/api/reply/detail/${plannerDetailId}`,
+        {
+          reply: newComment,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${Access_token}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        console.log('댓글 업로드 성공:', response.data);
+        setNewComment('');
+      } else {
+        console.error('서버 응답 오류:', response);
+      }
+    } catch (error) {
+      console.error('댓글 보내기 오류:', error);
+    }
+  };
+
   return (
-    <UserCommentContainer>
-      <UserCommentContainerInner>
-        <CommentBox>
-          <UserImg src={commentUserProfile} />
-          <UserBox>
-            <UserComment>
-              <UserName>{commentUserNickname}</UserName>
-              {isEditing ? (
-                <UserReply
-                  type="text"
-                  defaultValue={commentUserReply}
-                  onChange={e => setCommentUserReply(e.target.value)}
-                />
-              ) : (
-                <UserReply type="text" value={commentUserReply} disabled />
-              )}
-            </UserComment>
-            <EnDdiv>
-              {isEditing ? (
-                <>
-                  <SaveBtn onClick={handleSaveClick}>저장</SaveBtn>
-                  <DeleteBtn onClick={handleDeleteClick}>삭제</DeleteBtn>
-                </>
-              ) : (
-                <>
-                  <EditBtn onClick={handleEditClick}>수정</EditBtn>
-                  <DeleteBtn onClick={handleDeleteClick}>삭제</DeleteBtn>
-                </>
-              )}
-            </EnDdiv>
-          </UserBox>
-        </CommentBox>
-      </UserCommentContainerInner>
-    </UserCommentContainer>
+    <>
+      <UserCommentContainer>
+        <UserCommentContainerInner>
+          {commentData.map(comment => (
+            <CommentBox key={comment.replyId}>
+              <UserImg src={comment.profile} />
+              <UserBox>
+                <UserComment>
+                  <UserName>{comment.nickname}</UserName>
+                  <UserReply type="text" defaultValue={comment.reply} />
+                </UserComment>
+                <EnDdiv>
+                  {isEditing ? (
+                    <SaveBtn onClick={handleSaveClick}>저장</SaveBtn>
+                  ) : (
+                    showBtn && (
+                      <>
+                        <EditBtn onClick={handleEditClick}>수정</EditBtn>
+                        <DeleteBtn onClick={handleDeleteClick}>삭제</DeleteBtn>
+                      </>
+                    )
+                  )}
+                </EnDdiv>
+              </UserBox>
+            </CommentBox>
+          ))}
+        </UserCommentContainerInner>
+        <PostBorder></PostBorder>
+      </UserCommentContainer>
+      <CommentInputContainer>
+        <InputWrap>
+          <CommentInput placeholder="댓글 달기" value={newComment} onChange={handleCommentChange} />
+          <EnterBtn type="button" onClick={handleCommentSubmit} />
+        </InputWrap>
+      </CommentInputContainer>
+    </>
   );
 }
 
@@ -175,6 +199,7 @@ const UserImg = styled.img`
   height: 25px;
   border-radius: 50%;
   margin-right: 15px;
+  border: 1px solid ${LIGHT_GRAY_COLOR};
 `;
 
 const UserBox = styled.div`
@@ -202,8 +227,6 @@ const UserCommentContainerInner = styled.div`
 
 const UserComment = styled.div`
   width: 100%;
-  display: flex;
-  align-items: flex-start;
   font-size: 14px;
 `;
 
@@ -240,7 +263,46 @@ const EditBtn = styled.button`
   ${EnDStyle}
   color: #b8b8b8;
 `;
+
 const DeleteBtn = styled.button`
   ${EnDStyle}
   color: #ff8181;
+`;
+
+const PostBorder = styled.div`
+  border: 1px solid ${GRAY_COLOR};
+`;
+
+const CommentInputContainer = styled.div`
+  padding: 20px 10px;
+`;
+
+const CommentInput = styled.input`
+  width: 100%;
+  height: 25px;
+
+  border-bottom: 1px solid ${GRAY_COLOR};
+  padding: 0 20px 0 10px;
+  font-size: 12px;
+  outline: none;
+
+  &::placeholder {
+    color: ${GRAY_COLOR};
+    font-size: 12px;
+  }
+`;
+
+const InputWrap = styled.div`
+  display: flex;
+`;
+
+const EnterBtn = styled(PiArrowFatLineUpBold)`
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+  color: #000;
+
+  &:hover {
+    color: ${MAIN_COLOR};
+  }
 `;
