@@ -156,7 +156,7 @@ export default function EditMyInfo() {
   };
 
   const handleBackButtonClick = () => {
-    navigate(`/myinfo:${userUniqueId}`); // 이전 페이지로 이동
+    navigate(`/myinfo/${userUniqueId}`); // 이전 페이지로 이동
   };
 
   return (
