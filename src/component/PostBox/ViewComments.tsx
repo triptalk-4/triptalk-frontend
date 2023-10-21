@@ -12,6 +12,7 @@ interface IReplyData {
   readonly nickname: string;
   readonly profile: string;
   readonly reply: string;
+  readonly email: string;
 }
 
 export default function ViewComments({ plannerDetailId }: { plannerDetailId: number }) {
@@ -19,9 +20,8 @@ export default function ViewComments({ plannerDetailId }: { plannerDetailId: num
   const [commentUserReply, setCommentUserReply] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [newComment, setNewComment] = useState('');
-  const [email, setEmail] = useState('');
 
-  const [replyId, setReplyId] = useState('');
+  const [, setReplyId] = useState('');
 
   const token = useSelector((state: RootState) => state.token.token);
 
@@ -36,15 +36,13 @@ export default function ViewComments({ plannerDetailId }: { plannerDetailId: num
         });
 
         if (response.data) {
-          const { replyId, reply, email } = response.data;
+          const { replyId, reply } = response.data;
           setReplyId(replyId);
           setCommentUserReply(reply);
           setCommentData(response.data);
-          setEmail(email);
         }
-        console.log(replyId);
-        console.log(email);
-        console.log('response.data', response.data);
+
+        // console.log('response.data', response.data);
       } catch (error) {
         console.error('댓글 가지고오기 오류:', error);
       }
@@ -52,20 +50,17 @@ export default function ViewComments({ plannerDetailId }: { plannerDetailId: num
 
     fetchComment();
   }, [token]);
-  console.log('번호', plannerDetailId);
+  // console.log('번호', plannerDetailId);
 
   const handleEditClick = () => {
     setIsEditing(true);
   };
 
   const Access_token = localStorage.getItem('userEmail');
-  const showBtn = Access_token === email;
-
-  console.log(Access_token);
-  console.log(email);
 
   // 수정
-  const handleSaveClick = async () => {
+  const handleSaveClick = async (replyId: number) => {
+    // console.log(replyId);
     const Access_token = localStorage.getItem('token');
     const response = await axios.put(
       `/address/api/reply/${replyId}`,
@@ -89,7 +84,7 @@ export default function ViewComments({ plannerDetailId }: { plannerDetailId: num
   };
 
   // 삭제
-  const handleDeleteClick = async () => {
+  const handleDeleteClick = async (replyId: number) => {
     const Access_token = localStorage.getItem('token');
     if (window.confirm('정말로 이 댓글을 삭제하시겠습니까?')) {
       try {
@@ -101,8 +96,9 @@ export default function ViewComments({ plannerDetailId }: { plannerDetailId: num
 
         if (response.status === 200) {
           console.log('댓글이 성공적으로 삭제되었습니다.');
+          setCommentData(commentData.filter(comment => comment.replyId !== replyId));
         } else {
-          console.error('댓글 삭제 중 오류가 발생했습니다.');
+          console.error('댓글이 정상적으로 삭제되지 않음');
         }
       } catch (error) {
         console.error('댓글 삭제 중 오류가 발생했습니다.', error);
@@ -133,6 +129,7 @@ export default function ViewComments({ plannerDetailId }: { plannerDetailId: num
 
       if (response.status === 200) {
         console.log('댓글 업로드 성공:', response.data);
+
         setNewComment('');
       } else {
         console.error('서버 응답 오류:', response);
@@ -152,16 +149,18 @@ export default function ViewComments({ plannerDetailId }: { plannerDetailId: num
               <UserBox>
                 <UserComment>
                   <UserName>{comment.nickname}</UserName>
-                  <UserReply type="text" defaultValue={comment.reply} />
+                  <UserReply type="text" defaultValue={comment.reply} disabled={!isEditing} />
                 </UserComment>
                 <EnDdiv>
                   {isEditing ? (
-                    <SaveBtn onClick={handleSaveClick}>저장</SaveBtn>
+                    Access_token === comment.email ? (
+                      <SaveBtn onClick={() => handleSaveClick(comment.replyId)}>저장</SaveBtn>
+                    ) : null
                   ) : (
-                    showBtn && (
+                    Access_token === comment.email && (
                       <>
                         <EditBtn onClick={handleEditClick}>수정</EditBtn>
-                        <DeleteBtn onClick={handleDeleteClick}>삭제</DeleteBtn>
+                        <DeleteBtn onClick={() => handleDeleteClick(comment.replyId)}>삭제</DeleteBtn>
                       </>
                     )
                   )}
@@ -170,8 +169,8 @@ export default function ViewComments({ plannerDetailId }: { plannerDetailId: num
             </CommentBox>
           ))}
         </UserCommentContainerInner>
-        <PostBorder></PostBorder>
       </UserCommentContainer>
+      <PostBorder></PostBorder>
       <CommentInputContainer>
         <InputWrap>
           <CommentInput placeholder="댓글 달기" value={newComment} onChange={handleCommentChange} />

@@ -28,6 +28,7 @@ export default function SecheduleDetail() {
   const [nickname, setNickname] = useState('');
   const [userImg, setUserImg] = useState('');
   const [userPing, setUserPing] = useState([]);
+  console.log(userPing);
   const [userEmail, setUserEmail] = useState('');
   const token = useSelector((state: RootState) => state.token.token);
   const { plannerId } = useParams();
@@ -181,8 +182,7 @@ export default function SecheduleDetail() {
   // 시간
   const startTime = moment(startDate).add(9, 'hours').format('YYYY-MM-DD');
   const endTime = moment(endDate).add(9, 'hours').format('YYYY-MM-DD');
-
-  console.log('상세페이지', userPing);
+  console.log(userPing);
   return (
     <DetailContainer>
       <PostContainer>

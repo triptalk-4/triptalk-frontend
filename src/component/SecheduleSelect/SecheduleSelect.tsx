@@ -1,5 +1,5 @@
 import Select from 'react-select';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface Option {
   value: string;
@@ -12,8 +12,19 @@ const options: Option[] = [
   { value: '조회순', label: '조회순' }
 ];
 
-function SecheduleSelect({ onSortChange }: { onSortChange: (sortKey: string) => void }) {
-  const [selectedOption, setSelectedOption] = useState<Option | null>(options[0]);
+interface SecheduleSelectProps {
+  onSortChange: (sortKey: string) => void;
+  currentSortType: string;
+}
+
+function SecheduleSelect({ onSortChange, currentSortType }: SecheduleSelectProps) {
+  const [selectedOption, setSelectedOption] = useState<Option | null>(null);
+
+  // Initialize the selected option based on the currentSortType prop.
+  useEffect(() => {
+    const matchingOption = options.find(option => option.value === currentSortType);
+    setSelectedOption(matchingOption || options[0]);
+  }, [currentSortType]);
 
   const handleChange = (option: Option | null) => {
     setSelectedOption(option);

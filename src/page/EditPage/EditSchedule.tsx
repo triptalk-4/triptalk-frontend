@@ -112,6 +112,7 @@ export default function EditSchedule() {
       setCoreContainers(prevContainers => prevContainers.slice(0, prevContainers.length - 1));
     }
   };
+  const [manyPlannerDetailResponse, setManyPlannerDetailResponse] = useState<PlannerDetail[]>([]);
 
   //// 작업 ////
   const token = useSelector((state: RootState) => state.token.token);
@@ -124,6 +125,8 @@ export default function EditSchedule() {
             Authorization: `Bearer ${Access_token}`,
           },
         });
+
+        setManyPlannerDetailResponse(response.data.plannerDetailResponse);
         const plannerData = response.data;
         setTitle(plannerData.title);
         setReview(plannerData.plannerDetailResponse[0].description); // 테스트로 수동적으로 뽑아서 넣음.
@@ -158,7 +161,8 @@ export default function EditSchedule() {
     };
     fetchEditPage();
   }, [token, plannerId]);
-  console.log('돼냐?', coreContainers);
+  console.log('manyPlannerDetailResponse', manyPlannerDetailResponse);
+  console.log('?', coreContainers);
   console.log('pickImg', pickImg);
 
   const handleEditButtonClick = async () => {
@@ -240,7 +244,7 @@ export default function EditSchedule() {
   };
 
   const handleBackButtonClick = () => {
-    navigate('/schedule');
+    navigate(`/page/${plannerId}`);
   };
 
   return (
