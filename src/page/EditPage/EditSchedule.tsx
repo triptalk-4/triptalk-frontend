@@ -50,6 +50,7 @@ export default function EditSchedule() {
 
   const [title, setTitle] = useState('');
   const [review, setReview] = useState('');
+  const [pickImg, setPickImg] = useState('');
   const { plannerId } = useParams();
   const [selectedDateRange, setSelectedDateRange] = useState<[Date | null, Date | null]>([null, null]);
 
@@ -126,6 +127,10 @@ export default function EditSchedule() {
         const plannerData = response.data;
         setTitle(plannerData.title);
         setReview(plannerData.plannerDetailResponse[0].description); // 테스트로 수동적으로 뽑아서 넣음.
+        
+        const imagesUrlArray = plannerData.plannerDetailResponse.map((detail: PlannerDetail) => detail.imagesUrl);
+        setPickImg(imagesUrlArray[0]);
+
         setSelectedDateRange([response.data.startDate, response.data.plannerData.endDate]);
 
         const updatedContainers = plannerData.plannerDetailResponse.map((detail: PlannerDetail) => {
@@ -154,6 +159,7 @@ export default function EditSchedule() {
     fetchEditPage();
   }, [token, plannerId]);
   console.log('돼냐?', coreContainers);
+  console.log('pickImg', pickImg);
 
   const handleEditButtonClick = async () => {
     try {
@@ -274,6 +280,7 @@ export default function EditSchedule() {
                 {container.imagePreviews.map((preview, imgIndex) => (
                   <img key={imgIndex} src={preview} alt={`Image ${imgIndex}`} />
                 ))}
+                {pickImg && <img src={pickImg} alt="Picked Image" />}
               </ImagePreviews>
               <div>
                 <CommentTextArea
