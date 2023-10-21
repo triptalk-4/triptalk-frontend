@@ -20,7 +20,7 @@ interface Save {
 export default function MyInfoSaved() {
   const [savedData, setSavedData] = useState<Save[]>([]); // msw
   const [containerClassName, setContainerClassName] = useState('flex-start');
-  const [isLoading, setIsLoading] = useState(false); // 로딩 상태
+  const [isLoading, setIsLoading] = useState(true); // 로딩 상태
   const targetRef = useRef<HTMLDivElement | null>(null);
 
   const token = useSelector((state: RootState) => state.token.token);
@@ -110,7 +110,7 @@ export default function MyInfoSaved() {
         }
       });
     }
-
+    console.log('savedData', savedData);
     return () => {
       if (targetRef.current) {
         observer.unobserve(targetRef.current);
@@ -123,8 +123,8 @@ export default function MyInfoSaved() {
       {savedData.map(item => (
         <MySaved key={item.id} savedData={item} />
       ))}
-      <ObserverTarget ref={targetRef} />
-      {isLoading && <LoadingMessage>로딩 중...</LoadingMessage>}
+      {!isLoading && <ObserverTarget ref={targetRef} />}
+      {!isLoading && <LoadingMessage>로딩 중...</LoadingMessage>}
     </SavedContainer>
   );
 }
