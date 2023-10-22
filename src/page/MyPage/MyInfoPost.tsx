@@ -48,6 +48,7 @@ interface PlannerDetails {
   thumbnail: string;
   views: number;
   likeCount: number;
+  createAt: number;
 }
 
 const PAGE_SIZE = 3;
@@ -76,7 +77,7 @@ export default function MyInfoPost({ userInfo }: { userInfo: userInfoDate }) {
     plannerId: planner.plannerId,
     thumbnail: planner.thumbnail,
     title: planner.title,
-    createAt: 0, // 임시 값
+    createAt: planner.createAt,
     likeCount: planner.likeCount,
     views: planner.views,
   }));
@@ -89,7 +90,6 @@ export default function MyInfoPost({ userInfo }: { userInfo: userInfoDate }) {
   //     .catch(error => console.error('가짜 API 요청 실패:', error));
   // }, []);
 
-  
   useEffect(() => {
     const Access_token = localStorage.getItem('token');
     const fetchSerch = async () => {
@@ -120,7 +120,7 @@ export default function MyInfoPost({ userInfo }: { userInfo: userInfoDate }) {
       setIsLoading(true);
       const Access_token = localStorage.getItem('token');
       try {
-        const response = await axios.get(`/address/api/users/planners/byUser?${page}&pageSize=${PAGE_SIZE}`, {
+        const response = await axios.get(`/address/api/users/planners/byUser?page=${page}&pageSize=${PAGE_SIZE}`, {
           headers: {
             Authorization: `Bearer ${Access_token}`,
           },
