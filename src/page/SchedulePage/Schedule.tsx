@@ -1,20 +1,16 @@
 import { useState, useEffect, useRef } from 'react';
-import styled from 'styled-components';
+import { Link, useSearchParams } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { setToken } from '../../store/tokenSlice';
+import { RootState } from '../../store/store';
 import Header from '../../component/Header';
 import SecheduleSelect from '../../component/SecheduleSelect/SecheduleSelect';
 import TopButton from '../../component/TopButton/TopButton';
 import { GrEdit } from 'react-icons/gr';
-import { BsFillSuitHeartFill } from 'react-icons/bs';
-import { BsEyeFill } from 'react-icons/bs';
+import styled from 'styled-components';
 import { DEFAULT_FONT_COLOR } from '../../color/color';
 import axios from 'axios';
-import { useSelector } from 'react-redux/es/exports';
-import { RootState } from '../../store/store';
-import { useDispatch } from 'react-redux';
-import { setToken } from '../../store/tokenSlice';
-import formatDate from '../../utils/formatDate';
-import { Link } from 'react-router-dom';
-import { useNavigate, useLocation } from 'react-router-dom';
+import ItemCard from '../../component/Sechedule/ItemCard';
 
 interface Item {
   createAt: number;
@@ -27,10 +23,10 @@ interface Item {
 
 function Schedule() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const location = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const initialSortType = searchParams.get('sortType') || 'RECENT';
+  const [sortType, setSortType] = useState(initialSortType);
   const [data, setData] = useState<Item[]>([]);
-  console.log(data);
   const [visibleItems, setVisibleItems] = useState<Item[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [showTopButton, setShowTopButton] = useState(false);
@@ -38,11 +34,6 @@ function Schedule() {
   const [hasNext, setHasNext] = useState(true);
   const token = useSelector((state: RootState) => state.token.token);
   const [page, setPage] = useState(0);
-  const query = new URLSearchParams(location.search);
-  const initialSortType = query.get('sortType') || 'RECENT';
-
-  const [sortType, setSortType] = useState(initialSortType);
-
   const previousToken = useRef<string | null>(null);
   const previousPage = useRef<number | null>(null);
   const previousSortType = useRef<string | null>(null);
@@ -142,16 +133,15 @@ function Schedule() {
     setVisibleItems([]);
     setPage(0);
     setAllItemsLoaded(false);
-    navigate(`?sortType=${newSortType}`);
+    setSearchParams({ sortType: newSortType });
   };
 
   useEffect(() => {
-    const query = new URLSearchParams(location.search);
-    const querySortType = query.get('sortType');
-    if (querySortType && ['RECENT', 'LIKES', 'VIEWS'].includes(querySortType)) {
-      setSortType(querySortType);
+    const currentSortType = searchParams.get('sortType');
+    if (currentSortType && ['RECENT', 'LIKES', 'VIEWS'].includes(currentSortType)) {
+      setSortType(currentSortType);
     }
-  }, [location.search]);
+  }, [searchParams]);
 
   return (
     <>
@@ -168,28 +158,8 @@ function Schedule() {
           </EditButton>
         </TitleContainer>
         <GridContainer>
-          {visibleItems.map((item: Item) => (
-            <Link to={`/page/${item.plannerId}`} key={item.plannerId}>
-              <StyledPost>
-                <div className="info-container">
-                  <TopContainer>
-                    <IconWithCount>
-                      <Heart />
-                      <Count>{item.likeCount}</Count>
-                    </IconWithCount>
-                    <IconWithCount>
-                      <LookUp />
-                      <Count>{item.views}</Count>
-                    </IconWithCount>
-                  </TopContainer>
-                  <MiddleTitleContainer>{item.title}</MiddleTitleContainer>
-                  <BottomContainer>
-                    <DateLabel> {formatDate(item.createAt)} </DateLabel>
-                  </BottomContainer>
-                </div>
-                <Img src={item.thumbnail} alt="Post Image" />
-              </StyledPost>
-            </Link>
+          {data.map(item => (
+            <ItemCard key={item.plannerId} item={item} />
           ))}
         </GridContainer>
         {isLoading && <LoadingMessage>Loading...</LoadingMessage>}
@@ -292,51 +262,6 @@ const EditButton = styled(Link)`
 
 const EditIcon = styled(GrEdit)`
   margin-left: 20px;
-`;
-
-const TopContainer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-`;
-
-const Heart = styled(BsFillSuitHeartFill)`
-  width: 30px;
-  height: 30px;
-`;
-
-const LookUp = styled(BsEyeFill)`
-  width: 30px;
-  height: 30px;
-`;
-
-const IconWithCount = styled.div`
-  display: flex;
-  align-items: center;
-  margin-right: 10px;
-`;
-
-const Count = styled.div`
-  margin-left: 5px;
-`;
-
-const MiddleTitleContainer = styled.div`
-  width: 100%;
-  height: 200px;
-  margin-top: 20%;
-  font-size: 24px;
-  font-weight: bold;
-`;
-
-const BottomContainer = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;
-
-const DateLabel = styled.div`
-  font-size: 24px;
 `;
 
 const EndOfDataMessage = styled.div`

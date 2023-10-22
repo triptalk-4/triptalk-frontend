@@ -20,12 +20,24 @@ interface SecheduleSelectProps {
 function SecheduleSelect({ onSortChange, currentSortType }: SecheduleSelectProps) {
   const [selectedOption, setSelectedOption] = useState<Option | null>(null);
 
-  // Initialize the selected option based on the currentSortType prop.
   useEffect(() => {
-    const matchingOption = options.find(option => option.value === currentSortType);
+    let label: string;
+    switch (currentSortType) {
+      case 'RECENT':
+        label = '최신순';
+        break;
+      case 'LIKES':
+        label = '좋아요';
+        break;
+      case 'VIEWS':
+        label = '조회순';
+        break;
+      default:
+        label = '최신순';
+    }
+    const matchingOption = options.find(option => option.label === label);
     setSelectedOption(matchingOption || options[0]);
   }, [currentSortType]);
-
   const handleChange = (option: Option | null) => {
     setSelectedOption(option);
     if (option) {
