@@ -17,10 +17,13 @@ interface Save {
   plannerId: number;
 }
 
+const PAGE_SIZE = 3; // 3개씩 들고오게하기위해
+
 export default function MyInfoSaved() {
   const [savedData, setSavedData] = useState<Save[]>([]); // msw
   const [containerClassName, setContainerClassName] = useState('flex-start');
-  const [isLoading, setIsLoading] = useState(true); // 로딩 상태
+  const [isLoading, setIsLoading] = useState(false); // 로딩 상태
+  const [isEndPage, setIsEndPage] = useState(false); // 페이지 끝 상태
   const targetRef = useRef<HTMLDivElement | null>(null);
 
   const token = useSelector((state: RootState) => state.token.token);
@@ -48,6 +51,10 @@ export default function MyInfoSaved() {
 
         if (response.data) {
           const { content } = response.data;
+
+          if (content > PAGE_SIZE) {
+            setIsEndPage(true);
+          }
           setSavedData(content);
         } else {
           console.log(response);
@@ -85,7 +92,7 @@ export default function MyInfoSaved() {
         if (entry.isIntersecting) {
           const nextPage = page + 1;
 
-          setPageSize(prevPageSize => prevPageSize + 3);
+          setPageSize(prevPageSize => prevPageSize + PAGE_SIZE);
 
           setIsLoading(true);
 
@@ -98,10 +105,9 @@ export default function MyInfoSaved() {
               },
             })
             .then(response => {
-              console.log(response.data);
               setIsLoading(false);
               const newData = response.data.content;
-              const ThreeItems = newData.slice(0, 3);
+              const ThreeItems = newData.slice(0, PAGE_SIZE);
               setSavedData(prevData => [...prevData, ...ThreeItems]);
               setPage(nextPage);
               // setPageSize(nextPageSize);
@@ -110,21 +116,21 @@ export default function MyInfoSaved() {
         }
       });
     }
-    console.log('savedData', savedData);
+
     return () => {
       if (targetRef.current) {
         observer.unobserve(targetRef.current);
       }
     };
-  }, [savedData]);
+  }, []);
 
   return (
     <SavedContainer className={containerClassName}>
       {savedData.map(item => (
         <MySaved key={item.id} savedData={item} />
       ))}
-      {!isLoading && <ObserverTarget ref={targetRef} />}
-      {!isLoading && <LoadingMessage>로딩 중...</LoadingMessage>}
+      {!isEndPage && <ObserverTarget ref={targetRef} />}
+      {isLoading && <LoadingMessage>로딩 중...</LoadingMessage>}
     </SavedContainer>
   );
 }
