@@ -5,10 +5,11 @@ import styled, { css } from 'styled-components';
 import { RootState } from '../../store/store';
 import { GRAY_COLOR, LIGHT_GRAY_COLOR, MAIN_COLOR } from '../../color/color';
 import { PiArrowFatLineUpBold } from 'react-icons/pi';
+import formatDate from '../../utils/formatDate';
 
 interface IReplyData {
   readonly replyId: number;
-  readonly createDt: string;
+  readonly createDt: number;
   readonly nickname: string;
   readonly profile: string;
   readonly reply: string;
@@ -40,6 +41,8 @@ export default function ViewComments({ plannerDetailId }: { plannerDetailId: num
           setReplyId(replyId);
           setCommentUserReply(reply);
           setCommentData(response.data);
+        } else {
+          console.log('데이터가 없습니다 댓글부분.'); // 데이터가 없을 경우에도 오류가 없게 수정
         }
 
         // console.log('response.data', response.data);
@@ -129,7 +132,20 @@ export default function ViewComments({ plannerDetailId }: { plannerDetailId: num
 
       if (response.status === 200) {
         console.log('댓글 업로드 성공:', response.data);
+        //  window.location.reload();
+        const updatedCommentData = await axios.get(`/address/api/reply/detail/replies/${plannerDetailId}`, {
+          headers: {
+            Authorization: `Bearer ${Access_token}`,
+          },
+        });
 
+        if (updatedCommentData.data) {
+          setCommentData(updatedCommentData.data);
+        } else {
+          console.error('데이터가 없습니다 댓글부분.');
+        }
+
+        // 댓글 입력 필드 초기화
         setNewComment('');
       } else {
         console.error('서버 응답 오류:', response);
@@ -161,6 +177,7 @@ export default function ViewComments({ plannerDetailId }: { plannerDetailId: num
                       <>
                         <EditBtn onClick={handleEditClick}>수정</EditBtn>
                         <DeleteBtn onClick={() => handleDeleteClick(comment.replyId)}>삭제</DeleteBtn>
+                        <UplaodDate>{formatDate(comment.createDt)}</UplaodDate>
                       </>
                     )
                   )}
@@ -243,7 +260,9 @@ const UserReply = styled.input`
   }
 `;
 
-const EnDdiv = styled.div``;
+const EnDdiv = styled.div`
+  display: flex;
+`;
 
 const EnDStyle = css`
   background-color: transparent;
@@ -307,4 +326,8 @@ const EnterBtn = styled(PiArrowFatLineUpBold)`
   &:hover {
     color: ${MAIN_COLOR};
   }
+`;
+
+const UplaodDate = styled.p`
+  font-size: 10px;
 `;

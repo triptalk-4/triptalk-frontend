@@ -176,6 +176,7 @@ export default function MyInfoPost() {
             .catch(error => console.error('데이터 요청 실패:', error));
         }
       });
+      console.log('savedData', postsData);
     }
 
     return () => {
@@ -236,8 +237,8 @@ export default function MyInfoPost() {
         : anotherPlanners.map((aontherItem: AnotherPost) => (
             <AnotherPlanner key={aontherItem.plannerId} plannerData={aontherItem} />
           ))}
-      <ObserverTarget ref={targetRef} />
-      {isLoading && <LoadingMessage>로딩 중...</LoadingMessage>}
+      {!isLoading && <ObserverTarget ref={targetRef} />}
+      {!isLoading && <LoadingMessage>로딩 중...</LoadingMessage>}
     </PostContainer>
   );
 }

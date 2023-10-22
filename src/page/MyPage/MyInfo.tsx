@@ -122,6 +122,8 @@ export default function MyInfo() {
     const storeUserData = localStorage.getItem('token');
     if (storeUserData) {
       localStorage.removeItem('token');
+      localStorage.removeItem('userEmail');
+      localStorage.removeItem('password');
       alert('로그아웃 되었습니다.');
       navigate('/');
     } else {
@@ -244,6 +246,7 @@ const Setting = styled(Link)`
   color: ${GRAY_COLOR};
   padding-left: 5px;
   cursor: pointer;
+  height: 30px;
 `;
 
 const UserLogoutBtn = styled.button`

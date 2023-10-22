@@ -18,18 +18,60 @@ interface PlannerDetail {
   };
 }
 
+interface MainDetailData {
+  plannerId: number;
+  description: string;
+  title: string;
+  likeCount: number;
+  views: number;
+  startDate: string;
+  endDate: string;
+  nickname: string;
+  profile: string;
+  userId: number;
+  email: string;
+  plannerDetailResponse: PlannerDetails[];
+}
+
+interface PlannerDetails {
+  userId: number;
+  plannerDetailId: number;
+  date: string;
+  placeResponse: PlaceResponse;
+  description: string;
+  imagesUrl: string[];
+}
+
+interface PlaceResponse {
+  placeName: string;
+  roadAddress: string;
+  addressName: string;
+  latitude: number;
+  longitude: number;
+}
+
 export default function SecheduleDetail() {
   const [likeCount, setLikeCount] = useState(0); // 좋아요 카운트 상태
   const [isLiked, setIsLiked] = useState(false); // 좋아요 상태 (눌렸는지 안눌렸는지)
   const [isSaved, setIsSaved] = useState(false);
-  const [title, setTitle] = useState('');
-  const [startDate, setStartDate] = useState<number>(0);
-  const [endDate, setEndDate] = useState<number>(0);
-  const [nickname, setNickname] = useState('');
-  const [userImg, setUserImg] = useState('');
+
+  const [mainDetailData, setMainDetailData] = useState<MainDetailData>({
+    plannerId: 0,
+    description: '',
+    title: '',
+    likeCount: 0,
+    views: 0,
+    startDate: '',
+    endDate: '',
+    nickname: '',
+    profile: '',
+    userId: 0,
+    email: '',
+    plannerDetailResponse: [],
+  });
+
   const [userPing, setUserPing] = useState([]);
   console.log(userPing);
-  const [userEmail, setUserEmail] = useState('');
   const token = useSelector((state: RootState) => state.token.token);
   const { plannerId } = useParams();
   const navigate = useNavigate();
@@ -48,25 +90,15 @@ export default function SecheduleDetail() {
         });
 
         if (response.data) {
-          const { title, likeCount, startDate, endDate, nickname, profile, email } = response.data;
-
-          setTitle(title);
-          setLikeCount(likeCount);
-          setStartDate(startDate);
-          setEndDate(endDate);
-          setNickname(nickname);
-          setUserImg(profile);
-          setUserEmail(email);
+          setMainDetailData(response.data);
 
           const plannerDetails = response.data.plannerDetailResponse;
           setPlannerDetailResponseDate(plannerDetails);
 
-          const allCoordinates = plannerDetails.map((detail: PlannerDetail) => {
-            return {
-              latitude: detail.placeResponse.latitude,
-              longitude: detail.placeResponse.longitude,
-            };
-          });
+          const allCoordinates = plannerDetails.map((detail: PlannerDetail) => ({
+            latitude: detail.placeResponse.latitude,
+            longitude: detail.placeResponse.longitude,
+          }));
           setUserPing(allCoordinates);
         }
 
@@ -180,35 +212,38 @@ export default function SecheduleDetail() {
   };
 
   // 시간
-  const startTime = moment(startDate).add(9, 'hours').format('YYYY-MM-DD');
-  const endTime = moment(endDate).add(9, 'hours').format('YYYY-MM-DD');
+  const startTime = moment(mainDetailData.startDate).add(9, 'hours').format('YYYY-MM-DD');
+  console.log(mainDetailData.startDate);
+  const endTime = moment(mainDetailData.endDate).add(9, 'hours').format('YYYY-MM-DD');
+
   console.log(userPing);
   return (
     <DetailContainer>
       <PostContainer>
+        {/* <ScheduleDetailMap onPlacesSelected={() => {}} onPlace={userPing} /> */}
         <ScheduleMapLoader onPlacesSelected={() => {}} onPlace={userPing} />
         <PostBg>
           <PostText>
             <Title>
-              {title}
+              {mainDetailData.title}
               <DateSpan>
                 {startTime} ~ {endTime}
               </DateSpan>
             </Title>
             <UserWarp>
-              {userEmail === Email_token && (
+              {mainDetailData.email === Email_token && (
                 <>
                   <DeleteBtn onClick={deletePost}>삭제</DeleteBtn>
                   <EditBtn onClick={() => navigate(`/EditSchedule/${plannerId}`)}>수정</EditBtn>
                 </>
               )}
               <UserName>
-                <UserProfile src={userImg} />
-                {nickname}
+                <UserProfile src={mainDetailData.profile} />
+                {mainDetailData.nickname}
               </UserName>
             </UserWarp>
           </PostText>
-          {plannerDetailResponseDate.map((detail, index) => (
+          {mainDetailData.plannerDetailResponse.map((detail, index) => (
             <PostBox key={index} data={detail} />
           ))}
         </PostBg>
@@ -239,16 +274,6 @@ const PostContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-`;
-
-const MapContainer = styled.div`
-  width: 100%;
-  height: 350px;
-  margin-bottom: 50px;
-  /* position: sticky;
-  top: 0;
-  z-index: 10; */
-  background-color: darkblue;
 `;
 
 const PostBg = styled.div`
