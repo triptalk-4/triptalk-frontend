@@ -10,6 +10,33 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 
+// interface userInfoDate {
+//   userId: number;
+//   name: string;
+//   profile: string;
+//   nickname: string;
+//   email: string;
+//   password: string;
+//   aboutMe: string;
+//   username: string;
+// }
+
+interface anotheruserInfoDate {
+  userId: number;
+  nickname: string;
+  aboutMe: string;
+  profile: string;
+  planners: PlannerDetails[];
+}
+
+interface PlannerDetails {
+  plannerId: number;
+  title: string;
+  thumbnail: string;
+  views: number;
+  likeCount: number;
+}
+
 export default function MyInfo() {
   const navigate = useNavigate();
   const { userId } = useParams();
@@ -28,11 +55,14 @@ export default function MyInfo() {
   const [userNickname, setUserNickname] = useState('');
   const [userImg, setUserImg] = useState('');
   const [userIntro, setUserIntro] = useState('');
-  const [userUniqueId, setUserUniqueId] = useState('');
-  const [anotherUserId, setAnotherUserId] = useState('');
-  const [anotheruserNickname, setAnotheruserNickname] = useState('');
-  const [anotheruserAboutMe, setAnotheruserAboutMe] = useState('');
-  const [anotheruserProfile, setAnotheruserProfile] = useState('');
+  const [userUniqueId, setUserUniqueId] = useState<number>(0);
+  const [anotherUserInfo, setAnotherUserInfo] = useState<anotheruserInfoDate>({
+    userId: 0,
+    nickname: '',
+    aboutMe: '',
+    profile: '',
+    planners: [],
+  });
 
   const token = useSelector((state: RootState) => state.token.token);
 
@@ -99,11 +129,7 @@ export default function MyInfo() {
         });
 
         if (response.data) {
-          const { userId, nickname, aboutMe, profile } = response.data;
-          setAnotherUserId(userId);
-          setAnotheruserNickname(nickname);
-          setAnotheruserAboutMe(aboutMe);
-          setAnotheruserProfile(profile);
+          setAnotherUserInfo(response.data);
         } else {
           console.log(response);
           alert('사용자 정보가 없습니다 로그인확인해주세요');
@@ -134,7 +160,7 @@ export default function MyInfo() {
 
   return (
     <MyPageContainer>
-      {userUniqueId === anotherUserId ? (
+      {userUniqueId === anotherUserInfo.userId ? (
         <UserImgContainer>
           <UserImg src={userImg} />
           <UserNickNameContainer>
@@ -150,17 +176,17 @@ export default function MyInfo() {
         </UserImgContainer>
       ) : (
         <UserImgContainer>
-          <UserImg src={anotheruserProfile} />
+          <UserImg src={anotherUserInfo.profile} />
           <UserNickNameContainer>
-            <NickName>{anotheruserNickname}</NickName>
+            <NickName>{anotherUserInfo.nickname}</NickName>
           </UserNickNameContainer>
           <IntroTextContainer>
-            <IntroText>{anotheruserAboutMe}</IntroText>
+            <IntroText>{anotherUserInfo.aboutMe}</IntroText>
           </IntroTextContainer>
         </UserImgContainer>
       )}
 
-      {userUniqueId === anotherUserId ? (
+      {userUniqueId === anotherUserInfo.userId ? (
         <ContentContainer>
           <ContentUl>
             {myInfoMenuTabs.map((menu, index) => (
