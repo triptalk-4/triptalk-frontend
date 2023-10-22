@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 import formatDate from '../../utils/formatDate';
 import { Link } from 'react-router-dom';
