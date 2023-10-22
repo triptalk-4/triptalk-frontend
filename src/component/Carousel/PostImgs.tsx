@@ -6,60 +6,12 @@ import 'swiper/css/navigation';
 import { Mousewheel, Keyboard, Pagination, Navigation } from 'swiper/modules';
 import styled from 'styled-components';
 import { MAIN_COLOR } from '../../color/color';
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
-import axios from 'axios';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../store/store';
 
-interface DetailType {
-  userId: number;
-  date: string;
-  placeResponse: {
-    placeName: string;
-    roadAddress: string;
-    addressName: string;
-    latitude: number;
-    longitude: number;
-  };
-  description: string;
+interface PlannerDetails {
   imagesUrl: string[];
 }
 
-interface PostImgsProps {
-  imagesUrl: string[];
-}
-
-export default function PostImgs({ imagesUrl }: PostImgsProps) {
-  const { plannerId } = useParams();
-  const [, setUserImgCarousels] = useState<DetailType[]>([]);
-  const token = useSelector((state: RootState) => state.token.token);
-
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    const fetchDetailPageImg = async () => {
-      try {
-        const response = await axios.get(`/address/api/plans/${plannerId}/details`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        if (response.data && response.data.plannerDetailResponse) {
-          const plannerDetails: DetailType[] = response.data.plannerDetailResponse;
-          setUserImgCarousels(plannerDetails);
-        } else {
-          console.log(response);
-          alert('사용자 정보가 없습니다 상세페이지확인해주세요');
-        }
-      } catch (error) {
-        console.error('사용자 정보 가져오기 오류 확인바람(상세페이지):', error);
-      }
-    };
-
-    fetchDetailPageImg();
-  }, [token, plannerId]);
-
+export default function PostImgs({ imagesUrl }: PlannerDetails) {
   return (
     <StyledPostImgs>
       <StyledSwiper

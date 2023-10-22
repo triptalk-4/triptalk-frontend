@@ -4,68 +4,27 @@ import { GrLocation } from 'react-icons/gr';
 import { GRAY_COLOR } from '../../color/color';
 import ViewComments from './ViewComments';
 import PostImgs from '../Carousel/PostImgs';
-import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../store/store';
-import axios from 'axios';
-import { useParams } from 'react-router-dom';
 import moment from 'moment';
 
-interface DetailType {
+interface PlannerDetails {
   userId: number;
-  date: number;
   plannerDetailId: number;
-  placeResponse: {
-    placeName: string;
-    roadAddress: string;
-    addressName: string;
-    latitude: number;
-    longitude: number;
-  };
+  date: string;
+  placeResponse: PlaceResponse;
   description: string;
   imagesUrl: string[];
-  commentUsernickname: string;
-  commentUserProfile: string;
-  commentUserReply: string;
 }
 
-export default function PostBox({ data }: { data: DetailType }) {
-  const token = useSelector((state: RootState) => state.token.token);
-  const { plannerId } = useParams();
-  const [, setDetailDatas] = useState<DetailType[]>([]);
+interface PlaceResponse {
+  placeName: string;
+  roadAddress: string;
+  addressName: string;
+  latitude: number;
+  longitude: number;
+}
 
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    const fetchDetailPageBox = async () => {
-      try {
-        const response = await axios.get(`/address/api/plans/${plannerId}/details`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        // console.log('Received data from the server:', response.data);
-        if (response.data && response.data.plannerDetailResponse) {
-          const plannerDetails: DetailType[] = response.data.plannerDetailResponse;
-          setDetailDatas(plannerDetails); // 상세 정보를 상태에 저장
-        } else {
-          console.log(response);
-          alert('사용자 정보가 없습니다 상세페이지(포스트박스)확인해주세요');
-        }
-      } catch (error) {
-        console.error('사용자 정보 가져오기 오류 확인바람(포스트박스):', error);
-      }
-    };
-
-    fetchDetailPageBox();
-  }, [token]);
-  // console.log(plannerId);
-  //console.log('userId:', data.userId);
-  //console.log('날짜:', data.date);
-  // console.log('리뷰:', data.description);
-  // console.log('위치:', data.placeResponse.addressName);
-
+export default function PostBox({ data }: { data: PlannerDetails }) {
   const scheduleDate = moment(data.date, 'YYYY-MM-DDTHH:mm:ss').add(9, 'hours').format('YYYY-MM-DD HH:mm');
-  // console.log(scheduleDate);
 
   return (
     <PostBoxContainer>
