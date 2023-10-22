@@ -29,7 +29,6 @@ interface SchduleMapLoaderProps {
 }
 
 const ScheduleMapLoader: React.FC<SchduleMapLoaderProps> = ({ onPlacesSelected, onPlace }) => {
-  console.log('userPing', onPlace);
   const [searchPlace, setSearchPlace] = useState('');
   const [map, setMap] = useState<kakao.maps.Map | null>(null);
   const [selectedPlaceInfos, setSelectedPlaceInfos] = useState<PlaceInfo[]>([]);
@@ -87,7 +86,6 @@ const ScheduleMapLoader: React.FC<SchduleMapLoaderProps> = ({ onPlacesSelected, 
     if (onPlace && onPlace.length > 0) {
       addMarker(onPlace);
     }
-    console.log('marker', onPlace);
   }, [onPlace]);
 
   const handleSearch = async () => {
@@ -161,8 +159,8 @@ const ScheduleMapLoader: React.FC<SchduleMapLoaderProps> = ({ onPlacesSelected, 
       <Con
         id="map"
         style={{ width: '100%', height: '400px', border: `1px solid ${YELLOW_COLOR}`, borderRadius: '4px' }}></Con>
-      <Input type="text" placeholder="장소 검색" onChange={e => setSearchPlace(e.target.value)} />
-      <Button onClick={handleSearch}>검색</Button>
+      {!onPlace ? <Input type="text" placeholder="장소 검색" onChange={e => setSearchPlace(e.target.value)} /> : null}
+      {!onPlace ? <Button onClick={handleSearch}>검색</Button> : null}
     </>
   );
 };

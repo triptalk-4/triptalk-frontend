@@ -16,6 +16,14 @@ interface InputState {
 const SignupForm = () => {
   const navigator = useNavigate();
 
+  const [fieldFocus, setFieldFocus] = useState({
+    name: false,
+    email: false,
+    password: false,
+    passwordConfirm: false,
+    nickname: false,
+  });
+
   const [error, setError] = useState<string | null>(null);
   // state 가 생성될게 많아서 객체형태로
   const [email, setEmail] = useState<InputState>({ value: '', valid: false, message: '' });
@@ -106,7 +114,7 @@ const SignupForm = () => {
 
   const isFormValid = () => {
     // 모든 유효성검사 ture 시 return 반환 하여 버튼 활성화
-    return email.valid && password.valid && passwordConfirm.valid && name.valid;
+    return email.valid && password.valid && passwordConfirm.valid && name.valid && emailInspectionCode.length == 6;
   };
 
   // 회원가입 요청 함수
@@ -214,6 +222,14 @@ const SignupForm = () => {
     }
   };
 
+  const handleFieldFocus = (fieldName: string) => {
+    setFieldFocus({ ...fieldFocus, [fieldName]: true });
+  };
+
+  const handleFieldBlur = (fieldName: string) => {
+    setFieldFocus({ ...fieldFocus, [fieldName]: false });
+  };
+
   return (
     <>
       <Container>
@@ -228,27 +244,31 @@ const SignupForm = () => {
               name="name"
               value={name.value}
               onChange={e => handleChange(e, validateName)}
+              onFocus={() => handleFieldFocus('name')}
+              onBlur={() => handleFieldBlur('name')}
               placeholder="이름"
             />
-            <p>{name.message}</p>
+            {fieldFocus.name && <p>{name.message}</p>}
           </FormGroup>
 
-          <FormGroup>
+          <FormGroup flex={true}>
             <Label>이메일</Label>
             <Input
               type="email"
               name="email"
               value={email.value}
               onChange={e => handleChange(e, validateEmail)}
+              onFocus={() => handleFieldFocus('email')}
+              onBlur={() => handleFieldBlur('email')}
               placeholder="email"
             />
-            {email.valid ? null : <p>{email.message}</p>}
-            <button type="button" onClick={handleEmailCertified}>
-              버튼
-            </button>
+            <CheckButton width="128px" type="button" onClick={handleEmailCertified}>
+              인증번호 발송
+            </CheckButton>
           </FormGroup>
+          {fieldFocus.email && !email.valid ? <p>{email.message}</p> : null}
 
-          <FormGroup>
+          <FormGroup flex={true}>
             <Label>이메일 인증</Label>
             <Input
               type="text"
@@ -257,9 +277,9 @@ const SignupForm = () => {
               onChange={e => setEmailInspectionCode(e.target.value)}
               placeholder="이메일 인증번호"
             />
-            <button type="button" onClick={handleInspectionCodeCheck}>
+            <CheckButton width="124px" type="button" onClick={handleInspectionCodeCheck}>
               인증확인
-            </button>
+            </CheckButton>
           </FormGroup>
 
           <FormGroup>
@@ -271,10 +291,12 @@ const SignupForm = () => {
               type={showPassword ? 'text' : 'password'}
               name="password"
               value={password.value}
+              onFocus={() => handleFieldFocus('password')}
+              onBlur={() => handleFieldBlur('password')}
               onChange={e => handleChange(e, validatePassword)}
               placeholder="비밀번호"
             />
-            <p>{password.message}</p>
+            {fieldFocus.password && <p>{password.message}</p>}
           </FormGroup>
 
           <FormGroup>
@@ -284,9 +306,11 @@ const SignupForm = () => {
               name="passwordConfirm"
               value={passwordConfirm.value}
               onChange={e => handleChange(e, validatePasswordConfirm)}
+              onFocus={() => handleFieldFocus('passwordConfirm')}
+              onBlur={() => handleFieldBlur('passwordConfirm')}
               placeholder="비밀번호 확인"
             />
-            {passwordConfirm.valid ? null : <p>{passwordConfirm.message}</p>}
+            {fieldFocus.passwordConfirm && !passwordConfirm.valid && <p>{passwordConfirm.message}</p>}
           </FormGroup>
 
           <FormGroup>
@@ -296,9 +320,11 @@ const SignupForm = () => {
               name="nickname"
               value={nickName.value}
               onChange={e => handleChange(e, validateNicName)}
+              onFocus={() => handleFieldFocus('nickname')}
+              onBlur={() => handleFieldBlur('nickname')}
               placeholder="사용할 닉네임"
             />
-            <p>{nickName.message}</p>
+            {fieldFocus.nickname && <p>{nickName.message}</p>}
           </FormGroup>
 
           <Button type="submit" className={isFormValid() ? 'active' : ''} onClick={handleSignup}>
@@ -374,7 +400,8 @@ const Label = styled.p`
   color: transparent;
 `;
 
-const FormGroup = styled.div`
+const FormGroup = styled.div<{ flex?: boolean }>`
+  display: ${props => (props.flex ? 'flex' : 'block')};
   position: relative;
   margin: 20px;
   padding: 10px;
@@ -386,6 +413,18 @@ const FormGroup = styled.div`
       font-size: 14px;
       font-weight: 300;
     }
+  }
+`;
+
+const CheckButton = styled.button<{ width: string }>`
+  width: ${props => props.width};
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  outline: none;
+  background-color: transparent;
+  &:hover {
+    color: ${MAIN_COLOR};
   }
 `;
 
@@ -402,6 +441,7 @@ const ToggleShowButton = styled.button`
 `;
 
 const Button = styled.button`
+  margin-bottom: 16px;
   display: block;
   width: 100%;
   padding: 20px;
