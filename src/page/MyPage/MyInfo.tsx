@@ -49,11 +49,6 @@ export default function MyInfo() {
   const { userId } = useParams();
   const [currentTab, setTab] = useState(0); // 탭기능
 
-  const myInfoMenuTabs = [
-    { name: '게시물', content: <MyInfoPost userInfo={userInfo} /> },
-    { name: '저장함', content: <MyInfoSaved /> },
-  ];
-
   const selectMenuHandler = (index: number) => {
     setTab(index);
   };
@@ -77,6 +72,11 @@ export default function MyInfo() {
     likeCount: 0,
     views: 0,
   });
+
+  const myInfoMenuTabs = [
+    { name: '게시물', content: <MyInfoPost userInfo={userInfo} /> },
+    { name: '저장함', content: <MyInfoSaved /> },
+  ];
 
   const [anotherUserInfo, setAnotherUserInfo] = useState<anotheruserInfoDate>({
     userId: 0,
