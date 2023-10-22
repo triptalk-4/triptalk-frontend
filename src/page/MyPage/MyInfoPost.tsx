@@ -6,6 +6,8 @@ import { RootState } from '../../store/store';
 import { BsEyeFill, BsFillSuitHeartFill } from 'react-icons/bs';
 import formatDate from '../../utils/formatDate';
 import { Link, useParams } from 'react-router-dom';
+import AnotherPlanner from './AnotherPlanner';
+import MyPost from './MyPost';
 
 interface Post {
   id: number;
@@ -26,10 +28,13 @@ interface AnotherPost {
   views: number;
 }
 
+const PAGE_SIZE = 3;
+
 export default function MyInfoPost() {
   const [postsData, setPostsData] = useState<Post[]>([]); // msw
   const [containerClassName, setContainerClassName] = useState('flex-start');
   const [isLoading, setIsLoading] = useState(false); // 로딩 상태
+  const [isEndPage, setIsEndPage] = useState(false);
   const targetRef = useRef<HTMLDivElement | null>(null);
 
   const token = useSelector((state: RootState) => state.token.token);
@@ -113,6 +118,9 @@ export default function MyInfoPost() {
 
         if (response.data) {
           const { content } = response.data;
+          if (content > PAGE_SIZE) {
+            setIsEndPage(true);
+          }
           setPostsData(content);
         } else {
           console.log(response);
@@ -153,7 +161,7 @@ export default function MyInfoPost() {
         if (entry && entry.isIntersecting) {
           const nextPage = page + 1;
           //const nextPageSize = pageSize + 3;
-          setPageSize(prevPageSize => prevPageSize + 3);
+          setPageSize(prevPageSize => prevPageSize + PAGE_SIZE);
 
           setIsLoading(true);
 
@@ -168,7 +176,7 @@ export default function MyInfoPost() {
             .then(response => {
               setIsLoading(true);
               const newData = response.data.content;
-              const ThreeItems = newData.slice(0, 3);
+              const ThreeItems = newData.slice(0, PAGE_SIZE);
               setPostsData(prevData => [...prevData, ...ThreeItems]);
               setPage(nextPage);
               // setPageSize(nextPageSize);
@@ -176,7 +184,7 @@ export default function MyInfoPost() {
             .catch(error => console.error('데이터 요청 실패:', error));
         }
       });
-      console.log('savedData', postsData);
+      console.log('postsData', postsData);
     }
 
     return () => {
@@ -184,7 +192,7 @@ export default function MyInfoPost() {
         observer.unobserve(targetRef.current);
       }
     };
-  }, [postsData]);
+  }, []);
 
   // useEffect(() => {
   //   // IntersectionObserver 생성및 초기화
@@ -237,67 +245,11 @@ export default function MyInfoPost() {
         : anotherPlanners.map((aontherItem: AnotherPost) => (
             <AnotherPlanner key={aontherItem.plannerId} plannerData={aontherItem} />
           ))}
-      {!isLoading && <ObserverTarget ref={targetRef} />}
-      {!isLoading && <LoadingMessage>로딩 중...</LoadingMessage>}
+      {!isEndPage && <ObserverTarget ref={targetRef} />}
+      {isLoading && <LoadingMessage>로딩 중...</LoadingMessage>}
     </PostContainer>
   );
 }
-
-const MyPost = ({ postsData }: { postsData: Post }) => {
-  return (
-    <BoxWrap>
-      <Link to={`/page/${postsData.plannerId}`} key={postsData.plannerId}>
-        <Box>
-          <ImgDiv>
-            <TextImg src={postsData.thumbnail} alt="첫번째 이미지" />
-          </ImgDiv>
-          <Info>
-            <TopContainer>
-              <IconWithCount>
-                <Heart />
-                <Count>{postsData.likeCount}</Count>
-              </IconWithCount>
-              <IconWithCount>
-                <LookUp />
-                <Count>{postsData.views}</Count>
-              </IconWithCount>
-            </TopContainer>
-            <TitleText>{postsData.title}</TitleText>
-            <DateText>{formatDate(postsData.createAt)}</DateText>
-          </Info>
-        </Box>
-      </Link>
-    </BoxWrap>
-  );
-};
-
-const AnotherPlanner = ({ plannerData }: { plannerData: AnotherPost }) => {
-  return (
-    <BoxWrap>
-      <Link to={`/page/${plannerData.plannerId}`} key={plannerData.plannerId}>
-        <Box>
-          <ImgDiv>
-            <TextImg src={plannerData.thumbnail} alt="첫번째 이미지" />
-          </ImgDiv>
-          <Info>
-            <TopContainer>
-              <IconWithCount>
-                <Heart />
-                <Count>{plannerData.likeCount}</Count>
-              </IconWithCount>
-              <IconWithCount>
-                <LookUp />
-                <Count>{plannerData.views}</Count>
-              </IconWithCount>
-            </TopContainer>
-            <TitleText>{plannerData.title}</TitleText>
-            <DateText>{formatDate(plannerData.createAt)}</DateText>
-          </Info>
-        </Box>
-      </Link>
-    </BoxWrap>
-  );
-};
 
 const PostContainer = styled.div`
   display: flex;
@@ -323,94 +275,4 @@ const ObserverTarget = styled.div`
 const LoadingMessage = styled.p`
   font-size: 36px;
   font-weight: bold;
-`;
-
-const BoxWrap = styled.div`
-  margin-right: 30px;
-  margin-bottom: 20px;
-
-  &:nth-child(3n) {
-    margin-right: 0;
-  }
-
-  /* @media screen {
-    &:nth-child(2n) {
-      margin-right: 0;
-    }
-  } */
-`;
-
-const Box = styled.div`
-  position: relative;
-  width: 100%;
-  height: auto;
-  cursor: pointer;
-`;
-
-const ImgDiv = styled.div`
-  width: 300px;
-  height: 350px;
-`;
-const TextImg = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  margin-bottom: 30px;
-  border-radius: 15px;
-`;
-
-const Info = styled.div`
-  color: #fff;
-  position: absolute;
-  border-radius: 15px;
-  left: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  width: 100%;
-  height: 100%;
-  padding: 15px;
-  box-sizing: border-box;
-  opacity: 0;
-  transition: opacity 0.35s ease-in-out;
-
-  ${Box}:hover & {
-    opacity: 1;
-  }
-`;
-
-const TopContainer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-`;
-
-const IconWithCount = styled.div`
-  display: flex;
-  align-items: center;
-  margin-right: 10px;
-`;
-
-const Count = styled.div`
-  margin-left: 5px;
-`;
-
-const Heart = styled(BsFillSuitHeartFill)`
-  width: 30px;
-  height: 30px;
-`;
-
-const LookUp = styled(BsEyeFill)`
-  width: 30px;
-  height: 30px;
-`;
-
-const TitleText = styled.h2`
-  margin-top: 10%;
-  font-size: 30px;
-`;
-
-const DateText = styled.p`
-  position: absolute;
-  bottom: 15px;
-  left: 15px;
 `;
