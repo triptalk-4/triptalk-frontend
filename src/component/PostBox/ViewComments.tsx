@@ -41,6 +41,8 @@ export default function ViewComments({ plannerDetailId }: { plannerDetailId: num
           setReplyId(replyId);
           setCommentUserReply(reply);
           setCommentData(response.data);
+        } else {
+          console.log('데이터가 없습니다 댓글부분.'); // 데이터가 없을 경우에도 오류가 없게 수정
         }
 
         // console.log('response.data', response.data);
@@ -50,7 +52,7 @@ export default function ViewComments({ plannerDetailId }: { plannerDetailId: num
     };
 
     fetchComment();
-  }, [token, commentData]);
+  }, [token]);
   // console.log('번호', plannerDetailId);
 
   const handleEditClick = () => {
