@@ -1,22 +1,26 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import Search from './Search/Search';
 import { DEFAULT_FONT_COLOR, MAIN_COLOR } from '../color/color';
 import { Link, useLocation } from 'react-router-dom';
 import axios from 'axios';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store/store';
+import { setUserInfo } from '../store/userSlice';
 
 interface NavItemProps {
   $isActive: boolean;
 }
 
 export default function Header() {
-  const [userImg, setUserImg] = useState(''); // msw
+  //  const [userImg, setUserImg] = useState(''); // msw
   const token = useSelector((state: RootState) => state.token.token); // Redux에서 토큰 가져오기
   const tabsRef = useRef<HTMLUListElement>(null);
   const location = useLocation();
-  const [userUniqueId, setUserUniqueId] = useState('');
+
+  const dispatch = useDispatch();
+
+  const user = useSelector((state: RootState) => state.user.userInfo);
 
   // useEffect(() => {
   //   const storedUserData = localStorage.getItem('userInfo');
@@ -34,25 +38,23 @@ export default function Header() {
       try {
         const response = await axios.get('/address/api/users/profile', {
           headers: {
-            Authorization: `Bearer ${token}`, //필수
+            Authorization: `Bearer ${token}`,
           },
         });
 
         if (response.data) {
-          const { profile, userId } = response.data;
-          setUserImg(profile);
-          setUserUniqueId(userId);
+          dispatch(setUserInfo(response.data));
         } else {
           console.log(response);
-          alert('사용자 정보가 없습니다 로그인확인해주세요');
+          alert('사용자 정보가 없습니다. 로그인 확인해주세요');
         }
       } catch (error) {
         console.error('사용자 정보 가져오기 오류 확인바람(헤더):', error);
       }
     };
 
-    fetchUserInfo(); // 비동기 함수 호출
-  }, [token, userImg]);
+    fetchUserInfo();
+  }, [token]);
 
   return (
     <GnbContainer>
@@ -62,8 +64,8 @@ export default function Header() {
             <LogoImg src="/img/logo.png" alt="로고" />
           </Logo>
         </LogoDiv>
-        <User to={`/myinfo/${userUniqueId}`}>
-          <UserImg src={userImg} />
+        <User to={`/myinfo/${user.userId}`}>
+          <UserImg src={user.profile} />
         </User>
       </Gnb>
       <Nav ref={tabsRef}>
