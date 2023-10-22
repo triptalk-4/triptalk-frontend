@@ -71,7 +71,6 @@ export default function SecheduleDetail() {
   });
 
   const [userPing, setUserPing] = useState([]);
-  console.log(userPing);
   const token = useSelector((state: RootState) => state.token.token);
   const { plannerId } = useParams();
   const navigate = useNavigate();
@@ -212,10 +211,8 @@ export default function SecheduleDetail() {
 
   // 시간
   const startTime = moment(mainDetailData.startDate).add(9, 'hours').format('YYYY-MM-DD');
-  console.log(mainDetailData.startDate);
   const endTime = moment(mainDetailData.endDate).add(9, 'hours').format('YYYY-MM-DD');
 
-  console.log(userPing);
   return (
     <DetailContainer>
       <PostContainer>

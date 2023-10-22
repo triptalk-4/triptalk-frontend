@@ -32,12 +32,10 @@ export default function AddSchedule() {
   const [title, setTitle] = useState('');
   // const [reviews, setReviews] = useState('');
   const [placeInfo, setPlaceInfo] = useState<PlaceInfo[]>([]);
-  console.log(placeInfo);
   const [selectedDateRange, setSelectedDateRange] = useState<[Date | null, Date | null]>([null, null]);
 
   const handleDateRangeChange = (newDateRange: [Date | null, Date | null]) => {
     setSelectedDateRange(newDateRange);
-    console.log(newDateRange);
   };
 
   const navigate = useNavigate();
@@ -66,18 +64,6 @@ export default function AddSchedule() {
   };
 
   const handlePlaceSelected = (placeInfos: PlaceInfo[]) => {
-    // const updatedContainers = [...coreContainers];
-    // placeInfos.forEach((placeInfo, index) => {
-    //   if (index < updatedContainers.length) {
-    //     updatedContainers[index].placeInfo = placeInfo;
-    //   }
-    // });
-    // setCoreContainers(prevContainers =>
-    //   prevContainers.map((container, index) => ({
-    //     ...container,
-    //     placeInfo: placeInfos[index] || container.placeInfo,
-    //   }))
-    // );
     setPlaceInfo(placeInfos);
     const updatedContainers = coreContainers.map((container, index) => {
       if (index < placeInfos.length) {
@@ -89,7 +75,6 @@ export default function AddSchedule() {
       return container;
     });
     setCoreContainers(updatedContainers);
-    console.log(placeInfos);
   };
 
   const handleAddCoreContainer = () => {
@@ -105,53 +90,6 @@ export default function AddSchedule() {
       setCoreContainers(prevContainers => prevContainers.slice(0, prevContainers.length - 1));
     }
   };
-
-  // const sendData = async (imageUrls: string) => {
-  //   const detailRequests = coreContainers.map((container, index) => {
-  //     return {
-  //       date: container.startDate,
-  //       description: container.review,
-  //       images: imageUrls,
-  //       placeInfo: {
-  //         addressName: container.placeInfo?.addressName,
-  //         latitude: container.placeInfo?.position.lat,
-  //         longitude: container.placeInfo?.position.lng,
-  //         placeName: container.placeInfo?.placeName,
-  //         roadAddress: container.placeInfo?.roadAddressName,
-  //       },
-  //     };
-  //   });
-  //   const plannerRequest = {
-  //     description: '',
-  //     endDate: selectedDateRange[1],
-  //     startDate: selectedDateRange[0],
-  //     title: title,
-  //   };
-  //   console.log(detailRequests);
-
-  //   const dataToSend = {
-  //     plannerDetailListRequests: detailRequests,
-  //     plannerRequest: plannerRequest,
-  //   };
-
-  //   try {
-  //     const response = await axios.post('/address/api/plans', dataToSend, {
-  //       headers: {
-  //         Authorization: `Bearer ${Access_token}`,
-  //         'Content-Type': 'application/json',
-  //       },
-  //     });
-  //     if (response.status === 200) {
-  //       console.log('데이터 전송 완료');
-  //       alert('일정 등록 완료!');
-  //       navigate('/schedule');
-  //     } else {
-  //       alert('일정 등록 실패');
-  //     }
-  //   } catch (error) {
-  //     console.error('데이터 전송 오류', error);
-  //   }
-  // };
 
   const handleEditButtonClick = async () => {
     try {
@@ -177,7 +115,6 @@ export default function AddSchedule() {
       const imageUrls = imageUrlsArray.map(response => response.data);
 
       const detailRequests = coreContainers.map((container, index) => {
-        console.log('PlaceInfo in detailRequests', container.placeInfo);
         return {
           date: container.startDate,
           description: container.review,
@@ -203,8 +140,6 @@ export default function AddSchedule() {
         plannerRequest: plannerRequest,
       };
 
-      console.log('dataToSend', dataToSend);
-
       try {
         const response = await axios.post('/address/api/plans', dataToSend, {
           headers: {
@@ -213,7 +148,6 @@ export default function AddSchedule() {
           },
         });
         if (response.status === 200) {
-          console.log('데이터 전송 완료');
           alert('일정 등록 완료!');
           navigate('/schedule');
         } else {
