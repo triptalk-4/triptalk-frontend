@@ -43,7 +43,7 @@ export default function MyInfoSaved() {
     const Access_token = localStorage.getItem('token');
     const fetchUserPost = async () => {
       try {
-        const response = await axios.get(`/address/api/users/planners/userSave?${page}&pageSize=${pageSize}`, {
+        const response = await axios.get(`/address/api/users/planners/userSave?${page}&pageSize=6`, {
           headers: {
             Authorization: `Bearer ${Access_token}`,
           },
@@ -66,7 +66,7 @@ export default function MyInfoSaved() {
     };
     console.log('저장함', savedData);
     fetchUserPost();
-  }, [token, page, pageSize]);
+  }, [token, page]);
 
   useEffect(() => {
     if (savedData.length >= 2) {
@@ -92,14 +92,14 @@ export default function MyInfoSaved() {
         if (entry.isIntersecting) {
           const nextPage = page + 1;
 
-          setPageSize(prevPageSize => prevPageSize + PAGE_SIZE);
+          //  setPageSize(prevPageSize => prevPageSize + PAGE_SIZE);
 
           setIsLoading(true);
 
           const Access_token = localStorage.getItem('token');
 
           axios
-            .get(`/address/api/users/planners/userSave?page=${nextPage}&pageSize=${pageSize}`, {
+            .get(`/address/api/users/planners/userSave?page=${nextPage}&pageSize=3`, {
               headers: {
                 Authorization: `Bearer ${Access_token}`,
               },
@@ -110,7 +110,6 @@ export default function MyInfoSaved() {
               const ThreeItems = newData.slice(0, PAGE_SIZE);
               setSavedData(prevData => [...prevData, ...ThreeItems]);
               setPage(nextPage);
-              // setPageSize(nextPageSize);
             })
             .catch(error => console.error('데이터 요청 실패:', error));
         }
