@@ -10,16 +10,23 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 
-// interface userInfoDate {
-//   userId: number;
-//   name: string;
-//   profile: string;
-//   nickname: string;
-//   email: string;
-//   password: string;
-//   aboutMe: string;
-//   username: string;
-// }
+interface userInfoDate {
+  userId: number;
+  name: string;
+  profile: string;
+  nickname: string;
+  email: string;
+  password: string;
+  aboutMe: string;
+  username: string;
+  plannerId: number;
+  id: number;
+  thumbnail: string;
+  title: string;
+  createAt: number;
+  likeCount: number;
+  views: number;
+}
 
 interface anotheruserInfoDate {
   userId: number;
@@ -43,7 +50,7 @@ export default function MyInfo() {
   const [currentTab, setTab] = useState(0); // 탭기능
 
   const myInfoMenuTabs = [
-    { name: '게시물', content: <MyInfoPost /> },
+    { name: '게시물', content: <MyInfoPost userInfo={userInfo} /> },
     { name: '저장함', content: <MyInfoSaved /> },
   ];
 
@@ -52,10 +59,25 @@ export default function MyInfo() {
   };
 
   // msw
-  const [userNickname, setUserNickname] = useState('');
-  const [userImg, setUserImg] = useState('');
-  const [userIntro, setUserIntro] = useState('');
-  const [userUniqueId, setUserUniqueId] = useState<number>(0);
+
+  const [userInfo, setUserInfo] = useState<userInfoDate>({
+    userId: 0,
+    plannerId: 0,
+    name: '',
+    profile: '',
+    nickname: '',
+    email: '',
+    password: '',
+    aboutMe: '',
+    username: '',
+    id: 0,
+    thumbnail: '',
+    title: '',
+    createAt: 0,
+    likeCount: 0,
+    views: 0,
+  });
+
   const [anotherUserInfo, setAnotherUserInfo] = useState<anotheruserInfoDate>({
     userId: 0,
     nickname: '',
@@ -101,11 +123,7 @@ export default function MyInfo() {
         });
 
         if (response.data) {
-          const { profile, nickname, aboutMe, userId } = response.data;
-          setUserImg(profile);
-          setUserNickname(nickname);
-          setUserIntro(aboutMe);
-          setUserUniqueId(userId);
+          setUserInfo(response.data);
         } else {
           console.log(response);
           alert('사용자 정보가 없습니다 로그인확인해주세요');
@@ -116,7 +134,7 @@ export default function MyInfo() {
     };
 
     fetchUserInfo();
-  }, [token, userNickname, userImg, userIntro]);
+  }, [token]);
 
   useEffect(() => {
     const Access_token = localStorage.getItem('token');
@@ -160,17 +178,17 @@ export default function MyInfo() {
 
   return (
     <MyPageContainer>
-      {userUniqueId === anotherUserInfo.userId ? (
+      {userInfo.userId === anotherUserInfo.userId ? (
         <UserImgContainer>
-          <UserImg src={userImg} />
+          <UserImg src={userInfo.profile} />
           <UserNickNameContainer>
-            <NickName>{userNickname}</NickName>
+            <NickName>{userInfo.nickname}</NickName>
             <Setting to="/editmyinfo">
               <AiOutlineSetting />
             </Setting>
           </UserNickNameContainer>
           <IntroTextContainer>
-            <IntroText>{userIntro}</IntroText>
+            <IntroText>{userInfo.aboutMe}</IntroText>
           </IntroTextContainer>
           <UserLogoutBtn onClick={handleLogOut}>로그아웃</UserLogoutBtn>
         </UserImgContainer>
@@ -186,7 +204,7 @@ export default function MyInfo() {
         </UserImgContainer>
       )}
 
-      {userUniqueId === anotherUserInfo.userId ? (
+      {userInfo.userId === anotherUserInfo.userId ? (
         <ContentContainer>
           <ContentUl>
             {myInfoMenuTabs.map((menu, index) => (
