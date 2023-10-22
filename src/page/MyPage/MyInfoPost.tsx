@@ -3,20 +3,26 @@ import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { RootState } from '../../store/store';
-import { BsEyeFill, BsFillSuitHeartFill } from 'react-icons/bs';
-import formatDate from '../../utils/formatDate';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import AnotherPlanner from './AnotherPlanner';
 import MyPost from './MyPost';
 
-interface Post {
+interface userInfoDate {
+  userId: number;
+  name: string;
+  profile: string;
+  nickname: string;
+  email: string;
+  password: string;
+  aboutMe: string;
+  username: string;
+  plannerId: number;
   id: number;
   thumbnail: string;
   title: string;
   createAt: number;
   likeCount: number;
   views: number;
-  plannerId: number;
 }
 
 interface AnotherPost {
@@ -28,24 +34,52 @@ interface AnotherPost {
   views: number;
 }
 
+interface anotheruserInfoDate {
+  userId: number;
+  nickname: string;
+  aboutMe: string;
+  profile: string;
+  planners: PlannerDetails[];
+}
+
+interface PlannerDetails {
+  plannerId: number;
+  title: string;
+  thumbnail: string;
+  views: number;
+  likeCount: number;
+}
+
 const PAGE_SIZE = 3;
 
-export default function MyInfoPost() {
-  const [postsData, setPostsData] = useState<Post[]>([]); // msw
+export default function MyInfoPost({ userInfo }: { userInfo: userInfoDate }) {
+  const [postsData, setPostsData] = useState<userInfoDate[]>([]); // msw
   const [containerClassName, setContainerClassName] = useState('flex-start');
   const [isLoading, setIsLoading] = useState(false); // 로딩 상태
   const [isEndPage, setIsEndPage] = useState(false);
   const targetRef = useRef<HTMLDivElement | null>(null);
+  const observerRef = useRef<IntersectionObserver | null>(null);
 
   const token = useSelector((state: RootState) => state.token.token);
   const [page, setPage] = useState(0);
-  const [pageSize, setPageSize] = useState(6);
 
   const { userId } = useParams();
-  const [userUniqueId, setUserUniqueId] = useState('');
-  const [anotherUserId, setAnotherUserId] = useState('');
-  const [anotherPlanners, setAnotherPlanners] = useState<AnotherPost[]>([]);
+  const [anotherUserInfo, setAnotherUserInfo] = useState<anotheruserInfoDate>({
+    userId: 0,
+    nickname: '',
+    aboutMe: '',
+    profile: '',
+    planners: [],
+  });
 
+  const anotherPlanners = anotherUserInfo.planners.map((planner: PlannerDetails) => ({
+    plannerId: planner.plannerId,
+    thumbnail: planner.thumbnail,
+    title: planner.title,
+    createAt: 0, // 임시 값
+    likeCount: planner.likeCount,
+    views: planner.views,
+  }));
   // useEffect(() => {
   //   fetch('/api/posts')
   //     .then(res => res.json())
@@ -54,31 +88,6 @@ export default function MyInfoPost() {
   //     })
   //     .catch(error => console.error('가짜 API 요청 실패:', error));
   // }, []);
-
-  useEffect(() => {
-    const Access_token = localStorage.getItem('token');
-    const fetchUserInfo = async () => {
-      try {
-        const response = await axios.get('/address/api/users/profile', {
-          headers: {
-            Authorization: `Bearer ${Access_token}`,
-          },
-        });
-
-        if (response.data) {
-          const { userId } = response.data;
-          setUserUniqueId(userId);
-        } else {
-          console.log(response);
-          alert('사용자 정보가 없습니다 로그인확인해주세요');
-        }
-      } catch (error) {
-        console.error('사용자 정보 가져오기 오류 확인바람(내정보):', error);
-      }
-    };
-
-    fetchUserInfo();
-  }, [token]);
 
   useEffect(() => {
     const Access_token = localStorage.getItem('token');
@@ -91,9 +100,7 @@ export default function MyInfoPost() {
         });
 
         if (response.data) {
-          const { userId, planners } = response.data;
-          setAnotherUserId(userId);
-          setAnotherPlanners(planners);
+          setAnotherUserInfo(response.data);
         } else {
           console.log(response);
           alert('사용자 정보가 없습니다 로그인확인해주세요');
@@ -107,32 +114,31 @@ export default function MyInfoPost() {
   }, [token, userId]);
 
   useEffect(() => {
-    const Access_token = localStorage.getItem('token');
     const fetchUserPost = async () => {
+      if (isEndPage || isLoading) return;
+      setIsLoading(true);
+      const Access_token = localStorage.getItem('token');
       try {
-        const response = await axios.get(`/address/api/users/planners/byUser?${page}&pageSize=${pageSize}`, {
+        const response = await axios.get(`/address/api/users/planners/byUser?${page}&pageSize=${PAGE_SIZE}`, {
           headers: {
             Authorization: `Bearer ${Access_token}`,
           },
         });
-
-        if (response.data) {
-          const { content } = response.data;
-          if (content > PAGE_SIZE) {
-            setIsEndPage(true);
-          }
-          setPostsData(content);
+        setIsLoading(false);
+        const newData = response.data.content;
+        if (newData.length === 0) {
+          setIsEndPage(true);
         } else {
-          console.log(response);
-          alert('사용자 정보가 없습니다 로그인확인해주세요');
+          setPostsData(prevData => [...prevData, ...newData]);
         }
       } catch (error) {
-        console.error('사용자 정보 가져오기 오류 확인바람(포스트):', error);
+        setIsLoading(false);
+        console.error('데이터 요청 실패:', error);
       }
     };
     console.log('게시물', postsData);
     fetchUserPost();
-  }, [token, page, pageSize]);
+  }, [page, isEndPage]);
 
   useEffect(() => {
     // 게시물 갯수에 따라 스타일 변경
@@ -148,43 +154,12 @@ export default function MyInfoPost() {
     const observer = new IntersectionObserver(handleIntersection, {
       root: null,
       rootMargin: '0px',
-      threshold: 1,
+      threshold: 0.5,
     });
 
-    // 대상 엘리먼트를 관찰
+    observerRef.current = observer;
     if (targetRef.current) {
       observer.observe(targetRef.current);
-    }
-
-    function handleIntersection(entries: IntersectionObserverEntry[]) {
-      entries.forEach(entry => {
-        if (entry && entry.isIntersecting) {
-          const nextPage = page + 1;
-          //const nextPageSize = pageSize + 3;
-          setPageSize(prevPageSize => prevPageSize + PAGE_SIZE);
-
-          setIsLoading(true);
-
-          const Access_token = localStorage.getItem('token');
-
-          axios
-            .get(`/address/api/users/planners/byUser?page=${nextPage}&pageSize=${pageSize}`, {
-              headers: {
-                Authorization: `Bearer ${Access_token}`,
-              },
-            })
-            .then(response => {
-              setIsLoading(true);
-              const newData = response.data.content;
-              const ThreeItems = newData.slice(0, PAGE_SIZE);
-              setPostsData(prevData => [...prevData, ...ThreeItems]);
-              setPage(nextPage);
-              // setPageSize(nextPageSize);
-            })
-            .catch(error => console.error('데이터 요청 실패:', error));
-        }
-      });
-      console.log('postsData', postsData);
     }
 
     return () => {
@@ -192,7 +167,23 @@ export default function MyInfoPost() {
         observer.unobserve(targetRef.current);
       }
     };
-  }, []);
+  }, [page, isLoading]);
+
+  function handleIntersection(entries: IntersectionObserverEntry[]) {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !isLoading) {
+        setPage(prevPage => {
+          if (!isLoading) {
+            return prevPage + 1;
+          }
+          return prevPage;
+        });
+        if (targetRef.current && observerRef.current) {
+          observerRef.current.unobserve(targetRef.current);
+        }
+      }
+    });
+  }
 
   // useEffect(() => {
   //   // IntersectionObserver 생성및 초기화
@@ -240,7 +231,7 @@ export default function MyInfoPost() {
 
   return (
     <PostContainer className={containerClassName}>
-      {userUniqueId === anotherUserId
+      {userInfo.userId === anotherUserInfo.userId
         ? postsData.map(item => <MyPost key={item.plannerId} postsData={item} />)
         : anotherPlanners.map((aontherItem: AnotherPost) => (
             <AnotherPlanner key={aontherItem.plannerId} plannerData={aontherItem} />
