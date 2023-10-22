@@ -132,6 +132,20 @@ export default function ViewComments({ plannerDetailId }: { plannerDetailId: num
 
       if (response.status === 200) {
         console.log('댓글 업로드 성공:', response.data);
+        //  window.location.reload();
+        const updatedCommentData = await axios.get(`/address/api/reply/detail/replies/${plannerDetailId}`, {
+          headers: {
+            Authorization: `Bearer ${Access_token}`,
+          },
+        });
+
+        if (updatedCommentData.data) {
+          setCommentData(updatedCommentData.data);
+        } else {
+          console.error('데이터가 없습니다 댓글부분.');
+        }
+
+        // 댓글 입력 필드 초기화
         setNewComment('');
       } else {
         console.error('서버 응답 오류:', response);
