@@ -77,6 +77,7 @@ export default function ViewComments({ plannerDetailId }: { plannerDetailId: num
 
     if (response.status === 200) {
       console.log('댓글이 성공적으로 수정되었습니다.');
+      setCommentData(commentData.filter(comment => comment.replyId === replyId));
       setIsEditing(false);
     } else {
       console.error('댓글 수정 중 오류가 발생했습니다.');
@@ -129,7 +130,6 @@ export default function ViewComments({ plannerDetailId }: { plannerDetailId: num
 
       if (response.status === 200) {
         console.log('댓글 업로드 성공:', response.data);
-
         setNewComment('');
       } else {
         console.error('서버 응답 오류:', response);
