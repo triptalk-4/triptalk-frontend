@@ -5,10 +5,11 @@ import styled, { css } from 'styled-components';
 import { RootState } from '../../store/store';
 import { GRAY_COLOR, LIGHT_GRAY_COLOR, MAIN_COLOR } from '../../color/color';
 import { PiArrowFatLineUpBold } from 'react-icons/pi';
+import formatDate from '../../utils/formatDate';
 
 interface IReplyData {
   readonly replyId: number;
-  readonly createDt: string;
+  readonly createDt: number;
   readonly nickname: string;
   readonly profile: string;
   readonly reply: string;
@@ -49,7 +50,7 @@ export default function ViewComments({ plannerDetailId }: { plannerDetailId: num
     };
 
     fetchComment();
-  }, [token]);
+  }, [token, commentData]);
   // console.log('번호', plannerDetailId);
 
   const handleEditClick = () => {
@@ -77,6 +78,7 @@ export default function ViewComments({ plannerDetailId }: { plannerDetailId: num
 
     if (response.status === 200) {
       console.log('댓글이 성공적으로 수정되었습니다.');
+      //  setCommentData(commentData.filter(comment => comment.replyId === replyId));
       setIsEditing(false);
     } else {
       console.error('댓글 수정 중 오류가 발생했습니다.');
@@ -129,7 +131,6 @@ export default function ViewComments({ plannerDetailId }: { plannerDetailId: num
 
       if (response.status === 200) {
         console.log('댓글 업로드 성공:', response.data);
-
         setNewComment('');
       } else {
         console.error('서버 응답 오류:', response);
@@ -161,6 +162,7 @@ export default function ViewComments({ plannerDetailId }: { plannerDetailId: num
                       <>
                         <EditBtn onClick={handleEditClick}>수정</EditBtn>
                         <DeleteBtn onClick={() => handleDeleteClick(comment.replyId)}>삭제</DeleteBtn>
+                        <UplaodDate>{formatDate(comment.createDt)}</UplaodDate>
                       </>
                     )
                   )}
@@ -243,7 +245,9 @@ const UserReply = styled.input`
   }
 `;
 
-const EnDdiv = styled.div``;
+const EnDdiv = styled.div`
+  display: flex;
+`;
 
 const EnDStyle = css`
   background-color: transparent;
@@ -307,4 +311,8 @@ const EnterBtn = styled(PiArrowFatLineUpBold)`
   &:hover {
     color: ${MAIN_COLOR};
   }
+`;
+
+const UplaodDate = styled.p`
+  font-size: 10px;
 `;
