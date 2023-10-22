@@ -75,7 +75,7 @@ export default function SecheduleDetail() {
   const token = useSelector((state: RootState) => state.token.token);
   const { plannerId } = useParams();
   const navigate = useNavigate();
-  const [plannerDetailResponseDate, setPlannerDetailResponseDate] = useState([]);
+
   const Email_token = localStorage.getItem('userEmail');
 
   useEffect(() => {
@@ -93,7 +93,6 @@ export default function SecheduleDetail() {
           setMainDetailData(response.data);
 
           const plannerDetails = response.data.plannerDetailResponse;
-          setPlannerDetailResponseDate(plannerDetails);
 
           const allCoordinates = plannerDetails.map((detail: PlannerDetail) => ({
             latitude: detail.placeResponse.latitude,

@@ -1,15 +1,25 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import Search from './Search/Search';
 import { DEFAULT_FONT_COLOR, MAIN_COLOR } from '../color/color';
 import { Link, useLocation } from 'react-router-dom';
 import axios from 'axios';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from '../store/store';
-import { setUserInfo } from '../store/userSlice';
 
 interface NavItemProps {
   $isActive: boolean;
+}
+
+interface userInfoDate {
+  userId: number;
+  name: string;
+  profile: string;
+  nickname: string;
+  email: string;
+  password: string;
+  aboutMe: string;
+  username: string;
 }
 
 export default function Header() {
@@ -17,10 +27,16 @@ export default function Header() {
   const token = useSelector((state: RootState) => state.token.token); // Redux에서 토큰 가져오기
   const tabsRef = useRef<HTMLUListElement>(null);
   const location = useLocation();
-
-  const dispatch = useDispatch();
-
-  const user = useSelector((state: RootState) => state.user.userInfo);
+  const [headerUser, setHeaderUser] = useState<userInfoDate>({
+    userId: 0,
+    name: '',
+    profile: '',
+    nickname: '',
+    email: '',
+    password: '',
+    aboutMe: '',
+    username: '',
+  });
 
   // useEffect(() => {
   //   const storedUserData = localStorage.getItem('userInfo');
@@ -38,22 +54,22 @@ export default function Header() {
       try {
         const response = await axios.get('/address/api/users/profile', {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${token}`, //필수
           },
         });
 
         if (response.data) {
-          dispatch(setUserInfo(response.data));
+          setHeaderUser(response.data);
         } else {
           console.log(response);
-          alert('사용자 정보가 없습니다. 로그인 확인해주세요');
+          alert('사용자 정보가 없습니다 로그인확인해주세요');
         }
       } catch (error) {
         console.error('사용자 정보 가져오기 오류 확인바람(헤더):', error);
       }
     };
 
-    fetchUserInfo();
+    fetchUserInfo(); // 비동기 함수 호출
   }, [token]);
 
   return (
@@ -64,8 +80,8 @@ export default function Header() {
             <LogoImg src="/img/logo.png" alt="로고" />
           </Logo>
         </LogoDiv>
-        <User to={`/myinfo/${user.userId}`}>
-          <UserImg src={user.profile} />
+        <User to={`/myinfo/${headerUser.userId}`}>
+          <UserImg src={headerUser.profile} />
         </User>
       </Gnb>
       <Nav ref={tabsRef}>
