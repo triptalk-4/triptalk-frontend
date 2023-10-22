@@ -37,7 +37,7 @@ export default function PostImgs({ imagesUrl }: PostImgsProps) {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    const fetchDetailPage = async () => {
+    const fetchDetailPageImg = async () => {
       try {
         const response = await axios.get(`/address/api/plans/${plannerId}/details`, {
           headers: {
@@ -57,7 +57,7 @@ export default function PostImgs({ imagesUrl }: PostImgsProps) {
       }
     };
 
-    fetchDetailPage();
+    fetchDetailPageImg();
   }, [token, plannerId]);
 
   return (

@@ -36,7 +36,7 @@ export default function PostBox({ data }: { data: DetailType }) {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    const fetchDetailPage = async () => {
+    const fetchDetailPageBox = async () => {
       try {
         const response = await axios.get(`/address/api/plans/${plannerId}/details`, {
           headers: {
@@ -56,7 +56,7 @@ export default function PostBox({ data }: { data: DetailType }) {
       }
     };
 
-    fetchDetailPage();
+    fetchDetailPageBox();
   }, [token]);
   // console.log(plannerId);
   //console.log('userId:', data.userId);
