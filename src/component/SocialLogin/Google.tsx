@@ -1,23 +1,20 @@
 import styled from 'styled-components';
 import { FcGoogle } from 'react-icons/fc';
-
-const clientId = '57409677042-8qrpnbbfcq8d6jeq9kmvh8357vi4p4up.apps.googleusercontent.com';
-
-const redirectUri = 'http://localhost:3000/google';
-
-const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${clientId}&scope=email profile%20profile%20email&redirect_uri=${redirectUri}`;
+import axios from 'axios';
 
 const Google = () => {
-  const handleGoogleLogin = () => {
-    window.location.href = googleAuthUrl;
+  const handlegoogleLogin = async () => {
+    try {
+      const response = await axios.post(`/address/api/auth/google`);
+      window.location.href = response.data;
+    } catch (error) {
+      console.error('Google OAuth Error:', error);
+    }
   };
   return (
-    <GoogleButton onClick={handleGoogleLogin}>
+    <GoogleButton onClick={handlegoogleLogin}>
       <FcGoogle />
     </GoogleButton>
-    // <>
-    //   <div>로딩중..</div>
-    // </>
   );
 };
 

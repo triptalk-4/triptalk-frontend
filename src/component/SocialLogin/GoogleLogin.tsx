@@ -6,17 +6,13 @@ const GoogleLogin = () => {
   const navigate = useNavigate();
   const code: string | null = new URL(window.location.href).searchParams.get('code');
 
-  const decodedCode = code ? decodeURIComponent(code) : null;
-
   useEffect(() => {
     const google = async () => {
       if (code) {
         try {
-          const response = await axios.post(`/address/api/auth/google`, {
-            params: { code: decodedCode },
-          });
+          const response = await axios.get(`/address/api/auth/google?code=${code}`);
           console.log(response);
-          const token = response.data;
+          const token = response.data.token;
           localStorage.setItem('token', token);
           navigate('/main');
         } catch (error) {
