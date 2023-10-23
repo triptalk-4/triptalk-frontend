@@ -49,7 +49,7 @@ export default function EditSchedule() {
   const Access_token = localStorage.getItem('token');
 
   const [title, setTitle] = useState(''); // 타이틀
-  const [mapPings, setMapPings] = useState({});
+  const [mapPings, setMapPings] = useState([]);
 
   const navigate = useNavigate(); // 페이지 위치 이동
   const { plannerId } = useParams(); // 페이지 번호
