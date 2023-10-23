@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import 'react-datepicker/dist/react-datepicker.css';
 import FullSchedule from '../../component/DatePicker/ FullSchedule';
 import ExcludeTimes from '../../component/DatePicker/ExcludeTimes';
@@ -345,23 +345,24 @@ const MinusButton = styled.button`
   cursor: pointer;
 `;
 
-const EditButton = styled.button`
+const EnBbtnStyle = css`
   width: 100px;
-  height: 30px;
-  margin-right: 30px;
-  border: none;
-  background-color: ${MAIN_COLOR};
-  border-radius: 25px;
+  height: 35px;
+  border-radius: 15px;
   color: white;
   cursor: pointer;
+  border: none;
+  margin-bottom: 50px;
+`;
+
+const EditButton = styled.button`
+  ${EnBbtnStyle}
+  margin-right: 30px;
+
+  background-color: ${MAIN_COLOR};
 `;
 
 const CancelButton = styled.button`
-  width: 100px;
-  height: 30px;
-  border: none;
+  ${EnBbtnStyle}
   background-color: gray;
-  border-radius: 25px;
-  color: white;
-  cursor: pointer;
 `;
