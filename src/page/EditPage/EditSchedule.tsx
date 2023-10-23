@@ -107,7 +107,7 @@ export default function EditSchedule() {
 
   const handleAddCoreContainer = () => {
     // +
-    if (coreContainers.length < coreContainers_LIMIT) {
+    if (coreContainers.length || manyPlannerDetailResponse.length <= coreContainers_LIMIT) {
       setCoreContainers(prevContainers => [
         ...prevContainers,
         { images: [], imagePreviews: [], startDate: null, review: '', placeInfo: null },
@@ -117,7 +117,7 @@ export default function EditSchedule() {
 
   const handleRemoveCoreContainer = () => {
     // -
-    if (coreContainers.length > 1) {
+    if (coreContainers.length || manyPlannerDetailResponse.length >= 1) {
       setCoreContainers(prevContainers => prevContainers.slice(0, prevContainers.length - 1));
     }
   };
@@ -306,6 +306,51 @@ export default function EditSchedule() {
                 <CommentTextArea
                   placeholder="장소리뷰"
                   defaultValue={plannerDetail.description}
+                  onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
+                    const updatedContainers = [...coreContainers];
+                    updatedContainers[index].review = e.target.value;
+                    setCoreContainers(updatedContainers);
+                  }}
+                />
+              </div>
+            </ImgContainer>
+            <ButtonContainer>
+              {manyPlannerDetailResponse.length < 5 && <PlusButton onClick={handleAddCoreContainer}>+</PlusButton>}
+              {manyPlannerDetailResponse.length > 1 && <MinusButton onClick={handleRemoveCoreContainer}>-</MinusButton>}
+            </ButtonContainer>
+          </CoreContainer>
+        ))}
+
+        {coreContainers.map((container, index) => (
+          <CoreContainer key={index}>
+            <CoreTopContainer>
+              <ExcludeTimes
+                startDate={container.startDate}
+                setStartDate={(date: Date | null) => {
+                  const updatedContainers = [...coreContainers];
+                  updatedContainers[index].startDate = date;
+                  setCoreContainers(updatedContainers);
+                }}
+              />
+            </CoreTopContainer>
+            <ImgContainer>
+              <CustomFileInput
+                type="file"
+                accept="image/*"
+                multiple
+                name={`images[${index}]`}
+                onChange={e => handleImageUpload(e, index)}
+                id={`fileInput-${index}`}
+              />
+              <CustomFileInputLabel htmlFor={`fileInput-${index}`}>이미지 선택 (최대 5장)</CustomFileInputLabel>
+              <ImagePreviews>
+                {container.imagePreviews.map((preview, imgIndex) => (
+                  <img key={imgIndex} src={preview} alt={`Image ${imgIndex}`} />
+                ))}
+              </ImagePreviews>
+              <div>
+                <CommentTextArea
+                  placeholder="장소리뷰"
                   onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
                     const updatedContainers = [...coreContainers];
                     updatedContainers[index].review = e.target.value;
