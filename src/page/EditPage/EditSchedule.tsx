@@ -51,6 +51,7 @@ export default function EditSchedule() {
   const [title, setTitle] = useState('');
   const [review, setReview] = useState('');
   const [pickImg, setPickImg] = useState('');
+  const [detailedDate, setDetailedDate] = useState('');
   const { plannerId } = useParams();
   const [selectedDateRange, setSelectedDateRange] = useState<[Date | null, Date | null]>([null, null]);
 
@@ -130,6 +131,7 @@ export default function EditSchedule() {
         const plannerData = response.data;
         setTitle(plannerData.title);
         setReview(plannerData.plannerDetailResponse[0].description); // 테스트로 수동적으로 뽑아서 넣음.
+        setDetailedDate(plannerData.plannerDetailResponse[0].date); // 테스트로 수동적으로 뽑아서 넣음.
 
         const imagesUrlArray = plannerData.plannerDetailResponse.map((detail: PlannerDetail) => detail.imagesUrl);
         setPickImg(imagesUrlArray[0]);
@@ -162,8 +164,9 @@ export default function EditSchedule() {
     fetchEditPage();
   }, [token, plannerId]);
   console.log('manyPlannerDetailResponse', manyPlannerDetailResponse);
-  console.log('?', coreContainers);
+  console.log('coreContainers', coreContainers);
   console.log('pickImg', pickImg);
+  console.log('detailedDate', detailedDate);
 
   const handleEditButtonClick = async () => {
     try {
