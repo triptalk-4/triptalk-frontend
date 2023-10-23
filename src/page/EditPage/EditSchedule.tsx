@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import 'react-datepicker/dist/react-datepicker.css';
 import FullSchedule from '../../component/DatePicker/ FullSchedule';
 import ExcludeTimes from '../../component/DatePicker/ExcludeTimes';
@@ -50,7 +50,6 @@ export default function EditSchedule() {
 
   const [title, setTitle] = useState(''); // 타이틀
   const [pickImg, setPickImg] = useState(''); // 사진
-  const [detailedDate, setDetailedDate] = useState(''); // 세부 날짜
 
   const navigate = useNavigate(); // 페이지 위치 이동
   const { plannerId } = useParams(); // 페이지 번호
@@ -103,7 +102,7 @@ export default function EditSchedule() {
     console.log(placeInfos);
   };
 
-  /// 세부일정 컨테이너 ///
+  /// 세부일정 추가 컨테이너 ///
   const coreContainers_LIMIT = 5;
 
   const handleAddCoreContainer = () => {
@@ -141,13 +140,13 @@ export default function EditSchedule() {
 
         const plannerData = response.data;
         setTitle(plannerData.title);
+        const serverStartDate = new Date(plannerData.startDate);
+        const serverEndDate = new Date(plannerData.endDate);
 
-        setDetailedDate(plannerData.plannerDetailResponse[0].date); // 테스트로 수동적으로 뽑아서 넣음.
+        setSelectedDateRange([serverStartDate, serverEndDate]);
 
         const imagesUrlArray = plannerData.plannerDetailResponse.map((detail: PlannerDetail) => detail.imagesUrl);
         setPickImg(imagesUrlArray[0]);
-
-        setSelectedDateRange([response.data.startDate, response.data.plannerData.endDate]);
 
         // const updatedContainers = plannerData.plannerDetailResponse.map((detail: PlannerDetail) => {
         //   const coreContainer: CoreContainerData = {
@@ -174,11 +173,6 @@ export default function EditSchedule() {
     };
     fetchEditPage();
   }, [token, plannerId]);
-
-  console.log('manyPlannerDetailResponse', manyPlannerDetailResponse);
-  console.log('coreContainers', coreContainers);
-  console.log('pickImg', pickImg);
-  console.log('detailedDate', detailedDate);
 
   /// 수정 ///
   const handleEditButtonClick = async () => {
@@ -446,23 +440,24 @@ const MinusButton = styled.button`
   cursor: pointer;
 `;
 
-const EditButton = styled.button`
+const EnBbtnStyle = css`
   width: 100px;
-  height: 30px;
-  margin-right: 30px;
-  border: none;
-  background-color: ${MAIN_COLOR};
-  border-radius: 25px;
+  height: 35px;
+  border-radius: 15px;
   color: white;
   cursor: pointer;
+  border: none;
+  margin-bottom: 50px;
+`;
+
+const EditButton = styled.button`
+  ${EnBbtnStyle}
+  margin-right: 30px;
+
+  background-color: ${MAIN_COLOR};
 `;
 
 const CancelButton = styled.button`
-  width: 100px;
-  height: 30px;
-  border: none;
+  ${EnBbtnStyle}
   background-color: gray;
-  border-radius: 25px;
-  color: white;
-  cursor: pointer;
 `;
