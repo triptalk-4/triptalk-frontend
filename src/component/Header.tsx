@@ -35,7 +35,7 @@ export default function Header() {
     email: '',
     password: '',
     aboutMe: '',
-    username: '',
+    username: ''
   });
 
   // useEffect(() => {
@@ -54,8 +54,8 @@ export default function Header() {
       try {
         const response = await axios.get('/address/api/users/profile', {
           headers: {
-            Authorization: `Bearer ${token}`, //필수
-          },
+            Authorization: `Bearer ${token}` //필수
+          }
         });
 
         if (response.data) {
@@ -143,13 +143,14 @@ const UserImg = styled.img`
   width: 50px;
   height: 50px;
   border-radius: 100%;
+  border: 1px solid black;
 `;
 
 const Nav = styled.ul`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid #343434;
+  border-bottom: 1px solid #c1c1c1;
   padding: 15px 55px;
 `;
 
