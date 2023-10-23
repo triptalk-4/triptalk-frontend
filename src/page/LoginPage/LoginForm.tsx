@@ -10,6 +10,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { SetStateAction, useEffect, useState } from 'react';
 
 const LoginForm = () => {
+  const MAIN_REST_API_KEY = import.meta.env.VITE_REACT_APP_MAIN_API;
   const dispatch = useDispatch();
 
   const naviget = useNavigate();
@@ -38,7 +39,7 @@ const LoginForm = () => {
   const handleLogin = async () => {
     //로그인 시도
     try {
-      const response = await axios.post('/address/api/users/login', {
+      const response = await axios.post(`${MAIN_REST_API_KEY}/api/users/login`, {
         email: userEmail,
         password: password,
       });
