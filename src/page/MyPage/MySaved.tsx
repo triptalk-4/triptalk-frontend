@@ -42,8 +42,10 @@ export default function MySaved({ savedData }: { savedData: Save }) {
 }
 
 const BoxWrap = styled.div`
-  margin-right: 30px;
+  margin-right: 27px;
   margin-bottom: 20px;
+  border: 1px solid #c1c1c1;
+  border-radius: 15px;
 
   &:nth-child(3n) {
     margin-right: 0;

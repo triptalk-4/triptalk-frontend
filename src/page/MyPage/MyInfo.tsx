@@ -310,6 +310,8 @@ const ContentUl = styled.ul`
   display: flex;
   justify-content: space-evenly;
   align-items: center;
+  /* border-bottom: 1px solid #000;
+  margin-bottom: 20px; */
 `;
 
 const ContentItem = styled.li`

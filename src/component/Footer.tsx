@@ -47,25 +47,26 @@ export default Footer;
 const FooterContainer = styled.div`
   background-color: #2a2929;
   color: white;
+  display: flex;
+  flex-direction: column;
 `;
 
 const LogoWrap = styled.div`
-  width: 100%;
-  height: 50px;
+  margin-top: 50px;
+  margin-left: 8%;
 `;
 
 const LogoImg = styled.img`
-  height: 100%;
-  margin-top: 28px;
-  margin-left: 36px;
+  height: 50px;
 `;
 
 const DescriptionContainer = styled.div`
-  width: 100%;
+  width: 80%;
+  margin: 0 auto;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   padding-bottom: 40px;
-  margin-top: 46px;
+  margin-top: 40px;
 `;
 
 const CompanyTitle = styled.div`

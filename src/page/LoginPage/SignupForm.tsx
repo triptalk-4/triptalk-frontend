@@ -233,9 +233,13 @@ const SignupForm = () => {
   return (
     <>
       <Container>
-        <LeftArrow onClick={() => navigator('/')} />
-        <Title>Trip Talk</Title>
-        <SubTitle>다양하고 색다른 여행지가 궁금하시면 가입해보세요!</SubTitle>
+        <TopDiv>
+          <LeftArrow onClick={() => navigator('/')} />
+          <TextBox>
+            <Title>Trip Talk</Title>
+            <SubTitle>다양하고 색다른 여행지가 궁금하시면 가입해보세요!</SubTitle>
+          </TextBox>
+        </TopDiv>
         <FormWrap>
           <FormGroup>
             <Label>이름</Label>
@@ -340,23 +344,31 @@ const SignupForm = () => {
 export default SignupForm;
 
 const LeftArrow = styled(FaArrowLeft)`
-  position: absolute;
-  top: 11%;
-  left: 28%;
   font-size: 30px;
   color: ${MAIN_COLOR};
   cursor: pointer;
 `;
 
+const TopDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+const TextBox = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
 const Container = styled.div`
+  margin: 0 auto;
   width: 100%;
   text-align: center;
 `;
 
 const Title = styled.h1`
   color: ${MAIN_COLOR};
-  font-size: 68px;
-  padding-top: 48px;
+  font-size: 70px;
+  padding-top: 25px;
 `;
 
 const SubTitle = styled.p`
@@ -369,7 +381,6 @@ const FormWrap = styled.div`
   display: flex;
   flex-direction: column;
   margin: 0 auto;
-  margin-top: 56px;
 `;
 
 const Input = styled.input`
@@ -441,7 +452,7 @@ const ToggleShowButton = styled.button`
 `;
 
 const Button = styled.button`
-  margin-bottom: 16px;
+  margin-bottom: 30px;
   display: block;
   width: 100%;
   padding: 20px;
