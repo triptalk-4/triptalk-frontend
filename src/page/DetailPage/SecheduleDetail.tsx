@@ -274,6 +274,7 @@ const PostContainer = styled.div`
 
 const PostBg = styled.div`
   width: 80%;
+  margin-top: 16px;
 `;
 
 const PostText = styled.div`
