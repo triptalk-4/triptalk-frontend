@@ -87,7 +87,6 @@ export default function MyInfo() {
   });
 
   const token = useSelector((state: RootState) => state.token.token);
-  const MAIN_REST_API_KEY = import.meta.env.VITE_REACT_APP_MAIN_API;
 
   // msw
   // useEffect(() => {
@@ -117,7 +116,7 @@ export default function MyInfo() {
     const Access_token = localStorage.getItem('token');
     const fetchUserInfo = async () => {
       try {
-        const response = await axios.get('${MAIN_REST_API_KEY}/api/users/profile', {
+        const response = await axios.get('/address/api/users/profile', {
           headers: {
             Authorization: `Bearer ${Access_token}`,
           },
@@ -141,7 +140,7 @@ export default function MyInfo() {
     const Access_token = localStorage.getItem('token');
     const fetchSerch = async () => {
       try {
-        const response = await axios.get(`${MAIN_REST_API_KEY}/api/search/user/${userId}`, {
+        const response = await axios.get(`/address/api/search/user/${userId}`, {
           headers: {
             Authorization: `Bearer ${Access_token}`,
           },

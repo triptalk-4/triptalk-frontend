@@ -3,7 +3,6 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
 const GoogleLogin = () => {
-  const MAIN_REST_API_KEY = import.meta.env.VITE_REACT_APP_MAIN_API;
   const navigate = useNavigate();
   const code: string | null = new URL(window.location.href).searchParams.get('code');
 
@@ -11,7 +10,7 @@ const GoogleLogin = () => {
     const google = async () => {
       if (code) {
         try {
-          const response = await axios.get(`${MAIN_REST_API_KEY}/api/auth/google?code=${code}`);
+          const response = await axios.get(`/address/api/auth/google?code=${code}`);
           console.log(response);
           const token = response.data.token;
           localStorage.setItem('token', token);

@@ -21,7 +21,6 @@ interface Item {
 }
 
 function Schedule() {
-  const MAIN_REST_API_KEY = import.meta.env.VITE_REACT_APP_MAIN_API;
   const dispatch = useDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
   const initialSortType = searchParams.get('sortType') || 'RECENT';
@@ -63,10 +62,7 @@ function Schedule() {
               Authorization: `Bearer ${token}`,
             },
           };
-          const response = await axios.get(
-            `${MAIN_REST_API_KEY}/api/plans?page=${page}&size=6&sortType=${sortType}`,
-            config
-          );
+          const response = await axios.get(`/address/api/plans?page=${page}&size=6&sortType=${sortType}`, config);
           const fetchedData = response.data;
           setHasNext(fetchedData.hasNext);
           const transformedData = fetchedData.plannerListResponses.content.map((item: Item) => {

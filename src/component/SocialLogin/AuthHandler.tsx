@@ -3,7 +3,6 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
 const AuthHandler = () => {
-  const MAIN_REST_API_KEY = import.meta.env.VITE_REACT_APP_MAIN_API;
   const navigate = useNavigate();
   useEffect(() => {
     const code = new URL(window.location.href).searchParams.get('code');
@@ -19,7 +18,7 @@ const AuthHandler = () => {
 
   const sendCodeToServer = (ingaCode: string) => {
     axios
-      .post(`${MAIN_REST_API_KEY}/api/users/kakao/login`, { ingaCode })
+      .post('/address/api/users/kakao/login', { ingaCode })
       .then(response => {
         console.log(response);
       })

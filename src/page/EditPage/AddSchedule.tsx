@@ -27,7 +27,6 @@ type CoreContainerData = {
 };
 
 export default function AddSchedule() {
-  const MAIN_REST_API_KEY = import.meta.env.VITE_REACT_APP_MAIN_API;
   const Access_token = localStorage.getItem('token');
 
   const [title, setTitle] = useState('');
@@ -105,7 +104,7 @@ export default function AddSchedule() {
 
       const imageUrlsArray = await Promise.all(
         formDataArray.map(formData =>
-          axios.post(`${MAIN_REST_API_KEY}/api/images`, formData, {
+          axios.post('/address/api/images', formData, {
             headers: {
               Authorization: `Bearer ${Access_token}`,
               'Content-Type': 'multipart/form-data',
@@ -143,7 +142,7 @@ export default function AddSchedule() {
       };
 
       try {
-        const response = await axios.post(`${MAIN_REST_API_KEY}/api/plans`, dataToSend, {
+        const response = await axios.post('/address/api/plans', dataToSend, {
           headers: {
             Authorization: `Bearer ${Access_token}`,
             'Content-Type': 'application/json',

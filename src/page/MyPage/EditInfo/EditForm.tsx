@@ -12,7 +12,6 @@ interface EditFormProps {
 }
 
 export default function EditForm(props: EditFormProps) {
-  const MAIN_REST_API_KEY = import.meta.env.VITE_REACT_APP_MAIN_API;
   // msw
   const [userEmail, setUserEmail] = useState('');
   const [userNickname, setUserNickname] = useState('');
@@ -37,7 +36,7 @@ export default function EditForm(props: EditFormProps) {
     const token = localStorage.getItem('token');
     const fetchUserInfo = async () => {
       try {
-        const response = await axios.get(`${MAIN_REST_API_KEY}/api/users/profile`, {
+        const response = await axios.get('/address/api/users/profile', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -89,7 +88,7 @@ export default function EditForm(props: EditFormProps) {
 
   const handleNicknameCheck = async () => {
     try {
-      const response = await axios.post(`${MAIN_REST_API_KEY}/api/users/update/nickname/check`, {
+      const response = await axios.post('/address/api/users/update/nickname/check', {
         nickname: newNickname,
       });
       console.log(newNickname);
@@ -116,7 +115,7 @@ export default function EditForm(props: EditFormProps) {
 
   const handleCurrentPasswordCheck = async () => {
     try {
-      const response = await axios.post(`${MAIN_REST_API_KEY}/api/users/update/password/check`, {
+      const response = await axios.post('/address/api/users/update/password/check', {
         email: userEmail,
         password: currentPasswordValue,
         // token: token,

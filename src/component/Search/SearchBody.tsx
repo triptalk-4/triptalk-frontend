@@ -8,7 +8,6 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 
 const SearchBody = () => {
-  const MAIN_REST_API_KEY = import.meta.env.VITE_REACT_APP_MAIN_API;
   const navigator = useNavigate();
   const [keyword, setKeyword] = useState('');
   const [filteredResults, setFilteredResults] = useState<
@@ -30,12 +29,12 @@ const SearchBody = () => {
         if (Access_token) {
           const config = {
             headers: {
-              Authorization: `Bearer ${Access_token}`,
-            },
+              Authorization: `Bearer ${Access_token}`
+            }
           };
           try {
             const response = await axios.get(
-              `${MAIN_REST_API_KEY}/api/search?keyword=${encodeURIComponent(keyword)}&pageNumber=1&pageSize=2`,
+              `/address/api/search?keyword=${encodeURIComponent(keyword)}&pageNumber=1&pageSize=2`,
               config
             );
             if (response.status === 200) {
@@ -76,7 +75,8 @@ const SearchBody = () => {
             <Link
               to={`/myinfo/${result.userId}`}
               style={{ color: 'inherit', textDecoration: 'none' }}
-              key={result.userId}>
+              key={result.userId}
+            >
               <ResultContainer key={index}>
                 <ProfileAndName>
                   <ProfileImage src={result.profile} alt={`${result.nickname}의 프로필 사진`} />
@@ -95,7 +95,8 @@ const SearchBody = () => {
               <PageNumber
                 key={index + 1}
                 $isActive={index + 1 === currentPage}
-                onClick={() => setCurrentPage(index + 1)}>
+                onClick={() => setCurrentPage(index + 1)}
+              >
                 {index + 1}
               </PageNumber>
             ))}
