@@ -49,7 +49,6 @@ const LoginForm = () => {
         // 테스트 코드
         localStorage.setItem('userEmail', userEmail);
         localStorage.setItem('password', password);
-        console.log(response.data.token);
 
         const message = '로그인 되었습니다.';
         alert(`${message}`);
