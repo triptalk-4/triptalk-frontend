@@ -1,8 +1,8 @@
 import axios from 'axios';
-import { useEffect, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+// import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { RootState } from '../../store/store';
+// import { RootState } from '../../store/store';
 import { useParams } from 'react-router-dom';
 import AnotherPlanner from './AnotherPlanner';
 import MyPost from './MyPost';
@@ -51,19 +51,18 @@ interface PlannerDetails {
   createAt: number;
 }
 
-const PAGE_SIZE = 3;
-
 export default function MyInfoPost({ userInfo }: { userInfo: userInfoDate }) {
   const [postsData, setPostsData] = useState<userInfoDate[]>([]); // msw
   const [anotherpostsData, setAnotherPostsData] = useState<PlannerDetails[]>([]);
   const [containerClassName, setContainerClassName] = useState('flex-start');
   const [isLoading, setIsLoading] = useState(false); // 로딩 상태
-  const [isEndPage, setIsEndPage] = useState(false);
-  const targetRef = useRef<HTMLDivElement | null>(null);
-  const observerRef = useRef<IntersectionObserver | null>(null);
+  // const [isEndPage, setIsEndPage] = useState(false);
+  // const targetRef = useRef<HTMLDivElement | null>(null);
+  // const observerRef = useRef<IntersectionObserver | null>(null);
 
-  const token = useSelector((state: RootState) => state.token.token);
-  const [page, setPage] = useState(0);
+  // const token = useSelector((state: RootState) => state.token.token);
+  // const [page, setPage] = useState(0);
+  // const [anotherpage, setAnotherPage] = useState(0);
 
   const { userId } = useParams();
   const [anotherUserInfo, setAnotherUserInfo] = useState<anotheruserInfoDate>({
@@ -85,25 +84,24 @@ export default function MyInfoPost({ userInfo }: { userInfo: userInfoDate }) {
 
   useEffect(() => {
     const fetchSerch = async () => {
-      if (isEndPage || isLoading) return;
+      if (isLoading) return; // 이미 로딩 중이라면 중복 요청 방지
+
       setIsLoading(true);
-      const Access_token = localStorage.getItem('token');
+
       try {
-        const response = await axios.get(`/address/api/search/user/${userId}?number=${page}&size=${PAGE_SIZE}`, {
+        const Access_token = localStorage.getItem('token');
+        const response = await axios.get(`/address/api/search/user/${userId}?number=0&size=100`, {
           headers: {
             Authorization: `Bearer ${Access_token}`,
           },
         });
-        setIsLoading(false);
 
-        if (response.data) {
-          setAnotherUserInfo(response.data);
-        }
+        setAnotherUserInfo(response.data);
+
         const newData = response.data.planners;
         if (newData.length === 0) {
-          setIsEndPage(true);
         } else {
-          setAnotherPostsData(prevData => [...prevData, ...newData]);
+          setAnotherPostsData(newData);
         }
         console.log('anotherpostsData', anotherpostsData);
       } catch (error) {
@@ -112,62 +110,27 @@ export default function MyInfoPost({ userInfo }: { userInfo: userInfoDate }) {
     };
 
     fetchSerch();
-  }, [token, userId, page, isEndPage]);
-
-  useEffect(() => {
-    // IntersectionObserver 생성 및 초기화
-    const observer = new IntersectionObserver(anotherhandleIntersection, {
-      root: null,
-      rootMargin: '0px',
-      threshold: 0.5,
-    });
-
-    observerRef.current = observer;
-    if (targetRef.current) {
-      observer.observe(targetRef.current);
-    }
-
-    return () => {
-      if (targetRef.current) {
-        observer.unobserve(targetRef.current);
-      }
-    };
-  }, [page, isLoading]);
-
-  function anotherhandleIntersection(entries: IntersectionObserverEntry[]) {
-    entries.forEach(entry => {
-      if (entry.isIntersecting && !isLoading) {
-        setPage(prevPage => {
-          if (!isLoading) {
-            return prevPage + 1;
-          }
-          return prevPage;
-        });
-        if (targetRef.current && observerRef.current) {
-          observerRef.current.unobserve(targetRef.current);
-        }
-      }
-    });
-  }
+  }, []);
 
   useEffect(() => {
     const fetchUserPost = async () => {
-      if (isEndPage || isLoading) return;
+      if (isLoading) return;
+
       setIsLoading(true);
-      const Access_token = localStorage.getItem('token');
+
       try {
-        const response = await axios.get(`/address/api/users/planners/byUser?page=${page}&pageSize=${PAGE_SIZE}`, {
+        const Access_token = localStorage.getItem('token');
+        const response = await axios.get(`/address/api/users/planners/byUser?page=0&pageSize=100`, {
           headers: {
             Authorization: `Bearer ${Access_token}`,
           },
         });
-        setIsLoading(false);
 
         const newData = response.data.content;
+
         if (newData.length === 0) {
-          setIsEndPage(true);
         } else {
-          setPostsData(prevData => [...prevData, ...newData]);
+          setPostsData(newData);
         }
       } catch (error) {
         setIsLoading(false);
@@ -176,7 +139,7 @@ export default function MyInfoPost({ userInfo }: { userInfo: userInfoDate }) {
     };
     console.log('게시물', postsData);
     fetchUserPost();
-  }, [page, isEndPage]);
+  }, []);
 
   useEffect(() => {
     // 게시물 갯수에 따라 스타일 변경
@@ -187,86 +150,6 @@ export default function MyInfoPost({ userInfo }: { userInfo: userInfoDate }) {
     }
   }, [postsData, anotherpostsData]);
 
-  useEffect(() => {
-    // IntersectionObserver 생성 및 초기화
-    const observer = new IntersectionObserver(handleIntersection, {
-      root: null,
-      rootMargin: '0px',
-      threshold: 0.5,
-    });
-
-    observerRef.current = observer;
-    if (targetRef.current) {
-      observer.observe(targetRef.current);
-    }
-
-    return () => {
-      if (targetRef.current) {
-        observer.unobserve(targetRef.current);
-      }
-    };
-  }, [page, isLoading]);
-
-  function handleIntersection(entries: IntersectionObserverEntry[]) {
-    entries.forEach(entry => {
-      if (entry.isIntersecting && !isLoading) {
-        setPage(prevPage => {
-          if (!isLoading) {
-            return prevPage + 1;
-          }
-          return prevPage;
-        });
-        if (targetRef.current && observerRef.current) {
-          observerRef.current.unobserve(targetRef.current);
-        }
-      }
-    });
-  }
-
-  // useEffect(() => {
-  //   // IntersectionObserver 생성및 초기화
-  //   const observer = new IntersectionObserver(handleIntersection, {
-  //     root: null,
-  //     rootMargin: '0px',
-  //     threshold: 1,
-  //   });
-
-  //   // 대상 엘리먼트를 관찰
-  //   if (targetRef.current) {
-  //     observer.observe(targetRef.current);
-  //   }
-
-  //   function handleIntersection(entries: IntersectionObserverEntry[]) {
-  //     entries.forEach(entry => {
-  //       if (entry && entry.isIntersecting) {
-  //         // 현재 게시물 길이
-  //         const startIndex = postsData.length;
-
-  //         // 스크롤하면 3개씩 생성
-  //         const endIndex = startIndex + 3;
-
-  //         // msw를 통해 postsData에 데이터 추가
-  //         fetch(`/api/posts?page=${endIndex / 3 + 1}`)
-  //           .then(res => res.json())
-  //           .then(data => {
-  //             setIsLoading(true);
-
-  //             // 새로운 데이터를 기존 데이터와 병합
-  //             setPostsData(prevData => [...prevData, ...data.slice(startIndex, endIndex)]);
-  //             setIsLoading(false);
-  //           })
-  //           .catch(error => console.error('데이터 요청 실패:', error));
-  //       }
-  //     });
-  //   }
-
-  //   return () => {
-  //     if (targetRef.current) {
-  //       observer.unobserve(targetRef.current);
-  //     }
-  //   };
-  // }, [postsData]);
-
   return (
     <PostContainer className={containerClassName}>
       {userInfo.userId === anotherUserInfo.userId
@@ -274,8 +157,7 @@ export default function MyInfoPost({ userInfo }: { userInfo: userInfoDate }) {
         : anotherPlanners.map((aontherItem: PlannerDetails) => (
             <AnotherPlanner key={aontherItem.plannerId} plannerData={aontherItem} />
           ))}
-      {!isEndPage && <ObserverTarget ref={targetRef} />}
-      {isLoading && <LoadingMessage>로딩 중...</LoadingMessage>}
+      {!isLoading && <LoadingMessage>로딩 중...</LoadingMessage>}
     </PostContainer>
   );
 }
@@ -294,11 +176,6 @@ const PostContainer = styled.div`
   &.space-between {
     justify-content: space-between;
   }
-`;
-
-const ObserverTarget = styled.div`
-  width: 100%;
-  height: 1px; /* 교차 영역을 감지할 빈 요소 */
 `;
 
 const LoadingMessage = styled.p`
