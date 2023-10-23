@@ -8,7 +8,7 @@ export default function Search() {
     <SearchBox>
       <SearchDiv to="/search">
         <Searchtext>
-          닉네임을 입력해주세요
+          닉네임을 입력해주세요..
           <SearchBtn type="button">
             <BiSearch />
           </SearchBtn>
