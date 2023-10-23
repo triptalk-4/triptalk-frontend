@@ -168,6 +168,8 @@ const Image = styled.img`
   width: 270px;
   height: 300px;
   cursor: pointer;
+  border-radius: 25px;
+  border: 1px solid #c1c1c1;
 `;
 
 const DescriptionTitle = styled.div`
