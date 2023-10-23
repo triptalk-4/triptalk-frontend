@@ -20,6 +20,13 @@ interface userInfoDate {
   password: string;
   aboutMe: string;
   username: string;
+  plannerId: number;
+  id: number;
+  thumbnail: string;
+  title: string;
+  createAt: number;
+  likeCount: number;
+  views: number;
 }
 
 export default function Header() {
@@ -36,6 +43,13 @@ export default function Header() {
     password: '',
     aboutMe: '',
     username: '',
+    plannerId: 0,
+    id: 0,
+    thumbnail: '',
+    title: '',
+    createAt: 0,
+    likeCount: 0,
+    views: 0,
   });
 
   // useEffect(() => {
@@ -54,7 +68,7 @@ export default function Header() {
       try {
         const response = await axios.get('/address/api/users/profile', {
           headers: {
-            Authorization: `Bearer ${token}`, //필수
+            Authorization: `Bearer ${token}`,
           },
         });
 
