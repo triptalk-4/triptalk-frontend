@@ -13,7 +13,7 @@ interface Save {
   plannerId: number;
 }
 
-const PAGE_SIZE = 3; // 3개씩 들고오게하기위해
+const PAGE_SIZE = 6;
 
 export default function MyInfoSaved() {
   const [savedData, setSavedData] = useState<Save[]>([]); // msw
@@ -39,7 +39,7 @@ export default function MyInfoSaved() {
       setIsLoading(true);
       const Access_token = localStorage.getItem('token');
       try {
-        const response = await axios.get(`/address/api/users/planners/userSave?page=${page}&pageSize=${PAGE_SIZE}`, {
+        const response = await axios.get(`/address/api/users/planners/userSave?page=${page}&pageSize=1`, {
           headers: {
             Authorization: `Bearer ${Access_token}`,
           },
@@ -57,7 +57,7 @@ export default function MyInfoSaved() {
         console.error('데이터 요청 실패:', error);
       }
     };
-
+    console.log('savedData', savedData);
     fetchUserSaved();
   }, [page, isEndPage]);
 
@@ -98,6 +98,7 @@ export default function MyInfoSaved() {
         if (targetRef.current && observerRef.current) {
           observerRef.current.unobserve(targetRef.current);
         }
+        console.log(page);
       }
     });
   }
