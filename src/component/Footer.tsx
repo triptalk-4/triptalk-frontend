@@ -4,7 +4,9 @@ function Footer() {
   return (
     <footer>
       <FooterContainer>
-        <LogoImg src="/img/footer_logo.png" />
+        <LogoWrap>
+          <LogoImg src="/img/footer_logo.png" />
+        </LogoWrap>
         <DescriptionContainer>
           <CompanyTitle>
             COMPANY
@@ -43,42 +45,44 @@ function Footer() {
 export default Footer;
 
 const FooterContainer = styled.div`
-  width: 100%;
-  height: 442px;
   background-color: #2a2929;
   color: white;
-  padding-left: 100px;
+`;
+
+const LogoWrap = styled.div`
+  width: 100%;
+  height: 50px;
 `;
 
 const LogoImg = styled.img`
-  margin-top: 80px;
-  width: 300px;
-  height: 70px;
+  height: 100%;
+  margin-top: 28px;
+  margin-left: 36px;
 `;
 
 const DescriptionContainer = styled.div`
   width: 100%;
-  height: 400px;
   display: flex;
+  justify-content: space-around;
+  padding-bottom: 40px;
+  margin-top: 46px;
 `;
 
 const CompanyTitle = styled.div`
-  font-size: 25px;
-  margin: 30px 120px 0 0;
+  font-size: 30px;
 `;
 
 const CompanyDescription = styled.div`
-  font-size: 16px;
+  font-size: 14px;
   margin-top: 20px;
 `;
 
 const EtcTitle = styled.div`
-  font-size: 25px;
-  margin: 30px 120px 0 0;
+  font-size: 30px;
 `;
 
 const EtcDescription = styled.div`
-  font-size: 16px;
+  font-size: 14px;
   margin-top: 20px;
 `;
 
@@ -88,11 +92,11 @@ const DescriptionSpan = styled.span`
 `;
 
 const ContactTitle = styled.div`
-  font-size: 25px;
-  margin-top: 30px;
+  font-size: 30px;
+  /* margin-top: 30px; */
 `;
 
 const ContactDescription = styled.div`
-  font-size: 16px;
+  font-size: 14px;
   margin-top: 20px;
 `;
