@@ -2,8 +2,8 @@ import styled from 'styled-components';
 import { TbMessageCircle } from 'react-icons/tb';
 
 const KakaoLogin = () => {
-  const REST_API_KEY = 'c5e7d3418384adeea868cb7470027a67';
-  const REDIRECT_URI = 'https://triptalk.vercel.app/auth';
+  const REST_API_KEY = import.meta.env.VITE_REACT_APP_KAKAO_REST_API_KEY;
+  const REDIRECT_URI = import.meta.env.VITE_REACT_APP_KAKAO_REDIRECT_URI;
   const link = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
 
   const handleKakaoLogin = () => {

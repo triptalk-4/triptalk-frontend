@@ -9,12 +9,6 @@ import { GRAY_COLOR, MAIN_COLOR } from '../../color/color';
 import { Link, useNavigate } from 'react-router-dom';
 import { SetStateAction, useEffect, useState } from 'react';
 
-// interface UserData {
-//   id: number;
-//   email: string;
-//   password: string;
-// }
-
 const LoginForm = () => {
   const dispatch = useDispatch();
 
@@ -43,28 +37,6 @@ const LoginForm = () => {
 
   const handleLogin = async () => {
     //로그인 시도
-    // try {
-    //   const response = await fetch('/address/api/login', {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify({ email: userEmail, password: password }),
-    //   });
-
-    //   if (response.status === 200) {
-    //     const data = await response.json();
-    //     alert('로그인 되었습니다.');
-    //     setUserEmail('');
-    //     setPassword('');
-    //     naviget('/main');
-    //     console.log(data);
-    //   } else {
-    //     alert('유효하지 않은 사용자 정보입니다.');
-    //   }
-    // } catch (error) {
-    //   console.error('로그인 오류 : ', error);
-    // }
     try {
       const response = await axios.post('/address/api/users/login', {
         email: userEmail,

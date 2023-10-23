@@ -38,7 +38,7 @@ function App() {
         <Route path="/schedule" element={<Schedule />} />
         <Route path="/search" element={<SearchPage />} />
         <Route path="/auth" Component={AuthHandler} />
-        <Route path="/google" Component={GoogleLogin} />
+        <Route path="/auth/google" Component={GoogleLogin} />
       </Routes>
     </BrowserRouter>
   );

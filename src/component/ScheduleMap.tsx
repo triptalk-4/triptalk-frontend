@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { MAIN_COLOR, YELLOW_COLOR } from '../color/color';
 
-const KAKAO_API_KEY = '2cc45017695a59169a1f649bdc77f123';
+const KAKAO_API_KEY = import.meta.env.VITE_REACT_APP_KAKAO_MAP_API_KEY;
 
 interface PlaceInfo {
   position: {
@@ -158,7 +158,13 @@ const ScheduleMapLoader: React.FC<SchduleMapLoaderProps> = ({ onPlacesSelected, 
     <>
       <Con
         id="map"
-        style={{ width: '100%', height: '400px', border: `1px solid ${YELLOW_COLOR}`, borderRadius: '4px' }}></Con>
+        style={{
+          width: '100%',
+          height: '400px',
+          border: `1px solid ${YELLOW_COLOR}`,
+          borderRadius: '4px',
+          margin: '0px',
+        }}></Con>
       {!onPlace ? <Input type="text" placeholder="장소 검색" onChange={e => setSearchPlace(e.target.value)} /> : null}
       {!onPlace ? <Button onClick={handleSearch}>검색</Button> : null}
     </>
