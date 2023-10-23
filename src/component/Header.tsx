@@ -122,6 +122,7 @@ const LogoDiv = styled.div`
   width: 200px;
   height: auto;
   padding-right: 590px;
+  user-select: none;
 `;
 
 const Logo = styled(Link)`

@@ -60,8 +60,8 @@ function Schedule() {
         if (token) {
           const config = {
             headers: {
-              Authorization: `Bearer ${token}`
-            }
+              Authorization: `Bearer ${token}`,
+            },
           };
           const response = await axios.get(`/address/api/plans?page=${page}&size=6&sortType=${sortType}`, config);
           const fetchedData = response.data;
@@ -177,6 +177,7 @@ const MainContainer = styled.div`
   padding: 0 10%;
   height: 100%;
   margin: 0 auto;
+  user-select: none;
 `;
 
 const TitleContainer = styled.div`

@@ -59,6 +59,7 @@ const TopTitle = styled.div`
   margin-bottom: 3%;
   font-size: 30px;
   font-weight: 700;
+  user-select: none;
 `;
 
 const TileSpan = styled.span`
