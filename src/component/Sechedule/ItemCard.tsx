@@ -20,7 +20,7 @@ export default function ItemCard({ item }: { item: Item }) {
           <TopContainer>
             <IconWithCount>
               <Heart />
-              <Count>{item.likeCount}</Count>
+              <Count>{item.likeCount || '0'}</Count>
             </IconWithCount>
             <IconWithCount>
               <LookUp />
