@@ -152,10 +152,7 @@ function Schedule() {
           <SelectBox>
             <SecheduleSelect onSortChange={handleSortChange} currentSortType={sortType} />
           </SelectBox>
-          <EditButton to="/addSchedule">
-            일정등록하기
-            <EditIcon />
-          </EditButton>
+          <EditButton to="/addSchedule">일정등록하기</EditButton>
         </TitleContainer>
         <GridContainer>
           {data.map(item => (
@@ -261,9 +258,9 @@ const EditButton = styled(Link)`
   cursor: pointer;
 `;
 
-const EditIcon = styled(GrEdit)`
-  margin-left: 20px;
-`;
+// const EditIcon = styled(GrEdit)`
+//   margin-left: 20px;
+// `;
 
 const EndOfDataMessage = styled.div`
   text-align: center;

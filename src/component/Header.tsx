@@ -144,13 +144,14 @@ const UserImg = styled.img`
   width: 50px;
   height: 50px;
   border-radius: 100%;
+  border: 1px solid black;
 `;
 
 const Nav = styled.ul`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid #343434;
+  border-bottom: 1px solid #c1c1c1;
   padding: 15px 55px;
 `;
 
