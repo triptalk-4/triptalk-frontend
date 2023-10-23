@@ -45,7 +45,7 @@ const StyledPost = styled.div`
   cursor: pointer;
   border-radius: 25px;
   overflow: hidden;
-  border: 1px solid black;
+  border: 1px solid #c1c1c1;
 
   .info-container {
     position: absolute;
