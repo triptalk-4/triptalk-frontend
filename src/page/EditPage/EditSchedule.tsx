@@ -48,26 +48,28 @@ interface PlannerDetail {
 export default function EditSchedule() {
   const Access_token = localStorage.getItem('token');
 
-  const [title, setTitle] = useState('');
-  const [review, setReview] = useState('');
-  const [pickImg, setPickImg] = useState('');
-  const [detailedDate, setDetailedDate] = useState('');
-  const { plannerId } = useParams();
-  const [selectedDateRange, setSelectedDateRange] = useState<[Date | null, Date | null]>([null, null]);
+  const [title, setTitle] = useState(''); // 타이틀
+  const [pickImg, setPickImg] = useState(''); // 사진
+  const [detailedDate, setDetailedDate] = useState(''); // 세부 날짜
+
+  const navigate = useNavigate(); // 페이지 위치 이동
+  const { plannerId } = useParams(); // 페이지 번호
+
+  /// 전체 일정 선택 ///
+  const [selectedDateRange, setSelectedDateRange] = useState<[Date | null, Date | null]>([null, null]); // 전체일정 선택
 
   const handleDateRangeChange = (newDateRange: [Date | null, Date | null]) => {
+    // 전체일정 선택
     setSelectedDateRange(newDateRange);
     console.log(newDateRange);
   };
 
-  const navigate = useNavigate();
-
+  // 초기 화면 //
   const [coreContainers, setCoreContainers] = useState<CoreContainerData[]>([
     { images: [], imagePreviews: [], startDate: null, review: '', placeInfo: null },
   ]);
 
-  const coreContainers_LIMIT = 5;
-
+  /// 이미지 선택 및 업로드 ///
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
     const selectedImages = Array.from(e.target.files as FileList);
 
@@ -85,6 +87,7 @@ export default function EditSchedule() {
     setCoreContainers(updatedData);
   };
 
+  /// 지도 ///
   const handlePlaceSelected = (placeInfos: PlaceInfo[]) => {
     // setPlaceInfo(placeInfos);
     const updatedContainers = coreContainers.map((container, index) => {
@@ -100,7 +103,11 @@ export default function EditSchedule() {
     console.log(placeInfos);
   };
 
+  /// 세부일정 컨테이너 ///
+  const coreContainers_LIMIT = 5;
+
   const handleAddCoreContainer = () => {
+    // +
     if (coreContainers.length < coreContainers_LIMIT) {
       setCoreContainers(prevContainers => [
         ...prevContainers,
@@ -108,14 +115,17 @@ export default function EditSchedule() {
       ]);
     }
   };
+
   const handleRemoveCoreContainer = () => {
+    // -
     if (coreContainers.length > 1) {
       setCoreContainers(prevContainers => prevContainers.slice(0, prevContainers.length - 1));
     }
   };
+
+  /// 등록했던 정보 불러오기 ///
   const [manyPlannerDetailResponse, setManyPlannerDetailResponse] = useState<PlannerDetail[]>([]);
 
-  //// 작업 ////
   const token = useSelector((state: RootState) => state.token.token);
   useEffect(() => {
     const fetchEditPage = async () => {
@@ -128,9 +138,10 @@ export default function EditSchedule() {
         });
 
         setManyPlannerDetailResponse(response.data.plannerDetailResponse);
+
         const plannerData = response.data;
         setTitle(plannerData.title);
-        setReview(plannerData.plannerDetailResponse[0].description); // 테스트로 수동적으로 뽑아서 넣음.
+
         setDetailedDate(plannerData.plannerDetailResponse[0].date); // 테스트로 수동적으로 뽑아서 넣음.
 
         const imagesUrlArray = plannerData.plannerDetailResponse.map((detail: PlannerDetail) => detail.imagesUrl);
@@ -138,36 +149,38 @@ export default function EditSchedule() {
 
         setSelectedDateRange([response.data.startDate, response.data.plannerData.endDate]);
 
-        const updatedContainers = plannerData.plannerDetailResponse.map((detail: PlannerDetail) => {
-          const coreContainer: CoreContainerData = {
-            images: [],
-            imagePreviews: detail.imagePreviews,
-            startDate: detail.date ? new Date(detail.date) : null,
-            review: detail.description,
-            placeInfo: {
-              addressName: detail.placeResponse.addressName,
-              position: {
-                lat: detail.placeResponse.latitude,
-                lng: detail.placeResponse.longitude,
-              },
-              placeName: detail.placeResponse.placeName,
-              roadAddressName: detail.placeResponse.roadAddress,
-            },
-          };
-          return coreContainer;
-        });
-        setCoreContainers(updatedContainers);
+        // const updatedContainers = plannerData.plannerDetailResponse.map((detail: PlannerDetail) => {
+        //   const coreContainer: CoreContainerData = {
+        //     images: [],
+        //     imagePreviews: detail.imagePreviews,
+        //     startDate: detail.date ? new Date(detail.date) : null,
+        //     review: detail.description,
+        //     placeInfo: {
+        //       addressName: detail.placeResponse.addressName,
+        //       position: {
+        //         lat: detail.placeResponse.latitude,
+        //         lng: detail.placeResponse.longitude,
+        //       },
+        //       placeName: detail.placeResponse.placeName,
+        //       roadAddressName: detail.placeResponse.roadAddress,
+        //     },
+        //   };
+        //   return coreContainer;
+        // });
+        // setCoreContainers(updatedContainers);
       } catch (error) {
         console.error('데이터 가져오기 실패', error);
       }
     };
     fetchEditPage();
   }, [token, plannerId]);
+
   console.log('manyPlannerDetailResponse', manyPlannerDetailResponse);
   console.log('coreContainers', coreContainers);
   console.log('pickImg', pickImg);
   console.log('detailedDate', detailedDate);
 
+  /// 수정 ///
   const handleEditButtonClick = async () => {
     try {
       const formDataArray = coreContainers.map(container => {
@@ -234,7 +247,7 @@ export default function EditSchedule() {
         if (response.status === 200) {
           console.log('데이터 전송 완료');
           alert('일정 등록 완료!');
-          navigate('/schedule');
+          navigate(`/page/${plannerId}`);
         } else {
           alert('일정 등록 실패');
         }
@@ -246,6 +259,7 @@ export default function EditSchedule() {
     }
   };
 
+  /// 뒤로가기 ///
   const handleBackButtonClick = () => {
     navigate(`/page/${plannerId}`);
   };
@@ -261,11 +275,11 @@ export default function EditSchedule() {
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)}></Title>
           <FullSchedule selectedDateRange={selectedDateRange} onDateRangeChange={handleDateRangeChange} />
         </TitleContainer>
-        {coreContainers.map((container, index) => (
+        {manyPlannerDetailResponse.map((plannerDetail, index) => (
           <CoreContainer key={index}>
             <CoreTopContainer>
               <ExcludeTimes
-                startDate={container.startDate}
+                startDate={new Date(plannerDetail.date)}
                 setStartDate={(date: Date | null) => {
                   const updatedContainers = [...coreContainers];
                   updatedContainers[index].startDate = date;
@@ -284,15 +298,15 @@ export default function EditSchedule() {
               />
               <CustomFileInputLabel htmlFor={`fileInput-${index}`}>이미지 선택 (최대 5장)</CustomFileInputLabel>
               <ImagePreviews>
-                {container.imagePreviews.map((preview, imgIndex) => (
-                  <img key={imgIndex} src={preview} alt={`Image ${imgIndex}`} />
+                {plannerDetail.imagesUrl.map((imageUrl, imgIndex) => (
+                  <img key={imgIndex} src={imageUrl} alt={`Image ${imgIndex}`} />
                 ))}
                 {pickImg && <img src={pickImg} alt="Picked Image" />}
               </ImagePreviews>
               <div>
                 <CommentTextArea
                   placeholder="장소리뷰"
-                  value={review}
+                  value={plannerDetail.description}
                   onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
                     const updatedContainers = [...coreContainers];
                     updatedContainers[index].review = e.target.value;
@@ -307,9 +321,10 @@ export default function EditSchedule() {
             </ButtonContainer>
           </CoreContainer>
         ))}
+
         <ButtonContainer></ButtonContainer>
         <ButtonContainer>
-          <EditButton onClick={handleEditButtonClick}>수정</EditButton>
+          <EditButton onClick={handleEditButtonClick}>수정하기</EditButton>
           <CancelButton onClick={handleBackButtonClick}>취소</CancelButton>
         </ButtonContainer>
       </MainContainer>
