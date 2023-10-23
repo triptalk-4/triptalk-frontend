@@ -200,39 +200,6 @@ const GridContainer = styled.div`
   gap: 20px;
 `;
 
-// const StyledPost = styled.div`
-//   width: 100%;
-//   height: 350px;
-//   position: relative;
-//   cursor: pointer;
-//   border-radius: 25px;
-//   overflow: hidden;
-
-//   .info-container {
-//     position: absolute;
-//     width: 100%;
-//     height: 100%;
-//     top: 50%;
-//     left: 50%;
-//     transform: translate(-50%, -50%);
-//     background-color: rgba(0, 0, 0, 0.5);
-//     padding: 20px;
-//     border-radius: 25px;
-//     display: none;
-//     color: white;
-//   }
-
-//   &:hover .info-container {
-//     display: block;
-//   }
-// `;
-
-// const Img = styled.img`
-//   width: 100%;
-//   height: 100%;
-//   object-fit: cover;
-// `;
-
 const LoadingMessage = styled.div`
   text-align: center;
   margin-top: 20px;

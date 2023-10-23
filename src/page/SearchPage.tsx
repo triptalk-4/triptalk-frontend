@@ -30,7 +30,7 @@ const Gnb = styled.div`
   align-items: center;
   padding: 20px 55px 15px;
   border-bottom: 1px solid #c1c1c1;
-  height: 86px;
+  height: 70px;
 `;
 
 const Logo = styled(Link)`
@@ -40,6 +40,6 @@ const Logo = styled(Link)`
 `;
 
 const LogoImg = styled.img`
-  width: 200px;
+  width: 150px;
   height: auto;
 `;

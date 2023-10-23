@@ -1,14 +1,14 @@
 import styled from 'styled-components';
 import { BiSearch } from 'react-icons/bi';
 import { Link } from 'react-router-dom';
-import { GRAY_COLOR } from '../../color/color';
+import { DEFAULT_FONT_COLOR, GRAY_COLOR } from '../../color/color';
 
 export default function Search() {
   return (
     <SearchBox>
       <SearchDiv to="/search">
         <Searchtext>
-          닉네임을 입력해주세요..
+          닉네임을 검색해보세요.
           <SearchBtn type="button">
             <BiSearch />
           </SearchBtn>
@@ -24,24 +24,22 @@ const SearchBox = styled.div`
 
 const SearchDiv = styled(Link)`
   text-decoration: none;
-
-  width: 530px;
-  height: 50px;
-  padding: 3px;
+  width: 300px;
+  height: 30px;
+  padding: 5px;
   margin-left: auto;
-  border-radius: 55px;
+  border-bottom: 1px solid ${DEFAULT_FONT_COLOR};
 
-  background-image: linear-gradient(#fff, #fff), linear-gradient(to right, #f46222, #ffe94d);
+  /* background-image: linear-gradient(#fff, #fff), linear-gradient(to right, #f46222, #ffe94d);
   background-origin: border-box;
-  background-clip: content-box, border-box;
+  background-clip: content-box, border-box; */
 `;
 
 const Searchtext = styled.span`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 18px;
-  padding: 10px 20px;
+  font-size: 15px;
   color: ${GRAY_COLOR};
 `;
 
@@ -52,5 +50,5 @@ const SearchBtn = styled.button`
   border: none;
   background-color: transparent;
   cursor: pointer;
-  color: ${GRAY_COLOR};
+  color: ${DEFAULT_FONT_COLOR};
 `;

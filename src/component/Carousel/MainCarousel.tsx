@@ -57,8 +57,8 @@ function MainCarousel() {
         if (token) {
           const config = {
             headers: {
-              Authorization: `Bearer ${token}`
-            }
+              Authorization: `Bearer ${token}`,
+            },
           };
           const response = await axios.get('/address/api/main', config);
           const data = response.data;
@@ -90,16 +90,16 @@ function MainCarousel() {
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 2
-        }
+          slidesToShow: 2,
+        },
       },
       {
         breakpoint: 760,
         settings: {
-          slidesToShow: 1
-        }
-      }
-    ]
+          slidesToShow: 1,
+        },
+      },
+    ],
   };
 
   return (
@@ -169,10 +169,12 @@ const Image = styled.img`
   height: 300px;
   cursor: pointer;
   border-radius: 25px;
-  border: 1px solid #c1c1c1;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.1);
 `;
 
 const DescriptionTitle = styled.div`
+  margin-top: 10px;
   font-size: 22px;
   font-weight: bold;
 `;

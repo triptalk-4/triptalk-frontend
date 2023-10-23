@@ -28,6 +28,9 @@ const Main = () => {
         </TopTitle>
         <MainCarousel />
       </TopPosts>
+      {/* <AddPost>
+        <AddImg src="img/addimg.jpg" alt="관광지 이미지" />
+      </AddPost> */}
       <MainImgContainer onClick={handleMainImgClick}>
         <MainImageWrapper>
           <MainImage src="img/Boast.jpg" alt="여행가는 느낌의 이미지" />
@@ -47,7 +50,6 @@ const MainContainer = styled.div`
 
 const TopPosts = styled.div`
   width: 80%;
-  // height: 400px;
   margin: 0 auto;
 `;
 
@@ -67,6 +69,15 @@ const TileSpan = styled.span`
   font-weight: 300;
   color: ${GRAY_COLOR};
 `;
+
+// const AddPost = styled.div`
+//   margin: 80px auto;
+// `;
+//
+// const AddImg = styled.img`
+//   width: 100%;
+//   height: auto;
+// `;
 
 const MainImgContainer = styled.div`
   width: 100%;
