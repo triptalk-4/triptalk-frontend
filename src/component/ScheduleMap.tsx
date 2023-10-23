@@ -75,10 +75,11 @@ const ScheduleMapLoader: React.FC<SchduleMapLoaderProps> = ({ onPlacesSelected, 
             map,
             path: linePath,
             strokeWeight: 3,
-            strokeColor: '#FF0000',
+            strokeColor: `${MAIN_COLOR}`,
             strokeOpacity: 0.7,
             strokeStyle: 'solid',
           });
+          console.log(polyline);
         }
       }
     };

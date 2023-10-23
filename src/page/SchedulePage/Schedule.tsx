@@ -6,7 +6,6 @@ import { RootState } from '../../store/store';
 import Header from '../../component/Header';
 import SecheduleSelect from '../../component/SecheduleSelect/SecheduleSelect';
 import TopButton from '../../component/TopButton/TopButton';
-import { GrEdit } from 'react-icons/gr';
 import styled from 'styled-components';
 import { DEFAULT_FONT_COLOR } from '../../color/color';
 import axios from 'axios';
@@ -201,38 +200,38 @@ const GridContainer = styled.div`
   gap: 20px;
 `;
 
-const StyledPost = styled.div`
-  width: 100%;
-  height: 350px;
-  position: relative;
-  cursor: pointer;
-  border-radius: 25px;
-  overflow: hidden;
+// const StyledPost = styled.div`
+//   width: 100%;
+//   height: 350px;
+//   position: relative;
+//   cursor: pointer;
+//   border-radius: 25px;
+//   overflow: hidden;
 
-  .info-container {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: rgba(0, 0, 0, 0.5);
-    padding: 20px;
-    border-radius: 25px;
-    display: none;
-    color: white;
-  }
+//   .info-container {
+//     position: absolute;
+//     width: 100%;
+//     height: 100%;
+//     top: 50%;
+//     left: 50%;
+//     transform: translate(-50%, -50%);
+//     background-color: rgba(0, 0, 0, 0.5);
+//     padding: 20px;
+//     border-radius: 25px;
+//     display: none;
+//     color: white;
+//   }
 
-  &:hover .info-container {
-    display: block;
-  }
-`;
+//   &:hover .info-container {
+//     display: block;
+//   }
+// `;
 
-const Img = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-`;
+// const Img = styled.img`
+//   width: 100%;
+//   height: 100%;
+//   object-fit: cover;
+// `;
 
 const LoadingMessage = styled.div`
   text-align: center;

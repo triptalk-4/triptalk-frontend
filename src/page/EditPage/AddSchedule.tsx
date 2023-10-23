@@ -32,6 +32,7 @@ export default function AddSchedule() {
   const [title, setTitle] = useState('');
   // const [reviews, setReviews] = useState('');
   const [placeInfo, setPlaceInfo] = useState<PlaceInfo[]>([]);
+  console.log(placeInfo);
   const [selectedDateRange, setSelectedDateRange] = useState<[Date | null, Date | null]>([null, null]);
 
   const handleDateRangeChange = (newDateRange: [Date | null, Date | null]) => {
@@ -41,7 +42,7 @@ export default function AddSchedule() {
   const navigate = useNavigate();
 
   const [coreContainers, setCoreContainers] = useState<CoreContainerData[]>([
-    { images: [], imagePreviews: [], startDate: null, review: '', placeInfo: null }
+    { images: [], imagePreviews: [], startDate: null, review: '', placeInfo: null },
   ]);
 
   const coreContainers_LIMIT = 5;
@@ -69,7 +70,7 @@ export default function AddSchedule() {
       if (index < placeInfos.length) {
         return {
           ...container,
-          placeInfo: placeInfos[index]
+          placeInfo: placeInfos[index],
         };
       }
       return container;
@@ -81,7 +82,7 @@ export default function AddSchedule() {
     if (coreContainers.length < coreContainers_LIMIT) {
       setCoreContainers(prevContainers => [
         ...prevContainers,
-        { images: [], imagePreviews: [], startDate: null, review: '', placeInfo: null }
+        { images: [], imagePreviews: [], startDate: null, review: '', placeInfo: null },
       ]);
     }
   };
@@ -106,8 +107,8 @@ export default function AddSchedule() {
           axios.post('/address/api/images', formData, {
             headers: {
               Authorization: `Bearer ${Access_token}`,
-              'Content-Type': 'multipart/form-data'
-            }
+              'Content-Type': 'multipart/form-data',
+            },
           })
         )
       );
@@ -124,28 +125,28 @@ export default function AddSchedule() {
             latitude: container.placeInfo?.position.lat,
             longitude: container.placeInfo?.position.lng,
             placeName: container.placeInfo?.placeName,
-            roadAddress: container.placeInfo?.roadAddressName
-          }
+            roadAddress: container.placeInfo?.roadAddressName,
+          },
         };
       });
       const plannerRequest = {
         description: '',
         endDate: selectedDateRange[1],
         startDate: selectedDateRange[0],
-        title: title
+        title: title,
       };
 
       const dataToSend = {
         plannerDetailListRequests: detailRequests,
-        plannerRequest: plannerRequest
+        plannerRequest: plannerRequest,
       };
 
       try {
         const response = await axios.post('/address/api/plans', dataToSend, {
           headers: {
             Authorization: `Bearer ${Access_token}`,
-            'Content-Type': 'application/json'
-          }
+            'Content-Type': 'application/json',
+          },
         });
         if (response.status === 200) {
           alert('일정 등록 완료!');
@@ -173,8 +174,7 @@ export default function AddSchedule() {
           <Title
             placeholder="제목 (최대 40자)"
             value={title}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)}
-          ></Title>
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)}></Title>
           <FullSchedule selectedDateRange={selectedDateRange} onDateRangeChange={handleDateRangeChange} />
         </TitleContainer>
         {coreContainers.map((container, index) => (
