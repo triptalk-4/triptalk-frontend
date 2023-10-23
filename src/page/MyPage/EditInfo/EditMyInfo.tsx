@@ -11,6 +11,7 @@ import { RootState } from '../../../store/store';
 import { LuSettings } from 'react-icons/lu';
 
 export default function EditMyInfo() {
+  const MAIN_REST_API_KEY = import.meta.env.VITE_REACT_APP_MAIN_API;
   const navigate = useNavigate();
   const [isButtonEnabled, setIsButtonEnabled] = useState(false); // 버튼 활성화 상태 추가
   const [userImg, setUserImg] = useState('');
@@ -32,7 +33,7 @@ export default function EditMyInfo() {
     const Access_token = localStorage.getItem('token');
     const fetchUserInfo = async () => {
       try {
-        const response = await axios.get('/address/api/users/profile', {
+        const response = await axios.get(`${MAIN_REST_API_KEY}/api/users/profile`, {
           headers: {
             Authorization: `Bearer ${Access_token}`,
           },
@@ -105,7 +106,7 @@ export default function EditMyInfo() {
     formData.append('files', selectedFile);
 
     try {
-      const response = await axios.post('/address/api/images', formData, {
+      const response = await axios.post(`${MAIN_REST_API_KEY}/api/images`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',
@@ -131,7 +132,7 @@ export default function EditMyInfo() {
         console.log(requestData);
 
         try {
-          const infoResponse = await axios.put('/address/api/users/update/profile', requestData, {
+          const infoResponse = await axios.put(`${MAIN_REST_API_KEY}/api/users/update/profile`, requestData, {
             headers: {
               Authorization: `Bearer ${token}`,
               'Content-Type': 'application/json',

@@ -3,9 +3,10 @@ import { FcGoogle } from 'react-icons/fc';
 import axios from 'axios';
 
 const Google = () => {
+  const MAIN_REST_API_KEY = import.meta.env.VITE_REACT_APP_MAIN_API;
   const handlegoogleLogin = async () => {
     try {
-      const response = await axios.post(`/address/api/auth/google`);
+      const response = await axios.post(`${MAIN_REST_API_KEY}/api/auth/google`);
       window.location.href = response.data;
     } catch (error) {
       console.error('Google OAuth Error:', error);

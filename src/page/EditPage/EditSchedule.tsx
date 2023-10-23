@@ -46,6 +46,7 @@ interface PlannerDetail {
 }
 
 export default function EditSchedule() {
+  const MAIN_REST_API_KEY = import.meta.env.VITE_REACT_APP_MAIN_API;
   const Access_token = localStorage.getItem('token');
 
   const [title, setTitle] = useState(''); // 타이틀
@@ -130,7 +131,7 @@ export default function EditSchedule() {
     const fetchEditPage = async () => {
       const Access_token = localStorage.getItem('token');
       try {
-        const response = await axios.get(`/address/api/plans/${plannerId}/details`, {
+        const response = await axios.get(`${MAIN_REST_API_KEY}/api/plans/${plannerId}/details`, {
           headers: {
             Authorization: `Bearer ${Access_token}`,
           },
@@ -197,7 +198,7 @@ export default function EditSchedule() {
 
       const imageUrlsArray = await Promise.all(
         formDataArray.map(formData =>
-          axios.post('/address/api/images', formData, {
+          axios.post('${MAIN_REST_API_KEY}/api/images', formData, {
             headers: {
               Authorization: `Bearer ${Access_token}`,
               'Content-Type': 'multipart/form-data',
@@ -238,7 +239,7 @@ export default function EditSchedule() {
       console.log('dataToSend', dataToSend);
 
       try {
-        const response = await axios.post(`/address/api/plans/${plannerId}`, dataToSend, {
+        const response = await axios.post(`${MAIN_REST_API_KEY}/api/plans/${plannerId}`, dataToSend, {
           headers: {
             Authorization: `Bearer ${Access_token}`,
             'Content-Type': 'application/json',

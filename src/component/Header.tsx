@@ -24,6 +24,7 @@ interface userInfoDate {
 
 export default function Header() {
   //  const [userImg, setUserImg] = useState(''); // msw
+  const MAIN_REST_API_KEY = import.meta.env.VITE_REACT_APP_MAIN_API;
   const token = useSelector((state: RootState) => state.token.token); // Redux에서 토큰 가져오기
   const tabsRef = useRef<HTMLUListElement>(null);
   const location = useLocation();
@@ -52,7 +53,7 @@ export default function Header() {
     const token = localStorage.getItem('token');
     const fetchUserInfo = async () => {
       try {
-        const response = await axios.get('/address/api/users/profile', {
+        const response = await axios.get(`${MAIN_REST_API_KEY}/api/users/profile`, {
           headers: {
             Authorization: `Bearer ${token}`, //필수
           },

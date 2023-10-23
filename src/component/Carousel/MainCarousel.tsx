@@ -43,6 +43,7 @@ function NextArrow(props: CustomArrowProps) {
 }
 
 function MainCarousel() {
+  const MAIN_REST_API_KEY = import.meta.env.VITE_REACT_APP_MAIN_API;
   const dispatch = useDispatch();
   const token = useSelector((state: RootState) => state.token.token);
   const [data, setData] = useState<Item[]>([]);
@@ -57,10 +58,10 @@ function MainCarousel() {
         if (token) {
           const config = {
             headers: {
-              Authorization: `Bearer ${token}`
-            }
+              Authorization: `Bearer ${token}`,
+            },
           };
-          const response = await axios.get('/address/api/main', config);
+          const response = await axios.get(`${MAIN_REST_API_KEY}/api/main`, config);
           const data = response.data;
           const transformedData = data.map((item: Item) => {
             const { startDate, endDate, likeCount, plannerId, thumbnail, views, title, nickname } = item;
@@ -90,16 +91,16 @@ function MainCarousel() {
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 2
-        }
+          slidesToShow: 2,
+        },
       },
       {
         breakpoint: 760,
         settings: {
-          slidesToShow: 1
-        }
-      }
-    ]
+          slidesToShow: 1,
+        },
+      },
+    ],
   };
 
   return (

@@ -51,6 +51,7 @@ interface PlaceResponse {
 }
 
 export default function SecheduleDetail() {
+  const MAIN_REST_API_KEY = import.meta.env.VITE_REACT_APP_MAIN_API;
   const [likeCount, setLikeCount] = useState(0); // 좋아요 카운트 상태
   const [isLiked, setIsLiked] = useState(false); // 좋아요 상태 (눌렸는지 안눌렸는지)
   const [isSaved, setIsSaved] = useState(false);
@@ -67,7 +68,7 @@ export default function SecheduleDetail() {
     profile: '',
     userId: 0,
     email: '',
-    plannerDetailResponse: []
+    plannerDetailResponse: [],
   });
 
   const [userPing, setUserPing] = useState([]);
@@ -82,10 +83,10 @@ export default function SecheduleDetail() {
       const Access_token = localStorage.getItem('token');
       try {
         // 페이지 상세 내용 가져오기
-        const response = await axios.get(`/address/api/plans/${plannerId}/details`, {
+        const response = await axios.get(`${MAIN_REST_API_KEY}/api/plans/${plannerId}/details`, {
           headers: {
-            Authorization: `Bearer ${Access_token}`
-          }
+            Authorization: `Bearer ${Access_token}`,
+          },
         });
 
         if (response.data) {
@@ -95,16 +96,19 @@ export default function SecheduleDetail() {
 
           const allCoordinates = plannerDetails.map((detail: PlannerDetail) => ({
             latitude: detail.placeResponse.latitude,
-            longitude: detail.placeResponse.longitude
+            longitude: detail.placeResponse.longitude,
           }));
           setUserPing(allCoordinates);
         }
 
-        const likeAndSaveResponse = await axios.get(`/address/api/likes/plans/user/check/save/like/${plannerId}`, {
-          headers: {
-            Authorization: `Bearer ${Access_token}`
+        const likeAndSaveResponse = await axios.get(
+          `${MAIN_REST_API_KEY}/api/likes/plans/user/check/save/like/${plannerId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${Access_token}`,
+            },
           }
-        });
+        );
         const { userSaveYn, userLikeYn, likeCount } = likeAndSaveResponse.data;
         setIsLiked(userLikeYn === 'ok');
         setIsSaved(userSaveYn === 'ok');
@@ -123,12 +127,12 @@ export default function SecheduleDetail() {
       // 좋아요 눌렸으면 취소
       if (isLiked) {
         const response = await axios.post(
-          `/address/api/likes/minus/plans/${plannerId}`,
+          `${MAIN_REST_API_KEY}/api/likes/minus/plans/${plannerId}`,
           {},
           {
             headers: {
-              Authorization: `Bearer ${Access_token}`
-            }
+              Authorization: `Bearer ${Access_token}`,
+            },
           }
         );
         if (response.data.ok === '좋아요가 취소되었습니다') {
@@ -138,12 +142,12 @@ export default function SecheduleDetail() {
         }
       } else {
         const response = await axios.post(
-          `/address/api/likes/plans/${plannerId}`,
+          `${MAIN_REST_API_KEY}/api/likes/plans/${plannerId}`,
           {},
           {
             headers: {
-              Authorization: `Bearer ${Access_token}`
-            }
+              Authorization: `Bearer ${Access_token}`,
+            },
           }
         );
         if (response.data.ok === '좋아요가 완료되었습니다') {
@@ -162,10 +166,10 @@ export default function SecheduleDetail() {
     try {
       // 저장 눌렸으면 취소
       if (isSaved) {
-        const response = await axios.delete(`/address/api/likes/plans/user/cancel/planner/${plannerId}`, {
+        const response = await axios.delete(`${MAIN_REST_API_KEY}/api/likes/plans/user/cancel/planner/${plannerId}`, {
           headers: {
-            Authorization: `Bearer ${Access_token}`
-          }
+            Authorization: `Bearer ${Access_token}`,
+          },
         });
         if (response.data.ok === '저장함 삭제가 완료되었습니다.') {
           alert('저장이 취소되었습니다.');
@@ -174,10 +178,10 @@ export default function SecheduleDetail() {
           alert('저장이 취소되지 않았습니다.'); // 저장 취소 실패시 알림
         }
       } else {
-        const response = await axios.post(`/address/api/likes/plans/user/save/planner/${plannerId}`, null, {
+        const response = await axios.post(`${MAIN_REST_API_KEY}/api/likes/plans/user/save/planner/${plannerId}`, null, {
           headers: {
-            Authorization: `Bearer ${Access_token}`
-          }
+            Authorization: `Bearer ${Access_token}`,
+          },
         });
         if (response.data.ok === '저장 추가가 완료되었습니다.') {
           alert('저장이 완료되었습니다.');
@@ -195,10 +199,10 @@ export default function SecheduleDetail() {
   const deletePost = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.delete(`/address/api/plans/${plannerId}`, {
+      const response = await axios.delete(`${MAIN_REST_API_KEY}/api/plans/${plannerId}`, {
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       if (response.status === 204) {
@@ -211,12 +215,8 @@ export default function SecheduleDetail() {
   };
 
   // 시간
-  const startTime = moment(mainDetailData.startDate)
-    .add(9, 'hours')
-    .format('YYYY-MM-DD');
-  const endTime = moment(mainDetailData.endDate)
-    .add(9, 'hours')
-    .format('YYYY-MM-DD');
+  const startTime = moment(mainDetailData.startDate).add(9, 'hours').format('YYYY-MM-DD');
+  const endTime = moment(mainDetailData.endDate).add(9, 'hours').format('YYYY-MM-DD');
 
   return (
     <DetailContainer>

@@ -17,6 +17,7 @@ interface IReplyData {
 }
 
 export default function ViewComments({ plannerDetailId }: { plannerDetailId: number }) {
+  const MAIN_REST_API_KEY = import.meta.env.VITE_REACT_APP_MAIN_API;
   const [commentData, setCommentData] = useState<IReplyData[]>([]);
   const [commentUserReply, setCommentUserReply] = useState('');
   const [isEditing, setIsEditing] = useState(false);
@@ -30,7 +31,7 @@ export default function ViewComments({ plannerDetailId }: { plannerDetailId: num
     const fetchComment = async () => {
       const Access_token = localStorage.getItem('token');
       try {
-        const response = await axios.get(`/address/api/reply/detail/replies/${plannerDetailId}`, {
+        const response = await axios.get(`${MAIN_REST_API_KEY}/api/reply/detail/replies/${plannerDetailId}`, {
           headers: {
             Authorization: `Bearer ${Access_token}`,
           },
@@ -66,7 +67,7 @@ export default function ViewComments({ plannerDetailId }: { plannerDetailId: num
     // console.log(replyId);
     const Access_token = localStorage.getItem('token');
     const response = await axios.put(
-      `/address/api/reply/${replyId}`,
+      `${MAIN_REST_API_KEY}/api/reply/${replyId}`,
       {
         reply: commentUserReply,
       },
@@ -91,7 +92,7 @@ export default function ViewComments({ plannerDetailId }: { plannerDetailId: num
     const Access_token = localStorage.getItem('token');
     if (window.confirm('정말로 이 댓글을 삭제하시겠습니까?')) {
       try {
-        const response = await axios.delete(`/address/api/reply/${replyId}`, {
+        const response = await axios.delete(`${MAIN_REST_API_KEY}/api/reply/${replyId}`, {
           headers: {
             Authorization: `Bearer ${Access_token}`,
           },
@@ -118,7 +119,7 @@ export default function ViewComments({ plannerDetailId }: { plannerDetailId: num
     try {
       const Access_token = localStorage.getItem('token');
       const response = await axios.post(
-        `/address/api/reply/detail/${plannerDetailId}`,
+        `${MAIN_REST_API_KEY}/api/reply/detail/${plannerDetailId}`,
         {
           reply: newComment,
         },
@@ -133,7 +134,7 @@ export default function ViewComments({ plannerDetailId }: { plannerDetailId: num
       if (response.status === 200) {
         console.log('댓글 업로드 성공:', response.data);
         //  window.location.reload();
-        const updatedCommentData = await axios.get(`/address/api/reply/detail/replies/${plannerDetailId}`, {
+        const updatedCommentData = await axios.get(`${MAIN_REST_API_KEY}/api/reply/detail/replies/${plannerDetailId}`, {
           headers: {
             Authorization: `Bearer ${Access_token}`,
           },

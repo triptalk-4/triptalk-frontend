@@ -14,6 +14,7 @@ interface Save {
 }
 
 export default function MyInfoSaved() {
+  const MAIN_REST_API_KEY = import.meta.env.VITE_REACT_APP_MAIN_API;
   const [savedData, setSavedData] = useState<Save[]>([]); // msw
   const [containerClassName, setContainerClassName] = useState('flex-start');
   const [isLoading, setIsLoading] = useState(false); // 로딩 상태
@@ -36,7 +37,7 @@ export default function MyInfoSaved() {
 
       try {
         const Access_token = localStorage.getItem('token');
-        const response = await axios.get(`/address/api/users/planners/userSave?page=0&pageSize=100`, {
+        const response = await axios.get(`${MAIN_REST_API_KEY}/api/users/planners/userSave?page=0&pageSize=100`, {
           headers: {
             Authorization: `Bearer ${Access_token}`,
           },

@@ -65,6 +65,7 @@ export default function MyInfoPost({ userInfo }: { userInfo: userInfoDate }) {
   // const [anotherpage, setAnotherPage] = useState(0);
 
   const { userId } = useParams();
+  const MAIN_REST_API_KEY = import.meta.env.VITE_REACT_APP_MAIN_API;
   const [anotherUserInfo, setAnotherUserInfo] = useState<anotheruserInfoDate>({
     userId: 0,
     nickname: '',
@@ -90,7 +91,7 @@ export default function MyInfoPost({ userInfo }: { userInfo: userInfoDate }) {
 
       try {
         const Access_token = localStorage.getItem('token');
-        const response = await axios.get(`/address/api/search/user/${userId}?number=0&size=100`, {
+        const response = await axios.get(`${MAIN_REST_API_KEY}/api/search/user/${userId}?number=0&size=100`, {
           headers: {
             Authorization: `Bearer ${Access_token}`,
           },
@@ -120,7 +121,7 @@ export default function MyInfoPost({ userInfo }: { userInfo: userInfoDate }) {
 
       try {
         const Access_token = localStorage.getItem('token');
-        const response = await axios.get(`/address/api/users/planners/byUser?page=0&pageSize=100`, {
+        const response = await axios.get(`${MAIN_REST_API_KEY}/api/users/planners/byUser?page=0&pageSize=100`, {
           headers: {
             Authorization: `Bearer ${Access_token}`,
           },

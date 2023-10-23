@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 
 export default function EditProfile() {
+  const MAIN_REST_API_KEY = import.meta.env.VITE_REACT_APP_MAIN_API;
   const [userImg, setUserImg] = useState(''); // msw
   const token = useSelector((state: RootState) => state.token.token);
 
@@ -26,7 +27,7 @@ export default function EditProfile() {
     const Access_token = localStorage.getItem('token');
     const fetchUserInfo = async () => {
       try {
-        const response = await axios.get('/address/api/users/profile', {
+        const response = await axios.get(`${MAIN_REST_API_KEY}/api/users/profile`, {
           headers: {
             Authorization: `Bearer ${Access_token}`,
           },
@@ -57,7 +58,7 @@ export default function EditProfile() {
 
     try {
       // 서버로 이미지 업로드 요청
-      const response = await axios.put('/address/api/users/update/profile', formFilesData, {
+      const response = await axios.put(`${MAIN_REST_API_KEY}/api/users/update/profile`, formFilesData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',

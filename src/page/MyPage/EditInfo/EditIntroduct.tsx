@@ -10,6 +10,7 @@ interface EditIntroductProps {
 }
 
 export default function EditIntroduct({ onAboutMeChange }: EditIntroductProps) {
+  const MAIN_REST_API_KEY = import.meta.env.VITE_REACT_APP_MAIN_API;
   const [userAboutMe, setUserAboutMe] = useState('');
 
   const token = useSelector((state: RootState) => state.token.token);
@@ -18,7 +19,7 @@ export default function EditIntroduct({ onAboutMeChange }: EditIntroductProps) {
     const token = localStorage.getItem('token');
     const fetchUserInfo = async () => {
       try {
-        const response = await axios.get('/address/api/users/profile', {
+        const response = await axios.get(`${MAIN_REST_API_KEY}/api/users/profile`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
