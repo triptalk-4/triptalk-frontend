@@ -49,7 +49,7 @@ export default function EditSchedule() {
   const Access_token = localStorage.getItem('token');
 
   const [title, setTitle] = useState(''); // 타이틀
-  const [pickImg, setPickImg] = useState(''); // 사진
+  const [mapPings, setMapPings] = useState({});
 
   const navigate = useNavigate(); // 페이지 위치 이동
   const { plannerId } = useParams(); // 페이지 번호
@@ -140,13 +140,18 @@ export default function EditSchedule() {
 
         const plannerData = response.data;
         setTitle(plannerData.title);
+
         const serverStartDate = new Date(plannerData.startDate);
         const serverEndDate = new Date(plannerData.endDate);
+        setSelectedDateRange([serverStartDate, serverEndDate]); // 날짜
 
-        setSelectedDateRange([serverStartDate, serverEndDate]);
-
-        const imagesUrlArray = plannerData.plannerDetailResponse.map((detail: PlannerDetail) => detail.imagesUrl);
-        setPickImg(imagesUrlArray[0]);
+        const mapPing = plannerData.plannerDetailResponse.map((detail: PlannerDetail) => {
+          return {
+            latitude: detail.placeResponse.latitude,
+            longitude: detail.placeResponse.longitude,
+          };
+        });
+        setMapPings(mapPing);
 
         // const updatedContainers = plannerData.plannerDetailResponse.map((detail: PlannerDetail) => {
         //   const coreContainer: CoreContainerData = {
@@ -173,8 +178,9 @@ export default function EditSchedule() {
     };
     fetchEditPage();
   }, [token, plannerId]);
+  console.log('위도 경도', mapPings);
 
-  /// 수정 ///
+  /// 수정한 내용 보내기 ///
   const handleEditButtonClick = async () => {
     try {
       const formDataArray = coreContainers.map(container => {
@@ -232,7 +238,7 @@ export default function EditSchedule() {
       console.log('dataToSend', dataToSend);
 
       try {
-        const response = await axios.post('/address/api/plans', dataToSend, {
+        const response = await axios.post(`/address/api/plans/${plannerId}`, dataToSend, {
           headers: {
             Authorization: `Bearer ${Access_token}`,
             'Content-Type': 'application/json',
@@ -295,12 +301,11 @@ export default function EditSchedule() {
                 {plannerDetail.imagesUrl.map((imageUrl, imgIndex) => (
                   <img key={imgIndex} src={imageUrl} alt={`Image ${imgIndex}`} />
                 ))}
-                {pickImg && <img src={pickImg} alt="Picked Image" />}
               </ImagePreviews>
               <div>
                 <CommentTextArea
                   placeholder="장소리뷰"
-                  value={plannerDetail.description}
+                  defaultValue={plannerDetail.description}
                   onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
                     const updatedContainers = [...coreContainers];
                     updatedContainers[index].review = e.target.value;
