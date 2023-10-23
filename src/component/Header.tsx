@@ -35,7 +35,7 @@ export default function Header() {
     email: '',
     password: '',
     aboutMe: '',
-    username: ''
+    username: '',
   });
 
   // useEffect(() => {
@@ -54,8 +54,8 @@ export default function Header() {
       try {
         const response = await axios.get('/address/api/users/profile', {
           headers: {
-            Authorization: `Bearer ${token}` //필수
-          }
+            Authorization: `Bearer ${token}`, //필수
+          },
         });
 
         if (response.data) {

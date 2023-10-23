@@ -25,14 +25,14 @@ interface userInfoDate {
   views: number;
 }
 
-interface AnotherPost {
-  plannerId: number;
-  thumbnail: string;
-  title: string;
-  createAt: number;
-  likeCount: number;
-  views: number;
-}
+// interface AnotherPost {
+//   plannerId: number;
+//   thumbnail: string;
+//   title: string;
+//   createAt: number;
+//   likeCount: number;
+//   views: number;
+// }
 
 interface anotheruserInfoDate {
   userId: number;
@@ -55,6 +55,7 @@ const PAGE_SIZE = 3;
 
 export default function MyInfoPost({ userInfo }: { userInfo: userInfoDate }) {
   const [postsData, setPostsData] = useState<userInfoDate[]>([]); // msw
+  const [anotherpostsData, setAnotherPostsData] = useState<PlannerDetails[]>([]);
   const [containerClassName, setContainerClassName] = useState('flex-start');
   const [isLoading, setIsLoading] = useState(false); // 로딩 상태
   const [isEndPage, setIsEndPage] = useState(false);
@@ -81,38 +82,73 @@ export default function MyInfoPost({ userInfo }: { userInfo: userInfoDate }) {
     likeCount: planner.likeCount,
     views: planner.views,
   }));
-  // useEffect(() => {
-  //   fetch('/api/posts')
-  //     .then(res => res.json())
-  //     .then(data => {
-  //       setPostsData(data.slice(0, 6)); // 처음에 6개게시물만 나오게 설정
-  //     })
-  //     .catch(error => console.error('가짜 API 요청 실패:', error));
-  // }, []);
 
   useEffect(() => {
-    const Access_token = localStorage.getItem('token');
     const fetchSerch = async () => {
+      if (isEndPage || isLoading) return;
+      setIsLoading(true);
+      const Access_token = localStorage.getItem('token');
       try {
-        const response = await axios.get(`/address/api/search/user/${userId}`, {
+        const response = await axios.get(`/address/api/search/user/${userId}?number=${page}&size=${PAGE_SIZE}`, {
           headers: {
             Authorization: `Bearer ${Access_token}`,
           },
         });
+        setIsLoading(false);
 
         if (response.data) {
           setAnotherUserInfo(response.data);
-        } else {
-          console.log(response);
-          alert('사용자 정보가 없습니다 로그인확인해주세요');
         }
+        const newData = response.data.planners;
+        if (newData.length === 0) {
+          setIsEndPage(true);
+        } else {
+          setAnotherPostsData(prevData => [...prevData, ...newData]);
+        }
+        console.log('anotherpostsData', anotherpostsData);
       } catch (error) {
         console.error('사용자 정보 가져오기 오류 확인바람(내정보):', error);
       }
     };
 
     fetchSerch();
-  }, [token, userId]);
+  }, [token, userId, page, isEndPage]);
+
+  useEffect(() => {
+    // IntersectionObserver 생성 및 초기화
+    const observer = new IntersectionObserver(anotherhandleIntersection, {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.5,
+    });
+
+    observerRef.current = observer;
+    if (targetRef.current) {
+      observer.observe(targetRef.current);
+    }
+
+    return () => {
+      if (targetRef.current) {
+        observer.unobserve(targetRef.current);
+      }
+    };
+  }, [page, isLoading]);
+
+  function anotherhandleIntersection(entries: IntersectionObserverEntry[]) {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !isLoading) {
+        setPage(prevPage => {
+          if (!isLoading) {
+            return prevPage + 1;
+          }
+          return prevPage;
+        });
+        if (targetRef.current && observerRef.current) {
+          observerRef.current.unobserve(targetRef.current);
+        }
+      }
+    });
+  }
 
   useEffect(() => {
     const fetchUserPost = async () => {
@@ -126,6 +162,7 @@ export default function MyInfoPost({ userInfo }: { userInfo: userInfoDate }) {
           },
         });
         setIsLoading(false);
+
         const newData = response.data.content;
         if (newData.length === 0) {
           setIsEndPage(true);
@@ -143,12 +180,12 @@ export default function MyInfoPost({ userInfo }: { userInfo: userInfoDate }) {
 
   useEffect(() => {
     // 게시물 갯수에 따라 스타일 변경
-    if (postsData.length >= 2) {
+    if (postsData.length >= 2 || anotherpostsData.length >= 2) {
       setContainerClassName('flex-start');
     } else {
       setContainerClassName('space-between');
     }
-  }, [postsData]);
+  }, [postsData, anotherpostsData]);
 
   useEffect(() => {
     // IntersectionObserver 생성 및 초기화
@@ -234,7 +271,7 @@ export default function MyInfoPost({ userInfo }: { userInfo: userInfoDate }) {
     <PostContainer className={containerClassName}>
       {userInfo.userId === anotherUserInfo.userId
         ? postsData.map(item => <MyPost key={item.plannerId} postsData={item} />)
-        : anotherPlanners.map((aontherItem: AnotherPost) => (
+        : anotherPlanners.map((aontherItem: PlannerDetails) => (
             <AnotherPlanner key={aontherItem.plannerId} plannerData={aontherItem} />
           ))}
       {!isEndPage && <ObserverTarget ref={targetRef} />}
