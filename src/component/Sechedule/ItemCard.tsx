@@ -20,7 +20,7 @@ export default function ItemCard({ item }: { item: Item }) {
           <TopContainer>
             <IconWithCount>
               <Heart />
-              <Count>{item.likeCount}</Count>
+              <Count>{item.likeCount || '0'}</Count>
             </IconWithCount>
             <IconWithCount>
               <LookUp />
@@ -45,6 +45,7 @@ const StyledPost = styled.div`
   cursor: pointer;
   border-radius: 25px;
   overflow: hidden;
+  border: 1px solid #c1c1c1;
 
   .info-container {
     position: absolute;
