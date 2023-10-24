@@ -107,7 +107,7 @@ export default function EditSchedule() {
 
   const handleAddCoreContainer = () => {
     // +
-    if (coreContainers.length || manyPlannerDetailResponse.length <= coreContainers_LIMIT) {
+    if (coreContainers.length < coreContainers_LIMIT && manyPlannerDetailResponse.length < 5) {
       setCoreContainers(prevContainers => [
         ...prevContainers,
         { images: [], imagePreviews: [], startDate: null, review: '', placeInfo: null },
@@ -275,6 +275,7 @@ export default function EditSchedule() {
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)}></Title>
           <FullSchedule selectedDateRange={selectedDateRange} onDateRangeChange={handleDateRangeChange} />
         </TitleContainer>
+
         {manyPlannerDetailResponse.map((plannerDetail, index) => (
           <CoreContainer key={index}>
             <CoreTopContainer>
@@ -315,8 +316,12 @@ export default function EditSchedule() {
               </div>
             </ImgContainer>
             <ButtonContainer>
-              {manyPlannerDetailResponse.length < 5 && <PlusButton onClick={handleAddCoreContainer}>+</PlusButton>}
-              {manyPlannerDetailResponse.length > 1 && <MinusButton onClick={handleRemoveCoreContainer}>-</MinusButton>}
+              {manyPlannerDetailResponse.length < 5 && coreContainers.length < 5 && (
+                <PlusButton onClick={handleAddCoreContainer}>+</PlusButton>
+              )}
+              {manyPlannerDetailResponse.length >= 1 && (
+                <MinusButton onClick={handleRemoveCoreContainer}>-</MinusButton>
+              )}
             </ButtonContainer>
           </CoreContainer>
         ))}
@@ -360,8 +365,10 @@ export default function EditSchedule() {
               </div>
             </ImgContainer>
             <ButtonContainer>
-              {coreContainers.length < 5 && <PlusButton onClick={handleAddCoreContainer}>+</PlusButton>}
-              {coreContainers.length > 1 && <MinusButton onClick={handleRemoveCoreContainer}>-</MinusButton>}
+              {manyPlannerDetailResponse.length < 5 && coreContainers.length < 5 && (
+                <PlusButton onClick={handleAddCoreContainer}>+</PlusButton>
+              )}
+              {coreContainers.length >= 1 && <MinusButton onClick={handleRemoveCoreContainer}>-</MinusButton>}
             </ButtonContainer>
           </CoreContainer>
         ))}
@@ -469,28 +476,26 @@ const ButtonContainer = styled.div`
   margin-top: 10px;
 `;
 
-const PlusButton = styled.button`
+const PnMBtnStyle = css`
   width: 30px;
   height: 30px;
   border-radius: 10px;
-  margin-right: 10px;
   border: none;
   background-color: ${MAIN_COLOR};
   color: white;
   cursor: pointer;
+`;
+
+const PlusButton = styled.button`
+  ${PnMBtnStyle}
+  margin-right: 10px;
 `;
 
 const MinusButton = styled.button`
-  width: 30px;
-  height: 30px;
-  border-radius: 10px;
-  border: none;
-  background-color: ${MAIN_COLOR};
-  color: white;
-  cursor: pointer;
+  ${PnMBtnStyle}
 `;
 
-const EnBbtnStyle = css`
+const EnBBtnStyle = css`
   width: 100px;
   height: 35px;
   border-radius: 15px;
@@ -501,13 +506,13 @@ const EnBbtnStyle = css`
 `;
 
 const EditButton = styled.button`
-  ${EnBbtnStyle}
+  ${EnBBtnStyle}
   margin-right: 30px;
 
   background-color: ${MAIN_COLOR};
 `;
 
 const CancelButton = styled.button`
-  ${EnBbtnStyle}
+  ${EnBBtnStyle}
   background-color: gray;
 `;
