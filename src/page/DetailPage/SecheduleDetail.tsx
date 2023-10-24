@@ -10,6 +10,7 @@ import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import moment from 'moment';
 import ScheduleMapLoader from '../../component/ScheduleMap';
+import { FaArrowLeft } from 'react-icons/fa';
 
 interface PlannerDetail {
   placeResponse: {
@@ -220,6 +221,7 @@ export default function SecheduleDetail() {
         {/* <ScheduleDetailMap onPlacesSelected={() => {}} onPlace={userPing} /> */}
         <ScheduleMapLoader onPlacesSelected={() => {}} onPlace={userPing} />
         <PostBg>
+          <LeftArrow onClick={() => navigate(-1)} />
           <PostText>
             <Title>
               {mainDetailData.title}
@@ -262,6 +264,13 @@ const DetailContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+`;
+
+const LeftArrow = styled(FaArrowLeft)`
+  font-size: 30px;
+  color: #242424;
+  cursor: pointer;
+  margin-bottom: 16px;
 `;
 
 const PostContainer = styled.div`
