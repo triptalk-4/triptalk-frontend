@@ -275,6 +275,7 @@ export default function EditSchedule() {
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)}></Title>
           <FullSchedule selectedDateRange={selectedDateRange} onDateRangeChange={handleDateRangeChange} />
         </TitleContainer>
+
         {manyPlannerDetailResponse.map((plannerDetail, index) => (
           <CoreContainer key={index}>
             <CoreTopContainer>
@@ -361,7 +362,7 @@ export default function EditSchedule() {
             </ImgContainer>
             <ButtonContainer>
               {coreContainers.length < 5 && <PlusButton onClick={handleAddCoreContainer}>+</PlusButton>}
-              {coreContainers.length > 1 && <MinusButton onClick={handleRemoveCoreContainer}>-</MinusButton>}
+              {coreContainers.length >= 1 && <MinusButton onClick={handleRemoveCoreContainer}>-</MinusButton>}
             </ButtonContainer>
           </CoreContainer>
         ))}
