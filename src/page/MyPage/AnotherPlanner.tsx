@@ -41,8 +41,11 @@ export default function AnotherPlanner({ plannerData }: { plannerData: AnotherPo
 }
 
 const BoxWrap = styled.div`
-  margin-right: 30px;
+  margin-right: 27px;
   margin-bottom: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
 
   &:nth-child(3n) {
     margin-right: 0;
