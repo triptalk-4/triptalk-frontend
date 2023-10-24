@@ -1,17 +1,17 @@
 import styled from 'styled-components';
-import MainCarousel from '../../component/Carousel/MainCarousel';
+import LikeCarousel from '../../component/Carousel/LikeCarousel';
 import { useNavigate } from 'react-router-dom';
 import { GRAY_COLOR } from '../../color/color';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { setCurrentEmail } from '../../store/editMyInfoSlice';
+import MainCarousel from '../../component/Carousel/MainCarousel';
 
 const Main = () => {
-  const navigate = useNavigate(); // useNavigate를 사용하여 navigate 함수를 가져옴
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const handleMainImgClick = () => {
-    // MainImgContainer를 클릭할 때 페이지 이동 처리
-    navigate('/schedule'); // 원하는 경로로 이동
+    navigate('/schedule?sortType=RECENT');
   };
 
   useEffect(() => {
@@ -21,12 +21,13 @@ const Main = () => {
 
   return (
     <MainContainer>
+      <MainCarousel />
       <TopPosts>
         <TopTitle>
           좋아요 TOP6
           <TileSpan>지금 HOT한 게시물</TileSpan>
         </TopTitle>
-        <MainCarousel />
+        <LikeCarousel />
       </TopPosts>
       {/* <AddPost>
         <AddImg src="img/addimg.jpg" alt="관광지 이미지" />
