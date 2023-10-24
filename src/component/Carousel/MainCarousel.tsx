@@ -38,7 +38,6 @@ export default MainCarousel;
 const MainContainer = styled.div`
   width: 100%;
   height: 400px;
-  margin-top: 20px;
 `;
 
 const Img = styled.img`

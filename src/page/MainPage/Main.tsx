@@ -32,14 +32,14 @@ const Main = () => {
       {/* <AddPost>
         <AddImg src="img/addimg.jpg" alt="관광지 이미지" />
       </AddPost> */}
-      <MainImgContainer onClick={handleMainImgClick}>
+      {/* <MainImgContainer onClick={handleMainImgClick}>
         <MainImageWrapper>
           <MainImage src="img/Boast.jpg" alt="여행가는 느낌의 이미지" />
           <MainImageCaption>
             여러분의 여행지를 <br /> 'Trip Talk'에 보여주세요
           </MainImageCaption>
         </MainImageWrapper>
-      </MainImgContainer>
+      </MainImgContainer> */}
     </MainContainer>
   );
 };
@@ -52,6 +52,7 @@ const MainContainer = styled.div`
 const TopPosts = styled.div`
   width: 80%;
   margin: 0 auto;
+  margin-bottom: 5%;
 `;
 
 const TopTitle = styled.div`
