@@ -197,7 +197,7 @@ const SelectBox = styled.div`
 const GridContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  gap: 70px;
 `;
 
 const LoadingMessage = styled.div`
