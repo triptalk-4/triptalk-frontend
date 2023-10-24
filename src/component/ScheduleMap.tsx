@@ -26,9 +26,10 @@ interface PlaceSearchResult {
 interface SchduleMapLoaderProps {
   onPlacesSelected: (PlaceInfo: PlaceInfo[]) => void;
   onPlace?: Array<{ latitude: number; longitude: number }>;
+  mapPings?: Array<{ latitude: number; longitude: number }>; // mapPings 추가
 }
 
-const ScheduleMapLoader: React.FC<SchduleMapLoaderProps> = ({ onPlacesSelected, onPlace }) => {
+const ScheduleMapLoader: React.FC<SchduleMapLoaderProps> = ({ onPlacesSelected, onPlace, mapPings }) => {
   const [searchPlace, setSearchPlace] = useState('');
   const [map, setMap] = useState<kakao.maps.Map | null>(null);
   const [selectedPlaceInfos, setSelectedPlaceInfos] = useState<PlaceInfo[]>([]);
@@ -87,7 +88,11 @@ const ScheduleMapLoader: React.FC<SchduleMapLoaderProps> = ({ onPlacesSelected, 
     if (onPlace && onPlace.length > 0) {
       addMarker(onPlace);
     }
-  }, [onPlace]);
+
+    if (mapPings && mapPings.length > 0) {
+      addMarker(mapPings); // mapPings 정보를 사용하여 마커 추가
+    }
+  }, [onPlace, mapPings]);
 
   const handleSearch = async () => {
     if (map) {
