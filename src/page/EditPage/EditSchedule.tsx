@@ -72,23 +72,27 @@ export default function EditSchedule() {
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
     const selectedImages = Array.from(e.target.files as FileList);
 
-    if (coreContainers[index].images.length + selectedImages.length > 5) {
-      alert('이미지는 최대 5장까지 등록 가능합니다.');
-      return;
-    }
-
-    const imageUrls = selectedImages.map(image => URL.createObjectURL(image));
-
     const updatedData = [...coreContainers];
-    updatedData[index].images = [...updatedData[index].images, ...selectedImages];
-    updatedData[index].imagePreviews = [...updatedData[index].imagePreviews, ...imageUrls];
+    updatedData[index].images = [];
+    updatedData[index].imagePreviews = [];
+
+    if (selectedImages.length > 0) {
+      if (selectedImages.length > 5) {
+        alert('이미지는 최대 5장까지 등록 가능합니다.');
+        return;
+      }
+
+      const imageUrls = selectedImages.map(image => URL.createObjectURL(image));
+
+      updatedData[index].images = selectedImages;
+      updatedData[index].imagePreviews = imageUrls;
+    }
 
     setCoreContainers(updatedData);
   };
 
   /// 지도 ///
   const handlePlaceSelected = (placeInfos: PlaceInfo[]) => {
-    // setPlaceInfo(placeInfos);
     const updatedContainers = coreContainers.map((container, index) => {
       if (index < placeInfos.length) {
         return {
@@ -153,25 +157,23 @@ export default function EditSchedule() {
         });
         setMapPings(mapPing);
 
-        // const updatedContainers = plannerData.plannerDetailResponse.map((detail: PlannerDetail) => {
-        //   const coreContainer: CoreContainerData = {
-        //     images: [],
-        //     imagePreviews: detail.imagePreviews,
-        //     startDate: detail.date ? new Date(detail.date) : null,
-        //     review: detail.description,
-        //     placeInfo: {
-        //       addressName: detail.placeResponse.addressName,
-        //       position: {
-        //         lat: detail.placeResponse.latitude,
-        //         lng: detail.placeResponse.longitude,
-        //       },
-        //       placeName: detail.placeResponse.placeName,
-        //       roadAddressName: detail.placeResponse.roadAddress,
-        //     },
-        //   };
-        //   return coreContainer;
-        // });
-        // setCoreContainers(updatedContainers);
+        const updatedContainers = plannerData.plannerDetailResponse.map((data: PlannerDetail) => ({
+          images: data.imagesUrl,
+          imagePreviews: data.imagesUrl,
+          startDate: new Date(data.date),
+          review: data.description,
+          placeInfo: {
+            lat: data.placeResponse.latitude,
+            lng: data.placeResponse.longitude,
+            addressName: data.placeResponse.addressName,
+            placeName: data.placeResponse.placeName,
+            roadAddressName: data.placeResponse.roadAddress,
+          },
+        }));
+
+        setCoreContainers(updatedContainers);
+        console.log(coreContainers);
+        console.log(updatedContainers);
       } catch (error) {
         console.error('데이터 가져오기 실패', error);
       }
@@ -221,6 +223,7 @@ export default function EditSchedule() {
             placeName: container.placeInfo?.placeName,
             roadAddress: container.placeInfo?.roadAddressName,
           },
+          plannerDetailId: plannerId,
         };
       });
       const plannerRequest = {
@@ -231,7 +234,8 @@ export default function EditSchedule() {
       };
 
       const dataToSend = {
-        plannerDetailListRequests: detailRequests,
+        deletedUrls: [],
+        updatePlannerDetailListRequests: detailRequests,
         plannerRequest: plannerRequest,
       };
 
@@ -279,61 +283,7 @@ export default function EditSchedule() {
           <FullSchedule selectedDateRange={selectedDateRange} onDateRangeChange={handleDateRangeChange} />
         </TitleContainer>
 
-        {manyPlannerDetailResponse.map((plannerDetail, index) => (
-          <CoreContainer key={index}>
-            <CoreTopContainer>
-              <ExcludeTimes
-                startDate={new Date(plannerDetail.date)}
-                setStartDate={(date: Date | null) => {
-                  const updatedContainers = [...coreContainers];
-                  updatedContainers[index].startDate = date;
-                  setCoreContainers(updatedContainers);
-                }}
-              />
-            </CoreTopContainer>
-            <ImgContainer>
-              <CustomFileInput
-                type="file"
-                accept="image/*"
-                multiple
-                name={`images[${index}]`}
-                onChange={e => handleImageUpload(e, index)}
-                id={`fileInput-${index}`}
-              />
-              <CustomFileInputLabel htmlFor={`fileInput-${index}`}>이미지 선택 (최대 5장)</CustomFileInputLabel>
-              <ImagePreviews>
-                {plannerDetail.imagesUrl.map((imageUrl, imgIndex) => (
-                  <img key={imgIndex} src={imageUrl} alt={`Image ${imgIndex}`} />
-                ))}
-
-                {/* {coreContainers[index].imagePreviews.map((image, imgIndex) => (
-                  <img key={imgIndex} src={image} alt={`Image ${imgIndex}`} />
-                ))} */}
-              </ImagePreviews>
-              <div>
-                <CommentTextArea
-                  placeholder="장소리뷰"
-                  defaultValue={plannerDetail.description}
-                  onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
-                    const updatedContainers = [...coreContainers];
-                    updatedContainers[index].review = e.target.value;
-                    setCoreContainers(updatedContainers);
-                  }}
-                />
-              </div>
-            </ImgContainer>
-            <ButtonContainer>
-              {manyPlannerDetailResponse.length < 5 && coreContainers.length < 5 && (
-                <PlusButton onClick={handleAddCoreContainer}>+</PlusButton>
-              )}
-              {manyPlannerDetailResponse.length >= 1 && (
-                <MinusButton onClick={handleRemoveCoreContainer}>-</MinusButton>
-              )}
-            </ButtonContainer>
-          </CoreContainer>
-        ))}
-
-        {coreContainers.slice(manyPlannerDetailResponse.length).map((container, index) => (
+        {coreContainers.map((container, index) => (
           <CoreContainer key={index}>
             <CoreTopContainer>
               <ExcludeTimes
@@ -363,6 +313,7 @@ export default function EditSchedule() {
               <div>
                 <CommentTextArea
                   placeholder="장소리뷰"
+                  defaultValue={container.review}
                   onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
                     const updatedContainers = [...coreContainers];
                     updatedContainers[index].review = e.target.value;
@@ -372,14 +323,11 @@ export default function EditSchedule() {
               </div>
             </ImgContainer>
             <ButtonContainer>
-              {manyPlannerDetailResponse.length < 5 && coreContainers.length < 5 && (
-                <PlusButton onClick={handleAddCoreContainer}>+</PlusButton>
-              )}
+              {coreContainers.length < 5 && <PlusButton onClick={handleAddCoreContainer}>+</PlusButton>}
               {coreContainers.length >= 1 && <MinusButton onClick={handleRemoveCoreContainer}>-</MinusButton>}
             </ButtonContainer>
           </CoreContainer>
         ))}
-
         <ButtonContainer></ButtonContainer>
         <ButtonContainer>
           <EditButton onClick={handleEditButtonClick}>수정하기</EditButton>
