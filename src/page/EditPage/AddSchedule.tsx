@@ -47,19 +47,25 @@ export default function AddSchedule() {
 
   const coreContainers_LIMIT = 5;
 
+  // 이미지 선택 및 업로드 함수
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
     const selectedImages = Array.from(e.target.files as FileList);
 
-    if (coreContainers[index].images.length + selectedImages.length > 5) {
-      alert('이미지는 최대 5장까지 등록 가능합니다.');
-      return;
-    }
-
-    const imageUrls = selectedImages.map(image => URL.createObjectURL(image));
-
     const updatedData = [...coreContainers];
-    updatedData[index].images = [...updatedData[index].images, ...selectedImages];
-    updatedData[index].imagePreviews = [...updatedData[index].imagePreviews, ...imageUrls];
+    updatedData[index].images = [];
+    updatedData[index].imagePreviews = [];
+
+    if (selectedImages.length > 0) {
+      if (selectedImages.length > 5) {
+        alert('이미지는 최대 5장까지 등록 가능합니다.');
+        return;
+      }
+
+      const imageUrls = selectedImages.map(image => URL.createObjectURL(image));
+
+      updatedData[index].images = selectedImages;
+      updatedData[index].imagePreviews = imageUrls;
+    }
 
     setCoreContainers(updatedData);
   };
@@ -140,6 +146,8 @@ export default function AddSchedule() {
         plannerDetailListRequests: detailRequests,
         plannerRequest: plannerRequest,
       };
+
+      console.log('dataToSend', dataToSend);
 
       try {
         const response = await axios.post('/address/api/plans', dataToSend, {
