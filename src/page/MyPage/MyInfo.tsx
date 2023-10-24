@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { AiOutlineSetting } from 'react-icons/ai';
-import { DEFAULT_FONT_COLOR, GRAY_COLOR, LIGHT_GRAY_COLOR } from '../../color/color';
+import { DEFAULT_FONT_COLOR, GRAY_COLOR } from '../../color/color';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import MyInfoPost from './MyInfoPost';
@@ -256,7 +256,8 @@ const UserImgContainer = styled.div`
 const UserImg = styled.img`
   width: 300px;
   height: 300px;
-  border: 1px solid ${LIGHT_GRAY_COLOR};
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 100%;
   margin: 0 auto;
 `;
