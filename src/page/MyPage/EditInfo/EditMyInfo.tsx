@@ -140,7 +140,7 @@ export default function EditMyInfo() {
 
           if (infoResponse.status === 200) {
             console.log('정보 업로드 성공:', infoResponse.data);
-            navigate(`/myinfo:${userUniqueId}`);
+            navigate(`/myinfo/${userUniqueId}`);
           } else {
             alert('정보 업로드 실패');
           }
