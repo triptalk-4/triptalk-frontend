@@ -107,7 +107,7 @@ export default function EditSchedule() {
 
   const handleAddCoreContainer = () => {
     // +
-    if (coreContainers.length || manyPlannerDetailResponse.length <= coreContainers_LIMIT) {
+    if (coreContainers.length < coreContainers_LIMIT && manyPlannerDetailResponse.length < 5) {
       setCoreContainers(prevContainers => [
         ...prevContainers,
         { images: [], imagePreviews: [], startDate: null, review: '', placeInfo: null },
@@ -316,7 +316,9 @@ export default function EditSchedule() {
               </div>
             </ImgContainer>
             <ButtonContainer>
-              {manyPlannerDetailResponse.length < 5 && <PlusButton onClick={handleAddCoreContainer}>+</PlusButton>}
+              {manyPlannerDetailResponse.length < 5 && coreContainers.length < 5 && (
+                <PlusButton onClick={handleAddCoreContainer}>+</PlusButton>
+              )}
               {manyPlannerDetailResponse.length >= 1 && (
                 <MinusButton onClick={handleRemoveCoreContainer}>-</MinusButton>
               )}
@@ -363,7 +365,9 @@ export default function EditSchedule() {
               </div>
             </ImgContainer>
             <ButtonContainer>
-              {coreContainers.length < 5 && <PlusButton onClick={handleAddCoreContainer}>+</PlusButton>}
+              {manyPlannerDetailResponse.length < 5 && coreContainers.length < 5 && (
+                <PlusButton onClick={handleAddCoreContainer}>+</PlusButton>
+              )}
               {coreContainers.length >= 1 && <MinusButton onClick={handleRemoveCoreContainer}>-</MinusButton>}
             </ButtonContainer>
           </CoreContainer>
