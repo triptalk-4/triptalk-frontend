@@ -13,7 +13,7 @@ const MainCarousel = () => {
     initialSlide: 0,
     autoplay: true,
     autoplaySpeed: 5000,
-    arrows: false
+    arrows: false,
   };
 
   return (
