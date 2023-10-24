@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import LikeCarousel from '../../component/Carousel/LikeCarousel';
-import { useNavigate } from 'react-router-dom';
 import { GRAY_COLOR } from '../../color/color';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
@@ -8,11 +7,7 @@ import { setCurrentEmail } from '../../store/editMyInfoSlice';
 import MainCarousel from '../../component/Carousel/MainCarousel';
 
 const Main = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const handleMainImgClick = () => {
-    navigate('/schedule?sortType=RECENT');
-  };
 
   useEffect(() => {
     const userEmailData = localStorage.getItem('userEmail');

@@ -192,6 +192,7 @@ const Input = styled.input`
   outline: none;
   margin-bottom: 4px;
   margin-right: 4px;
+  margin-top: 20px;
   &:focus {
     border-color: ${MAIN_COLOR};
   }
