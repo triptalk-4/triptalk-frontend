@@ -1,15 +1,8 @@
 {
   "rewrites": [
     {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/address/api/.*",
-      "destination": "https://triptalk.xyz/:path",
-      "status": 200
+      "source": "address/api/:path*",
+      "destination": "https://triptalk.xyz/:path*"
     }
   ]
 }
