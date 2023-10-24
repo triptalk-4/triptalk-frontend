@@ -317,7 +317,9 @@ export default function EditSchedule() {
             </ImgContainer>
             <ButtonContainer>
               {manyPlannerDetailResponse.length < 5 && <PlusButton onClick={handleAddCoreContainer}>+</PlusButton>}
-              {manyPlannerDetailResponse.length > 1 && <MinusButton onClick={handleRemoveCoreContainer}>-</MinusButton>}
+              {manyPlannerDetailResponse.length >= 1 && (
+                <MinusButton onClick={handleRemoveCoreContainer}>-</MinusButton>
+              )}
             </ButtonContainer>
           </CoreContainer>
         ))}
@@ -470,28 +472,26 @@ const ButtonContainer = styled.div`
   margin-top: 10px;
 `;
 
-const PlusButton = styled.button`
+const PnMBtnStyle = css`
   width: 30px;
   height: 30px;
   border-radius: 10px;
-  margin-right: 10px;
   border: none;
   background-color: ${MAIN_COLOR};
   color: white;
   cursor: pointer;
+`;
+
+const PlusButton = styled.button`
+  ${PnMBtnStyle}
+  margin-right: 10px;
 `;
 
 const MinusButton = styled.button`
-  width: 30px;
-  height: 30px;
-  border-radius: 10px;
-  border: none;
-  background-color: ${MAIN_COLOR};
-  color: white;
-  cursor: pointer;
+  ${PnMBtnStyle}
 `;
 
-const EnBbtnStyle = css`
+const EnBBtnStyle = css`
   width: 100px;
   height: 35px;
   border-radius: 15px;
@@ -502,13 +502,13 @@ const EnBbtnStyle = css`
 `;
 
 const EditButton = styled.button`
-  ${EnBbtnStyle}
+  ${EnBBtnStyle}
   margin-right: 30px;
 
   background-color: ${MAIN_COLOR};
 `;
 
 const CancelButton = styled.button`
-  ${EnBbtnStyle}
+  ${EnBBtnStyle}
   background-color: gray;
 `;
