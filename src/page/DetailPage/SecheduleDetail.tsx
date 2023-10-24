@@ -67,7 +67,7 @@ export default function SecheduleDetail() {
     profile: '',
     userId: 0,
     email: '',
-    plannerDetailResponse: []
+    plannerDetailResponse: [],
   });
 
   const [userPing, setUserPing] = useState([]);
@@ -84,8 +84,8 @@ export default function SecheduleDetail() {
         // 페이지 상세 내용 가져오기
         const response = await axios.get(`/address/api/plans/${plannerId}/details`, {
           headers: {
-            Authorization: `Bearer ${Access_token}`
-          }
+            Authorization: `Bearer ${Access_token}`,
+          },
         });
 
         if (response.data) {
@@ -95,15 +95,15 @@ export default function SecheduleDetail() {
 
           const allCoordinates = plannerDetails.map((detail: PlannerDetail) => ({
             latitude: detail.placeResponse.latitude,
-            longitude: detail.placeResponse.longitude
+            longitude: detail.placeResponse.longitude,
           }));
           setUserPing(allCoordinates);
         }
 
         const likeAndSaveResponse = await axios.get(`/address/api/likes/plans/user/check/save/like/${plannerId}`, {
           headers: {
-            Authorization: `Bearer ${Access_token}`
-          }
+            Authorization: `Bearer ${Access_token}`,
+          },
         });
         const { userSaveYn, userLikeYn, likeCount } = likeAndSaveResponse.data;
         setIsLiked(userLikeYn === 'ok');
@@ -127,8 +127,8 @@ export default function SecheduleDetail() {
           {},
           {
             headers: {
-              Authorization: `Bearer ${Access_token}`
-            }
+              Authorization: `Bearer ${Access_token}`,
+            },
           }
         );
         if (response.data.ok === '좋아요가 취소되었습니다') {
@@ -142,8 +142,8 @@ export default function SecheduleDetail() {
           {},
           {
             headers: {
-              Authorization: `Bearer ${Access_token}`
-            }
+              Authorization: `Bearer ${Access_token}`,
+            },
           }
         );
         if (response.data.ok === '좋아요가 완료되었습니다') {
@@ -164,8 +164,8 @@ export default function SecheduleDetail() {
       if (isSaved) {
         const response = await axios.delete(`/address/api/likes/plans/user/cancel/planner/${plannerId}`, {
           headers: {
-            Authorization: `Bearer ${Access_token}`
-          }
+            Authorization: `Bearer ${Access_token}`,
+          },
         });
         if (response.data.ok === '저장함 삭제가 완료되었습니다.') {
           alert('저장이 취소되었습니다.');
@@ -176,8 +176,8 @@ export default function SecheduleDetail() {
       } else {
         const response = await axios.post(`/address/api/likes/plans/user/save/planner/${plannerId}`, null, {
           headers: {
-            Authorization: `Bearer ${Access_token}`
-          }
+            Authorization: `Bearer ${Access_token}`,
+          },
         });
         if (response.data.ok === '저장 추가가 완료되었습니다.') {
           alert('저장이 완료되었습니다.');
@@ -197,8 +197,8 @@ export default function SecheduleDetail() {
       const token = localStorage.getItem('token');
       const response = await axios.delete(`/address/api/plans/${plannerId}`, {
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       if (response.status === 204) {
@@ -211,12 +211,8 @@ export default function SecheduleDetail() {
   };
 
   // 시간
-  const startTime = moment(mainDetailData.startDate)
-    .add(9, 'hours')
-    .format('YYYY-MM-DD');
-  const endTime = moment(mainDetailData.endDate)
-    .add(9, 'hours')
-    .format('YYYY-MM-DD');
+  const startTime = moment(mainDetailData.startDate).add(9, 'hours').format('YYYY-MM-DD');
+  const endTime = moment(mainDetailData.endDate).add(9, 'hours').format('YYYY-MM-DD');
 
   return (
     <DetailContainer>
