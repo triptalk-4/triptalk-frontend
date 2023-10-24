@@ -42,8 +42,8 @@ export default function MySaved({ savedData }: { savedData: Save }) {
 }
 
 const BoxWrap = styled.div`
-  margin-right: 27px;
-  margin-bottom: 20px;
+  margin-right: 64px;
+  margin-bottom: 64px;
   border: 1px solid rgba(0, 0, 0, 0.1);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 15px;
@@ -61,7 +61,7 @@ const Box = styled.div`
 `;
 
 const ImgDiv = styled.div`
-  width: 300px;
+  width: 275px;
   height: 350px;
 `;
 
