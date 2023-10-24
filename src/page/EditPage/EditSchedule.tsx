@@ -238,7 +238,7 @@ export default function EditSchedule() {
       console.log('dataToSend', dataToSend);
 
       try {
-        const response = await axios.post(`/address/api/plans/${plannerId}`, dataToSend, {
+        const response = await axios.patch(`/address/api/plans/${plannerId}`, dataToSend, {
           headers: {
             Authorization: `Bearer ${Access_token}`,
             'Content-Type': 'application/json',
@@ -305,6 +305,10 @@ export default function EditSchedule() {
                 {plannerDetail.imagesUrl.map((imageUrl, imgIndex) => (
                   <img key={imgIndex} src={imageUrl} alt={`Image ${imgIndex}`} />
                 ))}
+
+                {/* {coreContainers[index].imagePreviews.map((image, imgIndex) => (
+                  <img key={imgIndex} src={image} alt={`Image ${imgIndex}`} />
+                ))} */}
               </ImagePreviews>
               <div>
                 <CommentTextArea
@@ -329,7 +333,7 @@ export default function EditSchedule() {
           </CoreContainer>
         ))}
 
-        {coreContainers.map((container, index) => (
+        {coreContainers.slice(manyPlannerDetailResponse.length).map((container, index) => (
           <CoreContainer key={index}>
             <CoreTopContainer>
               <ExcludeTimes
