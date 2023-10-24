@@ -267,7 +267,10 @@ export default function EditSchedule() {
   return (
     <>
       <MainContainer>
-        <ScheduleMapLoader onPlacesSelected={(placeInfos: PlaceInfo[]) => handlePlaceSelected(placeInfos)} />
+        <ScheduleMapLoader
+          onPlacesSelected={(placeInfos: PlaceInfo[]) => handlePlaceSelected(placeInfos)}
+          mapPings={mapPings}
+        />
         <TitleContainer>
           <Title
             placeholder="제목 (최대 40자)"
