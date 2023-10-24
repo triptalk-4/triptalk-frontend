@@ -52,7 +52,7 @@ export default function Header() {
     const token = localStorage.getItem('token');
     const fetchUserInfo = async () => {
       try {
-        const response = await axios.get('/address/api/users/profile', {
+        const response = await axios.get('https://triptalk.xyz/api/users/profile', {
           headers: {
             Authorization: `Bearer ${token}`, //필수
           },
