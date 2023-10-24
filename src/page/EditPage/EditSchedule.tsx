@@ -210,7 +210,7 @@ export default function EditSchedule() {
 
       const imageUrls = imageUrlsArray.map(response => response.data);
 
-      const detailRequests = coreContainers.map((container, index) => {
+      const updatePlannerDetailListRequests = coreContainers.map((container, index) => {
         console.log('PlaceInfo in detailRequests', container.placeInfo);
         return {
           date: container.startDate,
@@ -229,13 +229,14 @@ export default function EditSchedule() {
       const plannerRequest = {
         description: '',
         endDate: selectedDateRange[1],
+        plannerStatus: 'PRIVATE',
         startDate: selectedDateRange[0],
         title: title,
       };
 
       const dataToSend = {
         deletedUrls: [],
-        updatePlannerDetailListRequests: detailRequests,
+        updatePlannerDetailListRequests: updatePlannerDetailListRequests,
         plannerRequest: plannerRequest,
       };
 
