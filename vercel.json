@@ -1,8 +1,20 @@
 {
   "rewrites": [
     {
-      "source": "https://triptalk.xyz/api/:path*",
-      "destination": "https://triptalk.xyz/:path*"
+      "source": "/address/api/plans/:plannerId/details",
+      "destination": "https://triptalk.xyz/address/api/plans/:plannerId/details"
+    },
+    {
+      "source": "/address/api/main",
+      "destination": "https://triptalk.xyz/address/api/main"
+    },
+    {
+      "source": "/address/api/users/profile",
+      "destination": "https://triptalk.xyz/address/api/users/profile"
+    },
+    {
+      "source": "/address/api/users/update/profile",
+      "destination": "https://triptalk.xyz/address/api/users/update/profile"
     }
   ]
 }
