@@ -26,11 +26,12 @@ type CoreContainerData = {
   startDate: Date | null;
   review: string;
   placeInfo: PlaceInfo | null;
+  plannerDetailId: number | null;
 };
 
 interface PlannerDetail {
   userId: number;
-  plannerDetailId: number;
+  plannerDetailId: number | null;
   date: string;
   startDate: Date | null;
   placeResponse: {
@@ -52,7 +53,9 @@ export default function EditSchedule() {
   const [mapPings, setMapPings] = useState([]);
 
   const navigate = useNavigate(); // 페이지 위치 이동
-  const { plannerId } = useParams(); // 페이지 번호
+  const { plannerId } = useParams();
+  // const params = useParams();
+  // const plannerId = params.plannerId ? parseInt(params.plannerId) : 0; // 페이지 번호
 
   /// 전체 일정 선택 ///
   const [selectedDateRange, setSelectedDateRange] = useState<[Date | null, Date | null]>([null, null]); // 전체일정 선택
@@ -65,7 +68,7 @@ export default function EditSchedule() {
 
   // 초기 화면 //
   const [coreContainers, setCoreContainers] = useState<CoreContainerData[]>([
-    { images: [], imagePreviews: [], startDate: null, review: '', placeInfo: null },
+    { images: [], imagePreviews: [], startDate: null, review: '', placeInfo: null, plannerDetailId: null },
   ]);
 
   /// 이미지 선택 및 업로드 ///
@@ -111,23 +114,23 @@ export default function EditSchedule() {
 
   const handleAddCoreContainer = () => {
     // +
-    if (coreContainers.length < coreContainers_LIMIT && manyPlannerDetailResponse.length < 5) {
+    if (coreContainers.length < coreContainers_LIMIT) {
       setCoreContainers(prevContainers => [
         ...prevContainers,
-        { images: [], imagePreviews: [], startDate: null, review: '', placeInfo: null },
+        { images: [], imagePreviews: [], startDate: null, review: '', placeInfo: null, plannerDetailId: null },
       ]);
     }
   };
 
   const handleRemoveCoreContainer = () => {
     // -
-    if (coreContainers.length || manyPlannerDetailResponse.length >= 1) {
+    if (coreContainers.length >= 1) {
       setCoreContainers(prevContainers => prevContainers.slice(0, prevContainers.length - 1));
     }
   };
 
   /// 등록했던 정보 불러오기 ///
-  const [manyPlannerDetailResponse, setManyPlannerDetailResponse] = useState<PlannerDetail[]>([]);
+  // const [manyPlannerDetailResponse, setManyPlannerDetailResponse] = useState<PlannerDetail[]>([]);
 
   const token = useSelector((state: RootState) => state.token.token);
   useEffect(() => {
@@ -140,7 +143,7 @@ export default function EditSchedule() {
           },
         });
 
-        setManyPlannerDetailResponse(response.data.plannerDetailResponse);
+        // setManyPlannerDetailResponse(response.data.plannerDetailResponse);
 
         const plannerData = response.data;
         setTitle(plannerData.title);
@@ -169,6 +172,7 @@ export default function EditSchedule() {
             placeName: data.placeResponse.placeName,
             roadAddressName: data.placeResponse.roadAddress,
           },
+          plannerDetailId: data.plannerDetailId,
         }));
 
         setCoreContainers(updatedContainers);
@@ -213,7 +217,7 @@ export default function EditSchedule() {
       const updatePlannerDetailListRequests = coreContainers.map((container, index) => {
         console.log('PlaceInfo in detailRequests', container.placeInfo);
         return {
-          date: container.startDate,
+          date: container.startDate ? container.startDate.toISOString() : null,
           description: container.review,
           images: imageUrls[index], // 이미지 URL을 사용
           placeInfo: {
@@ -223,14 +227,14 @@ export default function EditSchedule() {
             placeName: container.placeInfo?.placeName,
             roadAddress: container.placeInfo?.roadAddressName,
           },
-          plannerDetailId: plannerId,
+          plannerDetailId: coreContainers[index].plannerDetailId,
         };
       });
       const plannerRequest = {
         description: '',
-        endDate: selectedDateRange[1],
+        endDate: selectedDateRange[1] ? selectedDateRange[1].toISOString() : null,
         plannerStatus: 'PRIVATE',
-        startDate: selectedDateRange[0],
+        startDate: selectedDateRange[0] ? selectedDateRange[0].toISOString() : null,
         title: title,
       };
 
@@ -249,7 +253,7 @@ export default function EditSchedule() {
             'Content-Type': 'application/json',
           },
         });
-        if (response.status === 200) {
+        if (response.status === 204) {
           console.log('데이터 전송 완료');
           alert('일정 등록 완료!');
           navigate(`/page/${plannerId}`);
@@ -329,6 +333,7 @@ export default function EditSchedule() {
             </ButtonContainer>
           </CoreContainer>
         ))}
+
         <ButtonContainer></ButtonContainer>
         <ButtonContainer>
           <EditButton onClick={handleEditButtonClick}>수정하기</EditButton>
