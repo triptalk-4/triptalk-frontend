@@ -88,30 +88,6 @@ export default function MyInfo() {
 
   const token = useSelector((state: RootState) => state.token.token);
 
-  // msw
-  // useEffect(() => {
-  //   const storedUserData = localStorage.getItem('userInfo');
-  //   if (storedUserData) {
-  //     const userData = JSON.parse(storedUserData);
-  //     setNickName(userData.nickname);
-  //     setImg(userData.imageUrl);
-  //   }
-  // }, []);
-
-  // const handleLogOut = () => {
-  //   const storeUserData = localStorage.getItem('userInfo');
-  //   if (storeUserData) {
-  //     localStorage.removeItem('userInfo');
-  //     alert('로그아웃 되었습니다.');
-  //     navigate('/');
-  //   } else {
-  //     alert('로그인 해주세요.');
-  //     navigate('/');
-  //   }
-  // };
-
-  // 연동
-  // console.log(token);
   useEffect(() => {
     const Access_token = localStorage.getItem('token');
     const fetchUserInfo = async () => {
