@@ -57,7 +57,7 @@ const LogoWrap = styled.div`
 `;
 
 const LogoImg = styled.img`
-  height: 50px;
+  height: 120px;
 `;
 
 const DescriptionContainer = styled.div`
