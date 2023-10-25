@@ -116,7 +116,6 @@ const Gnb = styled.div`
 `;
 
 const LogoDiv = styled.div`
-  width: 200px;
   height: auto;
   user-select: none;
 `;
@@ -128,7 +127,7 @@ const Logo = styled(Link)`
 `;
 
 const LogoImg = styled.img`
-  width: 150px;
+  width: 115px;
   height: auto;
 `;
 

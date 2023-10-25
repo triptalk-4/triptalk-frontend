@@ -40,6 +40,6 @@ const Logo = styled(Link)`
 `;
 
 const LogoImg = styled.img`
-  width: 150px;
+  width: 115px;
   height: auto;
 `;

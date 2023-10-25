@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { MAIN_COLOR } from '../../color/color';
 import LoginForm from './LoginForm';
 
 function Login() {
@@ -7,7 +6,7 @@ function Login() {
     <CenteredContainer>
       <Container>
         <TitleWrap>
-          <Title>Trip Talk</Title>
+          <TitleImg src="img/logo.png" />
           <SubTitle>
             국내의 여행자들을 위한 <br />
             여행리뷰 커뮤니티
@@ -43,16 +42,14 @@ const TitleWrap = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  align-items: center;
 `;
-const Title = styled.div`
-  color: ${MAIN_COLOR};
-  font-size: 9rem;
-  font-weight: bold;
-  word-spacing: -50px;
+const TitleImg = styled.img`
+  width: 520px;
   margin-top: 100px;
-  @media (width: 1113px) {
+  /* @media (width: 1113px) {
     font-size: 8.125rem;
-  }
+  } */
 `;
 const SubTitle = styled.p`
   font-size: 1.2rem;
