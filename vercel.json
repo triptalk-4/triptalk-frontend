@@ -19,14 +19,13 @@
     {
       "source": "/address/api/plans",
       "destination": "https://triptalk.xyz/api/plans"
-    },
+    }
+  ],
+  "routes": [
     {
-      "source": "/address/api/plans?page=:page&size=6&sortType=:sortType",
-      "destination": "https://triptalk.xyz/api/plans?page=:page&size=6&sortType=:sortType"
-    },
-    {
-      "source": "/address/api/plans/:plannerId/details",
-      "destination": "https://triptalk.xyz/api/plans/:plannerId/details"
+      "src": "/[^.]+",
+      "dest": "/",
+      "status": 200
     }
   ]
 }
