@@ -1,6 +1,10 @@
 {
   "rewrites": [
     {
+      "source": "/(.*)",
+      "destination": "/"
+    },
+    {
       "source": "/address/api/plans/:plannerId/details",
       "destination": "https://triptalk.xyz/api/plans/:plannerId/details"
     },
