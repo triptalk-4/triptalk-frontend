@@ -79,7 +79,7 @@ function LikeCarousel() {
     dots: false,
     infinite: true,
     speed: 500,
-    slidesToShow: data.length < 3 ? data.length : 3,
+    slidesToShow: data.length === 0 ? 1 : data.length < 3 ? data.length : 3,
     slidesToScroll: 1,
     initialSlide: 0,
     autoplay: true,
