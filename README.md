@@ -168,8 +168,6 @@ triptalk
 │  │  │  ├─ MyInfoSaved.tsx
 │  │  │  ├─ MyPost.tsx
 │  │  │  └─ MySaved.tsx
-│  │  ├─ ReviewMap
-│  │  │  └─ LookMap.tsx
 │  │  ├─ SchedulePage
 │  │  │  └─ Schedule.tsx
 │  │  ├─ SearchPage.tsx
