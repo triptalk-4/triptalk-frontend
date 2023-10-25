@@ -17,8 +17,6 @@ export default function MyInfoSaved() {
   const [savedData, setSavedData] = useState<Save[]>([]); // msw
   const [containerClassName, setContainerClassName] = useState('flex-start');
   const [isLoading, setIsLoading] = useState(false); // 로딩 상태
-  // const [isEndPage, setIsEndPage] = useState(false);
-  // const [page, setPage] = useState(0);
 
   useEffect(() => {
     if (savedData.length >= 2) {
