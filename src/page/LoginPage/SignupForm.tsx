@@ -146,7 +146,7 @@ const SignupForm = () => {
         const res = await sendSignupData(formData);
         if (res.registerOk) {
           alert(res.registerOk);
-          navigator('/main');
+          navigator('/');
         } else if (res) {
           console.log(res);
           setError(res);

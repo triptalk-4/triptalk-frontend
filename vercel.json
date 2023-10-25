@@ -21,6 +21,10 @@
       "destination": "https://triptalk.xyz/api/plans"
     },
     {
+      "source": "/address/api/users/register/email/check",
+      "destination": "https://triptalk.xyz/api/users/register/email/check"
+    },
+    {
       "source": "/(.*)",
       "destination": "/"
     }
