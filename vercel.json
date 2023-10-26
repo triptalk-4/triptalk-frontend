@@ -73,12 +73,24 @@
       "destination": "https://triptalk.xyz/myinfo/:userId"
     },
     {
-      "source": "/(.*)",
-      "destination": "/"
-    },
-    {
       "source": "/address/api/plans/:plannerId",
       "destination": "https://triptalk.xyz/api/plans/:plannerId"
+    },
+    {
+      "source": "/address/api/reply/detail/replies",
+      "destination": "https://triptalk.xyz/api/reply/detail/replies"
+    },
+    {
+      "source": "/address/api/reply/:replyId",
+      "destination": "https://triptalk.xyz/api/reply/:replyId"
+    },
+    {
+      "source": "/address/api/reply/detail/replies/:plannerDetailId",
+      "destination": "https://triptalk.xyz/api/reply/detail/replies/:plannerDetailId"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/"
     }
   ]
 }
