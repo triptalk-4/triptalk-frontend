@@ -92,7 +92,7 @@ export default function MyInfo() {
     const Access_token = localStorage.getItem('token');
     const fetchUserInfo = async () => {
       try {
-        const response = await axios.get('https://triptalk.xyz/api/users/profile', {
+        const response = await axios.get('/address/api/users/profile', {
           headers: {
             Authorization: `Bearer ${Access_token}`,
           },
