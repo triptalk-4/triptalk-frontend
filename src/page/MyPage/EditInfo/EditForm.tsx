@@ -211,7 +211,7 @@ export default function EditForm(props: EditFormProps) {
         <MyInfoLabel htmlFor="nickname">닉네임</MyInfoLabel>
         <InputWithButton>
           <MyInfoInput type="text" id="nickname" defaultValue={userNickname} onChange={handleNicknameChange} />
-          <CheckBtn type="button" onClick={handleNicknameCheck}>
+          <CheckBtn width="85px" type="button" onClick={handleNicknameCheck}>
             확인
           </CheckBtn>
           {/* 닉네임 유효성 메시지를 표시 */}
@@ -233,7 +233,7 @@ export default function EditForm(props: EditFormProps) {
             onChange={handleCurrentPasswordChange}
             // value={userPassword}
           />
-          <CheckBtn type="button" onClick={handleCurrentPasswordCheck}>
+          <CheckBtn width="85px" type="button" onClick={handleCurrentPasswordCheck}>
             확인
           </CheckBtn>
         </InputWithButton>
@@ -287,6 +287,11 @@ const MyInfoGrid = styled.div`
 
 const MyInfoField = styled.div`
   height: 82px;
+
+  &:nth-child(2),
+  &:nth-child(3) {
+    width: 80%;
+  }
 `;
 
 const MyInfoLabel = styled.label`
@@ -300,12 +305,11 @@ const InputWithButton = styled.div`
 `;
 
 const MyInfoInput = styled.input`
-  width: 100%;
+  width: 90%;
   outline: none;
   border: none;
   border-bottom: 2px solid ${SUPER_LIGHT_ORANGE_COLOR};
   padding: 7px 15px;
-  position: relative;
 
   &:focus::placeholder {
     opacity: 1;
@@ -331,9 +335,16 @@ const MyInfoInput = styled.input`
   }
 `;
 
-const CheckBtn = styled.button`
-  width: 45px;
-  padding: 5px;
-  margin-left: 15px;
+const CheckBtn = styled.button<{ width: string }>`
+  width: ${props => props.width};
+  height: 35px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  outline: none;
+  background-color: transparent;
+  &:hover {
+    color: ${MAIN_COLOR};
+  }
   position: absolute;
 `;
