@@ -40,27 +40,25 @@ export default function TravelCarousel({ data }: TravelCarouselProps) {
         pagination={false}
         navigation={true}
         modules={[EffectCoverflow, Pagination, Navigation]}>
-        <div className="swiper-wrapper">
-          {data.map((item, index) => (
-            <StyledSwiperSlide key={index}>
-              <SwiperImage src={item.imgUrl} />
-              {/* 나중에 SwiperImg컨포넌트 추가 예정 */}
-              <SwiperText>
-                <SwiperTopText>
-                  <SwiperTitle> {item.title.length > 10 ? item.title.slice(0, 10) + '...' : item.title}</SwiperTitle>
-                  <SwiperNickname>
-                    <UserProfile src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" />
-                    {item.nickname}
-                  </SwiperNickname>
-                </SwiperTopText>
-                <SwiperBottomText>
-                  <SwiperAddress>{item.address}</SwiperAddress>
-                  <SwiperDate>{item.date}</SwiperDate>
-                </SwiperBottomText>
-              </SwiperText>
-            </StyledSwiperSlide>
-          ))}
-        </div>
+        {data.map((item, index) => (
+          <StyledSwiperSlide key={index}>
+            <SwiperImage src={item.imgUrl} />
+            {/* 나중에 SwiperImg컨포넌트 추가 예정 */}
+            <SwiperText>
+              <SwiperTopText>
+                <SwiperTitle> {item.title.length > 10 ? item.title.slice(0, 10) + '...' : item.title}</SwiperTitle>
+                <SwiperNickname>
+                  <UserProfile src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" />
+                  {item.nickname}
+                </SwiperNickname>
+              </SwiperTopText>
+              <SwiperBottomText>
+                <SwiperAddress>{item.address}</SwiperAddress>
+                <SwiperDate>{item.date}</SwiperDate>
+              </SwiperBottomText>
+            </SwiperText>
+          </StyledSwiperSlide>
+        ))}
       </StyledSwiper>
       <style>
         {`
