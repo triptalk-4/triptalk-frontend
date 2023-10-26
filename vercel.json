@@ -21,6 +21,10 @@
       "destination": "https://triptalk.xyz/api/plans"
     },
     {
+      "source": "/address/api/users/register",
+      "destination": "https://triptalk.xyz/api/users/register"
+    },
+    {
       "source": "/address/api/users/register/email/check",
       "destination": "https://triptalk.xyz/api/users/register/email/check"
     },
@@ -87,6 +91,14 @@
     {
       "source": "/address/api/reply/detail/replies/:plannerDetailId",
       "destination": "https://triptalk.xyz/api/reply/detail/replies/:plannerDetailId"
+    },
+    {
+      "source": "/address/api/auth/google",
+      "destination": "https://triptalk.xyz/api/auth/google"
+    },
+    {
+      "source": "/address/api/auth/google?code=:code",
+      "destination": "https://triptalk.xyz/api/auth/google?code=:code"
     },
     {
       "source": "/(.*)",
