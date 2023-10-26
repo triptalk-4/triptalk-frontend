@@ -25,8 +25,6 @@ export default defineConfig({
       output: {
         manualChunks: undefined,
       },
-      // 외부 라이브러리로 추가
-      external: ['swiper'], 
     },
   },
 });
