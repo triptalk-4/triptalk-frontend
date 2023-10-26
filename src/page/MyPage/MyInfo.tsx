@@ -7,8 +7,8 @@ import MyInfoPost from './MyInfoPost';
 import MyInfoSaved from './MyInfoSaved';
 import TopButton from '../../component/TopButton/TopButton';
 import axios from 'axios';
-import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
+import { useSelector } from 'react-redux/es/exports';
 
 interface userInfoDate {
   userId: number;
