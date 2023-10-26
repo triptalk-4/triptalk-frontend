@@ -25,6 +25,26 @@
       "destination": "https://triptalk.xyz/api/users/register/email/check"
     },
     {
+      "source": "/address/api/users/register/email/send",
+      "destination": "https://triptalk.xyz/api/users/register/email/send"
+    },
+    {
+      "source": "/address/api/users/planners/byUser",
+      "destination": "https://triptalk.xyz/api/users/planners/byUser"
+    },
+    {
+      "source": "/address/api/search/user/:userId",
+      "destination": "https://triptalk.xyz/api/search/user/:userId"
+    },
+    {
+      "source": "/address/api/users/planners/userSave",
+      "destination": "https://triptalk.xyz/api/users/planners/userSave"
+    },
+    {
+      "source": "/address/api/likes/plans/user/check/save/like/:plannerId",
+      "destination": "https://triptalk.xyz/api/likes/plans/user/check/save/like/:plannerId"
+    },
+    {
       "source": "/(.*)",
       "destination": "/"
     }
