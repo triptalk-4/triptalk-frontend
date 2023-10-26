@@ -95,7 +95,7 @@ export default function MyInfoPost({ userInfo }: { userInfo: userInfoDate }) {
     };
 
     fetchSerch();
-  }, []);
+  }, [userId]);
 
   useEffect(() => {
     const fetchUserPost = async () => {
@@ -125,7 +125,7 @@ export default function MyInfoPost({ userInfo }: { userInfo: userInfoDate }) {
     };
     console.log('게시물', postsData);
     fetchUserPost();
-  }, []);
+  }, [userId]);
 
   useEffect(() => {
     // 게시물 갯수에 따라 스타일 변경
