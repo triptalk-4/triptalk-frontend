@@ -18,7 +18,6 @@ interface PlannerDetail {
     longitude: number;
   };
 }
-
 interface MainDetailData {
   plannerId: number;
   description: string;
@@ -33,7 +32,6 @@ interface MainDetailData {
   email: string;
   plannerDetailResponse: PlannerDetails[];
 }
-
 interface PlannerDetails {
   userId: number;
   plannerDetailId: number;
@@ -42,7 +40,6 @@ interface PlannerDetails {
   description: string;
   imagesUrl: string[];
 }
-
 interface PlaceResponse {
   placeName: string;
   roadAddress: string;
@@ -50,12 +47,10 @@ interface PlaceResponse {
   latitude: number;
   longitude: number;
 }
-
 export default function SecheduleDetail() {
   const [likeCount, setLikeCount] = useState(0); // 좋아요 카운트 상태
   const [isLiked, setIsLiked] = useState(false); // 좋아요 상태 (눌렸는지 안눌렸는지)
   const [isSaved, setIsSaved] = useState(false);
-
   const [mainDetailData, setMainDetailData] = useState<MainDetailData>({
     plannerId: 0,
     description: '',
@@ -70,14 +65,12 @@ export default function SecheduleDetail() {
     email: '',
     plannerDetailResponse: [],
   });
-
-  const [userPing, setUserPing] = useState([]);
+  // const [userPing, setUserPing] = useState<{ latitude: number; longitude: number }[]>([]);
+  const userPing: PlaceResponse[] = [];
   const token = useSelector((state: RootState) => state.token.token);
   const { plannerId } = useParams();
   const navigate = useNavigate();
-
   const Email_token = localStorage.getItem('userEmail');
-
   useEffect(() => {
     const fetchDetailPage = async () => {
       const Access_token = localStorage.getItem('token');
@@ -88,19 +81,15 @@ export default function SecheduleDetail() {
             Authorization: `Bearer ${Access_token}`,
           },
         });
-
         if (response.data) {
           setMainDetailData(response.data);
-
           const plannerDetails = response.data.plannerDetailResponse;
-
-          const allCoordinates = plannerDetails.map((detail: PlannerDetail) => ({
-            latitude: detail.placeResponse.latitude,
-            longitude: detail.placeResponse.longitude,
-          }));
-          setUserPing(allCoordinates);
+          const userPing: PlannerDetail[] = [];
+          plannerDetails.forEach((detail: PlannerDetails) => {
+            const { latitude, longitude } = detail.placeResponse;
+            userPing.push({ placeResponse: { latitude, longitude } });
+          });
         }
-
         const likeAndSaveResponse = await axios.get(`/address/api/likes/plans/user/check/save/like/${plannerId}`, {
           headers: {
             Authorization: `Bearer ${Access_token}`,
@@ -114,10 +103,8 @@ export default function SecheduleDetail() {
         console.error('상세 페이지 정보 및 좋아요/저장 상태 가져오기 오류:', error);
       }
     };
-
     fetchDetailPage();
   }, [token, plannerId]);
-
   const handleLikeClick = async () => {
     const Access_token = localStorage.getItem('token');
     try {
@@ -157,7 +144,6 @@ export default function SecheduleDetail() {
       console.error('좋아요 기능에서 오류 발생:', error);
     }
   };
-
   const handleSaveClick = async () => {
     const Access_token = localStorage.getItem('token');
     try {
@@ -192,7 +178,6 @@ export default function SecheduleDetail() {
       alert('저장 기능에서 오류가 발생했습니다.');
     }
   };
-
   const deletePost = async () => {
     try {
       const token = localStorage.getItem('token');
@@ -201,7 +186,6 @@ export default function SecheduleDetail() {
           Authorization: `Bearer ${token}`,
         },
       });
-
       if (response.status === 204) {
         alert('게시물이 삭제되었습니다.');
         navigate('/schedule');
@@ -210,11 +194,9 @@ export default function SecheduleDetail() {
       console.error('게시물 삭제 중 오류 발생:', error);
     }
   };
-
   // 시간
   const startTime = moment(mainDetailData.startDate).add(9, 'hours').format('YYYY-MM-DD');
   const endTime = moment(mainDetailData.endDate).add(9, 'hours').format('YYYY-MM-DD');
-
   return (
     <DetailContainer>
       <PostContainer>
