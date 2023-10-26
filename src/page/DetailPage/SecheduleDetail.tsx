@@ -218,7 +218,6 @@ export default function SecheduleDetail() {
   return (
     <DetailContainer>
       <PostContainer>
-        {/* <ScheduleDetailMap onPlacesSelected={() => {}} onPlace={userPing} /> */}
         <ScheduleMapLoader onPlacesSelected={() => {}} onPlace={userPing} />
         <PostBg>
           <LeftArrow onClick={() => navigate(-1)} />
