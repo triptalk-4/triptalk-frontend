@@ -21,6 +21,9 @@ const AuthHandler = () => {
       .post('/address/api/users/kakao/login', { ingaCode })
       .then(response => {
         console.log(response);
+        const token = response.data.token;
+        localStorage.setItem('token', token);
+        navigate('/main');
       })
       .catch(error => console.error(error));
   };
