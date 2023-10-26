@@ -93,14 +93,6 @@
       "destination": "https://triptalk.xyz/api/reply/detail/replies/:plannerDetailId"
     },
     {
-      "source": "/address/api/auth/google",
-      "destination": "https://triptalk.xyz/api/auth/google"
-    },
-    {
-      "source": "/address/api/auth/google?code=:code",
-      "destination": "https://triptalk.xyz/api/auth/google?code=:code"
-    },
-    {
       "source": "/address/api/users/kakao/login",
       "destination": "https://triptalk.xyz/api/users/kakao/login"
     },
