@@ -1,7 +1,7 @@
 #  함께 더 많은 멋진 여행을 계획하고 즐길 수 있는 서비스 trip-talk
 
 
-✈ Intro 
+### ✈ Intro 
 
 <p align="center">
   <img src=
@@ -30,7 +30,7 @@ Triptalk은 여행 경험을 공유하고 연결할 수 있는 플랫폼입니�
 
 ---
 
-✨Skils
+### ✨Skils
 
 <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=black"> React로 웹 페이지를 효율적으로 구현하고 관리했어요.
 
@@ -50,3 +50,5 @@ Triptalk은 여행 경험을 공유하고 연결할 수 있는 플랫폼입니�
 <img src="https://img.shields.io/badge/axios-5A29E4?style=for-the-badge&logo=axios&logoColor=white"> axios를 사용해서 HTTP통신 작업을 처리하는데 편했어요.
 
 ---
+### 👀아키텍처
+![image](https://github.com/triptalk-4/triptalk-frontend/assets/127204694/2cf8ab80-97db-4b92-9908-a44b5a27af91)
