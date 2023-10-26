@@ -4,13 +4,13 @@ import PostBox from '../../component/PostBox/PostBox';
 import { GRAY_COLOR, MAIN_COLOR } from '../../color/color';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 import { FaSave } from 'react-icons/fa';
-import { useSelector } from 'react-redux';
+import { useSelector } from 'react-redux/es/exports';
 import { RootState } from '../../store/store';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
-import moment from 'moment';
 import ScheduleMapLoader from '../../component/ScheduleMap';
 import { FaArrowLeft } from 'react-icons/fa';
+import moment from 'moment';
 
 interface PlannerDetail {
   placeResponse: {
