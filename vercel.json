@@ -53,6 +53,10 @@
       "destination": "https://triptalk.xyz/api/search"
     },
     {
+      "source": "/myinfo/:userId",
+      "destination": "https://triptalk.xyz/myinfo/:userId"
+    },
+    {
       "source": "/(.*)",
       "destination": "/"
     }
