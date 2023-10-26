@@ -194,9 +194,16 @@ export default function SecheduleDetail() {
       console.error('게시물 삭제 중 오류 발생:', error);
     }
   };
+
   // 시간
   const startTime = moment(mainDetailData.startDate).add(9, 'hours').format('YYYY-MM-DD');
   const endTime = moment(mainDetailData.endDate).add(9, 'hours').format('YYYY-MM-DD');
+
+  const detailComponents: JSX.Element[] = [];
+  mainDetailData.plannerDetailResponse.forEach((detail, index) => {
+    detailComponents.push(<PostBox key={index} data={detail} />);
+  });
+
   return (
     <DetailContainer>
       <PostContainer>
@@ -223,9 +230,7 @@ export default function SecheduleDetail() {
               </UserName>
             </UserWarp>
           </PostText>
-          {mainDetailData.plannerDetailResponse.map((detail, index) => (
-            <PostBox key={index} data={detail} />
-          ))}
+          {detailComponents}
         </PostBg>
         <HeartBtn onClick={handleLikeClick}>
           {isLiked ? <AiFillHeart color="red" size="1.5em" /> : <AiOutlineHeart size="1.5em" />}
