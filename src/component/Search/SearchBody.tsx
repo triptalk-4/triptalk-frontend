@@ -20,7 +20,6 @@ const SearchBody = () => {
   >([]);
   const [currentPage, setCurrentPage] = useState(1);
   const resultsPerPage = 6;
-
   useEffect(() => {
     let timerId: NodeJS.Timeout;
     if (keyword !== '') {
@@ -33,10 +32,7 @@ const SearchBody = () => {
             }
           };
           try {
-            const response = await axios.get(
-              `/address/api/search?keyword=${encodeURIComponent(keyword)}&pageNumber=1&pageSize=2`,
-              config
-            );
+            const response = await axios.get(`/address/api/search?keyword=${encodeURIComponent(keyword)}`, config);
             console.log('Received data:', response.data);
 
             if (response.status === 200) {
@@ -59,7 +55,7 @@ const SearchBody = () => {
     return () => {
       clearTimeout(timerId);
     };
-  }, [keyword]);
+  }, [keyword, currentPage]);
 
   const paginatedResults = filteredResults.slice((currentPage - 1) * resultsPerPage, currentPage * resultsPerPage);
 
