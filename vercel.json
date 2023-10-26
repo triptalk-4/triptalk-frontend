@@ -45,6 +45,10 @@
       "destination": "https://triptalk.xyz/api/likes/plans/user/check/save/like/:plannerId"
     },
     {
+      "source": "/address/api/images",
+      "destination": "https://triptalk.xyz/api/images"
+    },
+    {
       "source": "/(.*)",
       "destination": "/"
     }
