@@ -45,6 +45,22 @@
       "destination": "https://triptalk.xyz/api/likes/plans/user/check/save/like/:plannerId"
     },
     {
+      "source": "/address/api/likes/minus/plans/:plannerId",
+      "destination": "https://triptalk.xyz/api/likes/minus/plans/:plannerId"
+    },
+    {
+      "source": "/address/api/likes/plans/:plannerId",
+      "destination": "https://triptalk.xyz/api/likes/plans/:plannerId"
+    },
+    {
+      "source": "/address/api/likes/plans/user/cancel/planner/:plannerId",
+      "destination": "https://triptalk.xyz/api/likes/plans/user/cancel/planner/:plannerId"
+    },
+    {
+      "source": "/address/api/likes/plans/user/save/planner/:plannerId",
+      "destination": "https://triptalk.xyz/api/likes/plans/user/save/planner/:plannerId"
+    },
+    {
       "source": "/address/api/images",
       "destination": "https://triptalk.xyz/api/images"
     },
@@ -55,6 +71,22 @@
     {
       "source": "/myinfo/:userId",
       "destination": "https://triptalk.xyz/myinfo/:userId"
+    },
+    {
+      "source": "/address/api/plans/:plannerId",
+      "destination": "https://triptalk.xyz/api/plans/:plannerId"
+    },
+    {
+      "source": "/address/api/reply/detail/replies",
+      "destination": "https://triptalk.xyz/api/reply/detail/replies"
+    },
+    {
+      "source": "/address/api/reply/:replyId",
+      "destination": "https://triptalk.xyz/api/reply/:replyId"
+    },
+    {
+      "source": "/address/api/reply/detail/replies/:plannerDetailId",
+      "destination": "https://triptalk.xyz/api/reply/detail/replies/:plannerDetailId"
     },
     {
       "source": "/(.*)",
