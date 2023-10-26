@@ -101,6 +101,10 @@
       "destination": "https://triptalk.xyz/api/auth/google?code=:code"
     },
     {
+      "source": "/address/api/users/kakao/login",
+      "destination": "https://triptalk.xyz/api/users/kakao/login"
+    },
+    {
       "source": "/(.*)",
       "destination": "/"
     }
