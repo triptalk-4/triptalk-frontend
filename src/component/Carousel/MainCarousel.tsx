@@ -20,13 +20,13 @@ const MainCarousel = () => {
     <MainContainer>
       <Sliders {...settings}>
         <div>
-          <Img src="public/img/addimg1.jpg" />
+          <Img src="img/addimg1.jpg" />
         </div>
         <div>
-          <Img src="public/img/addimg2.jpg" />
+          <Img src="img/addimg2.jpg" />
         </div>
         <div>
-          <Img src="public/img/addimg3.jpg" />
+          <Img src="img/addimg3.jpg" />
         </div>
       </Sliders>
     </MainContainer>
