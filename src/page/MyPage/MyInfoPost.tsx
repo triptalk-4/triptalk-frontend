@@ -1,11 +1,11 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-// import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-// import { RootState } from '../../store/store';
 import { useParams } from 'react-router-dom';
 import AnotherPlanner from './AnotherPlanner';
 import MyPost from './MyPost';
+// import { useSelector } from 'react-redux';
+// import { RootState } from '../../store/store';
 
 interface userInfoDate {
   userId: number;
@@ -24,15 +24,6 @@ interface userInfoDate {
   likeCount: number;
   views: number;
 }
-
-// interface AnotherPost {
-//   plannerId: number;
-//   thumbnail: string;
-//   title: string;
-//   createAt: number;
-//   likeCount: number;
-//   views: number;
-// }
 
 interface anotheruserInfoDate {
   userId: number;
@@ -56,14 +47,6 @@ export default function MyInfoPost({ userInfo }: { userInfo: userInfoDate }) {
   const [anotherpostsData, setAnotherPostsData] = useState<PlannerDetails[]>([]);
   const [containerClassName, setContainerClassName] = useState('flex-start');
   const [isLoading, setIsLoading] = useState(false); // 로딩 상태
-  // const [isEndPage, setIsEndPage] = useState(false);
-  // const targetRef = useRef<HTMLDivElement | null>(null);
-  // const observerRef = useRef<IntersectionObserver | null>(null);
-
-  // const token = useSelector((state: RootState) => state.token.token);
-  // const [page, setPage] = useState(0);
-  // const [anotherpage, setAnotherPage] = useState(0);
-
   const { userId } = useParams();
   const [anotherUserInfo, setAnotherUserInfo] = useState<anotheruserInfoDate>({
     userId: 0,
@@ -81,6 +64,8 @@ export default function MyInfoPost({ userInfo }: { userInfo: userInfoDate }) {
     likeCount: planner.likeCount,
     views: planner.views,
   }));
+
+  // const token = useSelector((state: RootState) => state.token.token);
 
   useEffect(() => {
     const fetchSerch = async () => {
@@ -110,7 +95,7 @@ export default function MyInfoPost({ userInfo }: { userInfo: userInfoDate }) {
     };
 
     fetchSerch();
-  }, []);
+  }, [userId]);
 
   useEffect(() => {
     const fetchUserPost = async () => {
@@ -133,13 +118,14 @@ export default function MyInfoPost({ userInfo }: { userInfo: userInfoDate }) {
           setPostsData(newData);
         }
       } catch (error) {
-        setIsLoading(false);
         console.error('데이터 요청 실패:', error);
+      } finally {
+        setIsLoading(false);
       }
     };
     console.log('게시물', postsData);
     fetchUserPost();
-  }, []);
+  }, [userId]);
 
   useEffect(() => {
     // 게시물 갯수에 따라 스타일 변경
@@ -157,7 +143,7 @@ export default function MyInfoPost({ userInfo }: { userInfo: userInfoDate }) {
         : anotherPlanners.map((aontherItem: PlannerDetails) => (
             <AnotherPlanner key={aontherItem.plannerId} plannerData={aontherItem} />
           ))}
-      {!isLoading && <LoadingMessage>로딩 중...</LoadingMessage>}
+      {isLoading && <LoadingMessage>로딩 중...</LoadingMessage>}
     </PostContainer>
   );
 }
