@@ -10,8 +10,8 @@ const developmentProxy = {
     rewrite: path => path.replace(/^\/address/, ''),
     secure: false,
     ws: true,
-  }
-}
+  },
+};
 
 export default defineConfig({
   plugins: [react()],
@@ -24,7 +24,9 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: undefined,
-      }
-    }
-  }
+      },
+      // 외부 라이브러리로 추가
+      external: ['swiper'],
+    },
+  },
 });
