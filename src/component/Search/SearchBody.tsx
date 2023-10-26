@@ -29,16 +29,19 @@ const SearchBody = () => {
         if (Access_token) {
           const config = {
             headers: {
-              Authorization: `Bearer ${Access_token}`,
-            },
+              Authorization: `Bearer ${Access_token}`
+            }
           };
           try {
             const response = await axios.get(
               `/address/api/search?keyword=${encodeURIComponent(keyword)}&pageNumber=1&pageSize=2`,
               config
             );
+            console.log('Received data:', response.data);
+
             if (response.status === 200) {
-              setFilteredResults(response.data);
+              const results = response.data.data ? response.data.data : response.data;
+              setFilteredResults(results);
             } else {
               console.error('API 호출 실패:', response.status, response.statusText);
             }
@@ -75,7 +78,8 @@ const SearchBody = () => {
             <Link
               to={`/myinfo/${result.userId}`}
               style={{ color: 'inherit', textDecoration: 'none' }}
-              key={result.userId}>
+              key={result.userId}
+            >
               <ResultContainer key={index}>
                 <ProfileAndName>
                   <ProfileImage src={result.profile} alt={`${result.nickname}의 프로필 사진`} />
@@ -94,7 +98,8 @@ const SearchBody = () => {
               <PageNumber
                 key={index + 1}
                 $isActive={index + 1 === currentPage}
-                onClick={() => setCurrentPage(index + 1)}>
+                onClick={() => setCurrentPage(index + 1)}
+              >
                 {index + 1}
               </PageNumber>
             ))}
