@@ -255,7 +255,7 @@ export default function EditSchedule() {
         });
         if (response.status === 204) {
           console.log('데이터 전송 완료');
-          alert('일정 등록 완료!');
+          alert('일정 수정 완료!');
           navigate(`/page/${plannerId}`);
         } else {
           alert('일정 등록 실패');
@@ -270,7 +270,7 @@ export default function EditSchedule() {
 
   /// 뒤로가기 ///
   const handleBackButtonClick = () => {
-    navigate(`/page/${plannerId}`);
+    navigate(`schedule`);
   };
 
   return (
