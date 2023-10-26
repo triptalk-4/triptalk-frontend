@@ -236,7 +236,7 @@ const SignupForm = () => {
         <TopDiv>
           <LeftArrow onClick={() => navigator('/')} />
           <TextBox>
-            <Title>Trip Talk</Title>
+            <TitleImg src="img/logo.png" />
             <SubTitle>다양하고 색다른 여행지가 궁금하시면 가입해보세요!</SubTitle>
           </TextBox>
         </TopDiv>
@@ -357,6 +357,9 @@ const TopDiv = styled.div`
 const TextBox = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
+  margin-left: 40px;
+  margin-right: 40px;
 `;
 
 const Container = styled.div`
@@ -365,10 +368,9 @@ const Container = styled.div`
   text-align: center;
 `;
 
-const Title = styled.h1`
-  color: ${MAIN_COLOR};
-  font-size: 70px;
-  padding-top: 25px;
+const TitleImg = styled.img`
+  width: 265px;
+  margin-top: 30px;
 `;
 
 const SubTitle = styled.p`
