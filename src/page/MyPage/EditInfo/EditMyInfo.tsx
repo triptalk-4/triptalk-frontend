@@ -159,6 +159,29 @@ export default function EditMyInfo() {
     navigate(`/myinfo/${userUniqueId}`); // 이전 페이지로 이동
   };
 
+  const handleDeleteAccount = async () => {
+    const confirmDelete = window.confirm('정말로 회원 탈퇴하시겠습니까?');
+
+    if (confirmDelete) {
+      try {
+        const DeleteAccountResponse = await axios.delete('/address/api/users/update/profile', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (DeleteAccountResponse.status === 200) {
+          navigate('/');
+        } else {
+          alert('탈퇴에 실패했습니다.');
+        }
+      } catch (error) {
+        console.error('탈퇴 요청 오류:', error);
+        alert('탈퇴 요청 중에 오류가 발생했습니다.');
+      }
+    }
+  };
+
   return (
     <InfoContainer>
       <InfoTitle>개인정보수정</InfoTitle>
@@ -173,7 +196,7 @@ export default function EditMyInfo() {
             </ProfileImgLabel>
             <PreviewImage src={userImg} alt="프로필 이미지" />
           </ProfileImgContainer>
-          <ExitBtn>탈퇴하기</ExitBtn>
+          <ExitBtn onClick={handleDeleteAccount}>탈퇴하기</ExitBtn>
         </ImgEditContainer>
 
         <IntroductionContainer>

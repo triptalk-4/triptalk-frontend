@@ -16,7 +16,11 @@ interface IReplyData {
   readonly email: string;
 }
 
-export default function ViewComments({ plannerDetailId }: { plannerDetailId: number }) {
+interface ViewCommentsProps {
+  plannerDetailId: number;
+}
+
+export default function ViewComments({ plannerDetailId }: ViewCommentsProps) {
   const [commentData, setCommentData] = useState<IReplyData[]>([]);
   const [commentUserReply, setCommentUserReply] = useState('');
   const [isEditing, setIsEditing] = useState(false);
@@ -165,7 +169,8 @@ export default function ViewComments({ plannerDetailId }: { plannerDetailId: num
               <UserBox>
                 <UserComment>
                   <UserName>{comment.nickname}</UserName>
-                  <UserReply type="text" defaultValue={comment.reply} disabled={!isEditing} />
+                  <UserReply type="text" defaultValue={comment.reply} disabled={!isEditing} />{' '}
+                  {Access_token !== comment.email && <UplaodDate>{formatDate(comment.createDt)}</UplaodDate>}
                 </UserComment>
                 <EnDdiv>
                   {isEditing ? (
@@ -175,9 +180,9 @@ export default function ViewComments({ plannerDetailId }: { plannerDetailId: num
                   ) : (
                     Access_token === comment.email && (
                       <>
+                        <UplaodDate>{formatDate(comment.createDt)}</UplaodDate>
                         <EditBtn onClick={handleEditClick}>수정</EditBtn>
                         <DeleteBtn onClick={() => handleDeleteClick(comment.replyId)}>삭제</DeleteBtn>
-                        <UplaodDate>{formatDate(comment.createDt)}</UplaodDate>
                       </>
                     )
                   )}
@@ -228,7 +233,7 @@ const UserBox = styled.div`
 
 const UserCommentContainer = styled.div`
   width: 100%;
-  height: 225px;
+  height: 200px;
   overflow-y: hidden;
   padding: 20px 10px;
 `;
