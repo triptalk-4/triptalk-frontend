@@ -75,7 +75,7 @@ const PostInfo = styled.div`
 
 const PostText = styled.div`
   padding: 15px 10px;
-  max-height: 105px;
+  max-height: 200px;
   overflow: auto;
 `;
 

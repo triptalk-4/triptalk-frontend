@@ -233,7 +233,7 @@ const UserBox = styled.div`
 
 const UserCommentContainer = styled.div`
   width: 100%;
-  height: 225px;
+  height: 200px;
   overflow-y: hidden;
   padding: 20px 10px;
 `;
