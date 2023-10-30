@@ -8,6 +8,7 @@ import styled, { css } from 'styled-components';
 import { GRAY_COLOR, MAIN_COLOR } from '../../color/color';
 import { Link, useNavigate } from 'react-router-dom';
 import { SetStateAction, useEffect, useState } from 'react';
+import Swal from 'sweetalert2';
 
 const LoginForm = () => {
   const dispatch = useDispatch();
@@ -45,24 +46,39 @@ const LoginForm = () => {
 
       if (response.status === 200) {
         localStorage.setItem('token', response.data.token);
-        // dispatch(setToken(response.data.token));
-        // 테스트 코드
         localStorage.setItem('userEmail', userEmail);
         localStorage.setItem('password', password);
 
-        const message = '로그인 되었습니다.';
-        alert(`${message}`);
-        setUserEmail('');
-        setPassword('');
-        naviget('/main');
+        // const message = '로그인 되었습니다.';
+        // alert(`${message}`);
+        // setUserEmail('');
+        // setPassword('');
+        // naviget('/main');
+        Swal.fire({
+          // icon: 'success',
+          title: '로그인 되었습니다.',
+        }).then(() => {
+          setUserEmail('');
+          setPassword('');
+          naviget('/main');
+        });
       } else {
-        alert('유효하지 않은 사용자 입니다.');
+        Swal.fire({
+          icon: 'error',
+          title: '유효하지 않은 사용자 입니다.',
+        });
       }
     } catch (error: any) {
       if (error.response.data) {
-        alert('아이디와 비밀번호가 일치하지 않습니다.');
+        Swal.fire({
+          icon: 'error',
+          title: '아이디와 비밀번호가 일치하지 않습니다.',
+        });
       } else {
-        alert('서버와의 연결이 끊어졌습니다.');
+        Swal.fire({
+          icon: 'error',
+          title: '서버와의 연결이 끊어졌습니다.',
+        });
       }
     }
   };
