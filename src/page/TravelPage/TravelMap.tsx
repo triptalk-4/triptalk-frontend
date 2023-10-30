@@ -411,7 +411,7 @@ interface travelItem {
   lookUpCount: number;
 }
 
-export default function Travel() {
+export default function TravelMap() {
   //const [travelsData, setTravelsData] = useState<travelItem[]>(defaultTravelsData); // msw
   const travelsData = defaultTravelsData;
   const [carouselData, setCarouselData] = useState<travelItem[]>(defaultTravelsData);
