@@ -10,7 +10,7 @@ import Schedule from './page/SchedulePage/Schedule';
 import SearchPage from './page/SearchPage';
 import SecheduleDetail from './page/DetailPage/SecheduleDetail';
 import AddSchedule from './page/EditPage/AddSchedule';
-import Travel from './page/TravelPage/Travel';
+import Travel from './page/TravelPage/TravelMap';
 import AuthHandler from './component/SocialLogin/AuthHandler';
 import GoogleLogin from './component/SocialLogin/GoogleLogin';
 import EditSchedule from './page/EditPage/EditSchedule';
@@ -22,7 +22,7 @@ function App() {
         {/* Header,Footer 보여주고 싶은 컴포넌트 */}
         <Route element={<MainLayout />}>
           <Route path="/main" element={<Main />} />
-          <Route path="/travel" element={<Travel />} />
+          <Route path="/travelmap" element={<Travel />} />
           <Route path="/myinfo/:userId" element={<MyInfo />} />
           <Route path="/page/:plannerId" element={<SecheduleDetail />} />
           <Route path="/EditSchedule/:plannerId" element={<EditSchedule />} />

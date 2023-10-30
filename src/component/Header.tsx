@@ -87,8 +87,8 @@ export default function Header() {
           <NavItem to="/schedule" $isActive={location.pathname === '/schedule'}>
             전체일정
           </NavItem>
-          <NavItem to="/travel" $isActive={location.pathname === '/travel'}>
-            지역일정
+          <NavItem to="/travelmap" $isActive={location.pathname === '/travelmap'}>
+            리뷰맵
           </NavItem>
 
           <Search />
@@ -147,6 +147,8 @@ const Nav = styled.ul`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-left: 20px;
+  margin-right: 20px;
 `;
 
 const NavItem = styled(Link)<NavItemProps>`
@@ -158,7 +160,7 @@ const NavItem = styled(Link)<NavItemProps>`
   font-size: 20px;
   font-weight: bold;
   line-height: 24px;
-  margin-right: 50px;
+  margin-right: 60px;
   text-decoration: none;
 
   &:hover {
