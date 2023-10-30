@@ -16,7 +16,11 @@ interface IReplyData {
   readonly email: string;
 }
 
-export default function ViewComments({ plannerDetailId }: { plannerDetailId: number }) {
+interface ViewCommentsProps {
+  plannerDetailId: number;
+}
+
+export default function ViewComments({ plannerDetailId }: ViewCommentsProps) {
   const [commentData, setCommentData] = useState<IReplyData[]>([]);
   const [commentUserReply, setCommentUserReply] = useState('');
   const [isEditing, setIsEditing] = useState(false);
