@@ -7,6 +7,7 @@ import ScheduleMapLoader from '../../component/ScheduleMap';
 import { useNavigate } from 'react-router';
 import axios from 'axios';
 import { MAIN_COLOR } from '../../color/color';
+import Swal from 'sweetalert2';
 
 interface PlaceInfo {
   position: {
@@ -157,7 +158,10 @@ export default function AddSchedule() {
           },
         });
         if (response.status === 200) {
-          alert('일정 등록 완료!');
+          Swal.fire({
+            icon: 'success',
+            title: '일정 등록 완료',
+          });
           navigate('/schedule?sortType=RECENT');
         } else {
           alert('일정 등록 실패');

@@ -11,6 +11,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import ScheduleMapLoader from '../../component/ScheduleMap';
 import { FaArrowLeft } from 'react-icons/fa';
 import moment from 'moment';
+import Swal from 'sweetalert2';
 
 interface PlannerDetail {
   placeResponse: {
@@ -133,7 +134,6 @@ export default function SecheduleDetail() {
           }
         );
         if (response.data.ok === '좋아요가 취소되었습니다') {
-          alert('좋아요가 취소되었습니다.');
           setLikeCount(prevCount => prevCount - 1);
           setIsLiked(false);
         }
@@ -148,7 +148,6 @@ export default function SecheduleDetail() {
           }
         );
         if (response.data.ok === '좋아요가 완료되었습니다') {
-          alert('좋아요가 완료되었습니다.');
           setLikeCount(prevCount => prevCount + 1);
           setIsLiked(true);
         }
@@ -169,7 +168,10 @@ export default function SecheduleDetail() {
           },
         });
         if (response.data.ok === '저장함 삭제가 완료되었습니다.') {
-          alert('저장이 취소되었습니다.');
+          Swal.fire({
+            icon: 'success',
+            title: '저장이 취소 되었습니다.',
+          });
           setIsSaved(false);
         } else {
           alert('저장이 취소되지 않았습니다.'); // 저장 취소 실패시 알림
@@ -181,10 +183,15 @@ export default function SecheduleDetail() {
           },
         });
         if (response.data.ok === '저장 추가가 완료되었습니다.') {
-          alert('저장이 완료되었습니다.');
+          Swal.fire({
+            icon: 'success',
+          });
           setIsSaved(true);
         } else {
-          alert('저장이 되지 않았습니다.'); // 저장 실패시 알림
+          Swal.fire({
+            icon: 'warning',
+            title: '저장 되지 않았습니다.',
+          });
         }
       }
     } catch (error) {
@@ -203,8 +210,16 @@ export default function SecheduleDetail() {
       });
 
       if (response.status === 204) {
-        alert('게시물이 삭제되었습니다.');
-        navigate('/schedule');
+        const result = await Swal.fire({
+          icon: 'warning',
+          title: '삭제 하시겠습니까?',
+          showCancelButton: true,
+          confirmButtonText: '확인',
+          cancelButtonText: '취소',
+        });
+        if (result.isConfirmed) {
+          navigate('/schedule');
+        }
       }
     } catch (error) {
       console.error('게시물 삭제 중 오류 발생:', error);

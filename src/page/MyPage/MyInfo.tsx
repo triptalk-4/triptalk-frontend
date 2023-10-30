@@ -9,6 +9,7 @@ import TopButton from '../../component/TopButton/TopButton';
 import axios from 'axios';
 import { RootState } from '../../store/store';
 import { useSelector } from 'react-redux/es/exports';
+import Swal from 'sweetalert2';
 
 interface userInfoDate {
   userId: number;
@@ -136,16 +137,28 @@ export default function MyInfo() {
     fetchSerch();
   }, [token, userId]);
 
-  // console.log(anotherUserId);
-  // console.log(userUniqueId);
   const handleLogOut = () => {
     const storeUserData = localStorage.getItem('token');
     if (storeUserData) {
-      localStorage.removeItem('token');
-      localStorage.removeItem('userEmail');
-      localStorage.removeItem('password');
-      alert('로그아웃 되었습니다.');
-      navigate('/');
+      Swal.fire({
+        icon: 'info',
+        title: '로그아웃 하시겠습니까?',
+        showCancelButton: true,
+        confirmButtonText: '확인',
+        cancelButtonText: '취소',
+      }).then(result => {
+        if (result.isConfirmed) {
+          localStorage.removeItem('token');
+          localStorage.removeItem('userEmail');
+          localStorage.removeItem('password');
+          Swal.fire({
+            icon: 'success',
+            title: '로그아웃 되었습니다.',
+          }).then(() => {
+            navigate('/');
+          });
+        }
+      });
     } else {
       alert('로그인 해주세요.');
       navigate('/');

@@ -9,6 +9,7 @@ import axios from 'axios';
 import { MAIN_COLOR } from '../../color/color';
 import { RootState } from '../../store/store';
 import { useSelector } from 'react-redux';
+import Swal from 'sweetalert2';
 
 interface PlaceInfo {
   position: {
@@ -255,7 +256,10 @@ export default function EditSchedule() {
         });
         if (response.status === 204) {
           console.log('데이터 전송 완료');
-          alert('일정 수정 완료!');
+          Swal.fire({
+            icon: 'success',
+            title: '일정 수정 완료.',
+          });
           navigate(`/page/${plannerId}`);
         } else {
           alert('일정 등록 실패');
