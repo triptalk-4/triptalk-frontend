@@ -165,7 +165,8 @@ export default function ViewComments({ plannerDetailId }: { plannerDetailId: num
               <UserBox>
                 <UserComment>
                   <UserName>{comment.nickname}</UserName>
-                  <UserReply type="text" defaultValue={comment.reply} disabled={!isEditing} />
+                  <UserReply type="text" defaultValue={comment.reply} disabled={!isEditing} />{' '}
+                  {Access_token !== comment.email && <UplaodDate>{formatDate(comment.createDt)}</UplaodDate>}
                 </UserComment>
                 <EnDdiv>
                   {isEditing ? (
@@ -175,9 +176,9 @@ export default function ViewComments({ plannerDetailId }: { plannerDetailId: num
                   ) : (
                     Access_token === comment.email && (
                       <>
+                        <UplaodDate>{formatDate(comment.createDt)}</UplaodDate>
                         <EditBtn onClick={handleEditClick}>수정</EditBtn>
                         <DeleteBtn onClick={() => handleDeleteClick(comment.replyId)}>삭제</DeleteBtn>
-                        <UplaodDate>{formatDate(comment.createDt)}</UplaodDate>
                       </>
                     )
                   )}
