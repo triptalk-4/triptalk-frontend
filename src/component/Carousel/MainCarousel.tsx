@@ -37,12 +37,12 @@ export default MainCarousel;
 
 const MainContainer = styled.div`
   width: 100%;
-  height: 400px;
+  height: 100%;
 `;
 
 const Img = styled.img`
   width: 100%;
-  height: 400px;
+  height: 100%;
   cursor: pointer;
 `;
 
