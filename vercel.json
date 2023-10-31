@@ -85,6 +85,10 @@
       "destination": "https://triptalk.xyz/api/reply/detail/replies"
     },
     {
+      "source": "/address/api/reply/detail/:plannerDetailId",
+      "destination": "https://triptalk.xyz/api/reply/detail/:plannerDetailId"
+    },
+    {
       "source": "/address/api/reply/:replyId",
       "destination": "https://triptalk.xyz/api/reply/:replyId"
     },

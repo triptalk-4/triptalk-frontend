@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import ScheduleMapLoader from '../../component/ScheduleMap';
+import { GRAY_COLOR } from '../../color/color';
 
 export default function TravelMap() {
   return (
@@ -10,6 +11,7 @@ export default function TravelMap() {
       <Map>
         <ScheduleMapLoader onPlacesSelected={() => {}} />
       </Map>
+      <PostBorder></PostBorder>
       <TravelCarouselContainer></TravelCarouselContainer>
     </TravelContainer>
   );
@@ -37,6 +39,10 @@ const TravelTitle = styled.div`
 
 const Map = styled.div`
   width: 100%;
+`;
+
+const PostBorder = styled.div`
+  border: 1px solid ${GRAY_COLOR};
 `;
 
 const TravelCarouselContainer = styled.div``;

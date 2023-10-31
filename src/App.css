@@ -34,7 +34,7 @@
 
 #root {
   margin: 0 auto;
-  max-width: 1200px;
+  /* max-width: 1200px; */
   min-height: 100vh;
   background-color: #fff;
 }
