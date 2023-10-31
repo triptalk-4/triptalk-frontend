@@ -363,8 +363,8 @@ const TextBox = styled.div`
 `;
 
 const Container = styled.div`
+  max-width: 1200px;
   margin: 0 auto;
-  width: 100%;
   text-align: center;
 `;
 
