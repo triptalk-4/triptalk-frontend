@@ -160,7 +160,7 @@ const NavItem = styled(Link)<NavItemProps>`
   font-size: 20px;
   font-weight: bold;
   line-height: 24px;
-  margin-right: 60px;
+  margin-right: 100px;
   text-decoration: none;
 
   &:hover {
