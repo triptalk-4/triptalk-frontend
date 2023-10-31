@@ -1,25 +1,10 @@
 {
   "rewrites": [
     {
-      "source": "/address/api/plans/:plannerId/details",
-      "destination": "https://triptalk.xyz/api/plans/:plannerId/details"
-    },
-    {
       "source": "/address/api/main",
       "destination": "https://triptalk.xyz/api/main"
     },
-    {
-      "source": "/address/api/users/profile",
-      "destination": "https://triptalk.xyz/api/users/profile"
-    },
-    {
-      "source": "/address/api/users/update/profile",
-      "destination": "https://triptalk.xyz/api/users/update/profile"
-    },
-    {
-      "source": "/address/api/plans",
-      "destination": "https://triptalk.xyz/api/plans"
-    },
+
     {
       "source": "/address/api/users/register",
       "destination": "https://triptalk.xyz/api/users/register"
@@ -32,17 +17,52 @@
       "source": "/address/api/users/register/email/send",
       "destination": "https://triptalk.xyz/api/users/register/email/send"
     },
+
+    {
+      "source": "/address/api/images",
+      "destination": "https://triptalk.xyz/api/images"
+    },
+    {
+      "source": "/myinfo/:userId",
+      "destination": "https://triptalk.xyz/myinfo/:userId"
+    },
+    {
+      "source": "/address/api/users/profile",
+      "destination": "https://triptalk.xyz/api/users/profile"
+    },
+    {
+      "source": "/address/api/users/update/profile",
+      "destination": "https://triptalk.xyz/api/users/update/profile"
+    },
+    {
+      "source": "/address/api/users/planners/userSave",
+      "destination": "https://triptalk.xyz/api/users/planners/userSave"
+    },
     {
       "source": "/address/api/users/planners/byUser",
       "destination": "https://triptalk.xyz/api/users/planners/byUser"
+    },
+
+    {
+      "source": "/address/api/search",
+      "destination": "https://triptalk.xyz/api/search"
     },
     {
       "source": "/address/api/search/user/:userId",
       "destination": "https://triptalk.xyz/api/search/user/:userId"
     },
+
     {
-      "source": "/address/api/users/planners/userSave",
-      "destination": "https://triptalk.xyz/api/users/planners/userSave"
+      "source": "/address/api/plans/:plannerId/details",
+      "destination": "https://triptalk.xyz/api/plans/:plannerId/details"
+    },
+    {
+      "source": "/address/api/plans",
+      "destination": "https://triptalk.xyz/api/plans"
+    },
+    {
+      "source": "/address/api/plans/:plannerId",
+      "destination": "https://triptalk.xyz/api/plans/:plannerId"
     },
     {
       "source": "/address/api/likes/plans/user/check/save/like/:plannerId",
@@ -64,38 +84,28 @@
       "source": "/address/api/likes/plans/user/save/planner/:plannerId",
       "destination": "https://triptalk.xyz/api/likes/plans/user/save/planner/:plannerId"
     },
+
     {
-      "source": "/address/api/images",
-      "destination": "https://triptalk.xyz/api/images"
-    },
-    {
-      "source": "/address/api/search",
-      "destination": "https://triptalk.xyz/api/search"
-    },
-    {
-      "source": "/myinfo/:userId",
-      "destination": "https://triptalk.xyz/myinfo/:userId"
-    },
-    {
-      "source": "/address/api/plans/:plannerId",
-      "destination": "https://triptalk.xyz/api/plans/:plannerId"
-    },
-    {
-      "source": "/address/api/reply/detail/replies",
-      "destination": "https://triptalk.xyz/api/reply/detail/replies"
-    },
-    {
-      "source": "/address/api/reply/:replyId",
-      "destination": "https://triptalk.xyz/api/reply/:replyId"
+      "source": "/address/api/users/kakao/login",
+      "destination": "https://triptalk.xyz/api/users/kakao/login"
     },
     {
       "source": "/address/api/reply/detail/replies/:plannerDetailId",
       "destination": "https://triptalk.xyz/api/reply/detail/replies/:plannerDetailId"
     },
     {
-      "source": "/address/api/users/kakao/login",
-      "destination": "https://triptalk.xyz/api/users/kakao/login"
+      "source": "/address/api/reply/detail/:plannerDetailId",
+      "destination": "https://triptalk.xyz/api/reply/detail/:plannerDetailId"
     },
+    {
+      "source": "/address/api/reply/:replyId",
+      "destination": "https://triptalk.xyz/api/reply/:replyId"
+    },
+    {
+      "source": "/address/api/reply/detail/replies",
+      "destination": "https://triptalk.xyz/api/reply/detail/replies"
+    },
+
     {
       "source": "/(.*)",
       "destination": "/"
