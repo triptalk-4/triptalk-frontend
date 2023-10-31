@@ -231,7 +231,7 @@ export default function MyInfo() {
 }
 
 const MyPageContainer = styled.div`
-  width: 80%;
+  max-width: 1200px;
   margin: 0 auto;
 `;
 

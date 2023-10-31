@@ -219,8 +219,9 @@ export default function EditMyInfo() {
 }
 
 const InfoContainer = styled.div`
-  width: 80%;
+  max-width: 1200px;
   margin: 0 auto;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -272,10 +273,10 @@ const PreviewImage = styled.img`
 
 const InfoEditContainer = styled.div`
   display: grid;
-  grid-template-columns: 1fr 495px;
+  grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 70px 55px;
-  column-gap: 100px;
-  row-gap: 30px;
+  column-gap: 50px;
+  row-gap: 40px;
   grid-template-areas:
     'ImgEditContainer MyInfoEditForm'
     'IntroductionContainer MyInfoEditForm'
@@ -293,6 +294,8 @@ const ImgEditContainer = styled.div`
 
 const IntroductionContainer = styled.div`
   grid-area: IntroductionContainer;
+  display: flex;
+  justify-content: center;
 `;
 
 const ExitBtn = styled.button`

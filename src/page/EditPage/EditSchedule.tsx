@@ -349,9 +349,9 @@ export default function EditSchedule() {
 }
 
 const MainContainer = styled.div`
-  width: 80%;
-  height: 100%;
+  max-width: 1200px;
   margin: 0 auto;
+  height: 100%;
 `;
 
 const TitleContainer = styled.div`

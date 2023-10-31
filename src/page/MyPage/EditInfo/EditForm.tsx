@@ -282,15 +282,16 @@ export default function EditForm(props: EditFormProps) {
 
 const MyInfoGrid = styled.div`
   display: grid;
-  row-gap: 10px;
+  row-gap: 15px;
 `;
 
 const MyInfoField = styled.div`
   height: 82px;
+  width: 100%;
 
   &:nth-child(2),
   &:nth-child(3) {
-    width: 80%;
+    width: 84%;
   }
 `;
 
