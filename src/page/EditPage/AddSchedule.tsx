@@ -200,6 +200,10 @@ export default function AddSchedule() {
                   setCoreContainers(updatedContainers);
                 }}
               />
+              <div>
+                <Input type="text" placeholder="장소" />
+                <Button>검색</Button>
+              </div>
             </CoreTopContainer>
             <ImgContainer>
               <CustomFileInput
@@ -234,10 +238,10 @@ export default function AddSchedule() {
           </CoreContainer>
         ))}
         <ButtonContainer></ButtonContainer>
-        <ButtonContainer>
+        <AddBtn>
           <EditButton onClick={handleEditButtonClick}>등록</EditButton>
           <CancelButton onClick={handleBackButtonClick}>취소</CancelButton>
-        </ButtonContainer>
+        </AddBtn>
       </MainContainer>
     </>
   );
@@ -254,6 +258,7 @@ const TitleContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-top: 24px;
 `;
 
 const Title = styled.input.attrs({ maxLength: 40 })`
@@ -271,7 +276,7 @@ const CoreContainer = styled.div`
   height: 340px;
   margin-top: 5%;
   background-color: #f7eae4;
-  padding: 15px;
+  /* padding: 15px; */
   position: relative;
 `;
 
@@ -280,6 +285,35 @@ const CoreTopContainer = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 50px;
+`;
+
+const Input = styled.input`
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid ${MAIN_COLOR};
+  border-radius: 4px;
+  transition: border-color 0.3s;
+  outline: none;
+  margin-bottom: 4px;
+  margin-right: 4px;
+  margin-top: 20px;
+  &:focus {
+    border-color: ${MAIN_COLOR};
+  }
+`;
+const Button = styled.button`
+  padding: 10px;
+  font-size: 16px;
+  color: #fff;
+  border: 1px solid ${MAIN_COLOR};
+  background: ${MAIN_COLOR};
+  border-radius: 4px;
+  transition: border-color 0.3s;
+  outline: none;
+  cursor: pointer;
+  &:focus {
+    border-color: ${MAIN_COLOR};
+  }
 `;
 
 const ImgContainer = styled.div`
@@ -328,10 +362,11 @@ const CommentTextArea = styled.textarea`
 `;
 
 const ButtonContainer = styled.div`
-  width: 100%;
+  width: 70px;
+  margin: 0 auto;
   height: 60px;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   margin-top: 10px;
 `;
@@ -340,7 +375,6 @@ const PlusButton = styled.button`
   width: 30px;
   height: 30px;
   border-radius: 10px;
-  margin-right: 10px;
   border: none;
   background-color: ${MAIN_COLOR};
   color: white;
@@ -369,7 +403,6 @@ const EnBbtnStyle = css`
 
 const EditButton = styled.button`
   ${EnBbtnStyle}
-  margin-right: 30px;
 
   background-color: ${MAIN_COLOR};
 `;
@@ -377,4 +410,11 @@ const EditButton = styled.button`
 const CancelButton = styled.button`
   ${EnBbtnStyle}
   background-color: gray;
+`;
+
+const AddBtn = styled.div`
+  width: 17%;
+  margin: 0 auto;
+  display: flex;
+  gap: 5px;
 `;
