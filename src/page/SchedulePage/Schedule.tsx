@@ -59,8 +59,8 @@ function Schedule() {
         if (token) {
           const config = {
             headers: {
-              Authorization: `Bearer ${token}`
-            }
+              Authorization: `Bearer ${token}`,
+            },
           };
           const response = await axios.get(`/address/api/plans?page=${page}&size=6&sortType=${sortType}`, config);
           const fetchedData = response.data;
@@ -176,12 +176,13 @@ const MainContainer = styled.div`
 `;
 
 const TitleContainer = styled.div`
-  width: 100%;
+  margin: 0 auto;
+  width: 80%;
   height: 100px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 40px;
+  /* margin-top: 40px; */
 `;
 
 const Title = styled.div`
@@ -194,6 +195,8 @@ const SelectBox = styled.div`
 `;
 
 const GridContainer = styled.div`
+  width: 80%;
+  margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 70px;
