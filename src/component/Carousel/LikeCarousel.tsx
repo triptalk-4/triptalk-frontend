@@ -161,7 +161,7 @@ const PrevArrowButton = styled.div`
 
 const NextArrowButton = styled.div`
   ${BtnStyle}
-  right: 1%;
+  right: 7%;
 `;
 
 const Image = styled.img`
