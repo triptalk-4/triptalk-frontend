@@ -244,7 +244,7 @@ export default function AddSchedule() {
 }
 
 const MainContainer = styled.div`
-  width: 80%;
+  max-width: 1200px;
   height: 100%;
   margin: 0 auto;
 `;
