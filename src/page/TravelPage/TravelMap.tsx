@@ -18,7 +18,7 @@ export default function TravelMap() {
 }
 
 const TravelContainer = styled.div`
-  width: 80%;
+  max-width: 1200px;
   margin: 65px auto;
   display: flex;
   flex-direction: column;
