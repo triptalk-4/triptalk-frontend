@@ -11,7 +11,7 @@ interface PlannerDetails {
 
 export default function PostImgs({ imagesUrl }: PlannerDetails) {
   const settings = {
-    dots: false,
+    dots: true,
     infinite: true,
     speed: 500,
     slidesToShow: 1,
@@ -78,6 +78,23 @@ const StyledSlider = styled(Slider)`
   display: flex;
   justify-content: center;
   background-color: #fff;
+
+  .slick-dots {
+    bottom: 3px;
+    width: auto;
+    border-radius: 10.5px;
+    z-index: 10;
+
+    li {
+      button {
+        &::before {
+          position: static;
+          font-size: 10px;
+          color: #fff;
+        }
+      }
+    }
+  }
 `;
 
 const StyledSwiperSlide = styled.div`
