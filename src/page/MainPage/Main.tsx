@@ -29,13 +29,12 @@ const Main = () => {
 };
 
 const MainContainer = styled.div`
-  max-width: 1200px;
   margin: 0 auto;
   height: 100%;
 `;
 
 const TopPosts = styled.div`
-  width: 80%;
+  max-width: 1200px;
   margin: 0 auto;
   margin-bottom: 5%;
 `;

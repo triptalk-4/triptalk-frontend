@@ -368,7 +368,7 @@ const BtnStyle = css`
   background-color: white;
   position: fixed;
 
-  right: 505px;
+  right: 400px;
   display: flex;
   align-items: center;
   justify-content: center;
