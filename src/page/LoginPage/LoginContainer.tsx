@@ -31,6 +31,7 @@ const CenteredContainer = styled.div`
 `;
 
 const Container = styled.div`
+  max-width: 1200px;
   width: 90%;
   height: 559px;
   display: flex;
