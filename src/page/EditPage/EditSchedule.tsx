@@ -274,7 +274,7 @@ export default function EditSchedule() {
 
   /// 뒤로가기 ///
   const handleBackButtonClick = () => {
-    navigate(`schedule`);
+    navigate(`/schedule`);
   };
 
   return (
