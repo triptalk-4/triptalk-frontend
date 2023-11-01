@@ -6,6 +6,7 @@ import { Link, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/store';
+import { BsBell } from 'react-icons/bs';
 
 interface NavItemProps {
   $isActive: boolean;
@@ -35,7 +36,7 @@ export default function Header() {
     email: '',
     password: '',
     aboutMe: '',
-    username: '',
+    username: ''
   });
 
   // useEffect(() => {
@@ -54,8 +55,8 @@ export default function Header() {
       try {
         const response = await axios.get('https://triptalk.xyz/api/users/profile', {
           headers: {
-            Authorization: `Bearer ${token}`, //필수
-          },
+            Authorization: `Bearer ${token}` //필수
+          }
         });
 
         if (response.data) {
@@ -90,12 +91,14 @@ export default function Header() {
           <NavItem to="/travelmap" $isActive={location.pathname === '/travelmap'}>
             리뷰맵
           </NavItem>
-
           <Search />
         </Nav>
         <User to={`/myinfo/${headerUser.userId}`}>
           <UserImg src={headerUser.profile} />
         </User>
+        <Notice>
+          <BsBell></BsBell>
+        </Notice>
       </Gnb>
     </GnbContainer>
   );
@@ -108,13 +111,11 @@ const GnbContainer = styled.div`
 
 const Gnb = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
   height: 70px;
   padding: 20px 80px 20px;
   border-bottom: 1px solid #c1c1c1;
 `;
-
 const LogoDiv = styled.div`
   height: auto;
   user-select: none;
@@ -133,6 +134,7 @@ const LogoImg = styled.img`
 
 const User = styled(Link)`
   height: 50px;
+  margin-right: 20px;
 `;
 
 const UserImg = styled.img`
@@ -146,9 +148,8 @@ const UserImg = styled.img`
 const Nav = styled.ul`
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-left: 20px;
-  margin-right: 20px;
+  margin-left: 20%;
+  margin-right: auto;
 `;
 
 const NavItem = styled(Link)<NavItemProps>`
@@ -190,3 +191,5 @@ const NavItem = styled(Link)<NavItemProps>`
     }
   `}
 `;
+
+const Notice = styled.div``;
