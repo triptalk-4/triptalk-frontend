@@ -1,6 +1,7 @@
 import styled from 'styled-components';
-import ScheduleMapLoader from '../../component/ScheduleMap';
 import { GRAY_COLOR } from '../../color/color';
+import ReviewMap from '../../component/ReviewMap';
+import TravelPosts from './TravelPosts';
 
 export default function TravelMap() {
   return (
@@ -9,17 +10,17 @@ export default function TravelMap() {
         <TravelTitle>국내 다양한 여행지를 둘러보세요.</TravelTitle>
       </TravelTitleContainer>
       <Map>
-        <ScheduleMapLoader onPlacesSelected={() => {}} />
+        <ReviewMap onPlacesSelected={() => {}} />
       </Map>
       <PostBorder></PostBorder>
-      <TravelCarouselContainer></TravelCarouselContainer>
+      <TravelPosts />
     </TravelContainer>
   );
 }
 
 const TravelContainer = styled.div`
   max-width: 1200px;
-  margin: 65px auto;
+  margin: 35px auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -44,5 +45,3 @@ const Map = styled.div`
 const PostBorder = styled.div`
   border: 1px solid ${GRAY_COLOR};
 `;
-
-const TravelCarouselContainer = styled.div``;
