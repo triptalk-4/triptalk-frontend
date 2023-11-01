@@ -52,16 +52,18 @@ const defaultTravelsData = [
 
 export default function TravelPosts() {
   const [travelPostsData, setTravelPostsData] = useState([]);
-  const [containerClassName, setContainerClassName] = useState('flex-start');
+  const [containerClassName, setContainerClassName] = useState('space-between');
 
   useEffect(() => {
     // 게시물 갯수에 따라 스타일 변경
-    if (travelPostsData.length >= 2) {
+    if (travelPostsData.length <= 3) {
       setContainerClassName('flex-start');
     } else {
       setContainerClassName('space-between');
     }
   }, [travelPostsData]);
+
+  console.log(setTravelPostsData);
 
   return (
     <PostlContainer className={containerClassName}>
@@ -106,11 +108,16 @@ const PostlContainer = styled.div`
 const Post = styled.div`
   width: 270px;
   height: 350px;
+  margin-right: 40px;
   margin-bottom: 80px;
   border: 1px solid rgba(0, 0, 0, 0.1);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 25px;
   position: relative;
+
+  &:nth-child(4n) {
+    margin-right: 0;
+  }
 `;
 
 const Img = styled.img`
@@ -123,6 +130,7 @@ const Img = styled.img`
 
 const TextBox = styled.div`
   position: absolute;
+  cursor: pointer;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
