@@ -1,3 +1,5 @@
+import Pagination from '@mui/material/Pagination/Pagination';
+
 export default function TravelPagination() {
-  return <div>TravelPagination</div>;
+  return <Pagination count={10} />;
 }
