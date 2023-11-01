@@ -90,7 +90,7 @@ const PopupImgDiv = styled.div`
 
 const PopupImg = styled.img`
   max-height: 400px;
-  max-width: 400px;
+  max-width: 500px;
   object-fit: cover;
 `;
 
