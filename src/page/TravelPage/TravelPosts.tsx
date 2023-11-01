@@ -115,9 +115,9 @@ const PostlContainer = styled.div`
 
 const Post = styled.div`
   width: 270px;
-  height: 350px;
+  height: 390px;
   margin-right: 40px;
-  margin-bottom: 80px;
+  margin-bottom: 20px;
   border: 1px solid rgba(0, 0, 0, 0.1);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 25px;
@@ -133,6 +133,7 @@ const Img = styled.img`
   border-radius: 25px;
   display: block;
   width: 100%;
+  height: 100%;
   cursor: pointer;
   object-fit: cover;
 `;
@@ -144,7 +145,7 @@ const TextBox = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  top: 54px;
+  top: 0;
   width: 100%;
   height: 100%;
   padding: 0 15px 20px;
