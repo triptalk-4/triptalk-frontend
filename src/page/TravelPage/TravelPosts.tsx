@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import TravelPagination from './TravelPagination';
+import TravelPopup from './TravelPopup';
 
 interface TravelPostData {
   imgUrl: string;
@@ -19,6 +20,8 @@ interface TravelPostsProps {
 export default function TravelPosts({ travelDatas }: TravelPostsProps) {
   const [travelPostsData, setTravelPostsData] = useState<TravelPostData[]>([]);
   const [containerClassName, setContainerClassName] = useState('space-between');
+
+  // 페이지네이션
   const itemsPerPage = 4;
   const pageCount = calculatePageCount(travelDatas.length, itemsPerPage); // 한페이지에 보일 데이터에 대한 페이지네이션 수
   const [currentPage, setCurrentPage] = useState(1);
@@ -26,6 +29,10 @@ export default function TravelPosts({ travelDatas }: TravelPostsProps) {
   function calculatePageCount(totalItems: number, itemsPerPage: number) {
     return Math.ceil(totalItems / itemsPerPage);
   }
+
+  // 팝업
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [popupData, setPopupData] = useState<TravelPostData | null>(null);
 
   useEffect(() => {
     // 게시물 갯수에 따라 스타일 변경
@@ -38,6 +45,16 @@ export default function TravelPosts({ travelDatas }: TravelPostsProps) {
 
   console.log(setTravelPostsData);
 
+  function openPopup(data: TravelPostData) {
+    setPopupData(data);
+    setIsPopupOpen(true);
+  }
+
+  function closePopup() {
+    setIsPopupOpen(false);
+    setPopupData(null);
+  }
+
   function getPageData(pageNumber: number) {
     const startIndex = (pageNumber - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
@@ -48,7 +65,7 @@ export default function TravelPosts({ travelDatas }: TravelPostsProps) {
     <>
       <PostlContainer className={containerClassName}>
         {getPageData(currentPage).map((travelData, index) => (
-          <Post key={index}>
+          <Post key={index} onClick={() => openPopup(travelData)}>
             <Img src={travelData.imgUrl} />
             <TextBox>
               <TopText>
@@ -73,6 +90,9 @@ export default function TravelPosts({ travelDatas }: TravelPostsProps) {
           onPageChange={setCurrentPage}
         />
       </PaginationDiv>
+
+      {/* 팝업부분 */}
+      {isPopupOpen && popupData && <TravelPopup data={popupData} onClose={closePopup} />}
     </>
   );
 }
@@ -101,6 +121,7 @@ const Post = styled.div`
   border: 1px solid rgba(0, 0, 0, 0.1);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 25px;
+
   position: relative;
 
   &:nth-child(4n) {
@@ -118,6 +139,7 @@ const Img = styled.img`
 
 const TextBox = styled.div`
   position: absolute;
+
   cursor: pointer;
   display: flex;
   flex-direction: column;
