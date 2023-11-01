@@ -23,10 +23,24 @@ interface PlaceSearchResult {
   y: string;
 }
 
+interface Place {
+  plannerDetailId: number;
+  nickname: string;
+  description: string;
+  image: string;
+  place: string;
+  date: number;
+  views: number | null;
+  likeCount: number | null;
+  lat: number;
+  lon: number;
+}
+
 interface SchduleMapLoaderProps {
   onPlacesSelected: (PlaceInfo: PlaceInfo[]) => void;
   onPlace?: Array<{ latitude: number; longitude: number }>;
   mapPings?: Array<{ latitude: number; longitude: number }>; // mapPings 추가
+  places?: Place[]; // 리뷰맵
 }
 
 const ReviewMap: React.FC<SchduleMapLoaderProps> = ({ onPlacesSelected, onPlace, mapPings }) => {
@@ -60,31 +74,17 @@ const ReviewMap: React.FC<SchduleMapLoaderProps> = ({ onPlacesSelected, onPlace,
   useEffect(() => {
     const addMarker = (places: Array<{ latitude: number; longitude: number }>) => {
       const bounds = new kakao.maps.LatLngBounds();
-      const linePath: any = [];
       places.forEach(place => {
         const marker = new kakao.maps.Marker({
           position: new kakao.maps.LatLng(place.latitude, place.longitude),
         });
         marker.setMap(map);
         bounds.extend(new kakao.maps.LatLng(place.latitude, place.longitude));
-        linePath.push(new kakao.maps.LatLng(place.latitude, place.longitude));
       });
       if (map) {
         map.setBounds(bounds);
-        if (linePath.length > 1) {
-          const polyline = new kakao.maps.Polyline({
-            map,
-            path: linePath,
-            strokeWeight: 3,
-            strokeColor: `${MAIN_COLOR}`,
-            strokeOpacity: 0.7,
-            strokeStyle: 'solid',
-          });
-          console.log(polyline);
-        }
       }
     };
-
     if (onPlace && onPlace.length > 0) {
       addMarker(onPlace);
     }
@@ -171,7 +171,9 @@ const ReviewMap: React.FC<SchduleMapLoaderProps> = ({ onPlacesSelected, onPlace,
           borderRadius: '4px',
           margin: '0px',
         }}></Con>
-      {!onPlace ? <Input type="text" placeholder="장소 검색" onChange={e => setSearchPlace(e.target.value)} /> : null}
+      {!onPlace ? (
+        <Input type="text" placeholder="장소 검색해보세요" onChange={e => setSearchPlace(e.target.value)} />
+      ) : null}
       {!onPlace ? <Button onClick={handleSearch}>검색</Button> : null}
     </>
   );

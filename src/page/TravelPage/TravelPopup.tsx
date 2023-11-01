@@ -1,13 +1,16 @@
 import styled from 'styled-components';
 
 interface TravelPostData {
-  imgUrl: string;
-  title: string;
+  plannerDetailId: number;
   nickname: string;
-  address: string;
-  date: string;
-  heartCount: number;
-  lookUpCount: number;
+  description: string;
+  image: string;
+  place: string;
+  date: number;
+  views: number | null;
+  likeCount: number | null;
+  lat: number;
+  lon: number;
 }
 
 interface TravelPopupProps {
@@ -24,25 +27,21 @@ export default function TravelPopup({ data, onClose }: TravelPopupProps) {
     <Popup>
       <PopupContent>
         <PopupImgDiv>
-          <PopupImg src={data.imgUrl} />
+          <PopupImg src={data.image} />
         </PopupImgDiv>
         <PopupInfo>
           <Top>
-            <PopupTitle>{data.title}</PopupTitle>
+            <PopupTitle>{data.description}</PopupTitle>
             <PopupNickname>
               <UserProfile src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" />
               {data.nickname}
             </PopupNickname>
           </Top>
           <Middle>
-            <PopupReview>
-              죽는 날까지 하늘을 우러러 한 점 부끄럼이 없기를, 잎새에 이는 바람에도 나는 괴로워했다. 별을 노래하는
-              마음으로 모든 죽어가는 것을 사랑해야지 그리고 나한테 주어진 길을 걸어가야겠다. 오늘 밤에도 별이 바람에
-              스치운다.
-            </PopupReview>
+            <PopupReview>{data.description}</PopupReview>
           </Middle>
           <Button>
-            <PopupAddress>{data.address}</PopupAddress>
+            <PopupAddress>{data.place}</PopupAddress>
             <PopupDate>{data.date}</PopupDate>
           </Button>
         </PopupInfo>
