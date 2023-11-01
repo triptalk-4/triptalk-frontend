@@ -2,15 +2,19 @@ import { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import TravelPagination from './TravelPagination';
 import TravelPopup from './TravelPopup';
+import moment from 'moment';
 
 interface TravelPostData {
-  imgUrl: string;
-  title: string;
+  plannerDetailId: number;
   nickname: string;
-  address: string;
-  date: string;
-  heartCount: number;
-  lookUpCount: number;
+  description: string;
+  image: string;
+  place: string;
+  date: number;
+  views: number | null;
+  likeCount: number | null;
+  lat: number;
+  lon: number;
 }
 
 interface TravelPostsProps {
@@ -66,18 +70,18 @@ export default function TravelPosts({ travelDatas }: TravelPostsProps) {
       <PostlContainer className={containerClassName}>
         {getPageData(currentPage).map((travelData, index) => (
           <Post key={index} onClick={() => openPopup(travelData)}>
-            <Img src={travelData.imgUrl} />
+            <Img src={travelData.image} />
             <TextBox>
               <TopText>
-                <Title>{travelData.title}</Title>
+                <Title>{travelData.description}</Title>
                 <Nickname>
                   <UserProfile src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" />
                   {travelData.nickname}
                 </Nickname>
               </TopText>
               <BottomText>
-                <Address>{travelData.address}</Address>
-                <Date>{travelData.date}</Date>
+                <Address>{travelData.place}</Address>
+                {travelData.date && <Date>{moment(travelData.date).add(9, 'hours').format('YYYY-MM-DD')}</Date>}
               </BottomText>
             </TextBox>
           </Post>

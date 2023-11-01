@@ -2,67 +2,82 @@ import styled from 'styled-components';
 import { GRAY_COLOR } from '../../color/color';
 import ReviewMap from '../../component/ReviewMap';
 import TravelPosts from './TravelPosts';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
 
-const defaultTravelsData = [
-  // 서울
-  {
-    imgUrl: 'img/Travelimg1.jpg',
-    title: '서울 여행 1',
-    nickname: '모험가',
-    address: '서울시 강남구 강남대로 123번길 45',
-    date: '10/01/2023',
-    heartCount: 5,
-    lookUpCount: 5,
-  },
-  {
-    imgUrl: 'img/Travelimg2.jpg',
-    title: '서울 여행 2',
-    nickname: '여행가2',
-    address: '서울시 강북구 강북로 789번길 10',
-    date: '10/05/2023',
-    heartCount: 10,
-    lookUpCount: 7,
-  },
-  {
-    imgUrl: 'img/Travelimg3.jpg',
-    title: '서울 힐링 여행',
-    nickname: '힐링객',
-    address: '서울시 마포구 마포로 56',
-    date: '10/10/2023',
-    heartCount: 8,
-    lookUpCount: 12,
-  },
-  {
-    imgUrl: 'img/Travelimg4.jpg',
-    title: '서울 문화 탐방',
-    nickname: '문화인',
-    address: '서울시 종로구 종로 1010',
-    date: '11/05/2023',
-    heartCount: 9,
-    lookUpCount: 15,
-  },
-  {
-    imgUrl: 'img/Travelimg5.jpg',
-    title: '서울 도심 힐링',
-    nickname: '도시탐험',
-    address: '서울시 중구 명동길 567',
-    date: '11/15/2023',
-    heartCount: 12,
-    lookUpCount: 9,
-  },
-];
+interface Place {
+  plannerDetailId: number;
+  nickname: string;
+  description: string;
+  image: string;
+  place: string;
+  date: number;
+  views: number | null;
+  likeCount: number | null;
+  lat: number;
+  lon: number;
+}
 
 export default function TravelMap() {
+  const token = useSelector((state: RootState) => state.token.token);
+  const [travelLatitude, setTravelLatitude] = useState(37.5665);
+  const [travelLongitude, setTravelLongitude] = useState(126.978);
+  const [placesData, setPlacesData] = useState<Place[]>([]);
+  const [mapPings, setMapPings] = useState([]);
+
+  console.log(setTravelLatitude, setTravelLongitude);
+
+  useEffect(() => {
+    const Access_token = localStorage.getItem('token');
+    const fetchTravelMap = async () => {
+      try {
+        const response = await axios.get(
+          `/address/api/search/map2?x=${travelLongitude}&y=${travelLatitude}&distance=3km`,
+          {
+            headers: {
+              Authorization: `Bearer ${Access_token}`,
+            },
+          }
+        );
+
+        if (response.data) {
+          setPlacesData(response.data);
+
+          const newMapPings = response.data.map((item: Place) => ({
+            latitude: item.lat,
+            longitude: item.lon,
+          }));
+          setMapPings(newMapPings);
+        } else {
+          console.log(response);
+          alert('사용자 정보가 없습니다 로그인확인해주세요');
+        }
+      } catch (error) {
+        console.error('사용자 정보 가져오기 오류 확인바람(리뷰맵):', error);
+      }
+    };
+
+    fetchTravelMap();
+  }, [token, travelLatitude, travelLongitude]);
+  console.log(placesData);
+
   return (
     <TravelContainer>
       <TravelTitleContainer>
         <TravelTitle>국내 다양한 여행지를 둘러보세요.</TravelTitle>
       </TravelTitleContainer>
       <Map>
-        <ReviewMap onPlacesSelected={() => {}} />
+        <ReviewMap
+          onPlacesSelected={() => {}}
+          // onPlace={[{ latitude: travelLatitude, longitude: travelLongitude }]}
+          places={placesData}
+          mapPings={mapPings}
+        />
       </Map>
       <PostBorder></PostBorder>
-      <TravelPosts travelDatas={defaultTravelsData} />
+      <TravelPosts travelDatas={placesData} />
     </TravelContainer>
   );
 }
