@@ -10,7 +10,7 @@ interface TravelPostData {
   description: string;
   image: string;
   place: string;
-  date: number;
+  date: string;
   views: number | null;
   likeCount: number | null;
   lat: number;
@@ -75,13 +75,13 @@ export default function TravelPosts({ travelDatas }: TravelPostsProps) {
               <TopText>
                 <Title>{travelData.description}</Title>
                 <Nickname>
-                  <UserProfile src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" />
+                  <UserProfile src={travelData.image} />
                   {travelData.nickname}
                 </Nickname>
               </TopText>
               <BottomText>
                 <Address>{travelData.place}</Address>
-                {travelData.date && <Date>{moment(travelData.date).add(9, 'hours').format('YYYY-MM-DD')}</Date>}
+                <Date>{moment(travelData.date, 'YYYY-MM-DDTHH:mm:ss').add(9, 'hours').format('YYYY-MM-DD HH:mm')}</Date>
               </BottomText>
             </TextBox>
           </Post>
@@ -166,15 +166,15 @@ const TopText = styled.div`
 
 const TextColor = css`
   color: #fff;
-  overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 `;
 
 const Title = styled.div`
   ${TextColor}
+  overflow: hidden;
   font-size: 18px;
-  margin-right: 20px;
+  padding-right: 20px;
 `;
 
 const UserProfile = styled.img`
@@ -201,12 +201,14 @@ const Address = styled.div`
   ${TextColor}
   font-weight: 300;
   margin-right: 20px;
+  overflow: hidden;
 `;
 
 const Date = styled.div`
   ${TextColor}
   font-size: 15px;
   font-weight: 300;
+  overflow: hidden;
 `;
 
 const PaginationDiv = styled.div`

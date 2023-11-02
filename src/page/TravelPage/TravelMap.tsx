@@ -13,7 +13,7 @@ interface Place {
   description: string;
   image: string;
   place: string;
-  date: number;
+  date: string;
   views: number | null;
   likeCount: number | null;
   lat: number;
@@ -26,8 +26,6 @@ export default function TravelMap() {
   const [travelLongitude, setTravelLongitude] = useState(126.978);
   const [placesData, setPlacesData] = useState<Place[]>([]);
   const [mapPings, setMapPings] = useState([]);
-
-  console.log(setTravelLatitude, setTravelLongitude);
 
   useEffect(() => {
     const Access_token = localStorage.getItem('token');
@@ -61,7 +59,6 @@ export default function TravelMap() {
 
     fetchTravelMap();
   }, [token, travelLatitude, travelLongitude]);
-  console.log(placesData);
 
   return (
     <TravelContainer>
@@ -71,9 +68,10 @@ export default function TravelMap() {
       <Map>
         <ReviewMap
           onPlacesSelected={() => {}}
-          // onPlace={[{ latitude: travelLatitude, longitude: travelLongitude }]}
-          places={placesData}
-          mapPings={mapPings}
+          places={placesData} // 정보
+          mapPings={mapPings} // 데이터 좌표
+          setTravelLatitude={setTravelLatitude}
+          setTravelLongitude={setTravelLongitude}
         />
       </Map>
       <PostBorder></PostBorder>
