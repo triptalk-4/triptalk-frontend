@@ -7,7 +7,6 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/store';
 import { BsBell } from 'react-icons/bs';
-import Modal from './Notice/Modal';
 
 interface NavItemProps {
   $isActive: boolean;
@@ -24,6 +23,9 @@ interface userInfoDate {
   username: string;
 }
 
+interface ModalProps {
+  onClose: () => void;
+}
 export default function Header() {
   //  const [userImg, setUserImg] = useState(''); // msw
   const token = useSelector((state: RootState) => state.token.token); // Redux에서 토큰 가져오기
@@ -37,17 +39,15 @@ export default function Header() {
     email: '',
     password: '',
     aboutMe: '',
-    username: ''
+    username: '',
   });
-  const [isModalOpen, setModalOpen] = useState(false);
+  const [isModalOpen, setModalOpen] = useState(false); // 모달 창 상태
 
   const handleModalOpen = () => {
-    document.body.style.overflow = 'hidden';
     setModalOpen(true);
   };
 
   const handleModalClose = () => {
-    document.body.style.overflow = 'auto';
     setModalOpen(false);
   };
 
@@ -67,8 +67,8 @@ export default function Header() {
       try {
         const response = await axios.get('https://triptalk.xyz/api/users/profile', {
           headers: {
-            Authorization: `Bearer ${token}` //필수
-          }
+            Authorization: `Bearer ${token}`, //필수
+          },
         });
 
         if (response.data) {
@@ -117,6 +117,14 @@ export default function Header() {
   );
 }
 
+function Modal({ onClose }: ModalProps) {
+  return (
+    <ModalBackdrop onClick={onClose}>
+      <ModalContent onClick={e => e.stopPropagation()}>내용입력</ModalContent>
+    </ModalBackdrop>
+  );
+}
+
 const GnbContainer = styled.div`
   align-items: center;
   height: auto;
@@ -156,7 +164,6 @@ const UserImg = styled.img`
   border-radius: 100%;
   border: 1px solid rgba(0, 0, 0, 0.1);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  background-color: #ffffff;
 `;
 
 const Nav = styled.ul`
@@ -208,4 +215,26 @@ const NavItem = styled(Link)<NavItemProps>`
 
 const Notice = styled.div`
   cursor: pointer;
+`;
+
+const ModalBackdrop = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+`;
+
+const ModalContent = styled.div`
+  width: 700px;
+  height: 600px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 `;
