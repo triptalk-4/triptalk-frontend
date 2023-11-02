@@ -206,7 +206,11 @@ export default function ReviewMap({ mapPings, setTravelLatitude, setTravelLongit
           borderRadius: '4px',
           margin: '0px',
         }}></Con>
-      <Input type="text" placeholder="장소 검색해보세요" onChange={e => setSearchPlace(e.target.value)} />
+      <Input
+        type="text"
+        placeholder="원하시는 장소를 검색해 관련 게시물을 보세요"
+        onChange={e => setSearchPlace(e.target.value)}
+      />
       <Button
         onClick={() => {
           handleSearch();
@@ -224,6 +228,7 @@ const Con = styled.div`
 `;
 
 const Input = styled.input`
+  width: 35%;
   padding: 10px;
   font-size: 16px;
   border: 1px solid ${MAIN_COLOR};
@@ -233,10 +238,12 @@ const Input = styled.input`
   margin-bottom: 4px;
   margin-right: 4px;
   margin-top: 20px;
+
   &:focus {
     border-color: ${MAIN_COLOR};
   }
 `;
+
 const Button = styled.button`
   padding: 10px;
   font-size: 16px;
@@ -247,6 +254,7 @@ const Button = styled.button`
   transition: border-color 0.3s;
   outline: none;
   cursor: pointer;
+
   &:focus {
     border-color: ${MAIN_COLOR};
   }
