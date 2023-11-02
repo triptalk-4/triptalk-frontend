@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-
 import styled from 'styled-components';
 import { MAIN_COLOR, YELLOW_COLOR } from '../color/color';
 
@@ -38,16 +37,28 @@ interface Place {
 
 interface SchduleMapLoaderProps {
   onPlacesSelected: (PlaceInfo: PlaceInfo[]) => void;
-  onPlace?: Array<{ latitude: number; longitude: number }>;
+  //  onPlace?: Array<{ latitude: number; longitude: number }>;
   mapPings?: Array<{ latitude: number; longitude: number }>; // mapPings 추가
   places?: Place[]; // 리뷰맵
+
+  setTravelLatitude: (latitude: number) => void;
+  setTravelLongitude: (longitude: number) => void;
 }
 
-const ReviewMap: React.FC<SchduleMapLoaderProps> = ({ onPlacesSelected, onPlace, mapPings }) => {
+const ReviewMap: React.FC<SchduleMapLoaderProps> = ({
+  // onPlacesSelected,
+  mapPings,
+
+  setTravelLatitude,
+  setTravelLongitude,
+}) => {
   const [searchPlace, setSearchPlace] = useState('');
   const [map, setMap] = useState<kakao.maps.Map | null>(null);
-  const [selectedPlaceInfos, setSelectedPlaceInfos] = useState<PlaceInfo[]>([]);
-  console.log(selectedPlaceInfos);
+  // const [selectedPlaceInfos, setSelectedPlaceInfos] = useState<PlaceInfo[]>([]);
+  const [newLatitude, setNewLatitude] = useState(37.5665);
+  const [newLongitude, setNewLongitude] = useState(126.978);
+
+  // console.log(selectedPlaceInfos);
   useEffect(() => {
     const script = document.createElement('script');
     script.async = true;
@@ -85,14 +96,14 @@ const ReviewMap: React.FC<SchduleMapLoaderProps> = ({ onPlacesSelected, onPlace,
         map.setBounds(bounds);
       }
     };
-    if (onPlace && onPlace.length > 0) {
-      addMarker(onPlace);
-    }
+    // if (onPlace && onPlace.length > 0) {
+    //   addMarker(onPlace);
+    // }
 
     if (mapPings && mapPings.length > 0) {
       addMarker(mapPings); // mapPings 정보를 사용하여 마커 추가
     }
-  }, [onPlace, mapPings]);
+  }, [mapPings]);
 
   const handleSearch = async () => {
     if (map) {
@@ -128,29 +139,31 @@ const ReviewMap: React.FC<SchduleMapLoaderProps> = ({ onPlacesSelected, onPlace,
             };
 
             newPlaceInfos.push(selectedPlaceInfo);
+            setNewLatitude(Number(place.y));
+            setNewLongitude(Number(place.x));
           }
 
           // 마커를 생성하고 지도에 표시
-          const marker = new kakao.maps.Marker({
-            map,
-            position: new kakao.maps.LatLng(Number(place.y), Number(place.x)),
-          });
-          kakao.maps.event.addListener(marker, 'click', () => {
-            const infowindow = new kakao.maps.InfoWindow({
-              content: `<div style="padding:5px; font-size:12px">${place.place_name}</div>`,
-            });
-            infowindow.open(map, marker);
-          });
+          // const marker = new kakao.maps.Marker({
+          //   map,
+          //   position: new kakao.maps.LatLng(Number(place.y), Number(place.x)),
+          // });
+          // kakao.maps.event.addListener(marker, 'click', () => {
+          //   const infowindow = new kakao.maps.InfoWindow({
+          //     content: `<div style="padding:5px; font-size:12px">${place.place_name}</div>`,
+          //   });
+          //   infowindow.open(map, marker);
+          // });
 
           bounds.extend(new kakao.maps.LatLng(Number(place.y), Number(place.x)));
         }
 
         // 이전 상태와 새로운 장소 정보를 합치고 상태를 업데이트
-        setSelectedPlaceInfos(prevPlaceInfos => {
-          const updatedPlaceInfos = [...prevPlaceInfos, ...newPlaceInfos];
-          onPlacesSelected(updatedPlaceInfos);
-          return updatedPlaceInfos;
-        });
+        // setSelectedPlaceInfos(prevPlaceInfos => {
+        //   const updatedPlaceInfos = [...prevPlaceInfos, ...newPlaceInfos];
+        //   onPlacesSelected(updatedPlaceInfos);
+        //   return updatedPlaceInfos;
+        // });
 
         // 검색된 장소 위치를 기준으로 지도 범위를 재설정
         map.setBounds(bounds);
@@ -171,10 +184,15 @@ const ReviewMap: React.FC<SchduleMapLoaderProps> = ({ onPlacesSelected, onPlace,
           borderRadius: '4px',
           margin: '0px',
         }}></Con>
-      {!onPlace ? (
-        <Input type="text" placeholder="장소 검색해보세요" onChange={e => setSearchPlace(e.target.value)} />
-      ) : null}
-      {!onPlace ? <Button onClick={handleSearch}>검색</Button> : null}
+      <Input type="text" placeholder="장소 검색해보세요" onChange={e => setSearchPlace(e.target.value)} />
+      <Button
+        onClick={() => {
+          handleSearch();
+          setTravelLatitude(newLatitude);
+          setTravelLongitude(newLongitude);
+        }}>
+        검색
+      </Button>
     </>
   );
 };
