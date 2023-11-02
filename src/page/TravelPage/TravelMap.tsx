@@ -13,7 +13,7 @@ interface Place {
   description: string;
   image: string;
   place: string;
-  date: number;
+  date: string;
   views: number | null;
   likeCount: number | null;
   lat: number;

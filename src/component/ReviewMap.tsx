@@ -28,7 +28,7 @@ interface Place {
   description: string;
   image: string;
   place: string;
-  date: number;
+  date: string;
   views: number | null;
   likeCount: number | null;
   lat: number;
@@ -45,13 +45,12 @@ interface SchduleMapLoaderProps {
   setTravelLongitude: (longitude: number) => void;
 }
 
-const ReviewMap: React.FC<SchduleMapLoaderProps> = ({
-  // onPlacesSelected,
+export default function ReviewMap({
   mapPings,
-
   setTravelLatitude,
   setTravelLongitude,
-}) => {
+}: // onPlacesSelected,
+SchduleMapLoaderProps) {
   const [searchPlace, setSearchPlace] = useState('');
   const [map, setMap] = useState<kakao.maps.Map | null>(null);
   // const [selectedPlaceInfos, setSelectedPlaceInfos] = useState<PlaceInfo[]>([]);
@@ -195,9 +194,7 @@ const ReviewMap: React.FC<SchduleMapLoaderProps> = ({
       </Button>
     </>
   );
-};
-
-export default ReviewMap;
+}
 
 const Con = styled.div`
   margin: 5% auto;
