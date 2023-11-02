@@ -6,7 +6,7 @@ import { Link, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/store';
-import { BiBell } from 'react-icons/bi';
+import { BsBell } from 'react-icons/bs';
 
 interface NavItemProps {
   $isActive: boolean;
@@ -109,7 +109,7 @@ export default function Header() {
           <UserImg src={headerUser.profile} />
         </User>
         <Notice onClick={handleModalOpen}>
-          <Bell />
+          <BsBell></BsBell>
         </Notice>
         {isModalOpen && <Modal onClose={handleModalClose} />}
       </Gnb>
@@ -170,7 +170,7 @@ const Nav = styled.ul`
   display: flex;
   align-items: center;
   margin-left: 20%;
-  margin-right: 20%;
+  margin-right: auto;
 `;
 
 const NavItem = styled(Link)<NavItemProps>`
@@ -215,10 +215,6 @@ const NavItem = styled(Link)<NavItemProps>`
 
 const Notice = styled.div`
   cursor: pointer;
-`;
-
-const Bell = styled(BiBell)`
-  font-size: 25px;
 `;
 
 const ModalBackdrop = styled.div`
