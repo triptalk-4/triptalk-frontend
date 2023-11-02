@@ -201,8 +201,7 @@ export default function AddSchedule() {
                 }}
               />
               <div>
-                <Input type="text" placeholder="장소" />
-                <Button>검색</Button>
+                <PlaceName>{container.placeInfo ? container.placeInfo.placeName : ''}</PlaceName>
               </div>
             </CoreTopContainer>
             <ImgContainer>
@@ -287,7 +286,7 @@ const CoreTopContainer = styled.div`
   margin-bottom: 50px;
 `;
 
-const Input = styled.input`
+const PlaceName = styled.div`
   padding: 10px;
   font-size: 16px;
   border: 1px solid ${MAIN_COLOR};
