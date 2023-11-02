@@ -23,6 +23,9 @@ interface userInfoDate {
   username: string;
 }
 
+interface ModalProps {
+  onClose: () => void;
+}
 export default function Header() {
   //  const [userImg, setUserImg] = useState(''); // msw
   const token = useSelector((state: RootState) => state.token.token); // Redux에서 토큰 가져오기
@@ -38,6 +41,15 @@ export default function Header() {
     aboutMe: '',
     username: ''
   });
+  const [isModalOpen, setModalOpen] = useState(false); // 모달 창 상태
+
+  const handleModalOpen = () => {
+    setModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setModalOpen(false);
+  };
 
   // useEffect(() => {
   //   const storedUserData = localStorage.getItem('userInfo');
@@ -96,11 +108,20 @@ export default function Header() {
         <User to={`/myinfo/${headerUser.userId}`}>
           <UserImg src={headerUser.profile} />
         </User>
-        <Notice>
+        <Notice onClick={handleModalOpen}>
           <BsBell></BsBell>
         </Notice>
+        {isModalOpen && <Modal onClose={handleModalClose} />}
       </Gnb>
     </GnbContainer>
+  );
+}
+
+function Modal({ onClose }: ModalProps) {
+  return (
+    <ModalBackdrop onClick={onClose}>
+      <ModalContent onClick={e => e.stopPropagation()}>내용입력</ModalContent>
+    </ModalBackdrop>
   );
 }
 
@@ -192,4 +213,28 @@ const NavItem = styled(Link)<NavItemProps>`
   `}
 `;
 
-const Notice = styled.div``;
+const Notice = styled.div`
+  cursor: pointer;
+`;
+
+const ModalBackdrop = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+`;
+
+const ModalContent = styled.div`
+  width: 700px;
+  height: 600px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+`;
