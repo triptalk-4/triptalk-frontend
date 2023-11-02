@@ -10,8 +10,9 @@ import { RootState } from '../../store/store';
 interface Place {
   plannerDetailId: number;
   nickname: string;
+  profile: string;
   description: string;
-  image: string;
+  image: string[];
   place: string;
   date: string;
   views: number | null;
@@ -60,6 +61,7 @@ export default function TravelMap() {
     fetchTravelMap();
   }, [token, travelLatitude, travelLongitude]);
 
+  console.log(setTravelLatitude, setTravelLongitude);
   return (
     <TravelContainer>
       <TravelTitleContainer>

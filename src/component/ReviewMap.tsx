@@ -26,7 +26,7 @@ interface Place {
   plannerDetailId: number;
   nickname: string;
   description: string;
-  image: string;
+  image: string[];
   place: string;
   date: string;
   views: number | null;

@@ -7,8 +7,9 @@ import moment from 'moment';
 interface TravelPostData {
   plannerDetailId: number;
   nickname: string;
+  profile: string;
   description: string;
-  image: string;
+  image: string[];
   place: string;
   date: string;
   views: number | null;
@@ -70,12 +71,12 @@ export default function TravelPosts({ travelDatas }: TravelPostsProps) {
       <PostlContainer className={containerClassName}>
         {getPageData(currentPage).map((travelData, index) => (
           <Post key={index} onClick={() => openPopup(travelData)}>
-            <Img src={travelData.image} />
+            <Img src={travelData.image[0]} />
             <TextBox>
               <TopText>
                 <Title>{travelData.description}</Title>
                 <Nickname>
-                  <UserProfile src={travelData.image} />
+                  <UserProfile src={travelData.profile} />
                   {travelData.nickname}
                 </Nickname>
               </TopText>
