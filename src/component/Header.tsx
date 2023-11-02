@@ -6,7 +6,7 @@ import { Link, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/store';
-import { BsBell } from 'react-icons/bs';
+import { BiBell } from 'react-icons/bi';
 
 interface NavItemProps {
   $isActive: boolean;
@@ -39,7 +39,7 @@ export default function Header() {
     email: '',
     password: '',
     aboutMe: '',
-    username: ''
+    username: '',
   });
   const [isModalOpen, setModalOpen] = useState(false); // 모달 창 상태
 
@@ -67,8 +67,8 @@ export default function Header() {
       try {
         const response = await axios.get('https://triptalk.xyz/api/users/profile', {
           headers: {
-            Authorization: `Bearer ${token}` //필수
-          }
+            Authorization: `Bearer ${token}`, //필수
+          },
         });
 
         if (response.data) {
@@ -109,7 +109,7 @@ export default function Header() {
           <UserImg src={headerUser.profile} />
         </User>
         <Notice onClick={handleModalOpen}>
-          <BsBell></BsBell>
+          <Bell />
         </Notice>
         {isModalOpen && <Modal onClose={handleModalClose} />}
       </Gnb>
@@ -170,7 +170,7 @@ const Nav = styled.ul`
   display: flex;
   align-items: center;
   margin-left: 20%;
-  margin-right: auto;
+  margin-right: 20%;
 `;
 
 const NavItem = styled(Link)<NavItemProps>`
@@ -215,6 +215,9 @@ const NavItem = styled(Link)<NavItemProps>`
 
 const Notice = styled.div`
   cursor: pointer;
+`;
+const Bell = styled(BiBell)`
+  font-size: 23px;
 `;
 
 const ModalBackdrop = styled.div`

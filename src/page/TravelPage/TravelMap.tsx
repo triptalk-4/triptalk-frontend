@@ -10,8 +10,9 @@ import { RootState } from '../../store/store';
 interface Place {
   plannerDetailId: number;
   nickname: string;
+  profile: string;
   description: string;
-  image: string;
+  image: string[];
   place: string;
   date: string;
   views: number | null;
@@ -46,6 +47,8 @@ export default function TravelMap() {
           const newMapPings = response.data.map((item: Place) => ({
             latitude: item.lat,
             longitude: item.lon,
+            image: item.image,
+            description: item.description,
           }));
           setMapPings(newMapPings);
         } else {
@@ -60,6 +63,7 @@ export default function TravelMap() {
     fetchTravelMap();
   }, [token, travelLatitude, travelLongitude]);
 
+  console.log(setTravelLatitude, setTravelLongitude);
   return (
     <TravelContainer>
       <TravelTitleContainer>
@@ -105,5 +109,6 @@ const Map = styled.div`
 `;
 
 const PostBorder = styled.div`
+  margin-top: 20px;
   border: 1px solid ${GRAY_COLOR};
 `;

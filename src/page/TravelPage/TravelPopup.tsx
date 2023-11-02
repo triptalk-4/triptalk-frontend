@@ -1,10 +1,15 @@
-import styled from 'styled-components';
+import moment from 'moment';
+import { BiTime } from 'react-icons/bi';
+import { GrLocation } from 'react-icons/gr';
+import styled, { css } from 'styled-components';
+import PopupImgs from '../../component/Carousel/PopupImgs';
 
 interface TravelPostData {
   plannerDetailId: number;
   nickname: string;
+  profile: string;
   description: string;
-  image: string;
+  image: string[];
   place: string;
   date: string;
   views: number | null;
@@ -27,22 +32,27 @@ export default function TravelPopup({ data, onClose }: TravelPopupProps) {
     <Popup>
       <PopupContent>
         <PopupImgDiv>
-          <PopupImg src={data.image} />
+          <PopupImgs image={data.image} />
         </PopupImgDiv>
         <PopupInfo>
           <Top>
-            <PopupTitle>{data.description}</PopupTitle>
             <PopupNickname>
-              <UserProfile src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" />
+              <UserProfile src={data.profile} />
               {data.nickname}
             </PopupNickname>
+            <PopupDate>
+              <Time />
+              {moment(data.date, 'YYYY-MM-DDTHH:mm:ss').add(9, 'hours').format('YYYY-MM-DD HH:mm')}
+            </PopupDate>
           </Top>
           <Middle>
             <PopupReview>{data.description}</PopupReview>
           </Middle>
           <Button>
-            <PopupAddress>{data.place}</PopupAddress>
-            <PopupDate>{data.date}</PopupDate>
+            <PopupAddress>
+              <Location />
+              {data.place}
+            </PopupAddress>
           </Button>
         </PopupInfo>
         <CloseButton onClick={onClose}>닫기</CloseButton>
@@ -87,12 +97,6 @@ const PopupImgDiv = styled.div`
   border-radius: 25px;
 `;
 
-const PopupImg = styled.img`
-  max-height: 400px;
-  max-width: 500px;
-  object-fit: cover;
-`;
-
 const PopupInfo = styled.div`
   width: 100%;
   margin: 25px 0 0;
@@ -112,12 +116,6 @@ const Button = styled.div`
   justify-content: space-between;
 `;
 
-const PopupTitle = styled.div`
-  font-size: 24px;
-  font-weight: 700;
-  margin: 0 0 10px;
-`;
-
 const UserProfile = styled.img`
   width: 35px;
   height: 35px;
@@ -135,16 +133,31 @@ const PopupNickname = styled.div`
 
 const PopupReview = styled.div`
   margin: 15px 0;
-  font-size: 16px;
+  font-size: 23px;
 `;
 
 const PopupAddress = styled.div`
   font-size: 16px;
   margin: 0 0 10px;
+  font-weight: 700;
 `;
 
 const PopupDate = styled.div`
   font-size: 16px;
+`;
+
+const IconStyle = css`
+  font-size: 15px;
+  padding-right: 5px;
+  color: #000;
+`;
+
+const Time = styled(BiTime)`
+  ${IconStyle}
+`;
+
+const Location = styled(GrLocation)`
+  ${IconStyle}
 `;
 
 const CloseButton = styled.button`
