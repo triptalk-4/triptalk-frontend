@@ -6,6 +6,7 @@ import { Link, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/store';
+import { BsBell } from 'react-icons/bs';
 
 interface NavItemProps {
   $isActive: boolean;
@@ -22,6 +23,9 @@ interface userInfoDate {
   username: string;
 }
 
+interface ModalProps {
+  onClose: () => void;
+}
 export default function Header() {
   //  const [userImg, setUserImg] = useState(''); // msw
   const token = useSelector((state: RootState) => state.token.token); // Redux에서 토큰 가져오기
@@ -35,8 +39,17 @@ export default function Header() {
     email: '',
     password: '',
     aboutMe: '',
-    username: '',
+    username: ''
   });
+  const [isModalOpen, setModalOpen] = useState(false); // 모달 창 상태
+
+  const handleModalOpen = () => {
+    setModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setModalOpen(false);
+  };
 
   // useEffect(() => {
   //   const storedUserData = localStorage.getItem('userInfo');
@@ -54,8 +67,8 @@ export default function Header() {
       try {
         const response = await axios.get('https://triptalk.xyz/api/users/profile', {
           headers: {
-            Authorization: `Bearer ${token}`, //필수
-          },
+            Authorization: `Bearer ${token}` //필수
+          }
         });
 
         if (response.data) {
@@ -90,14 +103,25 @@ export default function Header() {
           <NavItem to="/travelmap" $isActive={location.pathname === '/travelmap'}>
             리뷰맵
           </NavItem>
-
           <Search />
         </Nav>
         <User to={`/myinfo/${headerUser.userId}`}>
           <UserImg src={headerUser.profile} />
         </User>
+        <Notice onClick={handleModalOpen}>
+          <BsBell></BsBell>
+        </Notice>
+        {isModalOpen && <Modal onClose={handleModalClose} />}
       </Gnb>
     </GnbContainer>
+  );
+}
+
+function Modal({ onClose }: ModalProps) {
+  return (
+    <ModalBackdrop onClick={onClose}>
+      <ModalContent onClick={e => e.stopPropagation()}>내용입력</ModalContent>
+    </ModalBackdrop>
   );
 }
 
@@ -108,13 +132,11 @@ const GnbContainer = styled.div`
 
 const Gnb = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
   height: 70px;
   padding: 20px 80px 20px;
   border-bottom: 1px solid #c1c1c1;
 `;
-
 const LogoDiv = styled.div`
   height: auto;
   user-select: none;
@@ -133,6 +155,7 @@ const LogoImg = styled.img`
 
 const User = styled(Link)`
   height: 50px;
+  margin-right: 20px;
 `;
 
 const UserImg = styled.img`
@@ -146,9 +169,8 @@ const UserImg = styled.img`
 const Nav = styled.ul`
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-left: 20px;
-  margin-right: 20px;
+  margin-left: 20%;
+  margin-right: auto;
 `;
 
 const NavItem = styled(Link)<NavItemProps>`
@@ -189,4 +211,30 @@ const NavItem = styled(Link)<NavItemProps>`
       transform: scaleX(1);
     }
   `}
+`;
+
+const Notice = styled.div`
+  cursor: pointer;
+`;
+
+const ModalBackdrop = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+`;
+
+const ModalContent = styled.div`
+  width: 700px;
+  height: 600px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 `;
