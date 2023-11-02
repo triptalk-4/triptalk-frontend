@@ -38,24 +38,19 @@ interface Place {
 interface SchduleMapLoaderProps {
   onPlacesSelected: (PlaceInfo: PlaceInfo[]) => void;
   //  onPlace?: Array<{ latitude: number; longitude: number }>;
-  mapPings?: Array<{ latitude: number; longitude: number }>; // mapPings 추가
+  mapPings?: Array<{ latitude: number; longitude: number; image: string; description: string }>; // mapPings 추가
   places?: Place[]; // 리뷰맵
 
   setTravelLatitude: (latitude: number) => void;
   setTravelLongitude: (longitude: number) => void;
 }
 
-export default function ReviewMap({
-  mapPings,
-  setTravelLatitude,
-  setTravelLongitude,
-}: // onPlacesSelected,
-SchduleMapLoaderProps) {
+export default function ReviewMap({ mapPings, setTravelLatitude, setTravelLongitude }: SchduleMapLoaderProps) {
   const [searchPlace, setSearchPlace] = useState('');
   const [map, setMap] = useState<kakao.maps.Map | null>(null);
-  // const [selectedPlaceInfos, setSelectedPlaceInfos] = useState<PlaceInfo[]>([]);
   const [newLatitude, setNewLatitude] = useState(37.5665);
   const [newLongitude, setNewLongitude] = useState(126.978);
+  const [, setInfoWindowOpen] = useState(false);
 
   // console.log(selectedPlaceInfos);
   useEffect(() => {
@@ -82,7 +77,10 @@ SchduleMapLoaderProps) {
   }, []);
 
   useEffect(() => {
-    const addMarker = (places: Array<{ latitude: number; longitude: number }>) => {
+    const addMarker = (places: Array<{ latitude: number; longitude: number; image: string; description: string }>) => {
+      if (!map) {
+        return;
+      }
       const bounds = new kakao.maps.LatLngBounds();
       places.forEach(place => {
         const marker = new kakao.maps.Marker({
@@ -90,14 +88,46 @@ SchduleMapLoaderProps) {
         });
         marker.setMap(map);
         bounds.extend(new kakao.maps.LatLng(place.latitude, place.longitude));
+
+        const maxDescriptionLength = 5; // 문자 수
+
+        const description =
+          place.description.length > maxDescriptionLength
+            ? `${place.description.slice(0, maxDescriptionLength)}...`
+            : place.description;
+
+        // 마커 클릭 시 표시될 정보 윈도우 생성
+        const infowindow = new kakao.maps.InfoWindow({
+          content: `
+          <div style="padding: 5px 41px; font-size: 12px; display: flex; align-items: center; flex-direction: column;">
+            <img src="${place.image[0]}" alt="First Image" style="max-width: 100%; max-height: 100px;"/>
+            ${description}
+            <button id="closeInfoWindow" style="cursor: pointer; background-color: transparent;
+            border: none;
+            color: ${MAIN_COLOR};">X</button>
+          </div>
+        `,
+        });
+
+        // 마커 클릭 이벤트 핸들러 등록
+        kakao.maps.event.addListener(marker, 'click', () => {
+          infowindow.open(map, marker);
+          setInfoWindowOpen(true);
+
+          const closeButton = document.getElementById('closeInfoWindow');
+          if (closeButton) {
+            closeButton.addEventListener('click', () => {
+              infowindow.close();
+              setInfoWindowOpen(false);
+            });
+          }
+        });
       });
+
       if (map) {
         map.setBounds(bounds);
       }
     };
-    // if (onPlace && onPlace.length > 0) {
-    //   addMarker(onPlace);
-    // }
 
     if (mapPings && mapPings.length > 0) {
       addMarker(mapPings); // mapPings 정보를 사용하여 마커 추가
@@ -157,13 +187,6 @@ SchduleMapLoaderProps) {
           bounds.extend(new kakao.maps.LatLng(Number(place.y), Number(place.x)));
         }
 
-        // 이전 상태와 새로운 장소 정보를 합치고 상태를 업데이트
-        // setSelectedPlaceInfos(prevPlaceInfos => {
-        //   const updatedPlaceInfos = [...prevPlaceInfos, ...newPlaceInfos];
-        //   onPlacesSelected(updatedPlaceInfos);
-        //   return updatedPlaceInfos;
-        // });
-
         // 검색된 장소 위치를 기준으로 지도 범위를 재설정
         map.setBounds(bounds);
       } catch (error) {
@@ -183,7 +206,11 @@ SchduleMapLoaderProps) {
           borderRadius: '4px',
           margin: '0px',
         }}></Con>
-      <Input type="text" placeholder="장소 검색해보세요" onChange={e => setSearchPlace(e.target.value)} />
+      <Input
+        type="text"
+        placeholder="원하시는 장소를 검색해 관련 게시물을 보세요"
+        onChange={e => setSearchPlace(e.target.value)}
+      />
       <Button
         onClick={() => {
           handleSearch();
@@ -201,6 +228,7 @@ const Con = styled.div`
 `;
 
 const Input = styled.input`
+  width: 35%;
   padding: 10px;
   font-size: 16px;
   border: 1px solid ${MAIN_COLOR};
@@ -210,10 +238,12 @@ const Input = styled.input`
   margin-bottom: 4px;
   margin-right: 4px;
   margin-top: 20px;
+
   &:focus {
     border-color: ${MAIN_COLOR};
   }
 `;
+
 const Button = styled.button`
   padding: 10px;
   font-size: 16px;
@@ -224,6 +254,7 @@ const Button = styled.button`
   transition: border-color 0.3s;
   outline: none;
   cursor: pointer;
+
   &:focus {
     border-color: ${MAIN_COLOR};
   }

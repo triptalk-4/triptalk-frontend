@@ -47,6 +47,8 @@ export default function TravelMap() {
           const newMapPings = response.data.map((item: Place) => ({
             latitude: item.lat,
             longitude: item.lon,
+            image: item.image,
+            description: item.description,
           }));
           setMapPings(newMapPings);
         } else {
@@ -107,5 +109,6 @@ const Map = styled.div`
 `;
 
 const PostBorder = styled.div`
+  margin-top: 20px;
   border: 1px solid ${GRAY_COLOR};
 `;
