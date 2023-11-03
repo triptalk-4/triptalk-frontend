@@ -171,8 +171,10 @@ const ScheduleMapLoader: React.FC<SchduleMapLoaderProps> = ({ onPlacesSelected, 
           borderRadius: '4px',
           margin: '0px',
         }}></Con>
-      {!onPlace ? <Input type="text" placeholder="장소 검색" onChange={e => setSearchPlace(e.target.value)} /> : null}
-      {!onPlace ? <Button onClick={handleSearch}>검색</Button> : null}
+      <div style={{ marginLeft: '77%' }}>
+        {!onPlace ? <Input type="text" placeholder="장소 검색" onChange={e => setSearchPlace(e.target.value)} /> : null}
+        {!onPlace ? <Button onClick={handleSearch}>검색</Button> : null}
+      </div>
     </>
   );
 };

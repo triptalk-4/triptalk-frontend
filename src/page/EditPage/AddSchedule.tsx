@@ -201,7 +201,12 @@ export default function AddSchedule() {
                 }}
               />
               <div>
-                <PlaceName>{container.placeInfo ? container.placeInfo.placeName : ''}</PlaceName>
+                <PlaceName
+                  type="text"
+                  value={container.placeInfo ? container.placeInfo.placeName : ''}
+                  placeholder="위치"
+                  readOnly
+                />
               </div>
             </CoreTopContainer>
             <ImgContainer>
@@ -286,7 +291,7 @@ const CoreTopContainer = styled.div`
   margin-bottom: 50px;
 `;
 
-const PlaceName = styled.div`
+const PlaceName = styled.input`
   padding: 10px;
   font-size: 16px;
   border: 1px solid ${MAIN_COLOR};
