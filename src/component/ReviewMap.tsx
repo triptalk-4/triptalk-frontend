@@ -22,24 +22,9 @@ interface PlaceSearchResult {
   y: string;
 }
 
-interface Place {
-  plannerDetailId: number;
-  nickname: string;
-  description: string;
-  image: string[];
-  place: string;
-  date: string;
-  views: number | null;
-  likeCount: number | null;
-  lat: number;
-  lon: number;
-}
-
 interface SchduleMapLoaderProps {
   onPlacesSelected: (PlaceInfo: PlaceInfo[]) => void;
-  //  onPlace?: Array<{ latitude: number; longitude: number }>;
   mapPings?: Array<{ latitude: number; longitude: number; image: string; description: string }>; // mapPings 추가
-  places?: Place[]; // 리뷰맵
 
   setTravelLatitude: (latitude: number) => void;
   setTravelLongitude: (longitude: number) => void;
@@ -52,7 +37,6 @@ export default function ReviewMap({ mapPings, setTravelLatitude, setTravelLongit
   const [newLongitude, setNewLongitude] = useState(126.978);
   const [, setInfoWindowOpen] = useState(false);
 
-  // console.log(selectedPlaceInfos);
   useEffect(() => {
     const script = document.createElement('script');
     script.async = true;
@@ -171,18 +155,6 @@ export default function ReviewMap({ mapPings, setTravelLatitude, setTravelLongit
             setNewLatitude(Number(place.y));
             setNewLongitude(Number(place.x));
           }
-
-          // 마커를 생성하고 지도에 표시
-          // const marker = new kakao.maps.Marker({
-          //   map,
-          //   position: new kakao.maps.LatLng(Number(place.y), Number(place.x)),
-          // });
-          // kakao.maps.event.addListener(marker, 'click', () => {
-          //   const infowindow = new kakao.maps.InfoWindow({
-          //     content: `<div style="padding:5px; font-size:12px">${place.place_name}</div>`,
-          //   });
-          //   infowindow.open(map, marker);
-          // });
 
           bounds.extend(new kakao.maps.LatLng(Number(place.y), Number(place.x)));
         }

@@ -63,7 +63,8 @@ export default function TravelMap() {
     fetchTravelMap();
   }, [token, travelLatitude, travelLongitude]);
 
-  console.log(setTravelLatitude, setTravelLongitude);
+  console.log('placesData', placesData);
+
   return (
     <TravelContainer>
       <TravelTitleContainer>
@@ -72,10 +73,9 @@ export default function TravelMap() {
       <Map>
         <ReviewMap
           onPlacesSelected={() => {}}
-          places={placesData} // 정보
           mapPings={mapPings} // 데이터 좌표
-          setTravelLatitude={setTravelLatitude}
-          setTravelLongitude={setTravelLongitude}
+          setTravelLatitude={setTravelLatitude} // 사용자가 검색한 좌표
+          setTravelLongitude={setTravelLongitude} // 사용자가 검색한 좌표
         />
       </Map>
       <PostBorder></PostBorder>
