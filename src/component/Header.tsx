@@ -7,6 +7,7 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/store';
 import { BiBell } from 'react-icons/bi';
+import Modal from './Notice/Modal';
 
 interface NavItemProps {
   $isActive: boolean;
@@ -39,7 +40,7 @@ export default function Header() {
     email: '',
     password: '',
     aboutMe: '',
-    username: '',
+    username: ''
   });
   const [isModalOpen, setModalOpen] = useState(false); // 모달 창 상태
 
@@ -67,8 +68,8 @@ export default function Header() {
       try {
         const response = await axios.get('https://triptalk.xyz/api/users/profile', {
           headers: {
-            Authorization: `Bearer ${token}`, //필수
-          },
+            Authorization: `Bearer ${token}` //필수
+          }
         });
 
         if (response.data) {
@@ -114,14 +115,6 @@ export default function Header() {
         {isModalOpen && <Modal onClose={handleModalClose} />}
       </Gnb>
     </GnbContainer>
-  );
-}
-
-function Modal({ onClose }: ModalProps) {
-  return (
-    <ModalBackdrop onClick={onClose}>
-      <ModalContent onClick={e => e.stopPropagation()}>내용입력</ModalContent>
-    </ModalBackdrop>
   );
 }
 
