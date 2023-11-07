@@ -211,6 +211,8 @@ const Button = styled.button`
   border-radius: 4px;
   transition: border-color 0.3s;
   outline: none;
+  cursor: pointer;
+
   &:focus {
     border-color: ${MAIN_COLOR};
   }
