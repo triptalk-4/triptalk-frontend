@@ -23,8 +23,8 @@ interface Place {
 
 export default function TravelMap() {
   const token = useSelector((state: RootState) => state.token.token);
-  const [travelLatitude, setTravelLatitude] = useState(37.5665);
   const [travelLongitude, setTravelLongitude] = useState(126.978);
+  const [travelLatitude, setTravelLatitude] = useState(37.5665);
   const [placesData, setPlacesData] = useState<Place[]>([]);
   const [mapPings, setMapPings] = useState([]);
 
@@ -33,7 +33,7 @@ export default function TravelMap() {
     const fetchTravelMap = async () => {
       try {
         const response = await axios.get(
-          `/address/api/search/map2?x=${travelLongitude}&y=${travelLatitude}&distance=3km`,
+          `/address/api/search/distance?x=${travelLongitude}&y=${travelLatitude}&distance=3km`,
           {
             headers: {
               Authorization: `Bearer ${Access_token}`,
