@@ -188,10 +188,16 @@ const TitleContainer = styled.div`
 const Title = styled.div`
   font-size: 25px;
   font-weight: bold;
+  @media (max-width: 1250px) {
+    font-size: 20px;
+  }
 `;
 
 const SelectBox = styled.div`
   width: 200px;
+  @media (max-width: 1250px) {
+    width: 160px;
+  }
 `;
 
 const GridContainer = styled.div`
@@ -224,6 +230,10 @@ const EditButton = styled(Link)`
   align-items: center;
   font-weight: bold;
   cursor: pointer;
+  @media (max-width: 1250px) {
+    width: 180px;
+    font-size: 14px;
+  }
 `;
 
 // const EditIcon = styled(GrEdit)`

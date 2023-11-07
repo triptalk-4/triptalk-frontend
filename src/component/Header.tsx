@@ -8,6 +8,8 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../store/store';
 import { BiBell } from 'react-icons/bi';
 import Modal from './Notice/Modal';
+import HamburgerButton from './HamburgerButton';
+import MobileMenu from './MobileMenu';
 
 interface NavItemProps {
   $isActive: boolean;
@@ -40,6 +42,11 @@ export default function Header() {
     username: '',
   });
   const [isModalOpen, setModalOpen] = useState(false); // 모달 창 상태
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
 
   const handleModalOpen = () => {
     setModalOpen(true);
@@ -109,8 +116,10 @@ export default function Header() {
           <Notice onClick={handleModalOpen}>
             <Bell />
           </Notice>
+          <HamburgerButton onClick={toggleMobileMenu} isOpen={isMobileMenuOpen} />
         </S_Div>
         {isModalOpen && <Modal onClose={handleModalClose} />}
+        {isMobileMenuOpen && <MobileMenu location={location} />}
       </Gnb>
       <Stroke />
     </GnbContainer>
@@ -132,8 +141,11 @@ const Gnb = styled.div`
   @media (max-width: 1460px) {
     width: 95%;
   }
-  @media (max-width: 10800px) {
+  @media (max-width: 1080px) {
     width: 90%;
+  }
+  @media (max-width: 1000px) {
+    width: 97%;
   }
 `;
 
@@ -155,16 +167,22 @@ const Logo = styled(Link)`
 const LogoImg = styled.img`
   width: 115px;
   height: auto;
+  @media (max-width: 685px) {
+    width: 100px;
+  }
 `;
 
 const S_Div = styled.div`
   display: flex;
   align-items: center;
+  gap: 20px;
 `;
 
 const User = styled(Link)`
   height: 50px;
-  margin-right: 10px;
+  @media (max-width: 685px) {
+    height: auto;
+  }
 `;
 
 const UserImg = styled.img`
@@ -173,11 +191,23 @@ const UserImg = styled.img`
   border-radius: 100%;
   border: 1px solid rgba(0, 0, 0, 0.1);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  @media (max-width: 685px) {
+    width: 45px;
+    height: 45px;
+  }
+  @media (max-width: 430px) {
+    width: 30px;
+    height: 30px;
+  }
 `;
 
 const Nav = styled.ul`
   display: flex;
   align-items: center;
+
+  @media (max-width: 1000px) {
+    display: none;
+  }
 `;
 
 const NavItem = styled(Link)<NavItemProps>`
@@ -234,4 +264,10 @@ const Notice = styled.div`
 `;
 const Bell = styled(BiBell)`
   font-size: 23px;
+  @media (max-width: 685px) {
+    font-size: 21px;
+  }
+  @media (max-width: 430px) {
+    font-size: 19px;
+  }
 `;
