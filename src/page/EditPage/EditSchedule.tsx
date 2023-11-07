@@ -130,9 +130,6 @@ export default function EditSchedule() {
     }
   };
 
-  /// 등록했던 정보 불러오기 ///
-  // const [manyPlannerDetailResponse, setManyPlannerDetailResponse] = useState<PlannerDetail[]>([]);
-
   const token = useSelector((state: RootState) => state.token.token);
   useEffect(() => {
     const fetchEditPage = async () => {
@@ -245,7 +242,7 @@ export default function EditSchedule() {
         plannerRequest: plannerRequest,
       };
 
-      console.log('dataToSend', dataToSend);
+      console.log('dataToSend수정', dataToSend);
 
       try {
         const response = await axios.patch(`/address/api/plans/${plannerId}`, dataToSend, {
@@ -254,6 +251,7 @@ export default function EditSchedule() {
             'Content-Type': 'application/json',
           },
         });
+
         if (response.status === 204) {
           console.log('데이터 전송 완료');
           Swal.fire({
@@ -274,7 +272,7 @@ export default function EditSchedule() {
 
   /// 뒤로가기 ///
   const handleBackButtonClick = () => {
-    navigate(`/schedule`);
+    navigate(`/page/${plannerId}`);
   };
 
   return (
@@ -303,6 +301,14 @@ export default function EditSchedule() {
                   setCoreContainers(updatedContainers);
                 }}
               />
+              <div>
+                <PlaceName
+                  type="text"
+                  value={container.placeInfo ? container.placeInfo.placeName : ''}
+                  placeholder="위치"
+                  readOnly
+                />
+              </div>
             </CoreTopContainer>
             <ImgContainer>
               <CustomFileInput
@@ -350,7 +356,7 @@ export default function EditSchedule() {
 
 const MainContainer = styled.div`
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 50px auto;
   height: 100%;
 `;
 
@@ -359,6 +365,7 @@ const TitleContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-top: 24px;
 `;
 
 const Title = styled.input.attrs({ maxLength: 40 })`
@@ -368,7 +375,7 @@ const Title = styled.input.attrs({ maxLength: 40 })`
   border-radius: 4px;
   padding: 8px 0px 8px 4px;
   outline: none;
-  margin-right: 355px;
+  margin-right: 500px;
 `;
 
 const CoreContainer = styled.div`
@@ -385,6 +392,18 @@ const CoreTopContainer = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 50px;
+`;
+
+const PlaceName = styled.input`
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid ${MAIN_COLOR};
+  border-radius: 4px;
+  transition: border-color 0.3s;
+  outline: none;
+  &:focus {
+    border-color: ${MAIN_COLOR};
+  }
 `;
 
 const ImgContainer = styled.div`
