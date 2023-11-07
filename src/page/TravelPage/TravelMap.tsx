@@ -74,6 +74,8 @@ export default function TravelMap() {
         <ReviewMap
           onPlacesSelected={() => {}}
           mapPings={mapPings} // 데이터 좌표
+          travelLongitude={travelLongitude}
+          travelLatitude={travelLatitude}
           setTravelLatitude={setTravelLatitude} // 사용자가 검색한 좌표
           setTravelLongitude={setTravelLongitude} // 사용자가 검색한 좌표
         />
@@ -86,6 +88,7 @@ export default function TravelMap() {
 
 const TravelContainer = styled.div`
   max-width: 1200px;
+  width: 80%;
   margin: 35px auto;
   display: flex;
   flex-direction: column;
