@@ -25,16 +25,24 @@ interface PlaceSearchResult {
 interface SchduleMapLoaderProps {
   onPlacesSelected: (PlaceInfo: PlaceInfo[]) => void;
   mapPings?: Array<{ latitude: number; longitude: number; image: string; description: string }>; // mapPings 추가
+  travelLongitude: number;
+  travelLatitude: number;
 
   setTravelLatitude: (latitude: number) => void;
   setTravelLongitude: (longitude: number) => void;
 }
 
-export default function ReviewMap({ mapPings, setTravelLatitude, setTravelLongitude }: SchduleMapLoaderProps) {
+export default function ReviewMap({
+  mapPings,
+  travelLongitude,
+  travelLatitude,
+  setTravelLatitude,
+  setTravelLongitude,
+}: SchduleMapLoaderProps) {
   const [searchPlace, setSearchPlace] = useState('');
   const [map, setMap] = useState<kakao.maps.Map | null>(null);
-  const [newLatitude, setNewLatitude] = useState(37.5665);
-  const [newLongitude, setNewLongitude] = useState(126.978);
+  const [newLatitude, setNewLatitude] = useState(travelLongitude);
+  const [newLongitude, setNewLongitude] = useState(travelLatitude);
   const [, setInfoWindowOpen] = useState(false);
 
   useEffect(() => {
@@ -45,7 +53,7 @@ export default function ReviewMap({ mapPings, setTravelLatitude, setTravelLongit
       kakao.maps.load(() => {
         const container = document.getElementById('map') as HTMLElement; // 맵을 표시할 DOM 엘리먼트
         const options = {
-          center: new kakao.maps.LatLng(37.5665, 126.978), // 초기 지도 중심 좌표
+          center: new kakao.maps.LatLng(travelLatitude, travelLongitude), // 초기 지도 중심 좌표
           level: 7, // 지도 확대 레벨
         };
         const newMap = new kakao.maps.Map(container, options);
