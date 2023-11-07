@@ -40,7 +40,7 @@ export default function Header() {
     email: '',
     password: '',
     aboutMe: '',
-    username: ''
+    username: '',
   });
   const [isModalOpen, setModalOpen] = useState(false); // 모달 창 상태
 
@@ -51,7 +51,6 @@ export default function Header() {
   const handleModalClose = () => {
     setModalOpen(false);
   };
-
   // useEffect(() => {
   //   const storedUserData = localStorage.getItem('userInfo');
   //   if (storedUserData) {
@@ -68,8 +67,8 @@ export default function Header() {
       try {
         const response = await axios.get('https://triptalk.xyz/api/users/profile', {
           headers: {
-            Authorization: `Bearer ${token}` //필수
-          }
+            Authorization: `Bearer ${token}`, //필수
+          },
         });
 
         if (response.data) {
@@ -106,14 +105,17 @@ export default function Header() {
           </NavItem>
           <Search />
         </Nav>
-        <User to={`/myinfo/${headerUser.userId}`}>
-          <UserImg src={headerUser.profile} />
-        </User>
-        <Notice onClick={handleModalOpen}>
-          <Bell />
-        </Notice>
+        <S_Div>
+          <User to={`/myinfo/${headerUser.userId}`}>
+            <UserImg src={headerUser.profile} />
+          </User>
+          <Notice onClick={handleModalOpen}>
+            <Bell />
+          </Notice>
+        </S_Div>
         {isModalOpen && <Modal onClose={handleModalClose} />}
       </Gnb>
+      <Stroke />
     </GnbContainer>
   );
 }
@@ -126,9 +128,21 @@ const GnbContainer = styled.div`
 const Gnb = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  width: 80%;
   height: 70px;
-  padding: 20px 80px 20px;
-  border-bottom: 1px solid #c1c1c1;
+  margin: 0 auto;
+  @media (max-width: 1460px) {
+    width: 95%;
+  }
+  @media (max-width: 10800px) {
+    width: 90%;
+  }
+`;
+
+const Stroke = styled.div`
+  width: 100%;
+  border: 0.5px solid #c1c1c1;
 `;
 const LogoDiv = styled.div`
   height: auto;
@@ -146,9 +160,14 @@ const LogoImg = styled.img`
   height: auto;
 `;
 
+const S_Div = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
 const User = styled(Link)`
   height: 50px;
-  margin-right: 20px;
+  margin-right: 10px;
 `;
 
 const UserImg = styled.img`
@@ -162,8 +181,6 @@ const UserImg = styled.img`
 const Nav = styled.ul`
   display: flex;
   align-items: center;
-  margin-left: 20%;
-  margin-right: 20%;
 `;
 
 const NavItem = styled(Link)<NavItemProps>`
@@ -204,6 +221,15 @@ const NavItem = styled(Link)<NavItemProps>`
       transform: scaleX(1);
     }
   `}
+
+  @media (max-width: 1280px) {
+    margin-right: 70px;
+    font-size: 18px;
+  }
+  @media (max-width: 1080px) {
+    margin-right: 50px;
+    font-size: 1rem;
+  }
 `;
 
 const Notice = styled.div`
