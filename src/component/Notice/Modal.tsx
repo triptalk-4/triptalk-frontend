@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import { MAIN_COLOR } from '../../color/color';
+import { FaTimes } from 'react-icons/fa';
 
 interface ModalProps {
   onClose: () => void;
@@ -41,6 +42,7 @@ export default function Modal({ onClose }: ModalProps) {
   return (
     <ModalBackdrop onClick={onClose}>
       <ModalContent onClick={e => e.stopPropagation()}>
+        <AllDeleteButton>전체삭제</AllDeleteButton>
         {currentNotifications.map((notification, index) => (
           <NotificationItem key={index}>
             <UserImg src={notification.avatarUrl} alt={notification.username} />
@@ -59,6 +61,7 @@ export default function Modal({ onClose }: ModalProps) {
                 <strong>{notification.username}</strong>님이 저장했습니다.
               </>
             )}
+            <FaTimes className="close-icon" />
           </NotificationItem>
         ))}
         <Pagination>
@@ -103,9 +106,13 @@ const ModalContent = styled.div`
   border-radius: 8px;
   padding: 20px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
 `;
 
 const NotificationItem = styled.div`
+  position: relative;
+
   display: flex;
   align-items: center;
   padding: 10px;
@@ -115,10 +122,22 @@ const NotificationItem = styled.div`
   &:last-child {
     border-bottom: none;
   }
+
   &:hover {
     background-color: #d0cfcf;
+    .close-icon {
+      display: inline-block;
+    }
+  }
+
+  .close-icon {
+    display: none;
+    margin-left: auto;
+    cursor: pointer;
+    color: red;
   }
 `;
+
 const Pagination = styled.div`
   display: flex;
   justify-content: center;
@@ -139,4 +158,12 @@ const PageNumber = styled.button<{ active: boolean }>`
     background-color: ${MAIN_COLOR};
     color: white;
   }
+`;
+
+const AllDeleteButton = styled.button`
+  border: none;
+  background-color: white;
+  color: red;
+  margin-left: auto;
+  cursor: pointer;
 `;
