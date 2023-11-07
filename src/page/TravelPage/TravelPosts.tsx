@@ -24,10 +24,10 @@ interface TravelPostsProps {
 
 export default function TravelPosts({ travelDatas }: TravelPostsProps) {
   const [travelPostsData, setTravelPostsData] = useState<TravelPostData[]>([]);
-  const [containerClassName, setContainerClassName] = useState('space-between');
+  const [containerClassName, setContainerClassName] = useState('flex-start');
 
   // 페이지네이션
-  const itemsPerPage = 4;
+  const itemsPerPage = 3;
   const pageCount = calculatePageCount(travelDatas.length, itemsPerPage); // 한페이지에 보일 데이터에 대한 페이지네이션 수
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -41,10 +41,10 @@ export default function TravelPosts({ travelDatas }: TravelPostsProps) {
 
   useEffect(() => {
     // 게시물 갯수에 따라 스타일 변경
-    if (travelPostsData.length <= 3) {
-      setContainerClassName('flex-start');
-    } else {
+    if (travelPostsData.length <= 2) {
       setContainerClassName('space-between');
+    } else {
+      setContainerClassName('flex-start');
     }
   }, [travelPostsData]);
 
@@ -119,8 +119,8 @@ const PostlContainer = styled.div`
 `;
 
 const Post = styled.div`
-  width: 270px;
-  height: 390px;
+  width: 320px;
+  height: 440px;
   margin-right: 40px;
   margin-bottom: 20px;
   border: 1px solid rgba(0, 0, 0, 0.1);
@@ -129,7 +129,7 @@ const Post = styled.div`
 
   position: relative;
 
-  &:nth-child(4n) {
+  &:nth-child(3n) {
     margin-right: 0;
   }
 `;
@@ -215,4 +215,5 @@ const Date = styled.div`
 const PaginationDiv = styled.div`
   display: flex;
   justify-content: center;
+  margin-top: 20px;
 `;
