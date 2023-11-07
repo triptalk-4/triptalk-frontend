@@ -23,7 +23,7 @@ interface TravelPostsProps {
 }
 
 export default function TravelPosts({ travelDatas }: TravelPostsProps) {
-  const [travelPostsData, setTravelPostsData] = useState<TravelPostData[]>([]);
+  const [travelPostsData] = useState<TravelPostData[]>([]);
   const [containerClassName, setContainerClassName] = useState('space-between');
 
   // 페이지네이션
@@ -47,8 +47,6 @@ export default function TravelPosts({ travelDatas }: TravelPostsProps) {
       setContainerClassName('space-between');
     }
   }, [travelPostsData]);
-
-  console.log(setTravelPostsData);
 
   function openPopup(data: TravelPostData) {
     setPopupData(data);
