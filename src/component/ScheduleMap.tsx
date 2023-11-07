@@ -171,7 +171,7 @@ const ScheduleMapLoader: React.FC<SchduleMapLoaderProps> = ({ onPlacesSelected, 
           borderRadius: '4px',
           margin: '0px',
         }}></Con>
-      <div>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', marginTop: '20px' }}>
         {!onPlace ? (
           <Input type="text" placeholder="다녀온 장소를 검색해보세요" onChange={e => setSearchPlace(e.target.value)} />
         ) : null}
@@ -196,7 +196,7 @@ const Input = styled.input`
   transition: border-color 0.3s;
   outline: none;
   margin-right: 4px;
-  margin-top: 20px;
+
   &:focus {
     border-color: ${MAIN_COLOR};
   }
