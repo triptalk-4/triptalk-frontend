@@ -166,8 +166,8 @@ const ScheduleMapLoader: React.FC<SchduleMapLoaderProps> = ({ onPlacesSelected, 
         id="map"
         style={{
           width: '100%',
-          height: '400px',
           border: `1px solid ${YELLOW_COLOR}`,
+          height: '400px',
           borderRadius: '4px',
           margin: '0px',
         }}></Con>
@@ -185,6 +185,13 @@ export default ScheduleMapLoader;
 
 const Con = styled.div`
   margin: 5% auto;
+  height: '400px';
+  @media (max-width: 1100px) {
+    height: 300px;
+  }
+  @media (max-width: 900px) {
+    height: 250px;
+  }
 `;
 
 const Input = styled.input`
