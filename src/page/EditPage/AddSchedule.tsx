@@ -275,7 +275,7 @@ const Title = styled.input.attrs({ maxLength: 40 })`
   border-radius: 4px;
   padding: 8px 0px 8px 4px;
   outline: none;
-  margin-right: 355px;
+  margin-right: 500px;
 `;
 
 const CoreContainer = styled.div`
