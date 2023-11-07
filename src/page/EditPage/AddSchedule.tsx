@@ -254,7 +254,7 @@ export default function AddSchedule() {
 const MainContainer = styled.div`
   max-width: 1200px;
   height: 100%;
-  margin: 0 auto;
+  margin: 50px auto;
 `;
 
 const TitleContainer = styled.div`
@@ -280,7 +280,7 @@ const CoreContainer = styled.div`
   height: 340px;
   margin-top: 5%;
   background-color: #f7eae4;
-  /* padding: 15px; */
+  padding: 15px;
   position: relative;
 `;
 
@@ -288,6 +288,7 @@ const CoreTopContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin-bottom: 50px;
 `;
 
@@ -298,23 +299,6 @@ const PlaceName = styled.input`
   border-radius: 4px;
   transition: border-color 0.3s;
   outline: none;
-  margin-bottom: 4px;
-  margin-right: 4px;
-  margin-top: 20px;
-  &:focus {
-    border-color: ${MAIN_COLOR};
-  }
-`;
-const Button = styled.button`
-  padding: 10px;
-  font-size: 16px;
-  color: #fff;
-  border: 1px solid ${MAIN_COLOR};
-  background: ${MAIN_COLOR};
-  border-radius: 4px;
-  transition: border-color 0.3s;
-  outline: none;
-  cursor: pointer;
   &:focus {
     border-color: ${MAIN_COLOR};
   }
@@ -331,7 +315,7 @@ const ImagePreviews = styled.div`
   border: 2px solid ${MAIN_COLOR};
   border-radius: 4px;
   width: 300px;
-  height: 195px;
+  height: 190px;
 
   img {
     max-width: 80px;
