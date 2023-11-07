@@ -41,8 +41,8 @@ export default function ReviewMap({
 }: SchduleMapLoaderProps) {
   const [searchPlace, setSearchPlace] = useState('');
   const [map, setMap] = useState<kakao.maps.Map | null>(null);
-  const [newLatitude, setNewLatitude] = useState(travelLongitude);
-  const [newLongitude, setNewLongitude] = useState(travelLatitude);
+  // const [newLatitude, setNewLatitude] = useState(travelLongitude);
+  //  const [newLongitude, setNewLongitude] = useState(travelLatitude);
   const [, setInfoWindowOpen] = useState(false);
 
   useEffect(() => {
@@ -142,33 +142,12 @@ export default function ReviewMap({
           });
         });
 
-        const bounds = new kakao.maps.LatLngBounds();
-        const newPlaceInfos: PlaceInfo[] = [];
+        const place = data[0];
 
-        for (let i = 0; i < 1; i++) {
-          const place = data[0];
-
-          if (place) {
-            const selectedPlaceInfo: PlaceInfo = {
-              position: {
-                lat: Number(place.y),
-                lng: Number(place.x),
-              },
-              addressName: place.address_name,
-              placeName: place.place_name,
-              roadAddressName: place.road_address_name,
-            };
-
-            newPlaceInfos.push(selectedPlaceInfo);
-            setNewLatitude(Number(place.y));
-            setNewLongitude(Number(place.x));
-          }
-
-          bounds.extend(new kakao.maps.LatLng(Number(place.y), Number(place.x)));
+        if (place) {
+          setTravelLatitude(Number(place.y));
+          setTravelLongitude(Number(place.x));
         }
-
-        // 검색된 장소 위치를 기준으로 지도 범위를 재설정
-        map.setBounds(bounds);
       } catch (error) {
         console.error('검색 오류:', error);
       }
@@ -194,8 +173,6 @@ export default function ReviewMap({
       <Button
         onClick={() => {
           handleSearch();
-          setTravelLatitude(newLatitude);
-          setTravelLongitude(newLongitude);
         }}>
         검색
       </Button>
