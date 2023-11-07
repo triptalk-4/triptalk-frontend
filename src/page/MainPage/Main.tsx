@@ -48,10 +48,13 @@ const TopTitle = styled.div`
   font-size: 30px;
   font-weight: 700;
   user-select: none;
+  @media (max-width: 1150px) {
+    font-size: 24px;
+  }
 `;
 
 const TileSpan = styled.span`
-  font-size: 15px;
+  font-size: 12px;
   font-weight: 300;
   color: ${GRAY_COLOR};
 `;

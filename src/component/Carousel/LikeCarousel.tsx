@@ -57,8 +57,8 @@ function LikeCarousel() {
         if (token) {
           const config = {
             headers: {
-              Authorization: `Bearer ${token}`
-            }
+              Authorization: `Bearer ${token}`,
+            },
           };
           const response = await axios.get('/address/api/main', config);
           const data = response.data;
@@ -90,16 +90,16 @@ function LikeCarousel() {
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 2
-        }
+          slidesToShow: 2,
+        },
       },
       {
         breakpoint: 760,
         settings: {
-          slidesToShow: 1
-        }
-      }
-    ]
+          slidesToShow: 1,
+        },
+      },
+    ],
   };
 
   return (
@@ -126,8 +126,9 @@ function LikeCarousel() {
 export default LikeCarousel;
 
 const Container = styled.div`
-  width: 100%;
+  width: 1000px;
   height: 400px;
+  margin: 0 auto;
 `;
 
 const Card = styled.div`
@@ -152,16 +153,20 @@ const BtnStyle = css`
   z-index: 100;
   box-shadow: 0px 0px 4px ${GRAY_COLOR};
   top: 30%;
+  @media (max-width: 1150px) {
+    width: 45px;
+    height: 45px;
+  }
 `;
 
 const PrevArrowButton = styled.div`
   ${BtnStyle}
-  left: -2%;
+  left: 0%;
 `;
 
 const NextArrowButton = styled.div`
   ${BtnStyle}
-  right: 7%;
+  right: 0%;
 `;
 
 const Image = styled.img`
@@ -171,21 +176,37 @@ const Image = styled.img`
   border-radius: 25px;
   border: 1px solid rgba(0, 0, 0, 0.1);
   box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.1);
+  @media (max-width: 1250px) {
+    width: 265px;
+  }
+  @media (max-width: 1150px) {
+    width: 250px;
+    height: 290px;
+  }
 `;
 
 const DescriptionTitle = styled.div`
   margin-top: 10px;
   font-size: 22px;
   font-weight: bold;
+  @media (max-width: 1250px) {
+    font-size: 18px;
+  }
 `;
 
 const DescriptionNickName = styled.div`
   font-size: 16px;
   color: gray;
+  @media (max-width: 1250px) {
+    font-size: 14px;
+  }
 `;
 const DescriptionSchedule = styled.div`
   font-size: 16px;
   color: gray;
+  @media (max-width: 1250px) {
+    font-size: 14px;
+  }
 `;
 const Badge = styled.div`
   width: 50px;
