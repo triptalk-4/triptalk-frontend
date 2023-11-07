@@ -33,4 +33,9 @@ const Kakao = styled.div`
   &:focus {
     outline: none;
   }
+  @media (max-width: 430px) {
+    height: 40px;
+    line-height: 40px;
+    margin-bottom: 16px;
+  }
 `;

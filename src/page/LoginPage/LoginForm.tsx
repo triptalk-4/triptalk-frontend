@@ -113,6 +113,14 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+
+  @media (max-width: 1250px) {
+    width: 65%;
+  }
+
+  @media (max-width: 920px) {
+    width: 70%;
+  }
 `;
 
 const SocialLogin = styled.div`
@@ -155,6 +163,13 @@ const commonInputStyle = css`
     outline: none;
     border: 1px solid ${MAIN_COLOR};
   }
+  @media (max-width: 1250px) {
+    font-size: 0.9rem;
+  }
+  @media (max-width: 430px) {
+    height: 50px;
+    font-size: 0.6rem;
+  }
 `;
 
 const InputEmail = styled.input`
@@ -175,6 +190,12 @@ const LoginButton = styled.button`
   border-radius: 15px;
   margin-top: 36px;
   font-size: 1.5rem;
+  @media (max-width: 1250px) {
+    font-size: 1.3rem;
+  }
+  @media (max-width: 430px) {
+    height: 50px;
+  }
 `;
 
 const Div = styled.div`
@@ -188,6 +209,9 @@ const Div = styled.div`
 
   a:visited {
     color: inherit;
+  }
+  @media (max-width: 430px) {
+    font-size: 0.7rem;
   }
 `;
 

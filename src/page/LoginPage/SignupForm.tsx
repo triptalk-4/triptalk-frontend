@@ -371,11 +371,17 @@ const Container = styled.div`
 const TitleImg = styled.img`
   width: 265px;
   margin-top: 30px;
+  @media (max-width: 1000px) {
+    width: 240px;
+  }
 `;
 
 const SubTitle = styled.p`
   font-size: 1.2rem;
   margin-top: 32px;
+  @media (max-width: 1000px) {
+    font-size: 1rem;
+  }
 `;
 
 const FormWrap = styled.div`
@@ -383,6 +389,15 @@ const FormWrap = styled.div`
   display: flex;
   flex-direction: column;
   margin: 0 auto;
+  @media (max-width: 950px) {
+    width: 65%;
+  }
+  @media (max-width: 720px) {
+    width: 70%;
+  }
+  @media (max-width: 430px) {
+    width: 95%;
+  }
 `;
 
 const Input = styled.input`
@@ -439,6 +454,9 @@ const CheckButton = styled.button<{ width: string }>`
   &:hover {
     color: ${MAIN_COLOR};
   }
+  @media (max-width: 1000px) {
+    width: 90px;
+  }
 `;
 
 const ToggleShowButton = styled.button`
@@ -478,5 +496,14 @@ const Button = styled.button`
     100% {
       background-position: 100% 50%;
     }
+  }
+
+  @media (max-width: 1000px) {
+    width: 95%;
+    margin: 0 auto;
+  }
+  @media (max-width: 720px) {
+    width: 90%;
+    margin: 0 auto;
   }
 `;

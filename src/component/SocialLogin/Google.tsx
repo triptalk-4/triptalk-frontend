@@ -20,7 +20,7 @@ const Google = () => {
 
 export default Google;
 
-const GoogleButton = styled.button`
+const GoogleButton = styled.div`
   width: 50%;
   font-size: 22px;
   font-weight: 500;
@@ -33,5 +33,10 @@ const GoogleButton = styled.button`
   border: none;
   &:focus {
     outline: none;
+  }
+  @media (max-width: 430px) {
+    height: 40px;
+    line-height: 40px;
+    margin-bottom: 0px;
   }
 `;
