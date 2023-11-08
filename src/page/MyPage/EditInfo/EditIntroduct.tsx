@@ -66,4 +66,9 @@ const IntroText = styled.textarea`
   outline: none;
   border: 2px solid ${SUPER_LIGHT_ORANGE_COLOR};
   border-radius: 15px;
+
+  @media (max-width: 768px) {
+    width: 305px;
+    height: 50px;
+  }
 `;

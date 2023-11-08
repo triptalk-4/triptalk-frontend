@@ -82,6 +82,13 @@ const BoxWrap = styled.div`
       margin-right: 30px;
     }
   }
+
+  @media (max-width: 768px) {
+    margin-right: 30px;
+    &:nth-child(2n) {
+      margin-right: 0;
+    }
+  }
 `;
 
 const Box = styled.div`
