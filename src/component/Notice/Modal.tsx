@@ -1,76 +1,161 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { MAIN_COLOR } from '../../color/color';
 import { FaTimes } from 'react-icons/fa';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 interface ModalProps {
   onClose: () => void;
 }
 
 interface Notification {
-  type: 'comment' | 'like' | 'save';
-  username: string;
-  content?: string;
-  avatarUrl: string;
+  alertId: number;
+  plannerId: number;
+  alertContent: string;
+  userCheckYn: boolean;
+  profile: string;
+  alertDt: string;
 }
 
 export default function Modal({ onClose }: ModalProps) {
-  const [notifications] = useState<Notification[]>([
-    { type: 'comment', username: 'OOO', content: '댓글 내용입니다.', avatarUrl: 'public/favicon.ico' },
-    { type: 'like', username: 'XXX', avatarUrl: 'public/favicon.ico' },
-    { type: 'save', username: 'ZZZ', avatarUrl: 'public/favicon.ico' },
-    { type: 'comment', username: 'OOO', content: '댓글 내용입니다.', avatarUrl: 'public/favicon.ico' },
-    { type: 'like', username: 'XXX', avatarUrl: 'public/favicon.ico' },
-    { type: 'save', username: 'ZZZ', avatarUrl: 'public/favicon.ico' },
-    { type: 'comment', username: 'OOO', content: '댓글 내용입니다.', avatarUrl: 'public/favicon.ico' },
-    { type: 'like', username: 'XXX', avatarUrl: 'public/favicon.ico' },
-    { type: 'save', username: 'ZZZ', avatarUrl: 'public/favicon.ico' },
-    { type: 'comment', username: 'OOO', content: '댓글 내용입니다.', avatarUrl: 'public/favicon.ico' },
-    { type: 'like', username: 'XXX', avatarUrl: 'public/favicon.ico' },
-    { type: 'save', username: 'ZZZ', avatarUrl: 'public/favicon.ico' }
-  ]);
+  const token = useSelector((state: RootState) => state.token.token);
+  const [data, setData] = useState<Notification[]>([]);
+  const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
-  const totalPages = Math.ceil(notifications.length / itemsPerPage);
+  const [totalPages, setTotalPages] = useState(0);
+  const [page, setPage] = useState(0);
+  const navigate = useNavigate();
 
-  const currentNotifications = notifications.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        if (token) {
+          const config = {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          };
+          const response = await axios.get(`/address/api/alert/list?page=${page}&pageSize=${itemsPerPage}`, config);
+          if (response.data && response.data.content) {
+            const data = response.data.content;
+            const transformedData = data.map((notification: Notification) => ({
+              ...notification
+            }));
+            setData(transformedData);
+            setTotalPages(Math.ceil(transformedData.length / itemsPerPage));
+          }
+        }
+      } catch (error) {
+        console.error('API Request Failure:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, [token, page, itemsPerPage]);
+
+  const getPageData = (page: number) => {
+    const startIndex = (page - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return data.slice(startIndex, endIndex);
+  };
 
   const handlePageClick = (page: number) => {
     setCurrentPage(page);
+    setPage(page - 1);
   };
 
+  const handleItemClicked = async (notification: Notification) => {
+    try {
+      if (token) {
+        const config = {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        };
+        const response = await axios.delete(`/address/api/alert/list/alert/delete/one/${notification.alertId}`, config);
+        if (response.status === 200) {
+          setData(prevData => prevData.filter(item => item.alertId !== notification.alertId));
+          navigate(`/page/${notification.plannerId}`);
+          onClose();
+        }
+      }
+    } catch (error) {
+      console.error('API Request Failure:', error);
+    }
+  };
+
+  const handleDeleteItem = async (alertId: number) => {
+    try {
+      if (token) {
+        const config = {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        };
+        const response = await axios.delete(`/address/api/alert/list/alert/delete/one/${alertId}`, config);
+        if (response.status === 200) {
+          setData(prevData => prevData.filter(notification => notification.alertId !== alertId));
+        }
+      }
+    } catch (error) {
+      console.error('API Request Failure:', error);
+    }
+  };
+
+  const handleDeleteAll = async () => {
+    try {
+      if (token) {
+        const config = {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        };
+        const response = await axios.delete('/address/api/alert/list/alert/delete/all', config);
+        if (response.status === 200) {
+          if (data.length > 0) {
+            setData([]);
+          }
+        }
+      }
+    } catch (error) {
+      console.error('API Request Failure:', error);
+    }
+  };
   return (
     <ModalBackdrop onClick={onClose}>
       <ModalContent onClick={e => e.stopPropagation()}>
-        <AllDeleteButton>전체삭제</AllDeleteButton>
-        {currentNotifications.map((notification, index) => (
-          <NotificationItem key={index}>
-            <UserImg src={notification.avatarUrl} alt={notification.username} />
-            {notification.type === 'comment' && (
-              <>
-                <strong>{notification.username}</strong>님이 댓글을 달았습니다: {notification.content}
-              </>
+        <AllDeleteButton onClick={handleDeleteAll}>전체삭제</AllDeleteButton>
+        {loading ? (
+          <p>Loading...</p>
+        ) : (
+          <>
+            {data.length === 0 ? (
+              <p>알림이 없습니다</p>
+            ) : (
+              getPageData(currentPage).map((notification, index) => (
+                <NotificationItem key={index} onClick={() => handleItemClicked(notification)}>
+                  <UserImg src={notification.profile} alt={notification.alertContent} />
+                  {notification.alertContent}
+                  <FaTimes className="close-icon" onClick={() => handleDeleteItem(notification.alertId)} />
+                </NotificationItem>
+              ))
             )}
-            {notification.type === 'like' && (
-              <>
-                <strong>{notification.username}</strong>님이 좋아요를 눌렀습니다.
-              </>
+            {data.length > 0 && (
+              <Pagination>
+                {Array.from({ length: totalPages }, (_, index) => index + 1).map(page => (
+                  <PageNumber key={page} active={currentPage === page} onClick={() => handlePageClick(page)}>
+                    {page}
+                  </PageNumber>
+                ))}
+              </Pagination>
             )}
-            {notification.type === 'save' && (
-              <>
-                <strong>{notification.username}</strong>님이 저장했습니다.
-              </>
-            )}
-            <FaTimes className="close-icon" />
-          </NotificationItem>
-        ))}
-        <Pagination>
-          {Array.from({ length: totalPages }, (_, index) => index + 1).map(page => (
-            <PageNumber key={page} active={currentPage === page} onClick={() => handlePageClick(page)}>
-              {page}
-            </PageNumber>
-          ))}
-        </Pagination>
+          </>
+        )}
       </ModalContent>
     </ModalBackdrop>
   );
