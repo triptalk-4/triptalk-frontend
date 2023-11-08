@@ -42,56 +42,44 @@ export default function MyPost({ postsData }: { postsData: Post }) {
 }
 
 const BoxWrap = styled.div`
-  margin-right: 30px;
+  margin-right: 64px;
   margin-bottom: 30px;
   border: 1px solid rgba(0, 0, 0, 0.1);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 15px;
 
-  &:nth-child(4n) {
+  &:nth-child(3n) {
     margin-right: 0;
   }
-  @media (max-width: 1400px) {
-    margin-right: 20px;
-  }
-  @media (max-width: 1250px) {
-    margin-bottom: 20px;
-  }
+
   @media (max-width: 1200px) {
-    margin-right: 15px;
-    margin-bottom: 15px;
-  }
-  @media (max-width: 1100px) {
-    margin-right: 10px;
-    margin-bottom: 10px;
-  }
-  @media (max-width: 1050px) {
+    margin-right: 44px;
+
     &:nth-child(3n) {
       margin-right: 0;
     }
-    &:nth-child(4n) {
-      margin-right: 10px;
-    }
   }
+
   @media (max-width: 1000px) {
-    margin-right: 8px;
-    margin-bottom: 8px;
-    &:nth-child(4n) {
-      margin-right: 8px;
+    margin-right: 30px;
+
+    &:nth-child(3n) {
+      margin-right: 0;
     }
   }
-  @media (max-width: 950px) {
-    margin-right: 6px;
-    margin-bottom: 6px;
-    &:nth-child(4n) {
-      margin-right: 6px;
+
+  @media (max-width: 983px) {
+    margin-right: 30px;
+
+    &:nth-child(2n) {
+      margin-right: 0;
     }
   }
-  @media (max-width: 740px) {
-    margin-right: 4px;
-    margin-bottom: 4px;
-    &:nth-child(4n) {
-      margin-right: 4px;
+
+  @media (max-width: 980px) {
+    margin-right: 30px;
+    &:nth-child(2n) {
+      margin-right: 30px;
     }
   }
 `;
@@ -106,65 +94,45 @@ const Box = styled.div`
 const ImgDiv = styled.div`
   width: 275px;
   height: 350px;
-  @media (max-width: 1400px) {
-    width: 253px;
-    height: 339px;
+
+  @media (max-width: 1200px) {
+    width: 270px;
+    height: 350px;
   }
-  @media (max-width: 1250px) {
-    width: 223px;
-    height: 316px;
+
+  @media (max-width: 1130px) {
+    width: 260px;
+    height: 350px;
   }
-  @media (max-width: 1150px) {
-    width: 212px;
-    height: 304px;
+
+  @media (max-width: 1092px) {
+    width: 255px;
+    height: 350px;
   }
-  @media (max-width: 1100px) {
-    width: 207px;
-    height: 304px;
+
+  @media (max-width: 1074px) {
+    width: 250px;
+    height: 350px;
   }
-  @media (max-width: 1050px) {
-    width: 263px;
-    height: 335px;
+
+  @media (max-width: 1054px) {
+    width: 245px;
+    height: 350px;
   }
-  @media (max-width: 1030px) {
-    width: 259px;
-    height: 335px;
+
+  @media (max-width: 1036px) {
+    width: 240px;
+    height: 350px;
   }
-  @media (max-width: 1000px) {
-    width: 254px;
-    height: 335px;
+
+  @media (max-width: 1036px) {
+    width: 240px;
+    height: 350px;
   }
-  @media (max-width: 950px) {
-    width: 232px;
-    height: 300px;
-  }
-  @media (max-width: 900px) {
-    width: 211px;
-    height: 261px;
-  }
-  @media (max-width: 820px) {
-    width: 195px;
-    height: 249px;
-  }
-  @media (max-width: 740px) {
-    width: 172px;
-    height: 232px;
-  }
-  @media (max-width: 500px) {
-    width: 124px;
-    height: 161px;
-  }
-  @media (max-width: 430px) {
-    width: 110px;
-    height: 140px;
-  }
-  @media (max-width: 420px) {
-    width: 105px;
-    height: 131px;
-  }
-  @media (max-width: 390px) {
-    width: 99px;
-    height: 133px;
+
+  @media (max-width: 983px) {
+    width: 375px;
+    height: 450px;
   }
 `;
 
