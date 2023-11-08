@@ -240,6 +240,9 @@ const UserImgContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  @media (max-width: 1400px) {
+    margin-top: 55px;
+  }
 `;
 
 const UserImg = styled.img`
@@ -249,6 +252,26 @@ const UserImg = styled.img`
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 100%;
   margin: 0 auto;
+  @media (max-width: 1400px) {
+    width: 280px;
+    height: 280px;
+  }
+  @media (max-width: 1250px) {
+    width: 260px;
+    height: 260px;
+  }
+  @media (max-width: 1050px) {
+    width: 240px;
+    height: 240px;
+  }
+  @media (max-width: 950px) {
+    width: 220px;
+    height: 220px;
+  }
+  @media (max-width: 440px) {
+    width: 180px;
+    height: 180px;
+  }
 `;
 
 const UserNickNameContainer = styled.div`
@@ -267,10 +290,30 @@ const IntroTextContainer = styled.div`
 const IntroText = styled.p`
   font-size: 25px;
   padding-bottom: 20px;
+  @media (max-width: 1400px) {
+    font-size: 23px;
+  }
+  @media (max-width: 1050px) {
+    font-size: 21px;
+  }
+  @media (max-width: 440px) {
+    font-size: 16px;
+  }
 `;
 
 const NickName = styled.p`
   font-size: 25px;
+  @media (max-width: 1400px) {
+    font-size: 23px;
+  }
+  @media (max-width: 1050px) {
+    font-size: 21px;
+    font-weight: 600;
+  }
+  @media (max-width: 440px) {
+    font-size: 18px;
+    font-weight: 500;
+  }
 `;
 
 const Setting = styled(Link)`
@@ -281,6 +324,20 @@ const Setting = styled(Link)`
   padding-left: 5px;
   cursor: pointer;
   height: 30px;
+  @media (max-width: 1400px) {
+    font-size: 22px;
+  }
+  @media (max-width: 1050px) {
+    font-size: 20px;
+  }
+  @media (max-width: 440px) {
+    font-size: 16px;
+    height: 0px;
+  }
+  @media (max-width: 390px) {
+    font-size: 16px;
+    height: 20px;
+  }
 `;
 
 const UserLogoutBtn = styled.button`
@@ -290,12 +347,20 @@ const UserLogoutBtn = styled.button`
   text-decoration: underline;
   margin-bottom: 40px;
   cursor: pointer;
+  @media (max-width: 440px) {
+    font-size: 10px;
+  }
 `;
 
 const ContentContainer = styled.div`
   border-top: 1px solid #000;
-  margin: 0 auto;
-  width: 80%;
+  @media (max-width: 1400px) {
+    width: 90%;
+    margin: 0 auto;
+  }
+  @media (max-width: 1250px) {
+    width: 80%;
+  }
 `;
 
 const ContentUl = styled.ul`
