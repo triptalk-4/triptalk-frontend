@@ -252,9 +252,12 @@ export default function AddSchedule() {
 }
 
 const MainContainer = styled.div`
-  max-width: 1200px;
+  width: 1200px;
   height: 100%;
   margin: 50px auto;
+  @media (max-width: 1250px) {
+    width: 80%;
+  }
 `;
 
 const TitleContainer = styled.div`
@@ -322,6 +325,15 @@ const ImagePreviews = styled.div`
     max-height: 80px;
     margin: 7px;
   }
+  @media (max-width: 1200px) {
+    width: 270px;
+  }
+  @media (max-width: 1000px) {
+    width: 250px;
+  }
+  @media (max-width: 900px) {
+    width: 230px;
+  }
 `;
 
 const CustomFileInput = styled.input`
@@ -347,6 +359,15 @@ const CommentTextArea = styled.textarea`
   top: 35%;
   right: 15px;
   border-radius: 4px;
+  @media (max-width: 1200px) {
+    width: 420px;
+  }
+  @media (max-width: 1000px) {
+    width: 340px;
+  }
+  @media (max-width: 900px) {
+    width: 300px;
+  }
 `;
 
 const ButtonContainer = styled.div`

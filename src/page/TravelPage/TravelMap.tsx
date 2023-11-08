@@ -105,6 +105,14 @@ const TravelTitleContainer = styled.div`
 const TravelTitle = styled.div`
   font-size: 25px;
   font-weight: bold;
+
+  @media (max-width: 425px) {
+    font-size: 20px;
+  }
+
+  @media (max-width: 375px) {
+    font-size: 17px;
+  }
 `;
 
 const Map = styled.div`

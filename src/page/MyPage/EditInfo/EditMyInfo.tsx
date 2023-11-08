@@ -269,6 +269,16 @@ const PreviewImage = styled.img`
   height: 300px;
   border: 1px solid ${LIGHT_GRAY_COLOR};
   border-radius: 100%;
+
+  @media (max-width: 768px) {
+    width: 260px;
+    height: 260px;
+  }
+
+  @media (max-width: 768px) {
+    width: 250px;
+    height: 250px;
+  }
 `;
 
 const InfoEditContainer = styled.div`
