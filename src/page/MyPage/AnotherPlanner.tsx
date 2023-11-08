@@ -50,6 +50,32 @@ const BoxWrap = styled.div`
   &:nth-child(3n) {
     margin-right: 0;
   }
+
+  @media (max-width: 1000px) {
+    &:nth-child(2n) {
+      margin-right: 0;
+    }
+  }
+
+  @media (max-width: 790px) {
+    &:nth-child(1n) {
+      margin-right: 64px;
+    }
+
+    &:nth-child(2n) {
+      margin-right: 0;
+    }
+  }
+
+  @media (max-width: 740px) {
+    &:nth-child(1n) {
+      margin-right: 34px;
+    }
+
+    &:nth-child(2n) {
+      margin-right: 0;
+    }
+  }
 `;
 
 const Box = styled.div`
