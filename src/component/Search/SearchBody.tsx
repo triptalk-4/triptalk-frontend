@@ -28,8 +28,8 @@ const SearchBody = () => {
         if (Access_token) {
           const config = {
             headers: {
-              Authorization: `Bearer ${Access_token}`
-            }
+              Authorization: `Bearer ${Access_token}`,
+            },
           };
           try {
             const response = await axios.get(`/address/api/search?keyword=${encodeURIComponent(keyword)}`, config);
@@ -74,8 +74,7 @@ const SearchBody = () => {
             <Link
               to={`/myinfo/${result.userId}`}
               style={{ color: 'inherit', textDecoration: 'none' }}
-              key={result.userId}
-            >
+              key={result.userId}>
               <ResultContainer key={index}>
                 <ProfileAndName>
                   <ProfileImage src={result.profile} alt={`${result.nickname}의 프로필 사진`} />
@@ -94,8 +93,7 @@ const SearchBody = () => {
               <PageNumber
                 key={index + 1}
                 $isActive={index + 1 === currentPage}
-                onClick={() => setCurrentPage(index + 1)}
-              >
+                onClick={() => setCurrentPage(index + 1)}>
                 {index + 1}
               </PageNumber>
             ))}
@@ -195,13 +193,28 @@ const ResultItem = styled.div`
     background-color: transparent;
     color: inherit;
   }
+  @media (max-width: 1250px) {
+    font-size: 20px;
+  }
+  @media (max-width: 435px) {
+    font-size: 1rem;
+  }
 `;
 
 const ResultDescription = styled.div`
   padding: 8px 12px;
-  font-size: 16px;
+  font-size: 1rem;
   color: grey;
   margin-left: 60px;
+  @media (max-width: 1250px) {
+    font-size: 0.8rem;
+  }
+  @media (max-width: 650px) {
+    padding: 8px 0px;
+  }
+  @media (max-width: 435px) {
+    font-size: 0.7rem;
+  }
 `;
 
 const NoResultContainer = styled.div`
@@ -214,4 +227,13 @@ const ProfileImage = styled.img`
   border-radius: 25px;
   margin-right: 10px;
   border: 1px solid black;
+
+  @media (max-width: 1250px) {
+    width: 45px;
+    height: 45px;
+  }
+  @media (max-width: 650px) {
+    width: 40px;
+    height: 40px;
+  }
 `;
