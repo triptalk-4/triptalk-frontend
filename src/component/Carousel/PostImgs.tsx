@@ -80,6 +80,10 @@ const StyledSlider = styled(Slider)`
   justify-content: center;
   background-color: #fff;
 
+  .slick-list {
+    width: 100%;
+  }
+
   .slick-dots {
     bottom: 3px;
     width: auto;
