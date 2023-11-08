@@ -130,6 +130,48 @@ const Post = styled.div`
   &:nth-child(4n) {
     margin-right: 0;
   }
+
+  @media (max-width: 1440px) {
+    width: 357px;
+    height: 475px;
+
+    &:nth-child(3n) {
+      margin-right: 0;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    width: 389px;
+    height: 525px;
+
+    &:nth-child(2n) {
+      margin-right: 0;
+    }
+    &:nth-child(3n) {
+      margin-right: 40px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    width: 287px;
+    height: 425px;
+
+    &:nth-child(2n) {
+      margin-right: 0;
+    }
+    &:nth-child(3n) {
+      margin-right: 40px;
+    }
+  }
+
+  @media (max-width: 425px) {
+    width: 340px;
+    height: 453px;
+    margin-right: 0;
+    &:nth-child(3n) {
+      margin-right: 0;
+    }
+  }
 `;
 
 const Img = styled.img`
