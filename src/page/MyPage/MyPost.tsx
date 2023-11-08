@@ -134,6 +134,36 @@ const ImgDiv = styled.div`
     width: 375px;
     height: 450px;
   }
+
+  @media (max-width: 980px) {
+    width: 360px;
+    height: 450px;
+  }
+
+  @media (max-width: 979px) {
+    width: 355px;
+    height: 450px;
+  }
+
+  @media (max-width: 967px) {
+    width: 345px;
+    height: 450px;
+  }
+
+  @media (max-width: 942px) {
+    width: 335px;
+    height: 450px;
+  }
+
+  @media (max-width: 780px) {
+    width: 280px;
+    height: 450px;
+  }
+
+  @media (max-width: 430px) {
+    width: 340px;
+    height: 450px;
+  }
 `;
 
 const TextImg = styled.img`
