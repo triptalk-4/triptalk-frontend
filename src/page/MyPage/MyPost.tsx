@@ -82,6 +82,13 @@ const BoxWrap = styled.div`
       margin-right: 30px;
     }
   }
+
+  @media (max-width: 768px) {
+    margin-right: 30px;
+    &:nth-child(2n) {
+      margin-right: 0;
+    }
+  }
 `;
 
 const Box = styled.div`
@@ -132,6 +139,36 @@ const ImgDiv = styled.div`
 
   @media (max-width: 983px) {
     width: 375px;
+    height: 450px;
+  }
+
+  @media (max-width: 980px) {
+    width: 360px;
+    height: 450px;
+  }
+
+  @media (max-width: 979px) {
+    width: 355px;
+    height: 450px;
+  }
+
+  @media (max-width: 967px) {
+    width: 345px;
+    height: 450px;
+  }
+
+  @media (max-width: 942px) {
+    width: 335px;
+    height: 450px;
+  }
+
+  @media (max-width: 780px) {
+    width: 280px;
+    height: 450px;
+  }
+
+  @media (max-width: 430px) {
+    width: 340px;
     height: 450px;
   }
 `;

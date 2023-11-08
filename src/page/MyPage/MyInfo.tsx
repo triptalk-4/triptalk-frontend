@@ -332,7 +332,7 @@ const Setting = styled(Link)`
   }
   @media (max-width: 440px) {
     font-size: 16px;
-    height: 0px;
+    height: 19px;
   }
   @media (max-width: 390px) {
     font-size: 16px;

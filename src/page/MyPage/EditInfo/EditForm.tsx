@@ -293,6 +293,20 @@ const MyInfoField = styled.div`
   &:nth-child(3) {
     width: 84%;
   }
+
+  @media (max-width: 981px) {
+    &:nth-child(2),
+    &:nth-child(3) {
+      width: 80%;
+    }
+  }
+
+  @media (max-width: 858px) {
+    &:nth-child(2),
+    &:nth-child(3) {
+      width: 75%;
+    }
+  }
 `;
 
 const MyInfoLabel = styled.label`
