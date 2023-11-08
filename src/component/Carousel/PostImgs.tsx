@@ -43,6 +43,7 @@ export default function PostImgs({ imagesUrl }: PlannerDetails) {
       </PrevArrowButton>
     );
   }
+  console.log('슬라이더', imagesUrl);
 
   function NextArrow(props: CustomArrowProps) {
     const { onClick } = props;
@@ -78,6 +79,10 @@ const StyledSlider = styled(Slider)`
   display: flex;
   justify-content: center;
   background-color: #fff;
+
+  .slick-list {
+    width: 100%;
+  }
 
   .slick-dots {
     bottom: 3px;
