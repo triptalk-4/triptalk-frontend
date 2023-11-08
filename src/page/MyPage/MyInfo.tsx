@@ -354,13 +354,8 @@ const UserLogoutBtn = styled.button`
 
 const ContentContainer = styled.div`
   border-top: 1px solid #000;
-  @media (max-width: 1400px) {
-    width: 90%;
-    margin: 0 auto;
-  }
-  @media (max-width: 1250px) {
-    width: 80%;
-  }
+  margin: 0 auto;
+  width: 80%;
 `;
 
 const ContentUl = styled.ul`
