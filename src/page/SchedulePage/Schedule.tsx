@@ -93,11 +93,17 @@ function Schedule() {
   }, [visibleItems, isLoading]);
 
   const handleScroll = () => {
-    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100 && !isLoading) {
+    const scrollY = window.pageYOffset;
+
+    const pageHeight = document.body.offsetHeight;
+
+    const windowHeight = window.innerHeight;
+
+    if (scrollY + windowHeight >= pageHeight - 100 && !isLoading) {
       loadMoreItems();
     }
 
-    if (window.scrollY > 100 && !isLoading) {
+    if (scrollY > 100 && !isLoading) {
       setShowTopButton(true);
     } else {
       setShowTopButton(false);
