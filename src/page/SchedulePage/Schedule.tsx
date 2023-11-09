@@ -180,7 +180,7 @@ const MainContainer = styled.div`
   user-select: none;
 
   @media (max-width: 430px) {
-    padding: 0 10px; /* 430px 미만에서 좌우 여백을 더 줄임 */
+    padding: 0 10px;
   }
 `;
 
@@ -192,11 +192,11 @@ const TitleContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   @media (max-width: 950px) {
-    max-width: 90%; /* 430px 미만에서 최대 너비를 더 늘림 */
+    max-width: 90%;
   }
 
   @media (max-width: 430px) {
-    max-width: 90%; /* 430px 미만에서 최대 너비를 더 늘림 */
+    max-width: 90%;
   }
 `;
 
@@ -246,11 +246,11 @@ const GridContainer = styled.div`
   padding: 0 20px;
 
   @media (max-width: 600px) {
-    gap: 10px; /* 600px 미만에서 간격을 더 줄임 */
+    gap: 10px;
   }
 
   @media (max-width: 430px) {
-    padding: 0 10px; /* 430px 미만에서 좌우 여백을 더 줄임 */
+    padding: 0 10px;
   }
 `;
 
@@ -262,11 +262,11 @@ const LoadingMessage = styled.div`
   color: #333;
 
   @media (max-width: 600px) {
-    font-size: 20px; /* 600px 미만에서 폰트 크기 감소 */
+    font-size: 20px;
   }
 
   @media (max-width: 430px) {
-    font-size: 18px; /* 430px 미만에서 폰트 크기 감소 */
+    font-size: 18px;
   }
 `;
 
@@ -300,7 +300,7 @@ const EditButton = styled(Link)`
   @media (max-width: 430px) {
     width: 120px;
     font-size: 8px;
-    margin-left: 100px; /* 430px 미만에서 더 작은 너비 및 여백 적용 */
+    margin-left: 100px;
   }
 `;
 

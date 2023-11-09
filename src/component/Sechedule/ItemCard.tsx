@@ -40,7 +40,7 @@ export default function ItemCard({ item }: { item: Item }) {
 
 const StyledPost = styled.div`
   width: 100%;
-  height: 350px;
+  height: 440px;
   position: relative;
   cursor: pointer;
   border-radius: 25px;
@@ -106,6 +106,7 @@ const BottomContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-top: 50px;
 `;
 
 const DateLabel = styled.div`
