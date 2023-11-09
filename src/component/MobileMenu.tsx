@@ -18,6 +18,9 @@ const MobileMenu = ({ location }: { location: any }) => {
       <NavItem to="/travelmap" $isActive={location.pathname === '/travelmap'}>
         리뷰맵
       </NavItem>
+      <NavItem to="/search" $isActive={location.pathname === '/search'}>
+        검색
+      </NavItem>
     </MobileMenuContainer>
   );
 };
