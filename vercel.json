@@ -105,6 +105,14 @@
       "destination": "https://triptalk.xyz/api/search/distance"
     },
     {
+      "source": "/address/api/users/update/nickname/check",
+      "destination": "https://triptalk.xyz/api/users/update/nickname/check"
+    },
+    {
+      "source": "/address/api/users/update/password/check",
+      "destination": "https://triptalk.xyz/api/users/update/password/check"
+    },
+    {
       "source": "/(.*)",
       "destination": "/"
     }
