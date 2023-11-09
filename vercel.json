@@ -101,6 +101,10 @@
       "destination": "https://triptalk.xyz/api/users/kakao/login"
     },
     {
+      "source": "/address/api/search/distance",
+      "destination": "https://triptalk.xyz/api/search/distance"
+    },
+    {
       "source": "/(.*)",
       "destination": "/"
     }
