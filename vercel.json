@@ -113,6 +113,10 @@
       "destination": "https://triptalk.xyz/api/users/update/password/check"
     },
     {
+      "source": "/address/api/alert/list",
+      "destination": "https://triptalk.xyz/api/alert/list"
+    },
+    {
       "source": "/(.*)",
       "destination": "/"
     }
