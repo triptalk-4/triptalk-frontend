@@ -29,39 +29,6 @@ const SearchDiv = styled(Link)`
   padding: 5px;
   margin-left: auto;
   border-bottom: 1px solid ${DEFAULT_FONT_COLOR};
-
-  @media (max-width: 1000px) {
-    width: 500px;
-  }
-
-  @media (max-width: 960px) {
-    width: 450px;
-  }
-
-  @media (max-width: 885px) {
-    width: 400px;
-  }
-
-  @media (max-width: 800px) {
-    width: 350px;
-  }
-
-  @media (max-width: 730px) {
-    width: 300px;
-  }
-
-  @media (max-width: 640px) {
-    width: 250px;
-  }
-
-  @media (max-width: 580px) {
-    width: 200px;
-  }
-
-  @media (max-width: 525px) {
-    width: 150px;
-    margin: 0 15px;
-  }
 `;
 
 const Searchtext = styled.span`
@@ -70,10 +37,6 @@ const Searchtext = styled.span`
   align-items: center;
   font-size: 15px;
   color: ${GRAY_COLOR};
-
-  @media (max-width: 525px) {
-    font-size: 10px;
-  }
 `;
 
 const SearchBtn = styled.button`

@@ -144,6 +144,9 @@ const Gnb = styled.div`
   @media (max-width: 1080px) {
     width: 90%;
   }
+  @media (max-width: 1000px) {
+    width: 97%;
+  }
 `;
 
 const Stroke = styled.div`
@@ -201,6 +204,10 @@ const UserImg = styled.img`
 const Nav = styled.ul`
   display: flex;
   align-items: center;
+
+  @media (max-width: 1000px) {
+    display: none;
+  }
 `;
 
 const NavItem = styled(Link)<NavItemProps>`
@@ -249,9 +256,6 @@ const NavItem = styled(Link)<NavItemProps>`
   @media (max-width: 1080px) {
     margin-right: 50px;
     font-size: 1rem;
-  }
-  @media (max-width: 1000px) {
-    display: none;
   }
 `;
 
