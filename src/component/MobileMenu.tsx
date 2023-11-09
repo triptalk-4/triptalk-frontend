@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { DEFAULT_FONT_COLOR, MAIN_COLOR } from '../color/color';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 interface NavItemProps {
   $isActive: boolean;
