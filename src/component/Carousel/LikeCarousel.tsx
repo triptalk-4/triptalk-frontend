@@ -57,8 +57,8 @@ function LikeCarousel() {
         if (token) {
           const config = {
             headers: {
-              Authorization: `Bearer ${token}`,
-            },
+              Authorization: `Bearer ${token}`
+            }
           };
           const response = await axios.get('/address/api/main', config);
           const data = response.data;
@@ -74,12 +74,11 @@ function LikeCarousel() {
     };
     fetchData();
   }, [token]);
-
   const settings = {
     dots: false,
     infinite: true,
     speed: 500,
-    slidesToShow: data.length === 0 ? 1 : data.length < 3 ? data.length : 3,
+    slidesToShow: 3,
     slidesToScroll: 1,
     initialSlide: 0,
     autoplay: true,
@@ -88,18 +87,24 @@ function LikeCarousel() {
     nextArrow: <NextArrow />,
     responsive: [
       {
-        breakpoint: 1024,
+        breakpoint: 1200,
         settings: {
-          slidesToShow: 2,
-        },
+          slidesToShow: 3
+        }
       },
       {
-        breakpoint: 760,
+        breakpoint: 600,
         settings: {
-          slidesToShow: 1,
-        },
+          slidesToShow: 2
+        }
       },
-    ],
+      {
+        breakpoint: 430,
+        settings: {
+          slidesToShow: 1
+        }
+      }
+    ]
   };
 
   return (
@@ -125,21 +130,9 @@ function LikeCarousel() {
 
 export default LikeCarousel;
 
-const Container = styled.div`
-  width: 1000px;
-  height: 400px;
-  margin: 0 auto;
-`;
-
-const Card = styled.div`
-  width: 300px;
-  height: 400px;
-  margin: 0 10px;
-`;
-
 const BtnStyle = css`
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -147,79 +140,154 @@ const BtnStyle = css`
   border: 1px solid rgba(0, 0, 0, 0.1);
   background-color: rgba(255, 255, 255, 0.9);
   color: rgba(0, 0, 0, 0.9);
-  font-size: 40px;
+  font-size: 32px;
   cursor: pointer;
   position: absolute;
   z-index: 100;
   box-shadow: 0px 0px 4px ${GRAY_COLOR};
   top: 30%;
   @media (max-width: 1150px) {
-    width: 45px;
-    height: 45px;
+    width: 35px;
+    height: 35px;
+    font-size: 28px;
   }
 `;
 
 const PrevArrowButton = styled.div`
   ${BtnStyle}
   left: 0%;
+  @media (max-width: 430px) {
+    width: 35px;
+    height: 35px;
+    font-size: 28px;
+    left: 20%;
+  }
 `;
 
 const NextArrowButton = styled.div`
   ${BtnStyle}
-  right: 0%;
+  right: 4%;
+  @media (max-width: 1200px) {
+    width: 35px;
+    height: 35px;
+    font-size: 28px;
+    right: 5%;
+  }
+  @media (max-width: 1024px) {
+    width: 35px;
+    height: 35px;
+    font-size: 28px;
+    right: 5%;
+  }
+  @media (max-width: 900px) {
+    width: 35px;
+    height: 35px;
+    font-size: 28px;
+    right: 5%;
+  }
+  @media (max-width: 600px) {
+    width: 35px;
+    height: 35px;
+    font-size: 28px;
+    right: 6%;
+  }
+  @media (max-width: 430px) {
+    width: 35px;
+    height: 35px;
+    font-size: 28px;
+    right: 16%;
+  }
+`;
+
+const Container = styled.div`
+  width: 1000px;
+  height: 400px;
+  margin: 0 auto;
+  @media (max-width: 1150px) {
+    width: 90%;
+    height: 300px;
+  }
+`;
+
+const Card = styled.div`
+  width: 280px;
+  height: 400px;
+  margin: 0 10px;
+  @media (max-width: 1150px) {
+    width: 230px;
+    height: 300px;
+  }
 `;
 
 const Image = styled.img`
-  width: 270px;
+  width: 260px;
   height: 300px;
   cursor: pointer;
   border-radius: 25px;
   border: 1px solid rgba(0, 0, 0, 0.1);
   box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.1);
-  @media (max-width: 1250px) {
-    width: 265px;
-  }
   @media (max-width: 1150px) {
-    width: 250px;
-    height: 290px;
+    width: 210px;
+    height: 250px;
+  }
+  @media (max-width: 430px) {
+    margin: 0 auto;
   }
 `;
 
 const DescriptionTitle = styled.div`
   margin-top: 10px;
-  font-size: 22px;
+  font-size: 18px;
   font-weight: bold;
-  @media (max-width: 1250px) {
-    font-size: 18px;
+  @media (max-width: 1150px) {
+    font-size: 16px;
+  }
+  @media (max-width: 430px) {
+    margin-left: 90px;
   }
 `;
 
 const DescriptionNickName = styled.div`
-  font-size: 16px;
+  font-size: 14px;
   color: gray;
-  @media (max-width: 1250px) {
-    font-size: 14px;
+  @media (max-width: 1150px) {
+    font-size: 12px;
+  }
+  @media (max-width: 430px) {
+    margin-left: 90px;
   }
 `;
 const DescriptionSchedule = styled.div`
-  font-size: 16px;
+  font-size: 14px;
   color: gray;
-  @media (max-width: 1250px) {
-    font-size: 14px;
+  @media (max-width: 1150px) {
+    font-size: 12px;
+  }
+  @media (max-width: 430px) {
+    margin-left: 90px;
   }
 `;
+
 const Badge = styled.div`
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   background-color: ${MAIN_COLOR};
-  padding: 10px;
+  padding: 8px;
   color: white;
-  font-size: 18px;
+  font-size: 16px;
   position: absolute;
   margin: 10px;
   top: 0px;
   display: flex;
   align-items: center;
   justify-content: center;
+  @media (max-width: 1150px) {
+    width: 35px;
+    height: 35px;
+    font-size: 12px;
+  }
+  @media (max-width: 430px) {
+    margin-left: 95px;
+  }
 `;
