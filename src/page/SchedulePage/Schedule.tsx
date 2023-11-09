@@ -59,8 +59,8 @@ function Schedule() {
         if (token) {
           const config = {
             headers: {
-              Authorization: `Bearer ${token}`,
-            },
+              Authorization: `Bearer ${token}`
+            }
           };
           const response = await axios.get(`/address/api/plans?page=${page}&size=6&sortType=${sortType}`, config);
           const fetchedData = response.data;
@@ -170,50 +170,98 @@ export default Schedule;
 
 const MainContainer = styled.div`
   max-width: 1200px;
-  height: 100%;
   margin: 0 auto;
   user-select: none;
+  padding: 0 20px;
+
+  @media (max-width: 430px) {
+    padding: 0 10px; /* 430px 미만에서 좌우 여백을 더 줄임 */
+  }
 `;
 
 const TitleContainer = styled.div`
   margin: 0 auto;
-  width: 80%;
+  max-width: 80%; /* 최대 너비로 설정 */
   height: 100px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  /* margin-top: 40px; */
+  @media (max-width: 950px) {
+    max-width: 90%; /* 430px 미만에서 최대 너비를 더 늘림 */
+  }
+
+  @media (max-width: 430px) {
+    max-width: 90%; /* 430px 미만에서 최대 너비를 더 늘림 */
+  }
 `;
 
 const Title = styled.div`
   font-size: 25px;
   font-weight: bold;
+
   @media (max-width: 1250px) {
     font-size: 20px;
+  }
+  @media (max-width: 950px) {
+    font-size: 18px;
+  }
+  @media (max-width: 600px) {
+    font-size: 16px;
+    margin-right: 60px;
+  }
+  @media (max-width: 430px) {
+    font-size: 14px;
+    margin-right: 45px;
   }
 `;
 
 const SelectBox = styled.div`
   width: 200px;
+
   @media (max-width: 1250px) {
     width: 160px;
+  }
+  @media (max-width: 900px) {
+    width: 140px;
+  }
+  @media (max-width: 600px) {
+    width: 120px;
+  }
+  @media (max-width: 430px) {
+    width: 100px;
   }
 `;
 
 const GridContainer = styled.div`
-  width: 80%;
-  margin: 0 auto;
+  width: 100%;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 70px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  padding: 0 20px;
+
+  @media (max-width: 600px) {
+    gap: 10px; /* 600px 미만에서 간격을 더 줄임 */
+  }
+
+  @media (max-width: 430px) {
+    padding: 0 10px; /* 430px 미만에서 좌우 여백을 더 줄임 */
+  }
 `;
 
 const LoadingMessage = styled.div`
   text-align: center;
   margin-top: 20px;
-  font-size: 36px;
+  font-size: 24px;
   font-weight: bold;
   color: #333;
+
+  @media (max-width: 600px) {
+    font-size: 20px; /* 600px 미만에서 폰트 크기 감소 */
+  }
+
+  @media (max-width: 430px) {
+    font-size: 18px; /* 430px 미만에서 폰트 크기 감소 */
+  }
 `;
 
 const EditButton = styled(Link)`
@@ -230,15 +278,25 @@ const EditButton = styled(Link)`
   align-items: center;
   font-weight: bold;
   cursor: pointer;
+
   @media (max-width: 1250px) {
     width: 180px;
     font-size: 14px;
   }
+  @media (max-width: 900px) {
+    width: 160px;
+    font-size: 12px;
+  }
+  @media (max-width: 600px) {
+    width: 140px;
+    font-size: 10px;
+  }
+  @media (max-width: 430px) {
+    width: 120px;
+    font-size: 8px;
+    margin-left: 100px; /* 430px 미만에서 더 작은 너비 및 여백 적용 */
+  }
 `;
-
-// const EditIcon = styled(GrEdit)`
-//   margin-left: 20px;
-// `;
 
 const EndOfDataMessage = styled.div`
   text-align: center;
@@ -246,4 +304,17 @@ const EndOfDataMessage = styled.div`
   font-size: 24px;
   font-weight: bold;
   color: #333;
+
+  @media (max-width: 1250px) {
+    font-size: 20px;
+  }
+  @media (max-width: 900px) {
+    font-size: 18px;
+  }
+  @media (max-width: 600px) {
+    font-size: 16px;
+  }
+  @media (max-width: 430px) {
+    font-size: 14px;
+  }
 `;
