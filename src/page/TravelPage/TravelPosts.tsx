@@ -131,8 +131,8 @@ const Post = styled.div`
     margin-right: 0;
   }
 
-  @media (max-width: 1440px) {
-    width: 357px;
+  @media (max-width: 1499px) {
+    width: 370px;
     height: 475px;
 
     &:nth-child(3n) {
@@ -140,21 +140,126 @@ const Post = styled.div`
     }
   }
 
-  @media (max-width: 1024px) {
-    width: 389px;
-    height: 525px;
+  @media (max-width: 1487px) {
+    width: 365px;
+    height: 475px;
+
+    &:nth-child(3n) {
+      margin-right: 0;
+    }
+  }
+
+  @media (max-width: 1468px) {
+    width: 360px;
+    height: 475px;
+
+    &:nth-child(3n) {
+      margin-right: 0;
+    }
+  }
+
+  @media (max-width: 1449px) {
+    width: 350px;
+    height: 475px;
+
+    &:nth-child(3n) {
+      margin-right: 0;
+    }
+  }
+
+  @media (max-width: 1413px) {
+    width: 340px;
+    height: 475px;
+
+    &:nth-child(3n) {
+      margin-right: 0;
+    }
+  }
+
+  @media (max-width: 1374px) {
+    width: 335px;
+    height: 475px;
+
+    &:nth-child(3n) {
+      margin-right: 0;
+    }
+  }
+
+  @media (max-width: 1356px) {
+    width: 330px;
+    height: 475px;
+
+    &:nth-child(3n) {
+      margin-right: 0;
+    }
+  }
+
+  @media (max-width: 1337px) {
+    width: 320px;
+    height: 475px;
+
+    &:nth-child(3n) {
+      margin-right: 0;
+    }
+  }
+
+  @media (max-width: 1299px) {
+    width: 310px;
+    height: 465px;
+
+    &:nth-child(3n) {
+      margin-right: 0;
+    }
+  }
+
+  @media (max-width: 1262px) {
+    width: 300px;
+    height: 465px;
+
+    &:nth-child(3n) {
+      margin-right: 0;
+    }
+  }
+
+  @media (max-width: 1223px) {
+    width: 290px;
+    height: 455px;
+
+    &:nth-child(3n) {
+      margin-right: 0;
+    }
+  }
+
+  @media (max-width: 1187px) {
+    width: 400px;
+    height: 485px;
+    margin-right: 60px;
 
     &:nth-child(2n) {
       margin-right: 0;
     }
     &:nth-child(3n) {
-      margin-right: 40px;
+      margin-right: 60px;
+    }
+  }
+
+  @media (max-width: 1074px) {
+    width: 370px;
+    height: 485px;
+    margin-right: 60px;
+
+    &:nth-child(2n) {
+      margin-right: 0;
+    }
+    &:nth-child(3n) {
+      margin-right: 60px;
     }
   }
 
   @media (max-width: 768px) {
     width: 287px;
     height: 425px;
+    margin-right: 40px;
 
     &:nth-child(2n) {
       margin-right: 0;
