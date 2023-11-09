@@ -229,8 +229,9 @@ const Pagination = styled.div`
   align-items: center;
   padding-top: 10px;
 `;
-
-const PageNumber = styled.button<{ active: boolean }>`
+const PageNumber = styled.button.withConfig({
+  shouldForwardProp: prop => prop !== 'active'
+})<{ active: boolean }>`
   padding: 5px 10px;
   margin: 0 5px;
   border-radius: 5px;
@@ -244,7 +245,6 @@ const PageNumber = styled.button<{ active: boolean }>`
     color: white;
   }
 `;
-
 const AllDeleteButton = styled.button`
   border: none;
   background-color: white;
