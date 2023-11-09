@@ -59,8 +59,8 @@ function Schedule() {
         if (token) {
           const config = {
             headers: {
-              Authorization: `Bearer ${token}`
-            }
+              Authorization: `Bearer ${token}`,
+            },
           };
           const response = await axios.get(`/address/api/plans?page=${page}&size=6&sortType=${sortType}`, config);
           const fetchedData = response.data;
@@ -241,6 +241,7 @@ const SelectBox = styled.div`
 const GridContainer = styled.div`
   width: 100%;
   display: grid;
+  min-height: 100vh;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 20px;
   padding: 0 20px;
