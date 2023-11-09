@@ -1,6 +1,8 @@
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { ko } from 'date-fns/esm/locale';
+import styled from 'styled-components';
+import { MAIN_COLOR } from '../../color/color';
 
 interface ExcludeTimesProps {
   startDate: Date | null;
@@ -16,7 +18,7 @@ export default function ExcludeTimes(props: ExcludeTimesProps) {
   };
 
   return (
-    <DatePicker
+    <StyledDatePicker
       locale={ko}
       selected={startDate}
       onChange={handleDatePickerChange}
@@ -27,3 +29,15 @@ export default function ExcludeTimes(props: ExcludeTimesProps) {
     />
   );
 }
+
+const StyledDatePicker = styled(DatePicker)`
+  @media (max-width: 800px) {
+    width: 220px;
+    font-size: 12px;
+    border: 2px solid ${MAIN_COLOR} !important;
+    border-radius: 4px;
+  }
+  @media (max-width: 600px) {
+    font-size: 10px;
+  }
+`;

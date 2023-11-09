@@ -1,6 +1,8 @@
 import DatePicker from 'react-datepicker';
 import { ko } from 'date-fns/esm/locale';
 import './edit.css';
+import styled from 'styled-components';
+import { MAIN_COLOR } from '../../color/color';
 
 interface FullScheduleProps {
   selectedDateRange: [Date | null, Date | null];
@@ -12,7 +14,7 @@ export default function FullSchedule(props: FullScheduleProps) {
   const [startDate, endDate] = selectedDateRange;
 
   return (
-    <DatePicker
+    <StyledDatePicker
       locale={ko}
       selectsRange={true}
       startDate={startDate}
@@ -25,3 +27,13 @@ export default function FullSchedule(props: FullScheduleProps) {
     />
   );
 }
+
+const StyledDatePicker = styled(DatePicker)`
+  border-radius: 4px;
+  margin-top: 8px;
+  border: 2px solid ${MAIN_COLOR} !important;
+  font-size: 14px;
+  @media (max-width: 600px) {
+    font-size: 12px;
+  }
+`;

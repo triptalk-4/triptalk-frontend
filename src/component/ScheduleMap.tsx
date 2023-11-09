@@ -187,10 +187,13 @@ const Con = styled.div`
   margin: 5% auto;
   height: '400px';
   @media (max-width: 1100px) {
-    height: 300px;
+    height: 300px !important;
   }
   @media (max-width: 900px) {
-    height: 250px;
+    height: 250px !important;
+  }
+  @media (max-width: 430px) {
+    height: 200px !important;
   }
 `;
 
@@ -207,6 +210,13 @@ const Input = styled.input`
   &:focus {
     border-color: ${MAIN_COLOR};
   }
+  @media (max-width: 800px) {
+    font-size: 12px;
+    font-weight: 600;
+  }
+  @media (max-width: 600px) {
+    font-size: 10px;
+  }
 `;
 
 const Button = styled.button`
@@ -222,5 +232,9 @@ const Button = styled.button`
 
   &:focus {
     border-color: ${MAIN_COLOR};
+  }
+  @media (max-width: 800px) {
+    font-size: 14px;
+    font-weight: 600;
   }
 `;

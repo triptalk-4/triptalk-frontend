@@ -209,21 +209,23 @@ export default function AddSchedule() {
                 />
               </div>
             </CoreTopContainer>
-            <ImgContainer>
-              <CustomFileInput
-                type="file"
-                accept="image/*"
-                multiple
-                name={`images[${index}]`}
-                onChange={e => handleImageUpload(e, index)}
-                id={`fileInput-${index}`}
-              />
-              <CustomFileInputLabel htmlFor={`fileInput-${index}`}>이미지 선택 (최대 5장)</CustomFileInputLabel>
-              <ImagePreviews>
-                {container.imagePreviews.map((preview, imgIndex) => (
-                  <img key={imgIndex} src={preview} alt={`Image ${imgIndex}`} />
-                ))}
-              </ImagePreviews>
+            <StyledArea>
+              <ImgContainer>
+                <CustomFileInput
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  name={`images[${index}]`}
+                  onChange={e => handleImageUpload(e, index)}
+                  id={`fileInput-${index}`}
+                />
+                <CustomFileInputLabel htmlFor={`fileInput-${index}`}>이미지 선택 (최대 5장)</CustomFileInputLabel>
+                <ImagePreviews>
+                  {container.imagePreviews.map((preview, imgIndex) => (
+                    <img key={imgIndex} src={preview} alt={`Image ${imgIndex}`} />
+                  ))}
+                </ImagePreviews>
+              </ImgContainer>
               <div>
                 <CommentTextArea
                   placeholder="장소리뷰"
@@ -234,7 +236,7 @@ export default function AddSchedule() {
                   }}
                 />
               </div>
-            </ImgContainer>
+            </StyledArea>
             <ButtonContainer>
               {coreContainers.length < 5 && <PlusButton onClick={handleAddCoreContainer}>+</PlusButton>}
               {coreContainers.length > 1 && <MinusButton onClick={handleRemoveCoreContainer}>-</MinusButton>}
@@ -266,6 +268,11 @@ const TitleContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-top: 24px;
+  @media (max-width: 790px) {
+    justify-content: unset;
+    flex-direction: column;
+    align-items: unset;
+  }
 `;
 
 const Title = styled.input.attrs({ maxLength: 40 })`
@@ -275,7 +282,13 @@ const Title = styled.input.attrs({ maxLength: 40 })`
   border-radius: 4px;
   padding: 8px 0px 8px 4px;
   outline: none;
-  margin-right: 500px;
+
+  @media (max-width: 800px) {
+    font-size: 14px;
+  }
+  @media (max-width: 600px) {
+    font-size: 12px;
+  }
 `;
 
 const CoreContainer = styled.div`
@@ -285,6 +298,18 @@ const CoreContainer = styled.div`
   background-color: #f7eae4;
   padding: 15px;
   position: relative;
+  @media (max-width: 720px) {
+    height: 310px;
+  }
+  @media (max-width: 640px) {
+    height: 400px;
+  }
+  @media (max-width: 600px) {
+    height: 369px;
+  }
+  @media (max-width: 350px) {
+    height: 320px;
+  }
 `;
 
 const CoreTopContainer = styled.div`
@@ -293,17 +318,41 @@ const CoreTopContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 50px;
+  @media (max-width: 640px) {
+    flex-direction: column;
+    align-items: unset;
+    margin-bottom: 24px;
+  }
 `;
 
 const PlaceName = styled.input`
   padding: 10px;
   font-size: 16px;
-  border: 1px solid ${MAIN_COLOR};
+  border: 2px solid ${MAIN_COLOR};
   border-radius: 4px;
   transition: border-color 0.3s;
   outline: none;
   &:focus {
     border-color: ${MAIN_COLOR};
+  }
+  @media (max-width: 800px) {
+    font-size: 14px;
+  }
+  @media (max-width: 600px) {
+    font-size: 12px;
+    margin-top: 4px;
+  }
+  @media (max-width: 350px) {
+    font-size: 10px;
+    padding: 5px;
+  }
+`;
+
+const StyledArea = styled.div`
+  display: flex;
+  justify-content: space-between;
+  @media (max-width: 640px) {
+    flex-direction: column;
   }
 `;
 
@@ -334,6 +383,18 @@ const ImagePreviews = styled.div`
   @media (max-width: 900px) {
     width: 230px;
   }
+  @media (max-width: 800px) {
+    width: 220px;
+  }
+  @media (max-width: 720px) {
+    height: 154px;
+  }
+  @media (max-width: 600px) {
+    height: 126px;
+  }
+  @media (max-width: 350px) {
+    height: 90px;
+  }
 `;
 
 const CustomFileInput = styled.input`
@@ -347,6 +408,10 @@ const CustomFileInputLabel = styled.label`
   cursor: pointer;
   margin-top: 20px;
   border-radius: 4px;
+  @media (max-width: 800px) {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
 `;
 
 const CommentTextArea = styled.textarea`
@@ -355,9 +420,6 @@ const CommentTextArea = styled.textarea`
   border: 2px solid ${MAIN_COLOR};
   outline: none;
   resize: none;
-  position: absolute;
-  top: 35%;
-  right: 15px;
   border-radius: 4px;
   @media (max-width: 1200px) {
     width: 420px;
@@ -367,6 +429,18 @@ const CommentTextArea = styled.textarea`
   }
   @media (max-width: 900px) {
     width: 300px;
+  }
+  @media (max-width: 800px) {
+    width: 290px;
+    height: 80px;
+  }
+  @media (max-width: 720px) {
+    width: 250px;
+    height: 70px;
+    margin-top: 4px;
+  }
+  @media (max-width: 720px) {
+    width: 213px;
   }
 `;
 
@@ -378,6 +452,9 @@ const ButtonContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-top: 10px;
+  @media (max-width: 640px) {
+    height: 30px;
+  }
 `;
 
 const PlusButton = styled.button`
@@ -408,6 +485,9 @@ const EnBbtnStyle = css`
   cursor: pointer;
   border: none;
   margin-bottom: 50px;
+  @media (max-width: 800px) {
+    font-size: 11px;
+  }
 `;
 
 const EditButton = styled.button`
@@ -426,4 +506,10 @@ const AddBtn = styled.div`
   margin: 0 auto;
   display: flex;
   gap: 5px;
+  @media (max-width: 530px) {
+    width: 26%;
+  }
+  @media (max-width: 350px) {
+    width: 37%;
+  }
 `;
