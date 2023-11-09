@@ -59,8 +59,8 @@ function Schedule() {
         if (token) {
           const config = {
             headers: {
-              Authorization: `Bearer ${token}`,
-            },
+              Authorization: `Bearer ${token}`
+            }
           };
           const response = await axios.get(`/address/api/plans?page=${page}&size=6&sortType=${sortType}`, config);
           const fetchedData = response.data;
@@ -178,7 +178,6 @@ const MainContainer = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   user-select: none;
-  padding: 0 20px;
 
   @media (max-width: 430px) {
     padding: 0 10px; /* 430px 미만에서 좌우 여백을 더 줄임 */
@@ -187,7 +186,7 @@ const MainContainer = styled.div`
 
 const TitleContainer = styled.div`
   margin: 0 auto;
-  max-width: 80%; /* 최대 너비로 설정 */
+  max-width: 96%;
   height: 100px;
   display: flex;
   align-items: center;
