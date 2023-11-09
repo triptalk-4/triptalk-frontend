@@ -43,7 +43,6 @@ export default function PostImgs({ imagesUrl }: PlannerDetails) {
       </PrevArrowButton>
     );
   }
-  console.log('슬라이더', imagesUrl);
 
   function NextArrow(props: CustomArrowProps) {
     const { onClick } = props;

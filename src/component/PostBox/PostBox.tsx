@@ -25,7 +25,7 @@ interface PlaceResponse {
 
 export default function PostBox({ data }: { data: PlannerDetails }) {
   const scheduleDate = moment(data.date, 'YYYY-MM-DDTHH:mm:ss').add(9, 'hours').format('YYYY-MM-DD HH:mm');
-  console.log('포스트박스', data.imagesUrl);
+
   return (
     <PostBoxContainer>
       <Postdiv>
