@@ -281,6 +281,7 @@ const Title = styled.input.attrs({ maxLength: 40 })`
   border: 2px solid ${MAIN_COLOR};
   border-radius: 4px;
   padding: 8px 0px 8px 4px;
+  margin-right: 500px;
   outline: none;
 
   @media (max-width: 800px) {
