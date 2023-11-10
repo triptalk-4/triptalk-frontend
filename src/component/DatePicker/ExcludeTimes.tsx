@@ -31,6 +31,7 @@ export default function ExcludeTimes(props: ExcludeTimesProps) {
 }
 
 const StyledDatePicker = styled(DatePicker)`
+  border: 2px solid ${MAIN_COLOR} !important;
   @media (max-width: 800px) {
     width: 220px;
     font-size: 12px;
