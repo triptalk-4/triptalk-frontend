@@ -57,8 +57,8 @@ function LikeCarousel() {
         if (token) {
           const config = {
             headers: {
-              Authorization: `Bearer ${token}`
-            }
+              Authorization: `Bearer ${token}`,
+            },
           };
           const response = await axios.get('/address/api/main', config);
           const data = response.data;
@@ -89,22 +89,22 @@ function LikeCarousel() {
       {
         breakpoint: 1200,
         settings: {
-          slidesToShow: 3
-        }
+          slidesToShow: 3,
+        },
       },
       {
         breakpoint: 600,
         settings: {
-          slidesToShow: 2
-        }
+          slidesToShow: 2,
+        },
       },
       {
         breakpoint: 430,
         settings: {
-          slidesToShow: 1
-        }
-      }
-    ]
+          slidesToShow: 1,
+        },
+      },
+    ],
   };
 
   return (
@@ -239,6 +239,10 @@ const DescriptionTitle = styled.div`
   margin-top: 10px;
   font-size: 18px;
   font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 200px;
   @media (max-width: 1150px) {
     font-size: 16px;
   }
@@ -275,7 +279,7 @@ const Badge = styled.div`
   background-color: ${MAIN_COLOR};
   padding: 8px;
   color: white;
-  font-size: 16px;
+  font-size: 15px;
   position: absolute;
   margin: 10px;
   top: 0px;
