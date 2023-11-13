@@ -260,6 +260,9 @@ const UserName = styled.h1`
 `;
 
 const UserReply = styled.input`
+  width: 100%;
+  text-overflow: ellipsis;
+
   &:disabled {
     background-color: transparent;
   }
