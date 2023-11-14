@@ -3,7 +3,6 @@
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
   color: #242424;
   background-color: #d6d6d6;
 
@@ -31,7 +30,6 @@ h6,
 p,
 blockquote,
 pre,
-a,
 abbr,
 acronym,
 address,
@@ -95,13 +93,19 @@ summary,
 time,
 mark,
 audio,
+input,
 video {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
   border: 0;
   font-size: 100%;
   vertical-align: baseline;
 }
+a {
+  text-decoration: none;
+}
+
 /* HTML5 display-role reset for older browsers */
 article,
 aside,
@@ -137,10 +141,3 @@ table {
 }
 
 /* 설정 */
-
-/* a:hover {
-    color: #747bff;
-  } */
-button {
-  background-color: #f9f9f9;
-}
