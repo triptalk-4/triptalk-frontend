@@ -89,6 +89,10 @@ const BoxWrap = styled.div`
       margin-right: 0;
     }
   }
+
+  @media (max-width: 375px) {
+    margin-right: 0;
+  }
 `;
 
 const Box = styled.div`
@@ -170,6 +174,11 @@ const ImgDiv = styled.div`
   @media (max-width: 430px) {
     width: 340px;
     height: 450px;
+  }
+
+  @media (max-width: 375px) {
+    width: 250px;
+    height: 320px;
   }
 `;
 
