@@ -65,6 +65,11 @@ const PostBoxContainer = styled.div`
 const Postdiv = styled.div`
   width: 100%;
   display: flex;
+
+  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+  }
 `;
 
 const PostInfo = styled.div`
@@ -72,12 +77,21 @@ const PostInfo = styled.div`
   height: 400px;
   background-color: white;
   border-left: 1px solid #d6d6d6;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    border-left: none;
+  }
 `;
 
 const PostText = styled.div`
   padding: 15px 10px;
   height: 105px;
   overflow: auto;
+
+  @media (max-width: 768px) {
+    border-top: 1px solid #d6d6d6;
+  }
 `;
 
 const IconStyle = css`
