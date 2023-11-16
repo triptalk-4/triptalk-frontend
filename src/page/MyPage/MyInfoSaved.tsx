@@ -81,6 +81,12 @@ const SavedContainer = styled.div`
   &.space-between {
     justify-content: space-between;
   }
+
+  @media (max-width: 375px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 
 const LoadingMessage = styled.p`

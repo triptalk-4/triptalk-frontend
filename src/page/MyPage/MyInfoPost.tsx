@@ -151,9 +151,9 @@ export default function MyInfoPost({ userInfo }: { userInfo: userInfoDate }) {
 const PostContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   height: auto;
   margin-bottom: 20px;
-  align-items: center;
 
   &.flex-start {
     justify-content: flex-start;
@@ -161,6 +161,12 @@ const PostContainer = styled.div`
 
   &.space-between {
     justify-content: space-between;
+  }
+
+  @media (max-width: 375px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 `;
 
