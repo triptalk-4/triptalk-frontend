@@ -29,7 +29,7 @@ export default function TravelPopup({ data, onClose }: TravelPopupProps) {
   }
 
   return (
-    <Popup>
+    <Popup onClick={onClose}>
       <PopupContent>
         <PopupImgDiv>
           <PopupImgs image={data.image} />
@@ -55,7 +55,7 @@ export default function TravelPopup({ data, onClose }: TravelPopupProps) {
             </PopupAddress>
           </Button>
         </PopupInfo>
-        <CloseButton onClick={onClose}>닫기</CloseButton>
+        {/* <CloseButton onClick={onClose}>닫기</CloseButton> */}
       </PopupContent>
     </Popup>
   );
@@ -160,13 +160,13 @@ const Location = styled(GrLocation)`
   ${IconStyle}
 `;
 
-const CloseButton = styled.button`
-  background: transparent;
-  border: none;
-  color: #fff;
-  font-size: 24px;
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  cursor: pointer;
-`;
+// const CloseButton = styled.button`
+//   background: transparent;
+//   border: none;
+//   color: #fff;
+//   font-size: 24px;
+//   position: absolute;
+//   top: 20px;
+//   right: 20px;
+//   cursor: pointer;
+// `;
