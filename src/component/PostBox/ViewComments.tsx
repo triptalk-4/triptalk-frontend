@@ -27,13 +27,6 @@ export default function ViewComments({ plannerDetailId }: ViewCommentsProps) {
   const [newComment, setNewComment] = useState('');
   const userReplyRef = useRef<HTMLTextAreaElement>(null);
 
-  useEffect(() => {
-    if (userReplyRef.current) {
-      userReplyRef.current.style.height = 'auto';
-      userReplyRef.current.style.height = `${userReplyRef.current.scrollHeight}px`;
-    }
-  }, [commentData, commentUserReply]);
-
   const [, setReplyId] = useState('');
 
   const token = useSelector((state: RootState) => state.token.token);
@@ -172,6 +165,13 @@ export default function ViewComments({ plannerDetailId }: ViewCommentsProps) {
       handleCommentSubmit();
     }
   };
+
+  useEffect(() => {
+    if (userReplyRef.current) {
+      userReplyRef.current.style.height = 'auto';
+      userReplyRef.current.style.height = `${userReplyRef.current.scrollHeight}px`;
+    }
+  }, [commentData]);
 
   return (
     <>
