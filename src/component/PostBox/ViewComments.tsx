@@ -175,7 +175,11 @@ export default function ViewComments({ plannerDetailId }: ViewCommentsProps) {
               <UserBox>
                 <UserComment>
                   <UserName>{comment.nickname}</UserName>
-                  <UserReply defaultValue={comment.reply} disabled={!isEditing} />
+                  <UserReply
+                    defaultValue={comment.reply}
+                    disabled={!isEditing}
+                    style={{ width: `${comment.reply.length * 10}px` }}
+                  />
                   {Access_token !== comment.email && <UplaodDate>{formatDate(comment.createDt)}</UplaodDate>}
                 </UserComment>
                 <EnDdiv>
@@ -275,7 +279,6 @@ const UserReply = styled.textarea`
   white-space: normal;
   border: none;
   resize: none;
-  height: auto;
 
   &:disabled {
     background-color: transparent;
