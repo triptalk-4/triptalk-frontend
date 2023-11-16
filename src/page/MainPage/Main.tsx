@@ -37,6 +37,10 @@ const TopPosts = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   margin-bottom: 5%;
+
+  @media (max-width: 768px) {
+    margin-bottom: 15%;
+  }
 `;
 
 const TopTitle = styled.div`
