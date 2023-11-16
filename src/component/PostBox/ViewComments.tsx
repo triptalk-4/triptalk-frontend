@@ -25,9 +25,6 @@ export default function ViewComments({ plannerDetailId }: ViewCommentsProps) {
   const [commentUserReply, setCommentUserReply] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [newComment, setNewComment] = useState('');
-  const [userReplyHeight, setUserReplyHeight] = useState(17);
-
-  console.log(userReplyHeight);
 
   const [, setReplyId] = useState('');
 
@@ -168,13 +165,6 @@ export default function ViewComments({ plannerDetailId }: ViewCommentsProps) {
     }
   };
 
-  const handleUserReplyChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setCommentUserReply(e.target.value);
-
-    const lineCount = e.target.value.split('\n').length || 1;
-    setUserReplyHeight(17 + (lineCount - 1) * 17);
-  };
-
   return (
     <>
       <UserCommentContainer>
@@ -185,12 +175,7 @@ export default function ViewComments({ plannerDetailId }: ViewCommentsProps) {
               <UserBox>
                 <UserComment>
                   <UserName>{comment.nickname}</UserName>
-                  <UserReply
-                    defaultValue={comment.reply}
-                    disabled={!isEditing}
-                    style={{ height: `${userReplyHeight}px` }}
-                    onChange={handleUserReplyChange}
-                  />
+                  <UserReply defaultValue={comment.reply} disabled={!isEditing} />
                   {Access_token !== comment.email && <UplaodDate>{formatDate(comment.createDt)}</UplaodDate>}
                 </UserComment>
                 <EnDdiv>
