@@ -71,6 +71,10 @@ const StyledPostImgs = styled.div`
   height: 400px;
   border-radius: 15px 0 0 15px;
   display: flex;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 const StyledSlider = styled(Slider)`

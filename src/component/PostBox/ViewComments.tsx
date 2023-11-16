@@ -159,6 +159,12 @@ export default function ViewComments({ plannerDetailId }: ViewCommentsProps) {
     }
   };
 
+  const handleOnKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleCommentSubmit();
+    }
+  };
+
   return (
     <>
       <UserCommentContainer>
@@ -169,7 +175,7 @@ export default function ViewComments({ plannerDetailId }: ViewCommentsProps) {
               <UserBox>
                 <UserComment>
                   <UserName>{comment.nickname}</UserName>
-                  <UserReply type="text" defaultValue={comment.reply} disabled={!isEditing} />{' '}
+                  <UserReply defaultValue={comment.reply} disabled={!isEditing} />
                   {Access_token !== comment.email && <UplaodDate>{formatDate(comment.createDt)}</UplaodDate>}
                 </UserComment>
                 <EnDdiv>
@@ -195,7 +201,12 @@ export default function ViewComments({ plannerDetailId }: ViewCommentsProps) {
       <PostBorder></PostBorder>
       <CommentInputContainer>
         <InputWrap>
-          <CommentInput placeholder="댓글 달기" value={newComment} onChange={handleCommentChange} />
+          <CommentInput
+            placeholder="댓글 달기"
+            value={newComment}
+            onChange={handleCommentChange}
+            onKeyDown={handleOnKeyPress}
+          />
           <EnterBtn type="button" onClick={handleCommentSubmit} />
         </InputWrap>
       </CommentInputContainer>
@@ -259,9 +270,12 @@ const UserName = styled.h1`
   font-weight: 700;
 `;
 
-const UserReply = styled.input`
+const UserReply = styled.textarea`
   width: 100%;
-  text-overflow: ellipsis;
+  white-space: normal;
+  border: none;
+  resize: none;
+  height: auto;
 
   &:disabled {
     background-color: transparent;
