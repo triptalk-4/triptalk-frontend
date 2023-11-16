@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import styled, { css } from 'styled-components';
 import { RootState } from '../../store/store';
@@ -25,7 +25,6 @@ export default function ViewComments({ plannerDetailId }: ViewCommentsProps) {
   const [commentUserReply, setCommentUserReply] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [newComment, setNewComment] = useState('');
-  const userReplyRef = useRef<HTMLTextAreaElement>(null);
 
   const [, setReplyId] = useState('');
 
@@ -166,13 +165,6 @@ export default function ViewComments({ plannerDetailId }: ViewCommentsProps) {
     }
   };
 
-  useEffect(() => {
-    if (userReplyRef.current) {
-      userReplyRef.current.style.height = 'auto';
-      userReplyRef.current.style.height = `${userReplyRef.current.scrollHeight}px`;
-    }
-  }, [commentData]);
-
   return (
     <>
       <UserCommentContainer>
@@ -183,7 +175,7 @@ export default function ViewComments({ plannerDetailId }: ViewCommentsProps) {
               <UserBox>
                 <UserComment>
                   <UserName>{comment.nickname}</UserName>
-                  <UserReply ref={userReplyRef} defaultValue={comment.reply} disabled={!isEditing} />
+                  <UserReply defaultValue={comment.reply} disabled={!isEditing} />
                   {Access_token !== comment.email && <UplaodDate>{formatDate(comment.createDt)}</UplaodDate>}
                 </UserComment>
                 <EnDdiv>
