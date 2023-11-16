@@ -201,8 +201,13 @@ export default function ViewComments({ plannerDetailId }: ViewCommentsProps) {
       <PostBorder></PostBorder>
       <CommentInputContainer>
         <InputWrap>
-          <CommentInput placeholder="댓글 달기" value={newComment} onChange={handleCommentChange} />
-          <EnterBtn type="button" onClick={handleCommentSubmit} onKeyPress={handleOnKeyPress} />
+          <CommentInput
+            placeholder="댓글 달기"
+            value={newComment}
+            onChange={handleCommentChange}
+            onKeyDown={handleOnKeyPress}
+          />
+          <EnterBtn type="button" onClick={handleCommentSubmit} />
         </InputWrap>
       </CommentInputContainer>
     </>
