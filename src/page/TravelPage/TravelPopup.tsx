@@ -28,14 +28,8 @@ export default function TravelPopup({ data, onClose }: TravelPopupProps) {
     return null;
   }
 
-  const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    if (e.target === e.currentTarget) {
-      onClose();
-    }
-  };
-
   return (
-    <Popup onClick={handleOverlayClick}>
+    <Popup onClick={onClose}>
       <PopupContent>
         <PopupImgDiv>
           <PopupImgs image={data.image} />
