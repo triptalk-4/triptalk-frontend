@@ -271,8 +271,11 @@ const UserName = styled.h1`
 `;
 
 const UserReply = styled.textarea`
-  width: 325px;
+  width: 100%;
   white-space: normal;
+  border: none;
+  border: none;
+  height: auto;
 
   &:disabled {
     background-color: transparent;
