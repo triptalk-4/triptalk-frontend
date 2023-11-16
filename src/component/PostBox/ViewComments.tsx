@@ -25,6 +25,7 @@ export default function ViewComments({ plannerDetailId }: ViewCommentsProps) {
   const [commentUserReply, setCommentUserReply] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [newComment, setNewComment] = useState('');
+  const [textareaRows, setTextareaRows] = useState(1);
 
   const [, setReplyId] = useState('');
 
@@ -115,6 +116,10 @@ export default function ViewComments({ plannerDetailId }: ViewCommentsProps) {
 
   const handleCommentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewComment(e.target.value);
+
+    const lineBreaks = (e.target.value.match(/\n/g) || []).length + 1;
+
+    setTextareaRows(lineBreaks > 1 ? lineBreaks : 1);
   };
 
   const handleCommentSubmit = async () => {
@@ -175,7 +180,7 @@ export default function ViewComments({ plannerDetailId }: ViewCommentsProps) {
               <UserBox>
                 <UserComment>
                   <UserName>{comment.nickname}</UserName>
-                  <UserReply defaultValue={comment.reply} disabled={!isEditing} />{' '}
+                  <UserReply defaultValue={comment.reply} disabled={!isEditing} rows={textareaRows} />
                   {Access_token !== comment.email && <UplaodDate>{formatDate(comment.createDt)}</UplaodDate>}
                 </UserComment>
                 <EnDdiv>
