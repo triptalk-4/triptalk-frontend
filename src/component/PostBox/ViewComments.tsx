@@ -159,6 +159,12 @@ export default function ViewComments({ plannerDetailId }: ViewCommentsProps) {
     }
   };
 
+  const handleOnKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleCommentSubmit();
+    }
+  };
+
   return (
     <>
       <UserCommentContainer>
@@ -196,7 +202,7 @@ export default function ViewComments({ plannerDetailId }: ViewCommentsProps) {
       <CommentInputContainer>
         <InputWrap>
           <CommentInput placeholder="댓글 달기" value={newComment} onChange={handleCommentChange} />
-          <EnterBtn type="button" onClick={handleCommentSubmit} />
+          <EnterBtn type="button" onClick={handleCommentSubmit} onKeyPress={handleOnKeyPress} />
         </InputWrap>
       </CommentInputContainer>
     </>
