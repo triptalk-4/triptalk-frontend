@@ -276,6 +276,7 @@ const UserReply = styled.textarea`
   border: none;
   resize: none;
   height: 15px;
+  overflow-y: auto;
 
   &:disabled {
     background-color: transparent;
