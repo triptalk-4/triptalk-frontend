@@ -25,6 +25,7 @@ export default function ViewComments({ plannerDetailId }: ViewCommentsProps) {
   const [commentUserReply, setCommentUserReply] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [newComment, setNewComment] = useState('');
+  const [replyHeight, setReplyHeight] = useState<number | null>(13);
 
   const [, setReplyId] = useState('');
 
@@ -165,6 +166,15 @@ export default function ViewComments({ plannerDetailId }: ViewCommentsProps) {
     }
   };
 
+  // 높이 조건
+  useEffect(() => {
+    if (replyHeight !== null) {
+      const lineHeight = 17;
+
+      setReplyHeight(replyHeight + lineHeight);
+    }
+  }, [replyHeight]);
+
   return (
     <>
       <UserCommentContainer>
@@ -175,7 +185,11 @@ export default function ViewComments({ plannerDetailId }: ViewCommentsProps) {
               <UserBox>
                 <UserComment>
                   <UserName>{comment.nickname}</UserName>
-                  <UserReply defaultValue={comment.reply} disabled={!isEditing} />
+                  <UserReply
+                    style={{ height: replyHeight ? `${replyHeight}px` : 'auto' }}
+                    defaultValue={comment.reply}
+                    disabled={!isEditing}
+                  />
                   {Access_token !== comment.email && <UplaodDate>{formatDate(comment.createDt)}</UplaodDate>}
                 </UserComment>
                 <EnDdiv>
@@ -275,7 +289,6 @@ const UserReply = styled.textarea`
   white-space: normal;
   border: none;
   resize: none;
-  height: auto;
 
   &:disabled {
     background-color: transparent;
