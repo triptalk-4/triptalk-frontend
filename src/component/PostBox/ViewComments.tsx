@@ -175,11 +175,7 @@ export default function ViewComments({ plannerDetailId }: ViewCommentsProps) {
               <UserBox>
                 <UserComment>
                   <UserName>{comment.nickname}</UserName>
-                  <UserReply
-                    defaultValue={comment.reply}
-                    disabled={!isEditing}
-                    style={{ width: `${comment.reply.length}%` }}
-                  />
+                  <UserReply defaultValue={comment.reply} disabled={!isEditing} style={{ width: `100%` }} />
                   {Access_token !== comment.email && <UplaodDate>{formatDate(comment.createDt)}</UplaodDate>}
                 </UserComment>
                 <EnDdiv>
