@@ -274,7 +274,7 @@ const UserReply = styled.textarea`
   width: 100%;
   white-space: normal;
   border: none;
-  border: none;
+  resize: none;
   height: auto;
 
   &:disabled {
