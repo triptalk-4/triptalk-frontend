@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import styled, { css } from 'styled-components';
 import { RootState } from '../../store/store';
@@ -25,6 +25,14 @@ export default function ViewComments({ plannerDetailId }: ViewCommentsProps) {
   const [commentUserReply, setCommentUserReply] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [newComment, setNewComment] = useState('');
+  const userReplyRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    if (userReplyRef.current) {
+      userReplyRef.current.style.height = 'auto';
+      userReplyRef.current.style.height = `${userReplyRef.current.scrollHeight}px`;
+    }
+  }, [commentUserReply, isEditing]);
 
   const [, setReplyId] = useState('');
 
