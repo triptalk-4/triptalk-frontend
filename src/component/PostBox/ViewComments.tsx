@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import styled, { css } from 'styled-components';
 import { RootState } from '../../store/store';
@@ -25,7 +25,6 @@ export default function ViewComments({ plannerDetailId }: ViewCommentsProps) {
   const [commentUserReply, setCommentUserReply] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [newComment, setNewComment] = useState('');
-  const userReplyRef = useRef<HTMLTextAreaElement | null>(null);
 
   const [, setReplyId] = useState('');
 
@@ -166,25 +165,6 @@ export default function ViewComments({ plannerDetailId }: ViewCommentsProps) {
     }
   };
 
-  useEffect(() => {
-    const textarea = userReplyRef.current;
-
-    if (textarea) {
-      const updateHeight = () => {
-        textarea.style.height = '17px';
-        textarea.style.height = `${textarea.scrollHeight}px`;
-      };
-
-      updateHeight();
-
-      textarea.addEventListener('input', updateHeight);
-
-      return () => {
-        textarea.removeEventListener('input', updateHeight);
-      };
-    }
-  }, [commentUserReply, isEditing]);
-
   return (
     <>
       <UserCommentContainer>
@@ -195,7 +175,7 @@ export default function ViewComments({ plannerDetailId }: ViewCommentsProps) {
               <UserBox>
                 <UserComment>
                   <UserName>{comment.nickname}</UserName>
-                  <UserReply ref={userReplyRef} defaultValue={comment.reply} disabled={!isEditing} />
+                  <UserReply defaultValue={comment.reply} disabled={!isEditing} />
                   {Access_token !== comment.email && <UplaodDate>{formatDate(comment.createDt)}</UplaodDate>}
                 </UserComment>
                 <EnDdiv>
@@ -295,6 +275,7 @@ const UserReply = styled.textarea`
   white-space: normal;
   border: none;
   resize: none;
+  height: fit-content;
 
   &:disabled {
     background-color: transparent;
