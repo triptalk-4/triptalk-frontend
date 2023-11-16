@@ -82,6 +82,11 @@ const LoginForm = () => {
       }
     }
   };
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleLogin();
+    }
+  };
 
   return (
     <Container>
@@ -94,7 +99,7 @@ const LoginForm = () => {
       </OrDivider>
       <InputEmail type="email" placeholder="이메일" value={userEmail} onChange={handleEmail} />
       <br />
-      <InputPw type="password" placeholder="비밀번호" value={password} onChange={handlePw} />
+      <InputPw type="password" placeholder="비밀번호" value={password} onChange={handlePw} onKeyDown={handleKeyPress} />
       <LoginButton onClick={handleLogin}>로그인</LoginButton>
       <Div>
         <span>아이디 찾기</span>
