@@ -29,10 +29,10 @@ export default function ViewComments({ plannerDetailId }: ViewCommentsProps) {
 
   useEffect(() => {
     if (userReplyRef.current) {
-      userReplyRef.current.style.height = 'auto';
+      userReplyRef.current.style.height = '17px';
       userReplyRef.current.style.height = `${userReplyRef.current.scrollHeight}px`;
     }
-  }, [commentData]);
+  }, [commentData, isEditing]);
 
   const [, setReplyId] = useState('');
 
