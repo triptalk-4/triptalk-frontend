@@ -275,7 +275,6 @@ const UserReply = styled.textarea`
   white-space: normal;
   border: none;
   resize: none;
-  height: auto;
 
   &:disabled {
     background-color: transparent;
