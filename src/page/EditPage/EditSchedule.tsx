@@ -358,6 +358,10 @@ const MainContainer = styled.div`
   max-width: 1200px;
   margin: 50px auto;
   height: 100%;
+
+  @media (max-width: 1250px) {
+    width: 80%;
+  }
 `;
 
 const TitleContainer = styled.div`
@@ -366,6 +370,12 @@ const TitleContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-top: 24px;
+
+  @media (max-width: 790px) {
+    justify-content: unset;
+    flex-direction: column;
+    align-items: unset;
+  }
 `;
 
 const Title = styled.input.attrs({ maxLength: 40 })`
@@ -376,6 +386,13 @@ const Title = styled.input.attrs({ maxLength: 40 })`
   padding: 8px 0px 8px 4px;
   outline: none;
   margin-right: 500px;
+
+  @media (max-width: 800px) {
+    font-size: 14px;
+  }
+  @media (max-width: 600px) {
+    font-size: 12px;
+  }
 `;
 
 const CoreContainer = styled.div`
@@ -385,6 +402,19 @@ const CoreContainer = styled.div`
   background-color: #f7eae4;
   padding: 15px;
   position: relative;
+
+  @media (max-width: 720px) {
+    height: 310px;
+  }
+  @media (max-width: 640px) {
+    height: 400px;
+  }
+  @media (max-width: 600px) {
+    height: 369px;
+  }
+  @media (max-width: 350px) {
+    height: 320px;
+  }
 `;
 
 const CoreTopContainer = styled.div`
@@ -392,6 +422,12 @@ const CoreTopContainer = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 50px;
+
+  @media (max-width: 640px) {
+    flex-direction: column;
+    align-items: unset;
+    margin-bottom: 24px;
+  }
 `;
 
 const PlaceName = styled.input`
@@ -403,6 +439,18 @@ const PlaceName = styled.input`
   outline: none;
   &:focus {
     border-color: ${MAIN_COLOR};
+  }
+
+  @media (max-width: 800px) {
+    font-size: 14px;
+  }
+  @media (max-width: 600px) {
+    font-size: 12px;
+    margin-top: 4px;
+  }
+  @media (max-width: 350px) {
+    font-size: 10px;
+    padding: 5px;
   }
 `;
 
@@ -424,6 +472,28 @@ const ImagePreviews = styled.div`
     max-height: 80px;
     margin: 7px;
   }
+
+  @media (max-width: 1200px) {
+    width: 270px;
+  }
+  @media (max-width: 1000px) {
+    width: 250px;
+  }
+  @media (max-width: 900px) {
+    width: 230px;
+  }
+  @media (max-width: 800px) {
+    width: 220px;
+  }
+  @media (max-width: 720px) {
+    height: 154px;
+  }
+  @media (max-width: 600px) {
+    height: 126px;
+  }
+  @media (max-width: 350px) {
+    height: 90px;
+  }
 `;
 
 const CustomFileInput = styled.input`
@@ -437,6 +507,11 @@ const CustomFileInputLabel = styled.label`
   cursor: pointer;
   margin-top: 20px;
   border-radius: 4px;
+
+  @media (max-width: 800px) {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
 `;
 
 const CommentTextArea = styled.textarea`
@@ -449,6 +524,28 @@ const CommentTextArea = styled.textarea`
   top: 35%;
   right: 15px;
   border-radius: 4px;
+
+  @media (max-width: 1200px) {
+    width: 420px;
+  }
+  @media (max-width: 1000px) {
+    width: 340px;
+  }
+  @media (max-width: 900px) {
+    width: 300px;
+  }
+  @media (max-width: 800px) {
+    width: 290px;
+    height: 80px;
+  }
+  @media (max-width: 720px) {
+    width: 250px;
+    height: 70px;
+    margin-top: 4px;
+  }
+  @media (max-width: 720px) {
+    width: 213px;
+  }
 `;
 
 const ButtonContainer = styled.div`
@@ -458,6 +555,10 @@ const ButtonContainer = styled.div`
   justify-content: center;
   align-items: center;
   margin-top: 10px;
+
+  @media (max-width: 640px) {
+    height: 30px;
+  }
 `;
 
 const PnMBtnStyle = css`
@@ -487,6 +588,10 @@ const EnBBtnStyle = css`
   cursor: pointer;
   border: none;
   margin-bottom: 50px;
+
+  @media (max-width: 800px) {
+    font-size: 11px;
+  }
 `;
 
 const EditButton = styled.button`
