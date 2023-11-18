@@ -535,9 +535,6 @@ const CommentTextArea = styled.textarea`
   border: 2px solid ${MAIN_COLOR};
   outline: none;
   resize: none;
-  position: absolute;
-  top: 35%;
-  right: 15px;
   border-radius: 4px;
 
   @media (max-width: 1200px) {
