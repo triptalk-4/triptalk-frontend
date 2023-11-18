@@ -309,34 +309,36 @@ export default function EditSchedule() {
                   readOnly
                 />
               </div>
-            </CoreTopContainer>
-            <ImgContainer>
-              <CustomFileInput
-                type="file"
-                accept="image/*"
-                multiple
-                name={`images[${index}]`}
-                onChange={e => handleImageUpload(e, index)}
-                id={`fileInput-${index}`}
-              />
-              <CustomFileInputLabel htmlFor={`fileInput-${index}`}>이미지 선택 (최대 5장)</CustomFileInputLabel>
-              <ImagePreviews>
-                {container.imagePreviews.map((preview, imgIndex) => (
-                  <img key={imgIndex} src={preview} alt={`Image ${imgIndex}`} />
-                ))}
-              </ImagePreviews>
-              <div>
-                <CommentTextArea
-                  placeholder="장소리뷰"
-                  defaultValue={container.review}
-                  onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
-                    const updatedContainers = [...coreContainers];
-                    updatedContainers[index].review = e.target.value;
-                    setCoreContainers(updatedContainers);
-                  }}
+            </CoreTopContainer>{' '}
+            <StyledArea>
+              <ImgContainer>
+                <CustomFileInput
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  name={`images[${index}]`}
+                  onChange={e => handleImageUpload(e, index)}
+                  id={`fileInput-${index}`}
                 />
-              </div>
-            </ImgContainer>
+                <CustomFileInputLabel htmlFor={`fileInput-${index}`}>이미지 선택 (최대 5장)</CustomFileInputLabel>
+                <ImagePreviews>
+                  {container.imagePreviews.map((preview, imgIndex) => (
+                    <img key={imgIndex} src={preview} alt={`Image ${imgIndex}`} />
+                  ))}
+                </ImagePreviews>
+                <div>
+                  <CommentTextArea
+                    placeholder="장소리뷰"
+                    defaultValue={container.review}
+                    onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
+                      const updatedContainers = [...coreContainers];
+                      updatedContainers[index].review = e.target.value;
+                      setCoreContainers(updatedContainers);
+                    }}
+                  />
+                </div>
+              </ImgContainer>
+            </StyledArea>
             <ButtonContainer>
               {coreContainers.length < 5 && <PlusButton onClick={handleAddCoreContainer}>+</PlusButton>}
               {coreContainers.length >= 1 && <MinusButton onClick={handleRemoveCoreContainer}>-</MinusButton>}
@@ -386,6 +388,10 @@ const Title = styled.input.attrs({ maxLength: 40 })`
   padding: 8px 0px 8px 4px;
   outline: none;
   margin-right: 500px;
+
+  @media (max-width: 1024) {
+    margin-right: 260px;
+  }
 
   @media (max-width: 800px) {
     font-size: 14px;
@@ -451,6 +457,15 @@ const PlaceName = styled.input`
   @media (max-width: 350px) {
     font-size: 10px;
     padding: 5px;
+  }
+`;
+
+const StyledArea = styled.div`
+  display: flex;
+  justify-content: space-between;
+
+  @media (max-width: 640px) {
+    flex-direction: column;
   }
 `;
 
