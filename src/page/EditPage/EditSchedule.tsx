@@ -326,18 +326,18 @@ export default function EditSchedule() {
                     <img key={imgIndex} src={preview} alt={`Image ${imgIndex}`} />
                   ))}
                 </ImagePreviews>
-                <div>
-                  <CommentTextArea
-                    placeholder="장소리뷰"
-                    defaultValue={container.review}
-                    onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
-                      const updatedContainers = [...coreContainers];
-                      updatedContainers[index].review = e.target.value;
-                      setCoreContainers(updatedContainers);
-                    }}
-                  />
-                </div>
               </ImgContainer>
+              <div>
+                <CommentTextArea
+                  placeholder="장소리뷰"
+                  defaultValue={container.review}
+                  onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
+                    const updatedContainers = [...coreContainers];
+                    updatedContainers[index].review = e.target.value;
+                    setCoreContainers(updatedContainers);
+                  }}
+                />
+              </div>
             </StyledArea>
             <ButtonContainer>
               {coreContainers.length < 5 && <PlusButton onClick={handleAddCoreContainer}>+</PlusButton>}
